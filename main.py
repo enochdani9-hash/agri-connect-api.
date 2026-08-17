@@ -1,9 +1,11 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import Optional
+from supabase import create_client, Client
+import os
 
-app = FastAPI(title="AgriConnect API", version="1.0")
+app = FastAPI(title="AgriConnect Production API", version="2.0")
 
 # --- CORS VIP PASS ---
 app.add_middleware(
@@ -14,54 +16,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# --- IN-MEMORY DATABASE (Simulated Local Farm Inventory) ---
-# In a production app, this would connect to a database. For our zero-cash MVP, this works instantly!
-inventory_db = [
-    {
-        "item_id": 1,
-        "farmer_name": "Kofi Mensah",
-        "region": "Greater Accra",
-        "category": "Vegetables",
-        "product_name": "Fresh Tomatoes",
-        "unit": "Crate",
-        "price_ghs": 450.00,
-        "quantity_available": 35,
-        "status": "Ready for Harvest"
-    },
-    {
-        "item_id": 2,
-        "farmer_name": "Ama Serwaa",
-        "region": "Ashanti",
-        "category": "Poultry",
-        "product_name": "Broilers (Dressed)",
-        "unit": "Piece",
-        "price_ghs": 95.00,
-        "quantity_available": 120,
-        "status": "Available Now"
-    },
-    {
-        "item_id": 3,
-        "farmer_name": "Yaw Boateng",
-        "region": "Eastern Region",
-        "category": "Vegetables",
-        "product_name": "Bell Peppers (Green & Red)",
-        "unit": "Bag",
-        "price_ghs": 600.00,
-        "quantity_available": 15,
-        "status": "Ready for Harvest"
-    },
-    {
-        "item_id": 4,
-        "farmer_name": "Esi Appiah",
-        "region": "Central Region",
-        "category": "Tubers",
-        "product_name": "Puna Yam",
-        "unit": "Tuber",
-        "price_ghs": 35.00,
-        "quantity_available": 300,
-        "status": "Available Now"
-    }
-]
+# --- SUPABASE CONFIGURATION ---
+# This pulls the credentials from your Render environment variables
+SUPABASE_URL = os.getenv("SUPABASE_URL", "YOUR_SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY", "YOUR_SUPABASE_KEY")
+
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # Order Data Model
 class OrderRequest(BaseModel, extra="allow"):
@@ -73,55 +33,61 @@ class OrderRequest(BaseModel, extra="allow"):
 
 @app.get("/")
 def home():
-    return {"message": "Welcome to the AgriConnect API. Local supply chain engine is live."}
+    return {"message": "AgriConnect Production API is live with persistent Supabase storage."}
 
-# --- GET ALL PRODUCTS OR FILTER BY CATEGORY ---
+# --- GET ALL PRODUCTS FROM SUPABASE ---
 @app.get("/api/v1/products")
 def get_products(category: Optional[str] = None):
-    if category:
-        filtered = [item for item in inventory_db if item["category"].lower() == category.lower()]
-        return {"category_filter": category, "results": filtered}
-    return {"total_listings": len(inventory_db), "results": inventory_db}
+    try:
+        query = supabase.table("products").select("*")
+        if category and category.lower() != "all":
+            query = query.ilike("category", category)
+        
+        response = query.execute()
+        data = response.data
+        return {"total_listings": len(data), "results": data}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
-# --- PLACE AN ORDER & CALCULATE FULFILLMENT ---
+# --- PLACE AN ORDER & UPDATE SUPABASE INVENTORY ---
 @app.post("/api/v1/order")
 def create_order(order: OrderRequest):
-    # Find the item in inventory
-    item = next((i for i in inventory_db if i["item_id"] == order.item_id), None)
-    
-    if not item:
-        raise HTTPException(status_code=404, detail="Selected farm product not found.")
-    
-    if order.quantity_ordered > item["quantity_available"]:
-        raise HTTPException(
-            status_code=400, 
-            detail=f"Requested quantity exceeds available stock. Only {item['quantity_available']} {item['unit']}s left."
-        )
-    
-    # Calculate total cost
-    subtotal = order.quantity_ordered * item["price_ghs"]
-    
-    # Calculate logistics/handling fee based on fulfillment choice
-    delivery_fee = 0.00
-    if order.delivery_option.lower() == "batch delivery":
-        delivery_fee = 50.00 # Flat community batch delivery fee
-    
-    grand_total = subtotal + delivery_fee
-    
-    # Deduct stock (Simulating live transaction update)
-    item["quantity_available"] -= order.quantity_ordered
-    
-    return {
-        "status": "Order Successfully Placed",
-        "order_summary": {
-            "product": item["product_name"],
-            "farmer": item["farmer_name"],
-            "quantity": order.quantity_ordered,
-            "unit": item["unit"],
-            "subtotal_ghs": f"GH₵ {subtotal:,.2f}",
-            "fulfillment_type": order.delivery_option,
-            "delivery_fee_ghs": f"GH₵ {delivery_fee:,.2f}",
-            "grand_total_ghs": f"GH₵ {grand_total:,.2f}"
-        },
-        "next_steps": "The farmer and local dispatch have been notified via automated routing."
-    }
+    try:
+        # Fetch the item from Supabase using its ID
+        item_res = supabase.table("products").select("*").eq("id", order.item_id).execute()
+        if not item_res.data:
+            raise HTTPException(status_code=404, detail="Selected farm product not found.")
+        
+        item = item_res.data[0]
+        
+        if order.quantity_ordered > item["quantity_available"]:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Requested quantity exceeds available stock. Only {item['quantity_available']} {item['unit']}s left."
+            )
+        
+        # Calculate pricing
+        subtotal = order.quantity_ordered * float(item["price_ghs"])
+        delivery_fee = 50.00 if order.delivery_option.lower() == "batch delivery" else 0.00
+        grand_total = subtotal + delivery_fee
+        
+        # Update stock in Supabase database permanently
+        new_quantity = item["quantity_available"] - order.quantity_ordered
+        supabase.table("products").update({"quantity_available": new_quantity}).eq("id", order.item_id).execute()
+        
+        return {
+            "status": "Order Successfully Placed",
+            "order_summary": {
+                "product": item["product_name"],
+                "farmer": item["farmer_name"],
+                "quantity": order.quantity_ordered,
+                "unit": item["unit"],
+                "subtotal_ghs": f"GH₵ {subtotal:,.2f}",
+                "fulfillment_type": order.delivery_option,
+                "delivery_fee_ghs": f"GH₵ {delivery_fee:,.2f}",
+                "grand_total_ghs": f"GH₵ {grand_total:,.2f}"
+            },
+            "next_steps": "The farmer and local dispatch have been notified."
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
