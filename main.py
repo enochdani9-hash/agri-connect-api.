@@ -16,10 +16,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# --- SUPABASE CONFIGURATION ---
-# This pulls the credentials from your Render environment variables
-SUPABASE_URL = os.getenv("SUPABASE_URL", "YOUR_SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY", "YOUR_SUPABASE_KEY")
+# --- SUPABASE CONFIGURATION (SECURE) ---
+SUPABASE_URL = "https://avchhgythvzkwclaebii.supabase.co"
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
