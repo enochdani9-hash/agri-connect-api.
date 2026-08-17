@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriConnect Marketplace | Direct Farm Fresh Produce</title>
+    <style>
+        :root {
+            --primary: #2d6a4f;
+            --primary-hover: #40916c;
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #52b788;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: linear-gradient(135deg, #1b4332, #2d6a4f);
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 3px solid var(--accent);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            color: #ffffff;
+        }
+        header p {
+            margin: 10px 0 0;
+            color: #d8f3dc;
+            font-size: 1.1rem;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            background: var(--card-bg);
+            color: var(--text-light);
+            border: 1px solid #334155;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary);
+            border-color: var(--accent);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-top: 4px solid var(--accent);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        .card h3 {
+            margin: 0;
+            font-size: 1.3rem;
+        }
+        .badge {
+            background: #0f766e;
+            color: #ccfbf1;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .meta {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        .price-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px 12px;
+            border-radius: 8px;
+        }
+        .price {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #34d399;
+        }
+        .stock {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .order-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: background 0.2s;
+        }
+        .order-btn:hover {
+            background-color: var(--primary-hover);
+        }
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            border-top: 4px solid var(--accent);
+        }
+        .modal-content h3 { margin-top: 0; color: #34d399; }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: white;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .btn-cancel {
+            background: #334155;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            flex: 1;
+        }
+        .btn-submit {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            flex: 1;
+            font-weight: bold;
+        }
+        .success-result {
+            background: #064e3b;
+            border: 1px solid #059669;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🌱 AgriConnect Marketplace</h1>
+        <p>Direct from local farms to urban buyers. Cutting out middlemen, reducing post-harvest loss.</p>
+    </header>
+
+    <div class="container">
+        <!-- Category Filters -->
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterProducts('All')">All Listings</button>
+            <button class="filter-btn" onclick="filterProducts('Vegetables')">Vegetables</button>
+            <button class="filter-btn" onclick="filterProducts('Poultry')">Poultry</button>
+            <button class="filter-btn" onclick="filterProducts('Tubers')">Tubers</button>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="product-grid" class="grid">
+            <p style="text-align: center; grid-column: 1 / -1; color: var(--text-muted);">Loading harvest inventory...</p>
+        </div>
+    </div>
+
+    <!-- Order Modal -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <h3 id="modal-product-title">Place Order</h3>
+            <p id="modal-farmer-info" style="color: var(--text-muted); font-size: 0.9rem; margin-top:0;"></p>
+            
+            <form id="orderForm" onsubmit="submitOrder(event)">
+                <input type="hidden" id="modal-item-id">
+                
+                <div class="form-group">
+                    <label>Your Name / Business</label>
+                    <input type="text" id="buyer_name" required placeholder="e.g. Auntie Bee Restaurant">
+                </div>
+                
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="text" id="buyer_phone" required placeholder="e.g. 0241234567">
+                </div>
+                
+                <div class="form-group">
+                    <label>Quantity Required</label>
+                    <input type="number" id="quantity_ordered" min="1" value="1" required oninput="calculateTotal()">
+                </div>
+                
+                <div class="form-group">
+                    <label>Fulfillment Option</label>
+                    <select id="delivery_option" onchange="calculateTotal()">
+                        <option value="Farm Pickup">Farm Pickup (Free)</option>
+                        <option value="Batch Delivery">Batch Community Delivery (GH₵ 50.00)</option>
+                    </select>
+                </div>
+
+                <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 6px; margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; font-weight: bold;">
+                        <span>Estimated Total:</span>
+                        <span id="modal-total" style="color: #34d399;">GH₵ 0.00</span>
+                    </div>
+                </div>
+
+                <div id="order-feedback"></div>
+
+                <div class="modal-buttons">
+                    <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn-submit" id="submit-order-btn">Confirm Order</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Your live Render backend URL is plugged in here!
+        const API_BASE = "https://agri-connect-api-2.onrender.com";
+        
+        let allProducts = [];
+        let selectedProduct = null;
+
+        async function fetchProducts() {
+            try {
+                const response = await fetch(`${API_BASE}/api/v1/products`);
+                const data = await response.json();
+                allProducts = data.results;
+                displayProducts(allProducts);
+            } catch (error) {
+                document.getElementById("product-grid").innerHTML = `
+                    <p style='color:#f87171; text-align:center; grid-column: 1 / -1;'>
+                        Error connecting to AgriConnect server. Please check your Render URL.
+                    </p>`;
+            }
+        }
+
+        function displayProducts(products) {
+            const grid = document.getElementById("product-grid");
+            grid.innerHTML = "";
+
+            if (products.length === 0) {
+                grid.innerHTML = `<p style='text-align:center; grid-column: 1 / -1; color: var(--text-muted);'>No items found in this category.</p>`;
+                return;
+            }
+
+            products.forEach(item => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <div>
+                            <div class="card-header">
+                                <h3>${item.product_name}</h3>
+                                <span class="badge">${item.category}</span>
+                            </div>
+                            <div class="meta">
+                                📍 ${item.region} | 👨‍🌾 ${item.farmer_name}
+                            </div>
+                            <div class="price-section">
+                                <div class="price">GH₵ ${item.price_ghs.toFixed(2)} <span style="font-size:0.75rem; color: var(--text-muted);">/ ${item.unit}</span></div>
+                                <div class="stock">${item.quantity_available} ${item.unit}s left</div>
+                            </div>
+                            <p style="font-size: 0.85rem; color: #34d399; margin: 0 0 15px 0;">⚡ Status: ${item.status}</p>
+                        </div>
+                        <button class="order-btn" onclick="openOrderModal(${item.item_id})">Place Order</button>
+                    </div>
+                `;
+            });
+        }
+
+        function filterProducts(category) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (category === 'All') {
+                displayProducts(allProducts);
+            } else {
+                const filtered = allProducts.filter(i => i.category.toLowerCase() === category.toLowerCase());
+                displayProducts(filtered);
+            }
+        }
+
+        function openOrderModal(itemId) {
+            selectedProduct = allProducts.find(i => i.item_id === itemId);
+            if (!selectedProduct) return;
+
+            document.getElementById('modal-product-title').innerText = selectedProduct.product_name;
+            document.getElementById('modal-farmer-info').innerText = `Grown by ${selectedProtocolText(selectedProduct.farmer_name)} in ${selectedProduct.region}`;
+            document.getElementById('modal-item-id').value = selectedProduct.item_id;
+            document.getElementById('quantity_ordered').value = 1;
+            document.getElementById('quantity_ordered').max = selectedProduct.quantity_available;
+            document.getElementById('order-feedback').innerHTML = '';
+            document.getElementById('submit-order-btn').style.display = 'block';
+
+            calculateTotal();
+            document.getElementById('orderModal').style.display = 'flex';
+        }
+
+        function selectedProtocolText(name) {
+            return name; // Helper for modal farmer text
+        }
+
+        function closeModal() {
+            document.getElementById('orderModal').style.display = 'none';
+        }
+
+        function calculateTotal() {
+            if (!selectedProduct) return;
+            const qty = parseInt(document.getElementById('quantity_ordered').value) || 1;
+            const deliveryOpt = document.getElementById('delivery_option').value;
+            
+            let subtotal = qty * selectedProduct.price_ghs;
+            let deliveryFee = deliveryOpt === 'Batch Delivery' ? 50.00 : 0.00;
+            let grandTotal = subtotal + deliveryFee;
+
+            document.getElementById('modal-total').innerText = `GH₵ ${grandTotal.toFixed(2)}`;
+        }
+
+        async function submitOrder(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submit-order-btn');
+            submitBtn.innerText = "Processing...";
+            submitBtn.disabled = true;
+
+            const orderPayload = {
+                buyer_name: document.getElementById('buyer_name').value,
+                buyer_phone: document.getElementById('buyer_phone').value,
+                item_id: parseInt(document.getElementById('modal-item-id').value),
+                quantity_ordered: parseInt(document.getElementById('quantity_ordered').value),
+                delivery_option: document.getElementById('delivery_option').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/api/v1/order`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderPayload)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('order-feedback').innerHTML = `
+                        <div class="success-result">
+                            <strong>✅ Order Placed Successfully!</strong><br>
+                            Grand Total: ${result.order_summary.grand_total_ghs}<br>
+                            Fulfillment: ${result.order_summary.fulfillment_type}<br>
+                            <span style="font-size: 0.8rem; color: #a7f3d0;">The farmer & local dispatcher have been notified.</span>
+                        </div>
+                    `;
+                    submitBtn.style.display = 'none';
+                    fetchProducts();
+                } else {
+                    document.getElementById('order-feedback').innerHTML = `
+                        <div style="background: #7f1d1d; border: 1px solid #b91c1c; padding: 10px; border-radius: 6px; font-size: 0.85rem; margin-top: 10px;">
+                            ❌ ${result.detail}
+                        </div>
+                    `;
+                    submitBtn.innerText = "Confirm Order";
+                    submitBtn.disabled = false;
+                }
+            } catch (err) {
+                document.getElementById('order-feedback').innerHTML = `
+                    <div style="background: #7f1d1d; padding: 10px; border-radius: 6px; font-size: 0.85rem; margin-top: 10px;">
+                        ❌ Network error while placing order.
+                    </div>
+                `;
+                submitBtn.innerText = "Confirm Order";
+                submitBtn.disabled = false;
+            }
+        }
+
+        fetchProducts();
+    </script>
+</body>
+</html>
