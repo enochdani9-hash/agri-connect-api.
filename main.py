@@ -5,7 +5,7 @@ from typing import Optional
 from supabase import create_client, Client
 import os
 
-app = FastAPI(title="AgriConnect Production API", version="2.1")
+app = FastAPI(title="AgriConnect Production API", version="2.2")
 
 # --- CORS VIP PASS ---
 app.add_middleware(
@@ -50,13 +50,12 @@ class OrderRequest(BaseModel, extra="allow"):
 
 @app.get("/")
 def home():
-    return {"message": "AgriConnect Production API is live with Supabase Auth & Storage."}
+    return {"message": "AgriConnect Production API is live with full Farmer Dashboard & Auth."}
 
 # --- 1. FARMER SIGN-UP ---
 @app.post("/api/v1/auth/signup")
 def farmer_signup(data: SignupRequest):
     try:
-        # Register user with Supabase Auth
         res = supabase.auth.sign_up({
             "email": data.email,
             "password": data.password,
@@ -69,7 +68,7 @@ def farmer_signup(data: SignupRequest):
         })
         return {
             "status": "Success",
-            "message": "Farmer account created successfully! Please check your email if confirmation is required.",
+            "message": "Farmer account created successfully!",
             "user": res.user
         }
     except Exception as e:
@@ -92,7 +91,7 @@ def farmer_login(data: LoginRequest):
     except Exception as e:
         raise HTTPException(status_code=401, detail="Invalid email or password.")
 
-# --- 3. GET ALL PRODUCTS ---
+# --- 3. GET ALL MARKETPLACE PRODUCTS ---
 @app.get("/api/v1/products")
 def get_products(category: Optional[str] = None):
     try:
@@ -113,7 +112,6 @@ def create_product(product: ProductCreateRequest, authorization: Optional[str] =
     
     token = authorization.split(" ")[1]
     try:
-        # Verify user token with Supabase
         user_res = supabase.auth.get_user(token)
         user_data = user_res.user
         if not user_data:
@@ -123,7 +121,6 @@ def create_product(product: ProductCreateRequest, authorization: Optional[str] =
         farmer_name = metadata.get("farmer_name", "Verified Farmer")
         region = metadata.get("region", "Greater Accra")
 
-        # Insert product into Supabase table tied to this farmer
         new_listing = {
             "farmer_name": farmer_name,
             "region": region,
@@ -144,7 +141,54 @@ def create_product(product: ProductCreateRequest, authorization: Optional[str] =
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-# --- 5. PLACE AN ORDER ---
+# --- 5. GET LOGGED-IN FARMER'S OWN LISTINGS (NEW) ---
+@app.get("/api/v1/farmer/my-listings")
+def get_my_listings(authorization: Optional[str] = Header(None)):
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Missing or invalid authorization token.")
+    
+    token = authorization.split(" ")[1]
+    try:
+        user_res = supabase.auth.get_user(token)
+        user_data = user_res.user
+        if not user_data:
+            raise HTTPException(status_code=401, detail="Unauthorized access.")
+        
+        metadata = user_data.user_metadata or {}
+        farmer_name = metadata.get("farmer_name")
+
+        # Fetch only products matching this specific farmer's name
+        response = supabase.table("products").select("*").eq("farmer_name", farmer_name).execute()
+        return {
+            "farmer": farmer_name,
+            "total_my_listings": len(response.data),
+            "results": response.data
+        }
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+# --- 6. DELETE A LISTING (NEW) ---
+@app.delete("/api/v1/products/{product_id}")
+def delete_product(product_id: int, authorization: Optional[str] = Header(None)):
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Missing or invalid authorization token.")
+    
+    token = authorization.split(" ")[1]
+    try:
+        user_res = supabase.auth.get_user(token)
+        if not user_res.user:
+            raise HTTPException(status_code=401, detail="Unauthorized access.")
+
+        # Delete the product by ID from Supabase
+        response = supabase.table("products").delete().eq("id", product_id).execute()
+        return {
+            "status": "Success",
+            "message": f"Product ID {product_id} has been removed from the marketplace."
+        }
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+# --- 7. PLACE AN ORDER ---
 @app.post("/api/v1/order")
 def create_order(order: OrderRequest):
     try:
