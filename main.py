@@ -141,7 +141,7 @@ def create_product(product: ProductCreateRequest, authorization: Optional[str] =
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-# --- 5. GET LOGGED-IN FARMER'S OWN LISTINGS (NEW) ---
+# --- 5. GET LOGGED-IN FARMER'S OWN LISTINGS ---
 @app.get("/api/v1/farmer/my-listings")
 def get_my_listings(authorization: Optional[str] = Header(None)):
     if not authorization or not authorization.startswith("Bearer "):
@@ -157,7 +157,6 @@ def get_my_listings(authorization: Optional[str] = Header(None)):
         metadata = user_data.user_metadata or {}
         farmer_name = metadata.get("farmer_name")
 
-        # Fetch only products matching this specific farmer's name
         response = supabase.table("products").select("*").eq("farmer_name", farmer_name).execute()
         return {
             "farmer": farmer_name,
@@ -167,7 +166,7 @@ def get_my_listings(authorization: Optional[str] = Header(None)):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-# --- 6. DELETE A LISTING (NEW) ---
+# --- 6. DELETE A LISTING ---
 @app.delete("/api/v1/products/{product_id}")
 def delete_product(product_id: int, authorization: Optional[str] = Header(None)):
     if not authorization or not authorization.startswith("Bearer "):
@@ -179,7 +178,6 @@ def delete_product(product_id: int, authorization: Optional[str] = Header(None))
         if not user_res.user:
             raise HTTPException(status_code=401, detail="Unauthorized access.")
 
-        # Delete the product by ID from Supabase
         response = supabase.table("products").delete().eq("id", product_id).execute()
         return {
             "status": "Success",
