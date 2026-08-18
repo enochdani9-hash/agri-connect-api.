@@ -3,436 +3,322 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgriConnect Marketplace | Direct Farm Fresh Produce</title>
-    <style>
-        :root {
-            --primary: #2d6a4f;
-            --primary-hover: #40916c;
-            --bg-dark: #0f172a;
-            --card-bg: #1e293b;
-            --text-light: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #52b788;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background: linear-gradient(135deg, #1b4332, #2d6a4f);
-            padding: 30px 20px;
-            text-align: center;
-            border-bottom: 3px solid var(--accent);
-        }
-        header h1 {
-            margin: 0;
-            font-size: 2.2rem;
-            color: #ffffff;
-        }
-        header p {
-            margin: 10px 0 0;
-            color: #d8f3dc;
-            font-size: 1.1rem;
-        }
-        .container {
-            max-width: 1100px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-        .filters {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-        .filter-btn {
-            background: var(--card-bg);
-            color: var(--text-light);
-            border: 1px solid #334155;
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        .filter-btn:hover, .filter-btn.active {
-            background: var(--primary);
-            border-color: var(--accent);
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 20px;
-        }
-        .card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            border-top: 4px solid var(--accent);
-        }
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-        .card h3 {
-            margin: 0;
-            font-size: 1.3rem;
-        }
-        .badge {
-            background: #0f766e;
-            color: #ccfbf1;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        .meta {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-        }
-        .price-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 10px 12px;
-            border-radius: 8px;
-        }
-        .price {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: #34d399;
-        }
-        .stock {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-        .order-btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-            transition: background 0.2s;
-        }
-        .order-btn:hover {
-            background-color: var(--primary-hover);
-        }
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-            border-top: 4px solid var(--accent);
-        }
-        .modal-content h3 { margin-top: 0; color: #34d399; }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 10px;
-            background: #0f172a;
-            border: 1px solid #334155;
-            color: white;
-            border-radius: 6px;
-            box-sizing: border-box;
-        }
-        .modal-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .btn-cancel {
-            background: #334155;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            flex: 1;
-        }
-        .btn-submit {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            flex: 1;
-            font-weight: bold;
-        }
-        .success-result {
-            background: #064e3b;
-            border: 1px solid #059669;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-            font-size: 0.9rem;
-        }
-    </style>
+    <title>AgriConnect | Direct Farm Marketplace</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen">
 
-    <header>
-        <h1>🌱 AgriConnect Marketplace</h1>
-        <p>Direct from local farms to urban buyers. Cutting out middlemen, reducing post-harvest loss.</p>
+    <!-- HEADER -->
+    <header class="bg-emerald-700 text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold tracking-tight">🌱 AgriConnect</h1>
+            <nav class="space-x-4">
+                <button onclick="switchTab('marketplace')" class="hover:underline font-medium">Marketplace</button>
+                <button onclick="switchTab('farmer-portal')" class="bg-emerald-600 px-3 py-1.5 rounded-lg hover:bg-emerald-500 font-medium transition">Farmer Portal</button>
+            </nav>
+        </div>
     </header>
 
-    <div class="container">
-        <!-- Category Filters -->
-        <div class="filters">
-            <button class="filter-btn active" onclick="filterProducts('All')">All Listings</button>
-            <button class="filter-btn" onclick="filterProducts('Vegetables')">Vegetables</button>
-            <button class="filter-btn" onclick="filterProducts('Poultry')">Poultry</button>
-            <button class="filter-btn" onclick="filterProducts('Tubers')">Tubers</button>
-        </div>
+    <main class="max-w-7xl mx-auto px-4 py-8">
 
-        <!-- Product Grid -->
-        <div id="product-grid" class="grid">
-            <p style="text-align: center; grid-column: 1 / -1; color: var(--text-muted);">Loading harvest inventory...</p>
-        </div>
-    </div>
-
-    <!-- Order Modal -->
-    <div id="orderModal" class="modal">
-        <div class="modal-content">
-            <h3 id="modal-product-title">Place Order</h3>
-            <p id="modal-farmer-info" style="color: var(--text-muted); font-size: 0.9rem; margin-top:0;"></p>
-            
-            <form id="orderForm" onsubmit="submitOrder(event)">
-                <input type="hidden" id="modal-item-id">
-                
-                <div class="form-group">
-                    <label>Your Name / Business</label>
-                    <input type="text" id="buyer_name" required placeholder="e.g. Auntie Bee Restaurant">
+        <!-- MARKETPLACE TAB -->
+        <section id="marketplace-tab">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-slate-900">Fresh Harvest Market</h2>
+                    <p class="text-slate-600">Connecting local farmers directly to urban buyers in Ghana.</p>
                 </div>
-                
-                <div class="form-group">
-                    <label>Phone Number</label>
-                    <input type="text" id="buyer_phone" required placeholder="e.g. 0241234567">
-                </div>
-                
-                <div class="form-group">
-                    <label>Quantity Required</label>
-                    <input type="number" id="quantity_ordered" min="1" value="1" required oninput="calculateTotal()">
-                </div>
-                
-                <div class="form-group">
-                    <label>Fulfillment Option</label>
-                    <select id="delivery_option" onchange="calculateTotal()">
-                        <option value="Farm Pickup">Farm Pickup (Free)</option>
-                        <option value="Batch Delivery">Batch Community Delivery (GH₵ 50.00)</option>
+                <!-- Category Filter -->
+                <div>
+                    <select id="category-filter" onchange="loadProducts()" class="bg-white border border-slate-300 rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <option value="all">All Categories</option>
+                        <option value="Vegetables">Vegetables</option>
+                        <option value="Poultry">Poultry</option>
+                        <option value="Tubers">Tubers</option>
                     </select>
                 </div>
+            </div>
 
-                <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 6px; margin-bottom: 15px;">
-                    <div style="display: flex; justify-content: space-between; font-weight: bold;">
-                        <span>Estimated Total:</span>
-                        <span id="modal-total" style="color: #34d399;">GH₵ 0.00</span>
+            <!-- Product Grid -->
+            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamic products load here -->
+            </div>
+        </section>
+
+        <!-- FARMER PORTAL TAB -->
+        <section id="farmer-tab" class="hidden max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-900 mb-2">Farmer Portal</h2>
+            <p class="text-slate-600 mb-6">Log in to manage your harvest listings or post new produce.</p>
+            
+            <!-- Login Form -->
+            <div id="login-form-container" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
+                    <input type="email" id="login-email" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="farmer@example.com">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+                    <input type="password" id="login-password" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="••••••••">
+                </div>
+                <button onclick="loginFarmer()" class="w-full bg-emerald-700 text-white font-medium py-2.5 rounded-lg hover:bg-emerald-800 transition">Log In</button>
+                <p id="login-error" class="text-red-500 text-sm text-center"></p>
+            </div>
+
+            <!-- Farmer Dashboard (Hidden until logged in) -->
+            <div id="farmer-dashboard" class="hidden space-y-6">
+                <div class="flex justify-between items-center bg-emerald-50 p-4 rounded-xl border border-emerald-100">
+                    <div>
+                        <p class="text-xs text-emerald-600 font-semibold uppercase tracking-wider">Logged in as</p>
+                        <p id="farmer-name-display" class="font-bold text-slate-900"></p>
+                    </div>
+                    <button onclick="logoutFarmer()" class="text-sm bg-white border border-slate-300 px-3 py-1 rounded-lg hover:bg-slate-100">Log Out</button>
+                </div>
+
+                <!-- Add Product Form -->
+                <div class="border-t pt-4">
+                    <h3 class="font-bold text-lg text-slate-900 mb-3">Post New Harvest</h3>
+                    <div class="space-y-3">
+                        <input type="text" id="prod-name" placeholder="Product Name (e.g. Fresh Tomatoes)" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none">
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="text" id="prod-category" placeholder="Category (e.g. Vegetables)" class="border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none">
+                            <input type="text" id="prod-unit" placeholder="Unit (e.g. Crate)" class="border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="number" id="prod-price" placeholder="Price per unit (GH₵)" class="border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none">
+                            <input type="number" id="prod-qty" placeholder="Quantity Available" class="border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none">
+                        </div>
+                        <button onclick="postProduct()" class="w-full bg-emerald-600 text-white py-2 rounded-lg font-medium hover:bg-emerald-700 transition">Publish Listing Live</button>
                     </div>
                 </div>
 
-                <div id="order-feedback"></div>
-
-                <div class="modal-buttons">
-                    <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
-                    <button type="submit" class="btn-submit" id="submit-order-btn">Confirm Order</button>
+                <!-- My Listings -->
+                <div class="border-t pt-4">
+                    <h3 class="font-bold text-lg text-slate-900 mb-3">Your Active Listings</h3>
+                    <div id="my-listings-container" class="space-y-3 max-h-60 overflow-y-auto pr-1">
+                        <!-- Loaded dynamically -->
+                    </div>
                 </div>
-            </form>
-        </div>
-    </div>
+            </div>
+        </section>
 
+    </main>
+
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // Your live Render backend URL is plugged in here!
-        const API_BASE = "https://agri-connect-api-2.onrender.com";
-        
-        let allProducts = [];
-        let selectedProduct = null;
+        // Replace this with your actual live Render backend URL
+        const API_URL = "https://agri-connect-api-2.onrender.com";
+        let authToken = localStorage.getItem("farmer_token") || "";
 
-        async function fetchProducts() {
-            try {
-                const response = await fetch(`${API_BASE}/api/v1/products`);
-                const data = await response.json();
-                allProducts = data.results;
-                displayProducts(allProducts);
-            } catch (error) {
-                document.getElementById("product-grid").innerHTML = `
-                    <p style='color:#f87171; text-align:center; grid-column: 1 / -1;'>
-                        Error connecting to AgriConnect server. Please check your Render URL.
-                    </p>`;
+        // Check login state on load
+        if (authToken) {
+            showFarmerDashboard();
+        }
+
+        function switchTab(tab) {
+            if (tab === 'marketplace') {
+                document.getElementById('marketplace-tab').classList.remove('hidden');
+                document.getElementById('farmer-tab').classList.add('hidden');
+                loadProducts();
+            } else {
+                document.getElementById('marketplace-tab').classList.add('hidden');
+                document.getElementById('farmer-tab').classList.remove('hidden');
+                if (authToken) loadMyListings();
             }
         }
 
-        function displayProducts(products) {
-            const grid = document.getElementById("product-grid");
-            grid.innerHTML = "";
+        async function loadProducts() {
+            const category = document.getElementById('category-filter').value;
+            let url = `${API_URL}/api/v1/products`;
+            if (category !== 'all') url += `?category=${category}`;
 
-            if (products.length === 0) {
-                grid.innerHTML = `<p style='text-align:center; grid-column: 1 / -1; color: var(--text-muted);'>No items found in this category.</p>`;
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                const grid = document.getElementById('product-grid');
+                grid.innerHTML = '';
+
+                if (data.results.length === 0) {
+                    grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-8">No farm listings available right now.</p>`;
+                    return;
+                }
+
+                data.results.forEach(item => {
+                    grid.innerHTML += `
+                        <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between hover:shadow-md transition">
+                            <div>
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">${item.category}</span>
+                                    <span class="text-xs text-slate-500 font-medium">${item.region}</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-slate-900 mb-1">${item.product_name}</h3>
+                                <p class="text-sm text-slate-600 mb-4">Farmer: <span class="font-medium text-slate-900">${item.farmer_name}</span></p>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-baseline mb-4">
+                                    <span class="text-2xl font-extrabold text-emerald-700">GH₵ ${parseFloat(item.price_ghs).toFixed(2)}</span>
+                                    <span class="text-sm text-slate-500">Stock: ${item.quantity_available} ${item.unit}s</span>
+                                </div>
+                                <button onclick="openOrderPrompt(${item.id}, '${item.product_name}', ${item.price_ghs}, ${item.quantity_available}, '${item.unit}')" class="w-full bg-emerald-700 text-white font-medium py-2 rounded-xl hover:bg-emerald-800 transition">Place Order</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                console.error("Failed to load products:", err);
+            }
+        }
+
+        async function loginFarmer() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const errorEl = document.getElementById('login-error');
+            errorEl.innerText = "";
+
+            try {
+                const res = await fetch(`${API_URL}/api/v1/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.detail || "Login failed");
+
+                authToken = data.access_token;
+                localStorage.setItem("farmer_token", authToken);
+                showFarmerDashboard();
+            } catch (err) {
+                errorEl.innerText = err.message;
+            }
+        }
+
+        function showFarmerDashboard() {
+            document.getElementById('login-form-container').classList.add('hidden');
+            document.getElementById('farmer-dashboard').classList.remove('hidden');
+            loadMyListings();
+        }
+
+        function logoutFarmer() {
+            authToken = "";
+            localStorage.removeItem("farmer_token");
+            document.getElementById('farmer-dashboard').classList.add('hidden');
+            document.getElementById('login-form-container').classList.remove('hidden');
+        }
+
+        async function loadMyListings() {
+            try {
+                const res = await fetch(`${API_URL}/api/v1/farmer/my-listings`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const data = await res.json();
+                document.getElementById('farmer-name-display').innerText = data.farmer || "Verified Farmer";
+                
+                const container = document.getElementById('my-listings-container');
+                container.innerHTML = '';
+
+                if (data.results.length === 0) {
+                    container.innerHTML = `<p class="text-sm text-slate-500">You have no active listings yet.</p>`;
+                    return;
+                }
+
+                data.results.forEach(item => {
+                    container.innerHTML += `
+                        <div class="flex justify-between items-center bg-slate-50 border border-slate-200 p-3 rounded-xl text-sm">
+                            <div>
+                                <p class="font-bold text-slate-900">${item.product_name}</p>
+                                <p class="text-xs text-slate-600">GH₵ ${item.price_ghs} • ${item.quantity_available} ${item.unit}s left</p>
+                            </div>
+                            <button onclick="deleteListing(${item.id})" class="text-red-600 hover:text-red-800 text-xs font-semibold px-2 py-1 bg-red-50 rounded border border-red-200">Delete</button>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                console.error("Error loading my listings:", err);
+            }
+        }
+
+        async function postProduct() {
+            const product_name = document.getElementById('prod-name').value;
+            const category = document.getElementById('prod-category').value;
+            const unit = document.getElementById('prod-unit').value;
+            const price_ghs = parseFloat(document.getElementById('prod-price').value);
+            const quantity_available = parseInt(document.getElementById('prod-qty').value);
+
+            if (!product_name || !category || !unit || isNaN(price_ghs) || isNaN(quantity_available)) {
+                alert("Please fill in all product fields correctly.");
                 return;
             }
 
-            products.forEach(item => {
-                grid.innerHTML += `
-                    <div class="card">
-                        <div>
-                            <div class="card-header">
-                                <h3>${item.product_name}</h3>
-                                <span class="badge">${item.category}</span>
-                            </div>
-                            <div class="meta">
-                                📍 ${item.region} | 👨‍🌾 ${item.farmer_name}
-                            </div>
-                            <div class="price-section">
-                                <div class="price">GH₵ ${item.price_ghs.toFixed(2)} <span style="font-size:0.75rem; color: var(--text-muted);">/ ${item.unit}</span></div>
-                                <div class="stock">${item.quantity_available} ${item.unit}s left</div>
-                            </div>
-                            <p style="font-size: 0.85rem; color: #34d399; margin: 0 0 15px 0;">⚡ Status: ${item.status}</p>
-                        </div>
-                        <button class="order-btn" onclick="openOrderModal(${item.item_id})">Place Order</button>
-                    </div>
-                `;
-            });
-        }
+            try {
+                const res = await fetch(`${API_URL}/api/v1/products`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ product_name, category, unit, price_ghs, quantity_available })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.detail || "Failed to post listing");
 
-        function filterProducts(category) {
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-
-            if (category === 'All') {
-                displayProducts(allProducts);
-            } else {
-                const filtered = allProducts.filter(i => i.category.toLowerCase() === category.toLowerCase());
-                displayProducts(filtered);
+                alert("Harvest listed successfully!");
+                document.getElementById('prod-name').value = '';
+                document.getElementById('prod-category').value = '';
+                document.getElementById('prod-unit').value = '';
+                document.getElementById('prod-price').value = '';
+                document.getElementById('prod-qty').value = '';
+                loadMyListings();
+            } catch (err) {
+                alert(err.message);
             }
         }
 
-        function openOrderModal(itemId) {
-            selectedProduct = allProducts.find(i => i.item_id === itemId);
-            if (!selectedProduct) return;
-
-            document.getElementById('modal-product-title').innerText = selectedProduct.product_name;
-            document.getElementById('modal-farmer-info').innerText = `Grown by ${selectedProtocolText(selectedProduct.farmer_name)} in ${selectedProduct.region}`;
-            document.getElementById('modal-item-id').value = selectedProduct.item_id;
-            document.getElementById('quantity_ordered').value = 1;
-            document.getElementById('quantity_ordered').max = selectedProduct.quantity_available;
-            document.getElementById('order-feedback').innerHTML = '';
-            document.getElementById('submit-order-btn').style.display = 'block';
-
-            calculateTotal();
-            document.getElementById('orderModal').style.display = 'flex';
-        }
-
-        function selectedProtocolText(name) {
-            return name; // Helper for modal farmer text
-        }
-
-        function closeModal() {
-            document.getElementById('orderModal').style.display = 'none';
-        }
-
-        function calculateTotal() {
-            if (!selectedProduct) return;
-            const qty = parseInt(document.getElementById('quantity_ordered').value) || 1;
-            const deliveryOpt = document.getElementById('delivery_option').value;
-            
-            let subtotal = qty * selectedProduct.price_ghs;
-            let deliveryFee = deliveryOpt === 'Batch Delivery' ? 50.00 : 0.00;
-            let grandTotal = subtotal + deliveryFee;
-
-            document.getElementById('modal-total').innerText = `GH₵ ${grandTotal.toFixed(2)}`;
-        }
-
-        async function submitOrder(e) {
-            e.preventDefault();
-            const submitBtn = document.getElementById('submit-order-btn');
-            submitBtn.innerText = "Processing...";
-            submitBtn.disabled = true;
-
-            const orderPayload = {
-                buyer_name: document.getElementById('buyer_name').value,
-                buyer_phone: document.getElementById('buyer_phone').value,
-                item_id: parseInt(document.getElementById('modal-item-id').value),
-                quantity_ordered: parseInt(document.getElementById('quantity_ordered').value),
-                delivery_option: document.getElementById('delivery_option').value
-            };
+        async function deleteListing(id) {
+            if (!confirm("Are you sure you want to remove this listing?")) return;
 
             try {
-                const response = await fetch(`${API_BASE}/api/v1/order`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(orderPayload)
+                const res = await fetch(`${API_URL}/api/v1/products/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
                 });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    document.getElementById('order-feedback').innerHTML = `
-                        <div class="success-result">
-                            <strong>✅ Order Placed Successfully!</strong><br>
-                            Grand Total: ${result.order_summary.grand_total_ghs}<br>
-                            Fulfillment: ${result.order_summary.fulfillment_type}<br>
-                            <span style="font-size: 0.8rem; color: #a7f3d0;">The farmer & local dispatcher have been notified.</span>
-                        </div>
-                    `;
-                    submitBtn.style.display = 'none';
-                    fetchProducts();
-                } else {
-                    document.getElementById('order-feedback').innerHTML = `
-                        <div style="background: #7f1d1d; border: 1px solid #b91c1c; padding: 10px; border-radius: 6px; font-size: 0.85rem; margin-top: 10px;">
-                            ❌ ${result.detail}
-                        </div>
-                    `;
-                    submitBtn.innerText = "Confirm Order";
-                    submitBtn.disabled = false;
-                }
+                if (!res.ok) throw new Error("Failed to delete");
+                loadMyListings();
             } catch (err) {
-                document.getElementById('order-feedback').innerHTML = `
-                    <div style="background: #7f1d1d; padding: 10px; border-radius: 6px; font-size: 0.85rem; margin-top: 10px;">
-                        ❌ Network error while placing order.
-                    </div>
-                `;
-                submitBtn.innerText = "Confirm Order";
-                submitBtn.disabled = false;
+                alert(err.message);
             }
         }
 
-        fetchProducts();
+        async function openOrderPrompt(itemId, productName, price, maxStock, unit) {
+            const buyer_name = prompt(`Enter your name for ordering ${product_name}:`);
+            if (!buyer_name) return;
+            const buyer_phone = prompt(`Enter your phone number (e.g. 024XXXXXXX):`);
+            if (!buyer_phone) return;
+            const qtyStr = prompt(`Enter quantity needed (Available: ${maxStock} ${unit}s):`);
+            const quantity_ordered = parseInt(qtyStr);
+            if (isNaN(quantity_ordered) || quantity_ordered <= 0) {
+                alert("Invalid quantity.");
+                return;
+            }
+            const delivery_option = prompt(`Choose delivery option:\n1. Farm Pickup\n2. Batch Delivery (adds GH₵ 50.00)\nType "Farm Pickup" or "Batch Delivery":`, "Farm Pickup");
+            if (!delivery_option) return;
+
+            try {
+                const res = await fetch(`${API_URL}/api/v1/order`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ buyer_name, buyer_phone, item_id: itemId, quantity_ordered, delivery_option })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.detail || "Order failed");
+
+                alert(`🎉 Order Successful!\nGrand Total: ${data.order_summary.grand_total_ghs}\nFulfillment: ${data.order_summary.fulfillment_type}`);
+                loadProducts();
+            } catch (err) {
+                alert(err.message);
+            }
+        }
+
+        // Initial load
+        loadProducts();
     </script>
 </body>
 </html>
