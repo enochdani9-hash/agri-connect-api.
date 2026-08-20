@@ -3,3 +3,4 @@ uvicorn
 pydantic[email]
 requests
 supabase
+python-multipart
