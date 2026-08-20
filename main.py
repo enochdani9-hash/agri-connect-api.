@@ -4,9 +4,9 @@ from pydantic import BaseModel, EmailStr
 from typing import Optional
 from supabase import create_client, Client
 import os
-import requests
+import resend
 
-app = FastAPI(title="AgriConnect Production API", version="2.5")
+app = FastAPI(title="AgriConnect Production API", version="2.6")
 
 # --- CORS VIP PASS ---
 app.add_middleware(
@@ -20,11 +20,10 @@ app.add_middleware(
 # --- SUPABASE CONFIGURATION ---
 SUPABASE_URL = "https://avchhgythvzkwclaebii.supabase.co"
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
-
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-# --- MNOTIFY SMS CONFIGURATION ---
-MNOTIFY_API_KEY = "RbdZI4HMximU2N2RIG3ZgXBne"
+# --- RESEND EMAIL CONFIGURATION ---
+resend.api_key = os.getenv("RESEND_API_KEY", "re_YOUR_RESEND_API_KEY_HERE")
 
 # --- DATA MODELS ---
 class SignupRequest(BaseModel):
@@ -47,7 +46,7 @@ class OrderRequest(BaseModel, extra="allow"):
 
 @app.get("/")
 def home():
-    return {"message": "AgriConnect Production API is live with Image Uploads, Paystack, & MNotify SMS logging."}
+    return {"message": "AgriConnect Production API is live with Image Uploads, Paystack, & Resend Email Alerts."}
 
 # --- 1. FARMER SIGN-UP ---
 @app.post("/api/v1/auth/signup")
@@ -60,7 +59,8 @@ def farmer_signup(data: SignupRequest):
                 "data": {
                     "farmer_name": data.farmer_name,
                     "region": data.region,
-                    "phone": data.phone
+                    "phone": data.phone,
+                    "email": data.email
                 }
             }
         })
@@ -127,7 +127,7 @@ async def create_product(
         metadata = user_data.user_metadata or {}
         farmer_name = metadata.get("farmer_name", "Verified Farmer")
         region = metadata.get("region", "Greater Accra")
-        farmer_phone = metadata.get("phone", "0240000000")
+        farmer_email = metadata.get("email", user_data.email)
 
         image_url = "https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=600&q=80"
 
@@ -154,7 +154,7 @@ async def create_product(
             "quantity_available": quantity_available,
             "status": status,
             "image_url": image_url,
-            "farmer_phone": farmer_phone
+            "farmer_email": farmer_email
         }
         
         insert_res = supabase.table("products").insert(new_listing).execute()
@@ -211,7 +211,7 @@ def delete_product(product_id: int, authorization: Optional[str] = Header(None))
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-# --- 7. PLACE AN ORDER & TRIGGER MNOTIFY SMS ---
+# --- 7. PLACE AN ORDER & TRIGGER EMAIL ALERT ---
 @app.post("/api/v1/order")
 def create_order(order: OrderRequest):
     try:
@@ -233,20 +233,35 @@ def create_order(order: OrderRequest):
         new_quantity = item["quantity_available"] - order.quantity_ordered
         supabase.table("products").update({"quantity_available": new_quantity}).eq("id", order.item_id).execute()
         
-        # --- TRIGGER MNOTIFY SMS TO FARMER ---
-        farmer_phone = item.get("farmer_phone")
-        if farmer_phone:
-            sms_url = f"https://api.mnotify.com/api/sms/quick?key={MNOTIFY_API_KEY}"
-            payload = {
-                "recipient": [farmer_phone],
-                "sender": "AgriConnect",
-                "message": f"New Order! {order.buyer_name} ({order.buyer_phone}) ordered {order.quantity_ordered} {item['unit']}(s) of your {item['product_name']}. Total: GH₵ {grand_total:.2f}"
-            }
+        # --- TRIGGER EMAIL NOTIFICATION TO FARMER VIA RESEND ---
+        farmer_email = item.get("farmer_email")
+        if farmer_email:
             try:
-                sms_res = requests.post(sms_url, json=payload)
-                print("MNOTIFY RESPONSE:", sms_res.status_code, sms_res.text)
-            except Exception as sms_err:
-                print(f"SMS notification error: {sms_err}")
+                params = {
+                    "from": "AgriConnect <onboarding@resend.dev>",
+                    "to": [farmer_email],
+                    "subject": f"🌱 New Harvest Order: {item['product_name']}!",
+                    "html": f"""
+                        <h2>New Order Received!</h2>
+                        <p>Hello <b>{item['farmer_name']}</b>,</p>
+                        <p>An urban buyer has just successfully paid for your harvest on AgriConnect:</p>
+                        <ul>
+                            <li><b>Product:</b> {item['product_name']}</li>
+                            <li><b>Quantity Ordered:</b> {order.quantity_ordered} {item['unit']}(s)</li>
+                            <li><b>Fulfillment:</b> {order.delivery_option}</li>
+                            <li><b>Total Payout:</b> GH₵ {grand_total:,.2f}</li>
+                        </ul>
+                        <h3>Buyer Contact Details:</h3>
+                        <ul>
+                            <li><b>Name:</b> {order.buyer_name}</li>
+                            <li><b>Phone:</b> {order.buyer_phone}</li>
+                        </ul>
+                        <p>Please prepare your produce for dispatch!</p>
+                    """
+                }
+                resend.Emails.send(params)
+            except Exception as email_err:
+                print(f"Email notification error: {email_err}")
 
         return {
             "status": "Order Successfully Placed",
