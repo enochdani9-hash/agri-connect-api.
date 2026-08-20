@@ -16,7 +16,7 @@
                 <p class="text-xs text-emerald-400">Direct from local farms to urban buyers. Cutting out middlemen, reducing post-harvest loss.</p>
             </div>
             <div class="flex items-center gap-3">
-                <button onclick="toggleView('marketplace')" id="btn-market" class="bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-emerald-600 transition">Marketplace</button>
+                <button onclick="toggleView('marketplace')" id="btn-market" class="bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition">Marketplace</button>
                 <button onclick="toggleView('farmer')" id="btn-farmer" class="bg-emerald-800 text-emerald-200 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-emerald-700 transition border border-emerald-700">🌾 Farmer Portal</button>
             </div>
         </div>
@@ -91,7 +91,7 @@
                 </div>
             </div>
 
-            <!-- Dashboard State (Hidden until login) -->
+            <!-- Dashboard State -->
             <div id="farmer-dashboard-box" class="hidden space-y-6">
                 <div class="flex justify-between items-center bg-slate-900/60 p-4 rounded-2xl border border-slate-700">
                     <div>
@@ -101,7 +101,7 @@
                     <button onclick="logoutFarmer()" class="text-xs bg-slate-800 text-slate-300 border border-slate-600 px-3 py-1.5 rounded-lg hover:bg-slate-700 font-medium">Log Out</button>
                 </div>
 
-                <!-- Add Listing Form -->
+                <!-- Add Listing Form with Image Upload -->
                 <div class="border-t border-slate-700 pt-6">
                     <h3 class="font-bold text-lg text-white mb-4">Post New Harvest Listing</h3>
                     <div class="space-y-3">
@@ -113,6 +113,10 @@
                         <div class="grid grid-cols-2 gap-3">
                             <input type="number" id="new-price" placeholder="Price per unit (GH₵)" class="bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white outline-none focus:border-emerald-500">
                             <input type="number" id="new-qty" placeholder="Quantity Available" class="bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white outline-none focus:border-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Upload Product Photo</label>
+                            <input type="file" id="new-image" accept="image/*" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm text-slate-300 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-700 file:text-white hover:file:bg-emerald-600">
                         </div>
                         <button onclick="postProduct()" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-sm hover:bg-emerald-500 transition shadow-md">Publish Live to Marketplace</button>
                     </div>
@@ -137,11 +141,8 @@
         let currentCategory = "All";
         let farmerToken = localStorage.getItem("farmer_token") || "";
 
-        // Initialize on load
         loadProducts();
-        if (farmerToken) {
-            showDashboardState();
-        }
+        if (farmerToken) showDashboardState();
 
         function toggleView(view) {
             if (view === 'marketplace') {
@@ -155,11 +156,8 @@
                 document.getElementById('view-farmer').classList.remove('hidden');
                 document.getElementById('btn-farmer').className = "bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition";
                 document.getElementById('btn-market').className = "bg-emerald-800 text-emerald-200 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-emerald-700 transition border border-emerald-700";
-                if (farmerToken) {
-                    showDashboardState();
-                } else {
-                    switchAuthMode('login');
-                }
+                if (farmerToken) showDashboardState();
+                else switchAuthMode('login');
             }
         }
 
@@ -201,22 +199,26 @@
                 }
 
                 data.results.forEach(item => {
+                    const imgSrc = item.image_url || "https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=600&q=80";
                     grid.innerHTML += `
-                        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-sm flex flex-col justify-between hover:border-slate-600 transition">
-                            <div>
-                                <div class="flex justify-between items-start mb-3">
-                                    <span class="bg-emerald-950 text-emerald-400 border border-emerald-800 text-xs font-semibold px-2.5 py-1 rounded-full">${item.category}</span>
-                                    <span class="text-xs text-slate-400 font-medium">📍 ${item.region}</span>
+                        <div class="bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between hover:border-slate-600 transition">
+                            <img src="${imgSrc}" alt="${item.product_name}" class="w-full h-48 object-cover">
+                            <div class="p-5 flex flex-col flex-grow justify-between">
+                                <div>
+                                    <div class="flex justify-between items-start mb-3">
+                                        <span class="bg-emerald-950 text-emerald-400 border border-emerald-800 text-xs font-semibold px-2.5 py-1 rounded-full">${item.category}</span>
+                                        <span class="text-xs text-slate-400 font-medium">📍 ${item.region}</span>
+                                    </div>
+                                    <h3 class="text-xl font-bold text-white mb-1">${item.product_name}</h3>
+                                    <p class="text-xs text-slate-400 mb-4">Farmer: <span class="font-semibold text-slate-200">${item.farmer_name}</span></p>
                                 </div>
-                                <h3 class="text-xl font-bold text-white mb-1">${item.product_name}</h3>
-                                <p class="text-xs text-slate-400 mb-4">Farmer: <span class="font-semibold text-slate-200">${item.farmer_name}</span></p>
-                            </div>
-                            <div>
-                                <div class="flex justify-between items-baseline mb-4 bg-slate-900/50 p-3 rounded-xl border border-slate-700/50">
-                                    <span class="text-2xl font-extrabold text-emerald-400">GH₵ ${parseFloat(item.price_ghs).toFixed(2)}</span>
-                                    <span class="text-xs text-slate-300 font-medium">${item.quantity_available} ${item.unit}s left</span>
+                                <div>
+                                    <div class="flex justify-between items-baseline mb-4 bg-slate-900/50 p-3 rounded-xl border border-slate-700/50">
+                                        <span class="text-2xl font-extrabold text-emerald-400">GH₵ ${parseFloat(item.price_ghs).toFixed(2)}</span>
+                                        <span class="text-xs text-slate-300 font-medium">${item.quantity_available} ${item.unit}s left</span>
+                                    </div>
+                                    <button onclick="openOrderPrompt(${item.id}, '${item.product_name}', ${item.quantity_available}, '${item.unit}')" class="w-full bg-emerald-600 text-white font-medium py-2.5 rounded-xl hover:bg-emerald-500 transition shadow-md">Place Order</button>
                                 </div>
-                                <button onclick="openOrderPrompt(${item.id}, '${item.product_name}', ${item.quantity_available}, '${item.unit}')" class="w-full bg-emerald-600 text-white font-medium py-2.5 rounded-xl hover:bg-emerald-500 transition shadow-md">Place Order</button>
                             </div>
                         </div>
                     `;
@@ -306,9 +308,12 @@
                 data.results.forEach(item => {
                     container.innerHTML += `
                         <div class="flex justify-between items-center bg-slate-900 border border-slate-700 p-3 rounded-xl text-sm">
-                            <div>
-                                <p class="font-bold text-white">${item.product_name}</p>
-                                <p class="text-xs text-slate-400">GH₵ ${item.price_ghs} • ${item.quantity_available} ${item.unit}s</p>
+                            <div class="flex items-center gap-3">
+                                <img src="${item.image_url || 'https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=100&q=80'}" class="w-10 h-10 object-cover rounded-lg">
+                                <div>
+                                    <p class="font-bold text-white">${item.product_name}</p>
+                                    <p class="text-xs text-slate-400">GH₵ ${item.price_ghs} • ${item.quantity_available} ${item.unit}s</p>
+                                </div>
                             </div>
                             <button onclick="deleteListing(${item.id})" class="text-rose-400 hover:text-rose-300 text-xs font-semibold px-2.5 py-1 bg-rose-950/40 rounded-lg border border-rose-900">Delete</button>
                         </div>
@@ -323,32 +328,43 @@
             const product_name = document.getElementById('new-name').value;
             const category = document.getElementById('new-category').value;
             const unit = document.getElementById('new-unit').value;
-            const price_ghs = parseFloat(document.getElementById('new-price').value);
-            const quantity_available = parseInt(document.getElementById('new-qty').value);
+            const price_ghs = document.getElementById('new-price').value;
+            const quantity_available = document.getElementById('new-qty').value;
+            const imageFile = document.getElementById('new-image').files[0];
 
-            if (!product_name || !category || !unit || isNaN(price_ghs) || isNaN(quantity_available)) {
+            if (!product_name || !category || !unit || !price_ghs || !quantity_available) {
                 alert("Please fill out all product fields correctly.");
                 return;
+            }
+
+            const formData = new FormData();
+            formData.append("product_name", product_name);
+            formData.append("category", category);
+            formData.append("unit", unit);
+            formData.append("price_ghs", price_ghs);
+            formData.append("quantity_available", quantity_available);
+            if (imageFile) {
+                formData.append("image", imageFile);
             }
 
             try {
                 const res = await fetch(`${API_URL}/api/v1/products`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
                         'Authorization': `Bearer ${farmerToken}`
                     },
-                    body: JSON.stringify({ product_name, category, unit, price_ghs, quantity_available })
+                    body: formData
                 });
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.detail || "Failed to post listing");
 
-                alert("Harvest successfully published live!");
+                alert("Harvest successfully published live with photo!");
                 document.getElementById('new-name').value = '';
                 document.getElementById('new-category').value = '';
                 document.getElementById('new-unit').value = '';
                 document.getElementById('new-price').value = '';
                 document.getElementById('new-qty').value = '';
+                document.getElementById('new-image').value = '';
                 loadMyListings();
             } catch (err) {
                 alert(err.message);
