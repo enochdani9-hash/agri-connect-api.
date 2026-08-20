@@ -1,11 +1,11 @@
-from fastapi import FastAPI, HTTPException, Depends, Header
+from fastapi import FastAPI, HTTPException, Depends, Header, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 from typing import Optional
 from supabase import create_client, Client
 import os
 
-app = FastAPI(title="AgriConnect Production API", version="2.2")
+app = FastAPI(title="AgriConnect Production API", version="2.3")
 
 # --- CORS VIP PASS ---
 app.add_middleware(
@@ -33,14 +33,6 @@ class LoginRequest(BaseModel):
     email: EmailStr
     password: str
 
-class ProductCreateRequest(BaseModel):
-    product_name: str
-    category: str
-    unit: str
-    price_ghs: float
-    quantity_available: int
-    status: str = "Available Now"
-
 class OrderRequest(BaseModel, extra="allow"):
     buyer_name: str
     buyer_phone: str
@@ -50,7 +42,7 @@ class OrderRequest(BaseModel, extra="allow"):
 
 @app.get("/")
 def home():
-    return {"message": "AgriConnect Production API is live with full Farmer Dashboard & Auth."}
+    return {"message": "AgriConnect Production API is live with Image Uploads & Auth."}
 
 # --- 1. FARMER SIGN-UP ---
 @app.post("/api/v1/auth/signup")
@@ -104,9 +96,18 @@ def get_products(category: Optional[str] = None):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-# --- 4. FARMER POST PRODUCT (PROTECTED) ---
+# --- 4. FARMER POST PRODUCT WITH IMAGE UPLOAD (PROTECTED) ---
 @app.post("/api/v1/products")
-def create_product(product: ProductCreateRequest, authorization: Optional[str] = Header(None)):
+async def create_product(
+    product_name: str = Form(...),
+    category: str = Form(...),
+    unit: str = Form(...),
+    price_ghs: float = Form(...),
+    quantity_available: int = Form(...),
+    status: str = Form("Available Now"),
+    image: UploadFile = File(None),
+    authorization: Optional[str] = Header(None)
+):
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Missing or invalid authorization token.")
     
@@ -121,21 +122,39 @@ def create_product(product: ProductCreateRequest, authorization: Optional[str] =
         farmer_name = metadata.get("farmer_name", "Verified Farmer")
         region = metadata.get("region", "Greater Accra")
 
+        image_url = "https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=600&q=80" # Default fallback harvest image
+
+        if image:
+            file_bytes = await image.read()
+            file_path = f"{farmer_name.lower().replace(' ', '_')}_{image.filename}"
+            
+            # Upload to Supabase Storage bucket 'product-images'
+            storage_res = supabase.storage.from_("product-images").upload(
+                path=file_path,
+                file=file_bytes,
+                file_options={"content-type": image.content_type, "upsert": "true"}
+            )
+            
+            # Get Public URL
+            public_url_res = supabase.storage.from_("product-images").get_public_url(file_path)
+            image_url = public_url_res
+
         new_listing = {
             "farmer_name": farmer_name,
             "region": region,
-            "category": product.category,
-            "product_name": product.product_name,
-            "unit": product.unit,
-            "price_ghs": product.price_ghs,
-            "quantity_available": product.quantity_available,
-            "status": product.status
+            "category": category,
+            "product_name": product_name,
+            "unit": unit,
+            "price_ghs": price_ghs,
+            "quantity_available": quantity_available,
+            "status": status,
+            "image_url": image_url
         }
         
         insert_res = supabase.table("products").insert(new_listing).execute()
         return {
             "status": "Success",
-            "message": "Harvest listed live on the marketplace!",
+            "message": "Harvest listed live with image on the marketplace!",
             "listing": insert_res.data
         }
     except Exception as e:
