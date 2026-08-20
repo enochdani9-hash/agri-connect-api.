@@ -6,7 +6,7 @@ from supabase import create_client, Client
 import os
 import requests
 
-app = FastAPI(title="AgriConnect Production API", version="2.4")
+app = FastAPI(title="AgriConnect Production API", version="2.5")
 
 # --- CORS VIP PASS ---
 app.add_middleware(
@@ -47,7 +47,7 @@ class OrderRequest(BaseModel, extra="allow"):
 
 @app.get("/")
 def home():
-    return {"message": "AgriConnect Production API is live with Image Uploads, Paystack, & MNotify SMS."}
+    return {"message": "AgriConnect Production API is live with Image Uploads, Paystack, & MNotify SMS logging."}
 
 # --- 1. FARMER SIGN-UP ---
 @app.post("/api/v1/auth/signup")
@@ -243,7 +243,8 @@ def create_order(order: OrderRequest):
                 "message": f"New Order! {order.buyer_name} ({order.buyer_phone}) ordered {order.quantity_ordered} {item['unit']}(s) of your {item['product_name']}. Total: GH₵ {grand_total:.2f}"
             }
             try:
-                requests.post(sms_url, json=payload)
+                sms_res = requests.post(sms_url, json=payload)
+                print("MNOTIFY RESPONSE:", sms_res.status_code, sms_res.text)
             except Exception as sms_err:
                 print(f"SMS notification error: {sms_err}")
 
