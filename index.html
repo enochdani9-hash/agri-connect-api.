@@ -220,7 +220,7 @@
                                         <span class="text-2xl font-extrabold text-emerald-400">GH₵ ${parseFloat(item.price_ghs).toFixed(2)}</span>
                                         <span class="text-xs text-slate-300 font-medium">${item.quantity_available} ${item.unit}s left</span>
                                     </div>
-                                    <button onclick="openOrderPrompt(${item.id}, '${item.product_name}', ${item.quantity_available}, '${item.unit}', ${item.price_ghs})" class="w-full bg-emerald-600 text-white font-medium py-2.5 rounded-xl hover:bg-emerald-500 transition shadow-md">Pay & Order</button>
+                                    <button onclick="openOrderPrompt(${item.id}, '${item.product_name.replace(/'/g, "\\'")}', ${item.quantity_available}, '${item.unit}', ${item.price_ghs})" class="w-full bg-emerald-600 text-white font-medium py-2.5 rounded-xl hover:bg-emerald-500 transition shadow-md">Pay & Order</button>
                                 </div>
                             </div>
                         </div>
@@ -391,7 +391,7 @@
 
         // --- PAYSTACK CHECKOUT INTEGRATION ---
         function openOrderPrompt(itemId, productName, maxStock, unit, unitPrice) {
-            const buyer_name = prompt(`Enter your name for ordering ${product_name}:`);
+            const buyer_name = prompt(`Enter your name for ordering ${productName}:`);
             if (!buyer_name) return;
             const buyer_email = prompt(`Enter your email address for your payment receipt:`);
             if (!buyer_email) return;
