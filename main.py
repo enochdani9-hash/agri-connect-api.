@@ -4,8 +4,9 @@ from pydantic import BaseModel, EmailStr
 from typing import Optional
 from supabase import create_client, Client
 import os
+import requests
 
-app = FastAPI(title="AgriConnect Production API", version="2.3")
+app = FastAPI(title="AgriConnect Production API", version="2.4")
 
 # --- CORS VIP PASS ---
 app.add_middleware(
@@ -22,12 +23,16 @@ SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
+# --- MNOTIFY SMS CONFIGURATION ---
+MNOTIFY_API_KEY = "RbdZI4HMximU2N2RIG3ZgXBne"
+
 # --- DATA MODELS ---
 class SignupRequest(BaseModel):
     email: EmailStr
     password: str
     farmer_name: str
     region: str
+    phone: str
 
 class LoginRequest(BaseModel):
     email: EmailStr
@@ -42,7 +47,7 @@ class OrderRequest(BaseModel, extra="allow"):
 
 @app.get("/")
 def home():
-    return {"message": "AgriConnect Production API is live with Image Uploads & Auth."}
+    return {"message": "AgriConnect Production API is live with Image Uploads, Paystack, & MNotify SMS."}
 
 # --- 1. FARMER SIGN-UP ---
 @app.post("/api/v1/auth/signup")
@@ -54,7 +59,8 @@ def farmer_signup(data: SignupRequest):
             "options": {
                 "data": {
                     "farmer_name": data.farmer_name,
-                    "region": data.region
+                    "region": data.region,
+                    "phone": data.phone
                 }
             }
         })
@@ -121,21 +127,20 @@ async def create_product(
         metadata = user_data.user_metadata or {}
         farmer_name = metadata.get("farmer_name", "Verified Farmer")
         region = metadata.get("region", "Greater Accra")
+        farmer_phone = metadata.get("phone", "0240000000")
 
-        image_url = "https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=600&q=80" # Default fallback harvest image
+        image_url = "https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=600&q=80"
 
         if image:
             file_bytes = await image.read()
             file_path = f"{farmer_name.lower().replace(' ', '_')}_{image.filename}"
             
-            # Upload to Supabase Storage bucket 'product-images'
-            storage_res = supabase.storage.from_("product-images").upload(
+            supabase.storage.from_("product-images").upload(
                 path=file_path,
                 file=file_bytes,
                 file_options={"content-type": image.content_type, "upsert": "true"}
             )
             
-            # Get Public URL
             public_url_res = supabase.storage.from_("product-images").get_public_url(file_path)
             image_url = public_url_res
 
@@ -148,7 +153,8 @@ async def create_product(
             "price_ghs": price_ghs,
             "quantity_available": quantity_available,
             "status": status,
-            "image_url": image_url
+            "image_url": image_url,
+            "farmer_phone": farmer_phone
         }
         
         insert_res = supabase.table("products").insert(new_listing).execute()
@@ -205,7 +211,7 @@ def delete_product(product_id: int, authorization: Optional[str] = Header(None))
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-# --- 7. PLACE AN ORDER ---
+# --- 7. PLACE AN ORDER & TRIGGER MNOTIFY SMS ---
 @app.post("/api/v1/order")
 def create_order(order: OrderRequest):
     try:
@@ -227,6 +233,20 @@ def create_order(order: OrderRequest):
         new_quantity = item["quantity_available"] - order.quantity_ordered
         supabase.table("products").update({"quantity_available": new_quantity}).eq("id", order.item_id).execute()
         
+        # --- TRIGGER MNOTIFY SMS TO FARMER ---
+        farmer_phone = item.get("farmer_phone")
+        if farmer_phone:
+            sms_url = f"https://api.mnotify.com/api/sms/quick?key={MNOTIFY_API_KEY}"
+            payload = {
+                "recipient": [farmer_phone],
+                "sender": "AgriConnect",
+                "message": f"New Order! {order.buyer_name} ({order.buyer_phone}) ordered {order.quantity_ordered} {item['unit']}(s) of your {item['product_name']}. Total: GH₵ {grand_total:.2f}"
+            }
+            try:
+                requests.post(sms_url, json=payload)
+            except Exception as sms_err:
+                print(f"SMS notification error: {sms_err}")
+
         return {
             "status": "Order Successfully Placed",
             "order_summary": {
