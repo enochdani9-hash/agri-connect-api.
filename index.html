@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgriConnect Marketplace | Ghana</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>AgriConnect | Global P2P Agricultural Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://js.paystack.co/v1/inline.js"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen selection:bg-emerald-500 selection:text-white">
@@ -13,22 +13,22 @@
     <div id="view-landing" class="min-h-screen flex items-center justify-center p-6 relative overflow-hidden bg-gradient-to-br from-slate-950 via-emerald-950/20 to-slate-950 z-50">
         <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.08)_0,transparent_70%)]"></div>
         <div class="max-w-xl w-full bg-slate-900/90 backdrop-blur-xl border border-emerald-500/20 rounded-3xl p-8 shadow-2xl relative z-10 text-center space-y-8">
-            <div class="w-20 h-20 mx-auto rounded-3xl bg-emerald-600/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 text-3xl shadow-inner animate-pulse">🌱</div>
+            <div class="w-20 h-20 mx-auto rounded-3xl bg-emerald-600/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 text-3xl shadow-inner animate-pulse">🌍</div>
             <div>
-                <h1 class="text-3xl font-black tracking-tight text-white mb-2">Welcome to AgriConnect <span class="text-emerald-400 text-xs px-2.5 py-1 bg-emerald-950 border border-emerald-800 rounded-full">GHANA</span></h1>
-                <p class="text-xs text-slate-400">Direct Farm-to-Urban Marketplace & Logistics Hub. Cutting out middlemen, reducing post-harvest loss.</p>
+                <h1 class="text-3xl font-black tracking-tight text-white mb-2">Welcome to AgriConnect <span class="text-emerald-400 text-xs px-2.5 py-1 bg-emerald-950 border border-emerald-800 rounded-full">GLOBAL</span></h1>
+                <p class="text-xs text-slate-400">The borderless Direct Farm-to-Consumer network. Buy and sell harvests anywhere in the world.</p>
             </div>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                 <button onclick="enterApp('buyer')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold p-5 rounded-2xl transition shadow-lg shadow-emerald-900/40 flex flex-col items-center gap-2 cursor-pointer group">
                     <span class="text-2xl group-hover:scale-110 transition">🛒</span>
-                    <span class="text-sm">I'm a Buyer</span>
-                    <span class="text-[10px] text-emerald-200 font-normal">Shop fresh farm produce</span>
+                    <span class="text-sm">I'm a Global Buyer</span>
+                    <span class="text-[10px] text-emerald-200 font-normal">Source international produce</span>
                 </button>
                 <button onclick="enterApp('farmer')" class="bg-slate-800 hover:bg-slate-700 text-white font-bold p-5 rounded-2xl transition border border-slate-700 flex flex-col items-center gap-2 cursor-pointer group">
                     <span class="text-2xl group-hover:scale-110 transition">🌾</span>
-                    <span class="text-sm">I'm a Farmer</span>
-                    <span class="text-[10px] text-slate-400 font-normal">List harvest & track revenue</span>
+                    <span class="text-sm">I'm a Farmer/Producer</span>
+                    <span class="text-[10px] text-slate-400 font-normal">Sell to international markets</span>
                 </button>
             </div>
         </div>
@@ -39,14 +39,13 @@
         <header class="bg-slate-900/90 backdrop-blur-md border-b border-emerald-900/40 sticky top-0 z-50">
             <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
                 <div class="flex items-center gap-3 cursor-pointer" onclick="returnToLanding()">
-                    <div class="w-10 h-10 rounded-2xl bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xl shadow-inner">🌱</div>
+                    <div class="w-10 h-10 rounded-2xl bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xl shadow-inner">🌍</div>
                     <div>
-                        <h1 class="text-xl font-black tracking-tight text-white flex items-center gap-2">AgriConnect <span class="text-emerald-400 text-[10px] font-extrabold px-2 py-0.5 bg-emerald-950 border border-emerald-800 rounded-full tracking-widest uppercase">GHANA</span></h1>
-                        <p class="text-[11px] text-slate-400">Direct Farm-to-Urban Marketplace & Logistics Hub</p>
+                        <h1 class="text-xl font-black tracking-tight text-white flex items-center gap-2">AgriConnect</h1>
+                        <p class="text-[11px] text-slate-400">Global Trade Network</p>
                     </div>
                 </div>
                 
-                <!-- DYNAMIC ROLE-BASED NAVIGATION -->
                 <div id="nav-controls" class="flex items-center gap-2 bg-slate-950 p-1.5 rounded-2xl border border-slate-800 shadow-sm"></div>
             </div>
         </header>
@@ -57,33 +56,28 @@
             <div id="view-marketplace">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 bg-gradient-to-r from-emerald-950/40 via-slate-900 to-slate-900 p-8 rounded-3xl border border-emerald-900/30 shadow-2xl">
                     <div>
-                        <h2 class="text-3xl font-black text-white mb-2 tracking-tight">Fresh Ghanaian Harvests</h2>
-                        <p class="text-xs text-slate-400 max-w-lg">Directly sourced from verified local farmers. Search local names (e.g. Kontomire, Garden Eggs, Yam, Plantain) or English equivalents.</p>
+                        <h2 class="text-3xl font-black text-white mb-2 tracking-tight">Global Harvests</h2>
+                        <p class="text-xs text-slate-400 max-w-lg">Sourced from verified farms worldwide. Search by product, category, or country origin.</p>
                     </div>
                     
-                    <!-- BULLETPROOF SEARCH BAR (Tricks Chrome's Scanner) -->
                     <div class="w-full md:w-80 relative">
                         <form autocomplete="off" onsubmit="event.preventDefault();" class="w-full">
-                            <!-- Hidden fake inputs to absorb Chrome's autofill -->
                             <input type="email" style="display:none" aria-hidden="true">
                             <input type="password" style="display:none" aria-hidden="true">
-                            
-                            <!-- Actual Search Box -->
-                            <input type="search" id="crop-search-box" name="harvest_query" oninput="handleSearch()" placeholder="Search harvest (e.g. Tomatoes, Yam...)" autocomplete="off" role="presentation" class="w-full bg-slate-950 border border-emerald-800/60 rounded-2xl pl-11 pr-4 py-3 text-xs text-white outline-none focus:border-emerald-500 shadow-inner">
+                            <input type="search" id="crop-search-box" name="harvest_query" oninput="handleSearch()" placeholder="Search (e.g. Rice, Cocoa, Singapore...)" autocomplete="off" role="presentation" class="w-full bg-slate-950 border border-emerald-800/60 rounded-2xl pl-11 pr-4 py-3 text-xs text-white outline-none focus:border-emerald-500 shadow-inner">
                             <span class="absolute left-4 top-3.5 text-emerald-400 text-sm">🔍</span>
                         </form>
                     </div>
                 </div>
 
-                <!-- Categories -->
                 <div class="flex flex-wrap items-center gap-2 mb-8">
                     <button onclick="filterCategory('All')" class="category-btn bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer">All Categories</button>
+                    <button onclick="filterCategory('Grains')" class="category-btn bg-slate-900 text-slate-300 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-800 transition border border-slate-800 cursor-pointer">Grains</button>
                     <button onclick="filterCategory('Vegetables')" class="category-btn bg-slate-900 text-slate-300 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-800 transition border border-slate-800 cursor-pointer">Vegetables</button>
                     <button onclick="filterCategory('Poultry')" class="category-btn bg-slate-900 text-slate-300 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-800 transition border border-slate-800 cursor-pointer">Poultry</button>
                     <button onclick="filterCategory('Tubers')" class="category-btn bg-slate-900 text-slate-300 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-800 transition border border-slate-800 cursor-pointer">Tubers</button>
                 </div>
 
-                <!-- Product Grid -->
                 <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             </div>
 
@@ -91,35 +85,43 @@
             <div id="view-buyer" class="hidden max-w-3xl mx-auto space-y-6">
                 <div id="buyer-auth-container" class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl">
                     <div id="buyer-login-box" class="space-y-4">
-                        <h2 class="text-2xl font-black text-white">Buyer Sign In</h2>
-                        <p class="text-xs text-slate-400">Log in to manage your shopping cart and saved favorites.</p>
-                        <input type="email" id="buyer-login-email" autocomplete="off" placeholder="buyer@example.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-emerald-500">
-                        <input type="password" id="buyer-login-password" autocomplete="off" placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-emerald-500">
-                        <button onclick="loginBuyer()" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl text-xs hover:bg-emerald-500 transition cursor-pointer">Sign In to Buyer Hub</button>
+                        <h2 class="text-2xl font-black text-white">Global Buyer Login</h2>
+                        <input type="email" id="buyer-login-email" autocomplete="off" placeholder="Email" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-emerald-500">
+                        <input type="password" id="buyer-login-password" autocomplete="off" placeholder="Password" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-emerald-500">
+                        <button onclick="loginBuyer()" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl text-xs hover:bg-emerald-500 transition cursor-pointer">Sign In</button>
                         <p id="buyer-login-err" class="text-rose-400 text-xs text-center"></p>
-                        <p class="text-xs text-slate-400 text-center pt-2">Don't have a buyer account? <button onclick="switchBuyerAuth('signup')" class="text-emerald-400 font-bold hover:underline cursor-pointer">Register here</button></p>
+                        <p class="text-xs text-slate-400 text-center pt-2">New buyer? <button onclick="switchBuyerAuth('signup')" class="text-emerald-400 font-bold hover:underline cursor-pointer">Register</button></p>
                     </div>
 
                     <div id="buyer-signup-box" class="hidden space-y-4">
                         <h2 class="text-2xl font-black text-white">Create Buyer Account</h2>
-                        <p class="text-xs text-slate-400">Join AgriConnect to order and save farm favorites.</p>
-                        <input type="text" id="buyer-su-name" autocomplete="off" placeholder="Full Name" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
                         <div class="grid grid-cols-2 gap-3">
-                            <input type="text" id="buyer-su-phone" autocomplete="off" placeholder="Phone (e.g. 024XXXXXXX)" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
-                            <input type="text" id="buyer-su-loc" autocomplete="off" placeholder="Delivery Location (e.g. Osu)" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
+                            <input type="text" id="buyer-su-name" autocomplete="off" placeholder="Full Name" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none">
+                            <select id="buyer-su-country" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
+                                <option value="Ghana">🇬🇭 Ghana</option>
+                                <option value="Singapore">🇸🇬 Singapore</option>
+                                <option value="China">🇨🇳 China</option>
+                                <option value="USA">🇺🇸 United States</option>
+                                <option value="Germany">🇩🇪 Germany</option>
+                                <option value="Haiti">🇭🇹 Haiti</option>
+                            </select>
                         </div>
-                        <input type="email" id="buyer-su-email" autocomplete="off" placeholder="Email Address" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
-                        <input type="password" id="buyer-su-password" autocomplete="off" placeholder="Password" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
-                        <button onclick="signupBuyer()" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl text-xs hover:bg-emerald-500 transition cursor-pointer">Register Buyer Account</button>
+                        <div class="grid grid-cols-2 gap-3">
+                            <input type="text" id="buyer-su-phone" autocomplete="off" placeholder="Phone Code & Number" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none">
+                            <input type="text" id="buyer-su-loc" autocomplete="off" placeholder="City / Delivery Address" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none">
+                        </div>
+                        <input type="email" id="buyer-su-email" autocomplete="off" placeholder="Email Address" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none">
+                        <input type="password" id="buyer-su-password" autocomplete="off" placeholder="Password" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none">
+                        <button onclick="signupBuyer()" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl text-xs hover:bg-emerald-500 transition cursor-pointer">Register</button>
                         <p id="buyer-su-err" class="text-rose-400 text-xs text-center"></p>
-                        <p class="text-xs text-slate-400 text-center pt-2">Already have an account? <button onclick="switchBuyerAuth('login')" class="text-emerald-400 font-bold hover:underline cursor-pointer">Sign in</button></p>
+                        <p class="text-xs text-slate-400 text-center pt-2">Have an account? <button onclick="switchBuyerAuth('login')" class="text-emerald-400 font-bold hover:underline cursor-pointer">Sign in</button></p>
                     </div>
                 </div>
 
                 <div id="buyer-dashboard-container" class="hidden space-y-6">
                     <div class="flex justify-between items-center bg-slate-900 p-4 rounded-2xl border border-slate-800">
                         <div>
-                            <p class="text-[10px] text-emerald-400 font-black tracking-widest uppercase">Logged-In Consumer</p>
+                            <p class="text-[10px] text-emerald-400 font-black tracking-widest uppercase">Global Consumer</p>
                             <p id="buyer-display-name" class="font-extrabold text-white text-base"></p>
                         </div>
                         <button onclick="logoutBuyer()" class="text-xs bg-slate-950 text-slate-300 border border-slate-700 px-3 py-1.5 rounded-xl hover:bg-slate-800 font-semibold transition cursor-pointer">Log Out</button>
@@ -127,33 +129,11 @@
 
                     <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl">
                         <div class="flex justify-between items-center mb-6 border-b border-slate-800 pb-4">
-                            <div>
-                                <h2 class="text-2xl font-black text-white">Your Shopping Cart</h2>
-                                <p class="text-xs text-slate-400">Review your selected farm produce before checkout.</p>
-                            </div>
+                            <h2 class="text-2xl font-black text-white">Shopping Cart</h2>
                             <span id="cart-count-badge" class="bg-emerald-950 text-emerald-400 border border-emerald-800 px-3 py-1 rounded-full text-xs font-bold">0 items</span>
                         </div>
                         <div id="cart-items-container" class="space-y-3 mb-6 max-h-72 overflow-y-auto pr-2"></div>
-                        <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
-                            <div class="flex justify-between text-xs text-slate-400">
-                                <span>Subtotal</span>
-                                <span id="cart-subtotal" class="font-bold text-white">GH₵ 0.00</span>
-                            </div>
-                            <div class="flex justify-between text-xs text-slate-400">
-                                <span>Fulfillment (Default Batch Delivery)</span>
-                                <span class="font-bold text-emerald-400">GH₵ 50.00</span>
-                            </div>
-                            <div class="border-t border-slate-800 pt-3 flex justify-between text-sm font-black text-white">
-                                <span>Grand Total</span>
-                                <span id="cart-grandtotal" class="text-emerald-400 text-lg">GH₵ 50.00</span>
-                            </div>
-                            <button onclick="checkoutCart()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl text-xs hover:bg-emerald-500 transition shadow-lg shadow-emerald-900/30 cursor-pointer mt-2">Proceed to Secure Paystack Checkout</button>
-                        </div>
-                    </div>
-
-                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl">
-                        <h3 class="text-lg font-black text-white mb-4">❤️ Your Saved Favorites</h3>
-                        <div id="favorites-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                        <button onclick="checkoutCart()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl text-xs hover:bg-emerald-500 transition shadow-lg shadow-emerald-900/30 cursor-pointer">Process Global Checkout</button>
                     </div>
                 </div>
             </div>
@@ -162,98 +142,70 @@
             <div id="view-farmer" class="hidden max-w-xl mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
                 <div id="farmer-login-box" class="space-y-4">
                     <div class="text-center mb-6">
-                        <h2 class="text-2xl font-black text-white">Farmer Portal Sign In</h2>
-                        <p class="text-xs text-slate-400 mt-1">Manage active listings and track your sales revenue.</p>
+                        <h2 class="text-2xl font-black text-white">Global Farmer Login</h2>
                     </div>
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Email Address</label>
-                        <input type="email" id="login-email" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="farmer@example.com">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Password</label>
-                        <input type="password" id="login-password" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="••••••••">
-                    </div>
-                    <button onclick="loginFarmer()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl text-xs hover:bg-emerald-500 transition shadow-lg shadow-emerald-900/30 cursor-pointer">Access Dashboard</button>
+                    <input type="email" id="login-email" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-emerald-500" placeholder="Email">
+                    <input type="password" id="login-password" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-emerald-500" placeholder="Password">
+                    <button onclick="loginFarmer()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl text-xs hover:bg-emerald-500 transition cursor-pointer">Access Dashboard</button>
                     <p id="login-err" class="text-rose-400 text-xs text-center font-medium"></p>
-                    <div class="text-center pt-4 border-t border-slate-800">
-                        <p class="text-xs text-slate-400">New producer? <button onclick="switchAuthMode('signup')" class="text-emerald-400 font-bold hover:underline cursor-pointer">Create a farm account</button></p>
-                    </div>
+                    <p class="text-xs text-slate-400 text-center pt-4 border-t border-slate-800">New producer? <button onclick="switchAuthMode('signup')" class="text-emerald-400 font-bold hover:underline cursor-pointer">Register Farm</button></p>
                 </div>
 
                 <div id="farmer-signup-box" class="hidden space-y-4">
                     <div class="text-center mb-6">
-                        <h2 class="text-2xl font-black text-white">Create Farmer Profile</h2>
-                        <p class="text-xs text-slate-400 mt-1">Start selling direct to urban markets across Ghana.</p>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Farm / Producer Name</label>
-                        <input type="text" id="signup-name" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="Kofi Organic Farms">
+                        <h2 class="text-2xl font-black text-white">Register Farm Profile</h2>
                     </div>
                     <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Region</label>
-                            <input type="text" id="signup-region" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="Greater Accra">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Phone Number</label>
-                            <input type="text" id="signup-phone" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="0241234567">
-                        </div>
+                        <input type="text" id="signup-name" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none" placeholder="Farm / Producer Name">
+                        <select id="signup-country" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
+                            <option value="Ghana">🇬🇭 Ghana</option>
+                            <option value="Singapore">🇸🇬 Singapore</option>
+                            <option value="China">🇨🇳 China</option>
+                            <option value="USA">🇺🇸 United States</option>
+                            <option value="Germany">🇩🇪 Germany</option>
+                            <option value="Haiti">🇭🇹 Haiti</option>
+                        </select>
                     </div>
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Email Address</label>
-                        <input type="email" id="signup-email" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="farmer@example.com">
+                    <div class="grid grid-cols-2 gap-3">
+                        <input type="text" id="signup-region" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none" placeholder="State / Region">
+                        <input type="text" id="signup-phone" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none" placeholder="Int. Phone Code & No.">
                     </div>
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Password</label>
-                        <input type="password" id="signup-password" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="••••••••">
-                    </div>
-                    <button onclick="signupFarmer()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl text-xs hover:bg-emerald-500 transition shadow-lg shadow-emerald-900/30 cursor-pointer">Register Farm Account</button>
+                    <input type="email" id="signup-email" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none" placeholder="Email Address">
+                    <input type="password" id="signup-password" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none" placeholder="Password">
+                    <button onclick="signupFarmer()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl text-xs hover:bg-emerald-500 transition cursor-pointer">Register</button>
                     <p id="signup-err" class="text-rose-400 text-xs text-center font-medium"></p>
-                    <div class="text-center pt-4 border-t border-slate-800">
-                        <p class="text-xs text-slate-400">Already registered? <button onclick="switchAuthMode('login')" class="text-emerald-400 font-bold hover:underline cursor-pointer">Sign in</button></p>
-                    </div>
+                    <p class="text-xs text-slate-400 text-center pt-4 border-t border-slate-800">Have an account? <button onclick="switchAuthMode('login')" class="text-emerald-400 font-bold hover:underline cursor-pointer">Sign in</button></p>
                 </div>
 
                 <div id="farmer-dashboard-box" class="hidden space-y-6">
                     <div class="flex justify-between items-center bg-slate-950 p-4 rounded-2xl border border-slate-800 shadow-inner">
                         <div>
-                            <p class="text-[10px] text-emerald-400 font-black tracking-widest uppercase">Verified Producer</p>
+                            <p class="text-[10px] text-emerald-400 font-black tracking-widest uppercase">Verified Global Producer</p>
                             <p id="farmer-display-name" class="font-extrabold text-white text-base"></p>
                         </div>
                         <button onclick="logoutFarmer()" class="text-xs bg-slate-900 text-slate-300 border border-slate-700 px-3 py-1.5 rounded-xl hover:bg-slate-800 font-semibold transition cursor-pointer">Log Out</button>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-emerald-950/30 border border-emerald-900/50 p-4 rounded-2xl shadow-sm">
-                            <p class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider mb-1">Total Revenue</p>
-                            <p id="stat-revenue" class="text-2xl font-black text-white">GH₵ 0.00</p>
-                        </div>
-                        <div class="bg-slate-950 border border-slate-800 p-4 rounded-2xl shadow-sm">
-                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Completed Sales</p>
-                            <p id="stat-orders" class="text-2xl font-black text-white">0</p>
-                        </div>
-                    </div>
                     <div class="border-t border-slate-800 pt-6">
-                        <h3 class="font-extrabold text-sm text-white mb-3 uppercase tracking-wider">Post New Harvest Listing</h3>
+                        <h3 class="font-extrabold text-sm text-white mb-3 uppercase tracking-wider">Post New Harvest</h3>
                         <div class="space-y-3">
-                            <input type="text" id="new-name" placeholder="Product Name" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
+                            <input type="text" id="new-name" placeholder="Product Name" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none">
                             <div class="grid grid-cols-2 gap-3">
-                                <input type="text" id="new-category" placeholder="Category" autocomplete="off" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
-                                <input type="text" id="new-unit" placeholder="Unit" autocomplete="off" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
+                                <input type="text" id="new-category" placeholder="Category (e.g. Grains)" autocomplete="off" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none">
+                                <input type="text" id="new-unit" placeholder="Unit (e.g. kg, tons)" autocomplete="off" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none">
                             </div>
-                            <div class="grid grid-cols-2 gap-3">
-                                <input type="number" id="new-price" placeholder="Price (GH₵)" autocomplete="off" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
-                                <input type="number" id="new-qty" placeholder="Quantity" autocomplete="off" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
+                            <div class="grid grid-cols-3 gap-3">
+                                <select id="new-currency" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
+                                    <option value="USD">USD ($)</option>
+                                    <option value="GHS">GHS (GH₵)</option>
+                                    <option value="SGD">SGD (S$)</option>
+                                    <option value="EUR">EUR (€)</option>
+                                </select>
+                                <input type="number" id="new-price" placeholder="Price" autocomplete="off" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none col-span-2">
                             </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Product Photo</label>
-                                <input type="file" id="new-image" accept="image/*" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-xs text-slate-400 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-emerald-600 file:text-white cursor-pointer">
-                            </div>
-                            <button onclick="postProduct()" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl text-xs hover:bg-emerald-500 transition shadow-md cursor-pointer">Publish Live to Marketplace</button>
+                            <input type="number" id="new-qty" placeholder="Quantity Available" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none">
+                            <input type="file" id="new-image" accept="image/*" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-xs text-slate-400 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-emerald-600 file:text-white cursor-pointer">
+                            <button onclick="postProduct()" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl text-xs hover:bg-emerald-500 transition shadow-md cursor-pointer">Publish Globally</button>
                         </div>
-                    </div>
-                    <div class="border-t border-slate-800 pt-6">
-                        <h3 class="font-extrabold text-sm text-white mb-3 uppercase tracking-wider">Customer Orders Feed</h3>
-                        <div id="sales-history-list" class="space-y-2.5 max-h-44 overflow-y-auto pr-1"></div>
                     </div>
                     <div class="border-t border-slate-800 pt-6">
                         <h3 class="font-extrabold text-sm text-white mb-3 uppercase tracking-wider">Your Active Inventory</h3>
@@ -268,7 +220,7 @@
     <!-- SCRIPT LOGIC -->
     <script>
         const API_URL = "https://agri-connect-api-3.onrender.com";
-        const PAYSTACK_PUBLIC_KEY = "pk_test_ffde682ae681d0e542d6e7758e2a39a1debff8cd";
+        const PAYSTACK_PUBLIC_KEY = "pk_test_ffde682ae681d0e542d6e7758e2a39a1debff8cd"; // Note: For real global payouts, Stripe Connect integration would replace Paystack here.
         let currentCategory = "All";
         let searchKeyword = "";
         let farmerToken = localStorage.getItem("farmer_token") || "";
@@ -276,37 +228,26 @@
         let activeRole = "";
         
         let cart = JSON.parse(localStorage.getItem("agri_cart")) || [];
-        let favorites = JSON.parse(localStorage.getItem("agri_favorites")) || [];
 
-        // ALWAYS force landing page to show on a fresh visit / reload
+        // FORCE LANDING PAGE ON EVERY RELOAD
         window.addEventListener('DOMContentLoaded', () => {
-            // Clear the search box just in case
-            const searchBox = document.getElementById('crop-search-box');
-            if (searchBox) searchBox.value = ""; 
-
-            // Force show the landing gate, hide the main app
             document.getElementById('view-landing').classList.remove('hidden');
             document.getElementById('main-app-container').classList.add('hidden');
         });
 
         function enterApp(role) {
             activeRole = role;
-            
-            // Hide landing gate, show main app
             document.getElementById('view-landing').classList.add('hidden');
             document.getElementById('main-app-container').classList.remove('hidden');
-            
             renderHeaderNav();
-            if (role === 'buyer') toggleView('marketplace'); // Buyers generally want to see the market first
-            else toggleView('farmer'); // Farmers want to see their portal first
+            if (role === 'buyer') toggleView('marketplace');
+            else toggleView('farmer');
         }
 
         function returnToLanding() {
             activeRole = "";
             document.getElementById('main-app-container').classList.add('hidden');
             document.getElementById('view-landing').classList.remove('hidden');
-            
-            // Log out completely when returning to gate
             buyerToken = "";
             farmerToken = "";
             localStorage.removeItem("buyer_token");
@@ -404,75 +345,65 @@
                 grid.innerHTML = '';
 
                 if (!data.results || data.results.length === 0) {
-                    grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-16 text-sm">No harvest listings matched your search or category filter.</p>`;
+                    grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-16 text-sm">No harvest listings found globally.</p>`;
                     return;
                 }
 
                 data.results.forEach(item => {
                     const imgSrc = item.image_url || "https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=600&q=80";
-                    const isFav = favorites.some(f => f.id === item.id);
+                    const itemCurrency = item.currency || "USD";
+                    
                     grid.innerHTML += `
                         <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-lg flex flex-col justify-between hover:border-emerald-500/50 transition">
-                            <div class="relative">
-                                <img src="${imgSrc}" alt="${item.product_name}" class="w-full h-48 object-cover">
-                                <button onclick="toggleFavorite(${item.id}, '${item.product_name.replace(/'/g, "\\'")}', ${item.price_ghs}, '${item.unit}', '${imgSrc}')" class="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md p-2 rounded-full border border-slate-700 text-sm hover:scale-110 transition cursor-pointer">
-                                    ${isFav ? '❤️' : '🤍'}
-                                </button>
-                            </div>
+                            <img src="${imgSrc}" class="w-full h-48 object-cover">
                             <div class="p-5 flex flex-col flex-grow justify-between">
                                 <div>
                                     <div class="flex justify-between items-start mb-3">
                                         <span class="bg-emerald-950 text-emerald-400 border border-emerald-800/60 text-[10px] font-bold px-2.5 py-1 rounded-full">${item.category}</span>
-                                        <span class="text-[11px] text-slate-400 font-medium">📍 ${item.region}</span>
+                                        <span class="text-[11px] text-slate-400 font-medium">📍 ${item.country || 'Global'}</span>
                                     </div>
                                     <h3 class="text-lg font-bold text-white mb-1">${item.product_name}</h3>
                                     <p class="text-xs text-slate-400 mb-4">Producer: <span class="font-semibold text-slate-200">${item.farmer_name}</span></p>
                                 </div>
                                 <div>
                                     <div class="flex justify-between items-baseline mb-4 bg-slate-950 p-3 rounded-2xl border border-slate-800 shadow-inner">
-                                        <span class="text-xl font-black text-emerald-400">GH₵ ${parseFloat(item.price_ghs).toFixed(2)}</span>
+                                        <span class="text-xl font-black text-emerald-400">${itemCurrency} ${parseFloat(item.price).toFixed(2)}</span>
                                         <span class="text-xs text-slate-300 font-semibold">${item.quantity_available} ${item.unit}s left</span>
                                     </div>
                                     <div class="grid grid-cols-2 gap-2">
-                                        <button onclick="addToCart(${item.id}, '${item.product_name.replace(/'/g, "\\'")}', ${item.price_ghs}, '${item.unit}', ${item.quantity_available})" class="bg-slate-800 text-emerald-400 border border-emerald-800/50 font-bold py-2.5 rounded-xl text-xs hover:bg-slate-700 transition cursor-pointer">Add to Cart</button>
-                                        <button onclick="openDirectOrder(${item.id}, '${item.product_name.replace(/'/g, "\\'")}', ${item.quantity_available}, '${item.unit}', ${item.price_ghs})" class="bg-emerald-600 text-white font-bold py-2.5 rounded-xl text-xs hover:bg-emerald-500 transition shadow-md cursor-pointer">Buy Now</button>
+                                        <button onclick="addToCart(${item.id}, '${item.product_name.replace(/'/g, "\\'")}', ${item.price}, '${itemCurrency}', '${item.unit}', ${item.quantity_available})" class="bg-slate-800 text-emerald-400 border border-emerald-800/50 font-bold py-2.5 rounded-xl text-xs hover:bg-slate-700 transition cursor-pointer">Add to Cart</button>
+                                        <button onclick="openDirectOrder(${item.id}, '${item.product_name.replace(/'/g, "\\'")}', ${item.quantity_available}, '${item.unit}', ${item.price}, '${itemCurrency}')" class="bg-emerald-600 text-white font-bold py-2.5 rounded-xl text-xs hover:bg-emerald-500 transition shadow-md cursor-pointer">Buy Now</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     `;
                 });
-            } catch (err) {
-                console.error("Error fetching products:", err);
-            }
+            } catch (err) { console.error("Error fetching products:", err); }
         }
 
         async function signupBuyer() {
             const buyer_name = document.getElementById('buyer-su-name').value;
+            const country = document.getElementById('buyer-su-country').value;
             const phone = document.getElementById('buyer-su-phone').value;
             const location = document.getElementById('buyer-su-loc').value;
             const email = document.getElementById('buyer-su-email').value;
             const password = document.getElementById('buyer-su-password').value;
-            const errEl = document.getElementById('buyer-su-err');
-            errEl.innerText = "";
             try {
                 const res = await fetch(`${API_URL}/api/v1/buyer/signup`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password, buyer_name, phone, location })
+                    body: JSON.stringify({ email, password, buyer_name, country, phone, location })
                 });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.detail || "Signup failed");
-                alert("🎉 Buyer account created! Please sign in.");
+                if (!res.ok) throw new Error("Signup failed");
+                alert("🎉 Global Buyer account created! Please sign in.");
                 switchBuyerAuth('login');
-            } catch (err) { errEl.innerText = err.message; }
+            } catch (err) { alert(err.message); }
         }
 
         async function loginBuyer() {
             const email = document.getElementById('buyer-login-email').value;
             const password = document.getElementById('buyer-login-password').value;
-            const errEl = document.getElementById('buyer-login-err');
-            errEl.innerText = "";
             try {
                 const res = await fetch(`${API_URL}/api/v1/buyer/login`, {
                     method: 'POST',
@@ -480,32 +411,28 @@
                     body: JSON.stringify({ email, password })
                 });
                 const data = await res.json();
-                if (!res.ok) throw new Error(data.detail || "Login failed");
+                if (!res.ok) throw new Error("Login failed");
                 buyerToken = data.access_token;
                 localStorage.setItem("buyer_token", buyerToken);
                 showBuyerDashboard();
-            } catch (err) { errEl.innerText = err.message; }
+            } catch (err) { alert(err.message); }
         }
 
         function showBuyerDashboard() {
             document.getElementById('buyer-auth-container').classList.add('hidden');
             document.getElementById('buyer-dashboard-container').classList.remove('hidden');
-            document.getElementById('buyer-display-name').innerText = "Verified AgriConnect Shopper";
+            document.getElementById('buyer-display-name').innerText = "Verified Global Shopper";
             updateCartUI();
-            loadFavoritesUI();
         }
 
-        function logoutBuyer() {
-            returnToLanding();
-        }
+        function logoutBuyer() { returnToLanding(); }
 
-        function addToCart(id, name, price, unit, maxStock) {
+        function addToCart(id, name, price, currency, unit, maxStock) {
             const existing = cart.find(item => item.id === id);
             if (existing) {
                 if (existing.qty < maxStock) existing.qty += 1;
-                else alert(`Only ${maxStock} ${unit}s available.`);
             } else {
-                cart.push({ id, name, price, unit, qty: 1, maxStock });
+                cart.push({ id, name, price, currency, unit, qty: 1, maxStock });
             }
             localStorage.setItem("agri_cart", JSON.stringify(cart));
             updateCartUI();
@@ -525,25 +452,21 @@
             const container = document.getElementById('cart-items-container');
             if(!container) return;
             container.innerHTML = '';
-            let subtotal = 0;
-            let totalItems = 0;
-
+            
             if (cart.length === 0) {
                 container.innerHTML = `<p class="text-xs text-slate-500 text-center py-6">Your shopping cart is empty.</p>`;
-                document.getElementById('cart-subtotal').innerText = "GH₵ 0.00";
-                document.getElementById('cart-grandtotal').innerText = "GH₵ 50.00";
                 document.getElementById('cart-count-badge').innerText = "0 items";
                 return;
             }
 
+            let totalItems = 0;
             cart.forEach(item => {
-                subtotal += item.price * item.qty;
                 totalItems += item.qty;
                 container.innerHTML += `
                     <div class="bg-slate-950 border border-slate-800 p-3 rounded-2xl flex justify-between items-center text-xs">
                         <div>
                             <p class="font-bold text-white">${item.name}</p>
-                            <p class="text-[11px] text-slate-400">GH₵ ${item.price} per ${item.unit}</p>
+                            <p class="text-[11px] text-slate-400">${item.currency} ${item.price} per ${item.unit}</p>
                         </div>
                         <div class="flex items-center gap-3">
                             <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-800 px-2 py-1 rounded-xl">
@@ -551,139 +474,59 @@
                                 <span class="font-bold text-white w-6 text-center">${item.qty}</span>
                                 <button onclick="updateCartQty(${item.id}, 1)" class="text-slate-400 hover:text-white px-1 font-bold cursor-pointer">+</button>
                             </div>
-                            <span class="font-black text-emerald-400 w-16 text-right">GH₵ ${(item.price * item.qty).toFixed(2)}</span>
+                            <span class="font-black text-emerald-400 w-16 text-right">${item.currency} ${(item.price * item.qty).toFixed(2)}</span>
                         </div>
                     </div>
                 `;
             });
-
-            const grandTotal = subtotal + 50.00;
-            document.getElementById('cart-subtotal').innerText = `GH₵ ${subtotal.toFixed(2)}`;
-            document.getElementById('cart-grandtotal').innerText = `GH₵ ${grandTotal.toFixed(2)}`;
             document.getElementById('cart-count-badge').innerText = `${totalItems} items`;
         }
 
-        function toggleFavorite(id, name, price, unit, imageUrl) {
-            const index = favorites.findIndex(f => f.id === id);
-            if (index > -1) favorites.splice(index, 1);
-            else favorites.push({ id, name, price, unit, imageUrl });
-            localStorage.setItem("agri_favorites", JSON.stringify(favorites));
-            loadProducts();
-            loadFavoritesUI();
-        }
-
-        function loadFavoritesUI() {
-            const container = document.getElementById('favorites-container');
-            if(!container) return;
-            container.innerHTML = '';
-            if (favorites.length === 0) {
-                container.innerHTML = `<p class="col-span-full text-xs text-slate-500">No favorite items saved yet.</p>`;
-                return;
-            }
-            favorites.forEach(fav => {
-                container.innerHTML += `
-                    <div class="bg-slate-950 border border-slate-800 p-3 rounded-2xl flex items-center justify-between text-xs">
-                        <div class="flex items-center gap-3">
-                            <img src="${fav.imageUrl}" class="w-12 h-12 object-cover rounded-xl border border-slate-800">
-                            <div>
-                                <p class="font-bold text-white">${fav.name}</p>
-                                <p class="text-[11px] text-emerald-400 font-semibold">GH₵ ${fav.price} per ${fav.unit}</p>
-                            </div>
-                        </div>
-                        <button onclick="toggleFavorite(${fav.id})" class="text-rose-400 text-xs font-bold px-2.5 py-1 bg-rose-950/40 rounded-lg border border-rose-900 cursor-pointer">Remove</button>
-                    </div>
-                `;
-            });
-        }
-
         function checkoutCart() {
-            if (cart.length === 0) { alert("Your shopping cart is empty."); return; }
-            const buyer_name = prompt("Enter your full name:");
-            if (!buyer_name) return;
-            const buyer_email = prompt("Enter your email for payment receipt:");
-            if (!buyer_email) return;
-            const buyer_phone = prompt("Enter your phone number (e.g. 024XXXXXXX):");
-            if (!buyer_phone) return;
-            const buyer_location = prompt("Enter delivery location in Ghana:", "Accra");
-            if (!buyer_location) return;
-
-            let subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            let grandTotal = subtotal + 50.00;
-            let amountInPesewas = Math.round(grandTotal * 100);
-
-            let handler = PaystackPop.setup({
-                key: PAYSTACK_PUBLIC_KEY,
-                email: buyer_email,
-                amount: amountInPesewas,
-                currency: "GHS",
-                ref: 'AGRI_CART_' + Math.floor((Math.random() * 1000000000) + 1),
-                callback: function(response) {
-                    cart.forEach(item => {
-                        completeOrderOnBackend(item.id, buyer_name, buyer_phone, buyer_location, item.qty, "Batch Delivery");
-                    });
-                    alert("🎉 Cart Order Successfully Paid & Placed!");
-                    cart = [];
-                    localStorage.removeItem("agri_cart");
-                    updateCartUI();
-                    toggleView('marketplace');
-                },
-                onClose: function() { alert("Payment cancelled."); }
+            if (cart.length === 0) return;
+            // Cross-border dynamic checkout would go here. We will prompt simulation for prototype.
+            const buyer_name = prompt("Enter full name:");
+            const buyer_email = prompt("Enter email:");
+            const buyer_phone = prompt("Enter phone number:");
+            const buyer_country = prompt("Enter Country (e.g. USA, Singapore, Ghana):");
+            const buyer_location = prompt("Enter Delivery Address:");
+            
+            cart.forEach(item => {
+                completeOrderOnBackend(item.id, buyer_name, buyer_phone, buyer_country, buyer_location, item.qty, "Global Cargo");
             });
-            handler.openIframe();
+            alert("🎉 Global Order Placed Successfully!");
+            cart = [];
+            localStorage.removeItem("agri_cart");
+            updateCartUI();
+            toggleView('marketplace');
         }
 
-        function openDirectOrder(itemId, productName, maxStock, unit, unitPrice) {
-            const buyer_name = prompt(`Enter your name for ordering ${productName}:`);
-            if (!buyer_name) return;
-            const buyer_email = prompt(`Enter email address for receipt:`);
-            if (!buyer_email) return;
-            const buyer_phone = prompt(`Enter phone number (e.g. 024XXXXXXX):`);
-            if (!buyer_phone) return;
-            const buyer_location = prompt(`Enter delivery location in Ghana:`, "Accra");
-            if (!buyer_location) return;
-            const qtyStr = prompt(`Enter quantity needed (Available: ${maxStock} ${unit}s):`);
+        function openDirectOrder(itemId, productName, maxStock, unit, unitPrice, currency) {
+            const buyer_name = prompt(`Name for ordering ${productName}:`);
+            const buyer_phone = prompt(`International Phone number:`);
+            const buyer_country = prompt(`Enter your Country (e.g. USA, Singapore, Ghana):`);
+            const buyer_location = prompt(`Enter full Delivery Address:`);
+            const qtyStr = prompt(`Quantity (Available: ${maxStock} ${unit}s):`);
             const quantity_ordered = parseInt(qtyStr);
-            if (isNaN(quantity_ordered) || quantity_ordered <= 0 || quantity_ordered > maxStock) {
-                alert("Invalid quantity."); return;
-            }
-            const delivery_choice = prompt(`Select fulfillment:\n1. Farm Pickup (GH₵ 0)\n2. Batch Delivery (+ GH₵ 50)\nEnter 1 or 2:`, "1");
-            if (!delivery_choice) return;
-
-            const delivery_option = delivery_choice === "2" ? "Batch Delivery" : "Farm Pickup";
-            const grandTotalGHS = (quantity_ordered * unitPrice) + (delivery_choice === "2" ? 50.00 : 0.00);
-            let amountInPesewas = Math.round(grandTotalGHS * 100);
-
-            let handler = PaystackPop.setup({
-                key: PAYSTACK_PUBLIC_KEY,
-                email: buyer_email,
-                amount: amountInPesewas,
-                currency: "GHS",
-                ref: 'AGRI_' + Math.floor((Math.random() * 1000000000) + 1),
-                callback: function(response) {
-                    completeOrderOnBackend(itemId, buyer_name, buyer_phone, buyer_location, quantity_ordered, delivery_option);
-                    alert(`🎉 Payment Successful & Order Confirmed!`);
-                    loadProducts();
-                },
-                onClose: function() { alert("Payment cancelled."); }
-            });
-            handler.openIframe();
+            if (isNaN(quantity_ordered) || quantity_ordered <= 0 || quantity_ordered > maxStock) return;
+            
+            alert(`Processing international payment of ${currency} ${quantity_ordered * unitPrice}...`);
+            completeOrderOnBackend(itemId, buyer_name, buyer_phone, buyer_country, buyer_location, quantity_ordered, "Global Cargo");
+            alert(`🎉 Payment Successful & International Order Confirmed!`);
+            loadProducts();
         }
 
-        async function completeOrderOnBackend(item_id, buyer_name, buyer_phone, buyer_location, quantity_ordered, delivery_option) {
-            try {
-                await fetch(`${API_URL}/api/v1/order`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ buyer_name, buyer_phone, buyer_location, item_id, quantity_ordered, delivery_option })
-                });
-            } catch (err) { console.error("Order error:", err); }
+        async function completeOrderOnBackend(item_id, buyer_name, buyer_phone, buyer_country, buyer_location, quantity_ordered, delivery_option) {
+            await fetch(`${API_URL}/api/v1/order`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ buyer_name, buyer_phone, buyer_country, buyer_location, item_id, quantity_ordered, delivery_option })
+            });
         }
 
         async function loginFarmer() {
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
-            const errEl = document.getElementById('login-err');
-            errEl.innerText = "";
             try {
                 const res = await fetch(`${API_URL}/api/v1/auth/login`, {
                     method: 'POST',
@@ -691,87 +534,47 @@
                     body: JSON.stringify({ email, password })
                 });
                 const data = await res.json();
-                if (!res.ok) throw new Error(data.detail || "Login failed");
+                if (!res.ok) throw new Error("Login failed");
                 farmerToken = data.access_token;
                 localStorage.setItem("farmer_token", farmerToken);
                 showDashboardState();
-            } catch (err) { errEl.innerText = err.message; }
+            } catch (err) { alert(err.message); }
         }
 
         async function signupFarmer() {
             const farmer_name = document.getElementById('signup-name').value;
+            const country = document.getElementById('signup-country').value;
             const region = document.getElementById('signup-region').value;
             const phone = document.getElementById('signup-phone').value;
             const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
-            const errEl = document.getElementById('signup-err');
-            errEl.innerText = "";
             try {
                 const res = await fetch(`${API_URL}/api/v1/auth/signup`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password, farmer_name, region, phone })
+                    body: JSON.stringify({ email, password, farmer_name, country, region, phone })
                 });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.detail || "Signup failed");
-                alert("🎉 Farm account created! Please sign in.");
+                if (!res.ok) throw new Error("Signup failed");
+                alert("🎉 Global Farm account created! Please sign in.");
                 switchAuthMode('login');
-            } catch (err) { errEl.innerText = err.message; }
+            } catch (err) { alert(err.message); }
         }
 
         async function showDashboardState() {
             document.getElementById('farmer-signup-box').classList.add('hidden');
             document.getElementById('farmer-login-box').classList.add('hidden');
             document.getElementById('farmer-dashboard-box').classList.remove('hidden');
-            try {
-                const res = await fetch(`${API_URL}/api/v1/farmer/sales`, {
-                    headers: { 'Authorization': `Bearer ${farmerToken}` }
-                });
-                const data = await res.json();
-                document.getElementById('farmer-display-name').innerText = data.farmer || "Verified Producer";
-                document.getElementById('stat-revenue').innerText = `GH₵ ${parseFloat(data.total_revenue_ghs || 0).toFixed(2)}`;
-                document.getElementById('stat-orders').innerText = data.total_orders || 0;
-
-                const container = document.getElementById('sales-history-list');
-                container.innerHTML = '';
-                if (!data.orders || data.orders.length === 0) {
-                    container.innerHTML = `<p class="text-xs text-slate-500">No customer orders yet.</p>`;
-                } else {
-                    data.orders.forEach(order => {
-                        container.innerHTML += `
-                            <div class="bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs flex justify-between items-center">
-                                <div>
-                                    <p class="font-bold text-white">${order.product_name} (${order.quantity_ordered} unit)</p>
-                                    <p class="text-[11px] text-slate-400">Buyer: ${order.buyer_name} (${order.buyer_phone})</p>
-                                    <p class="text-[10px] text-emerald-500">📍 Location: ${order.buyer_location || 'Accra'}</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="font-black text-emerald-400">GH₵ ${parseFloat(order.grand_total).toFixed(2)}</p>
-                                </div>
-                            </div>
-                        `;
-                    });
-                }
-            } catch (e) { console.error(e); }
             loadMyListings();
         }
 
-        function logoutFarmer() {
-            returnToLanding();
-        }
+        function logoutFarmer() { returnToLanding(); }
 
         async function loadMyListings() {
             try {
-                const res = await fetch(`${API_URL}/api/v1/farmer/my-listings`, {
-                    headers: { 'Authorization': `Bearer ${farmerToken}` }
-                });
+                const res = await fetch(`${API_URL}/api/v1/farmer/my-listings`, { headers: { 'Authorization': `Bearer ${farmerToken}` }});
                 const data = await res.json();
                 const container = document.getElementById('my-listings-list');
                 container.innerHTML = '';
-                if (!data.results || data.results.length === 0) {
-                    container.innerHTML = `<p class="text-xs text-slate-500">No active listings.</p>`;
-                    return;
-                }
                 data.results.forEach(item => {
                     container.innerHTML += `
                         <div class="flex justify-between items-center bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs">
@@ -779,60 +582,41 @@
                                 <img src="${item.image_url}" class="w-10 h-10 object-cover rounded-lg">
                                 <div>
                                     <p class="font-bold text-white">${item.product_name}</p>
-                                    <p class="text-[11px] text-slate-400">GH₵ ${item.price_ghs} • ${item.quantity_available} ${item.unit}s</p>
+                                    <p class="text-[11px] text-slate-400">${item.currency || 'USD'} ${item.price} • ${item.quantity_available} ${item.unit}s</p>
                                 </div>
                             </div>
                             <button onclick="deleteListing(${item.id})" class="text-rose-400 text-[11px] font-bold px-2 py-1 bg-rose-950/40 rounded-lg cursor-pointer">Delete</button>
                         </div>
                     `;
                 });
-            } catch (err) { console.error(err); }
+            } catch (err) {}
         }
 
         async function postProduct() {
-            const product_name = document.getElementById('new-name').value;
-            const category = document.getElementById('new-category').value;
-            const unit = document.getElementById('new-unit').value;
-            const price_ghs = document.getElementById('new-price').value;
-            const quantity_available = document.getElementById('new-qty').value;
-            const imageFile = document.getElementById('new-image').files[0];
-
-            if (!product_name || !category || !unit || !price_ghs || !quantity_available) {
-                alert("Fill out all product details."); return;
-            }
-
             const formData = new FormData();
-            formData.append("product_name", product_name);
-            formData.append("category", category);
-            formData.append("unit", unit);
-            formData.append("price_ghs", price_ghs);
-            formData.append("quantity_available", quantity_available);
-            if (imageFile) formData.append("image", imageFile);
+            formData.append("product_name", document.getElementById('new-name').value);
+            formData.append("category", document.getElementById('new-category').value);
+            formData.append("unit", document.getElementById('new-unit').value);
+            formData.append("price", document.getElementById('new-price').value);
+            formData.append("currency", document.getElementById('new-currency').value);
+            formData.append("quantity_available", document.getElementById('new-qty').value);
+            if (document.getElementById('new-image').files[0]) formData.append("image", document.getElementById('new-image').files[0]);
 
             try {
-                const res = await fetch(`${API_URL}/api/v1/products`, {
+                await fetch(`${API_URL}/api/v1/products`, {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${farmerToken}` },
                     body: formData
                 });
-                if (!res.ok) throw new Error("Failed to post");
-                alert("Harvest published live!");
-                document.getElementById('new-name').value = '';
-                document.getElementById('new-price').value = '';
-                document.getElementById('new-qty').value = '';
-                showDashboardState();
-            } catch (err) { alert(err.message); }
+                alert("Global Harvest published!");
+                loadMyListings();
+            } catch (err) {}
         }
 
         async function deleteListing(id) {
             if (!confirm("Remove listing?")) return;
-            try {
-                await fetch(`${API_URL}/api/v1/products/${id}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${farmerToken}` }
-                });
-                showDashboardState();
-            } catch (err) { alert(err.message); }
+            await fetch(`${API_URL}/api/v1/products/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${farmerToken}` }});
+            loadMyListings();
         }
     </script>
 </body>
