@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgriConnect Marketplace</title>
+    <title>AgriConnect Marketplace | Ghana</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://js.paystack.co/v1/inline.js"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen selection:bg-emerald-500 selection:text-white">
 
     <!-- HEADER -->
-    <header class="bg-slate-900/80 backdrop-blur-md border-b border-emerald-900/40 sticky top-0 z-50">
+    <header class="bg-slate-900/90 backdrop-blur-md border-b border-emerald-900/40 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-2xl bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xl">🌱</div>
+                <div class="w-10 h-10 rounded-2xl bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xl shadow-inner">🌱</div>
                 <div>
-                    <h1 class="text-xl font-black tracking-tight text-white">AgriConnect <span class="text-emerald-400 text-xs font-semibold px-2 py-0.5 bg-emerald-950 border border-emerald-800 rounded-full">Ghana</span></h1>
-                    <p class="text-[11px] text-slate-400">Direct Farm-to-Urban Marketplace & Logistical Hub</p>
+                    <h1 class="text-xl font-black tracking-tight text-white flex items-center gap-2">AgriConnect <span class="text-emerald-400 text-[10px] font-extrabold px-2 py-0.5 bg-emerald-950 border border-emerald-800 rounded-full tracking-widest uppercase">GHANA</span></h1>
+                    <p class="text-[11px] text-slate-400">Direct Farm-to-Urban Marketplace & Logistics Hub</p>
                 </div>
             </div>
-            <div class="flex items-center gap-2 bg-slate-950 p-1.5 rounded-2xl border border-slate-800">
-                <button onclick="toggleView('marketplace')" id="btn-market" class="bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm">Marketplace</button>
-                <button onclick="toggleView('farmer')" id="btn-farmer" class="text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition">🌾 Farmer Portal</button>
+            <div class="flex items-center gap-2 bg-slate-950 p-1.5 rounded-2xl border border-slate-800 shadow-sm">
+                <button onclick="toggleView('marketplace')" id="btn-market" class="bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer">Marketplace</button>
+                <button onclick="toggleView('farmer')" id="btn-farmer" class="text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer">🌾 Farmer Portal</button>
             </div>
         </div>
     </header>
@@ -30,18 +30,25 @@
 
         <!-- MARKETPLACE VIEW -->
         <div id="view-marketplace">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 bg-gradient-to-r from-emerald-950/40 to-slate-900 p-6 rounded-3xl border border-emerald-900/30">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 bg-gradient-to-r from-emerald-950/40 via-slate-900 to-slate-900 p-8 rounded-3xl border border-emerald-900/30 shadow-2xl">
                 <div>
-                    <h2 class="text-2xl font-black text-white mb-1">Fresh Harvests Available Today</h2>
-                    <p class="text-xs text-slate-400">Directly sourced from verified local farmers across Ghana. Zero middlemen.</p>
+                    <h2 class="text-3xl font-black text-white mb-2 tracking-tight">Fresh Ghanaian Harvests</h2>
+                    <p class="text-xs text-slate-400 max-w-lg">Directly sourced from verified local farmers and farmer groups. Search by local names (e.g. Kontomire, Garden Eggs, Yam) or English equivalents.</p>
                 </div>
-                <!-- Categories -->
-                <div class="flex flex-wrap items-center gap-2">
-                    <button onclick="filterCategory('All')" class="category-btn bg-emerald-600 text-white px-3.5 py-1.5 rounded-xl text-xs font-semibold transition shadow-sm">All</button>
-                    <button onclick="filterCategory('Vegetables')" class="category-btn bg-slate-900 text-slate-300 px-3.5 py-1.5 rounded-xl text-xs font-semibold hover:bg-slate-800 transition border border-slate-800">Vegetables</button>
-                    <button onclick="filterCategory('Poultry')" class="category-btn bg-slate-900 text-slate-300 px-3.5 py-1.5 rounded-xl text-xs font-semibold hover:bg-slate-800 transition border border-slate-800">Poultry</button>
-                    <button onclick="filterCategory('Tubers')" class="category-btn bg-slate-900 text-slate-300 px-3.5 py-1.5 rounded-xl text-xs font-semibold hover:bg-slate-800 transition border border-slate-800">Tubers</button>
+                
+                <!-- SEARCH BAR -->
+                <div class="w-full md:w-80 relative">
+                    <input type="text" id="search-input" oninput="handleSearch()" placeholder="Search (e.g. Tomatoes, Plantain, Yam...)" class="w-full bg-slate-950 border border-emerald-800/60 rounded-2xl pl-11 pr-4 py-3 text-xs text-white outline-none focus:border-emerald-500 shadow-inner">
+                    <span class="absolute left-4 top-3.5 text-emerald-400 text-sm">🔍</span>
                 </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="flex flex-wrap items-center gap-2 mb-8">
+                <button onclick="filterCategory('All')" class="category-btn bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer">All Categories</button>
+                <button onclick="filterCategory('Vegetables')" class="category-btn bg-slate-900 text-slate-300 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-800 transition border border-slate-800 cursor-pointer">Vegetables</button>
+                <button onclick="filterCategory('Poultry')" class="category-btn bg-slate-900 text-slate-300 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-800 transition border border-slate-800 cursor-pointer">Poultry</button>
+                <button onclick="filterCategory('Tubers')" class="category-btn bg-slate-900 text-slate-300 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-800 transition border border-slate-800 cursor-pointer">Tubers</button>
             </div>
 
             <!-- Product Grid -->
@@ -61,17 +68,17 @@
                 </div>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Email Address</label>
-                    <input type="email" id="login-email" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 transition" placeholder="farmer@example.com">
+                    <input type="email" id="login-email" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="farmer@example.com">
                 </div>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Password</label>
-                    <input type="password" id="login-password" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 transition" placeholder="••••••••">
+                    <input type="password" id="login-password" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="••••••••">
                 </div>
-                <button onclick="loginFarmer()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl text-sm hover:bg-emerald-500 transition shadow-lg shadow-emerald-900/30 cursor-pointer">Access Dashboard</button>
+                <button onclick="loginFarmer()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl text-xs hover:bg-emerald-500 transition shadow-lg shadow-emerald-900/30 cursor-pointer">Access Dashboard</button>
                 <p id="login-err" class="text-rose-400 text-xs text-center font-medium"></p>
                 
                 <div class="text-center pt-4 border-t border-slate-800">
-                    <p class="text-xs text-slate-400">New producer? <button onclick="switchAuthMode('signup')" class="text-emerald-400 font-bold hover:underline">Create a farm account</button></p>
+                    <p class="text-xs text-slate-400">New producer? <button onclick="switchAuthMode('signup')" class="text-emerald-400 font-bold hover:underline cursor-pointer">Create a farm account</button></p>
                 </div>
             </div>
 
@@ -83,37 +90,37 @@
                 </div>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Farm / Producer Name</label>
-                    <input type="text" id="signup-name" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white outline-none focus:border-emerald-500 transition" placeholder="Kofi Organic Farms">
+                    <input type="text" id="signup-name" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="Kofi Organic Farms">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Region</label>
-                        <input type="text" id="signup-region" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white outline-none focus:border-emerald-500 transition" placeholder="Greater Accra">
+                        <input type="text" id="signup-region" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="Greater Accra">
                     </div>
                     <div>
                         <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Phone Number</label>
-                        <input type="text" id="signup-phone" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white outline-none focus:border-emerald-500 transition" placeholder="0241234567">
+                        <input type="text" id="signup-phone" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="0241234567">
                     </div>
                 </div>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Email Address</label>
-                    <input type="email" id="signup-email" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white outline-none focus:border-emerald-500 transition" placeholder="farmer@example.com">
+                    <input type="email" id="signup-email" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="farmer@example.com">
                 </div>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Password</label>
-                    <input type="password" id="signup-password" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white outline-none focus:border-emerald-500 transition" placeholder="••••••••">
+                    <input type="password" id="signup-password" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="••••••••">
                 </div>
-                <button onclick="signupFarmer()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl text-sm hover:bg-emerald-500 transition shadow-lg shadow-emerald-900/30 cursor-pointer">Register Farm Account</button>
+                <button onclick="signupFarmer()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl text-xs hover:bg-emerald-500 transition shadow-lg shadow-emerald-900/30 cursor-pointer">Register Farm Account</button>
                 <p id="signup-err" class="text-rose-400 text-xs text-center font-medium"></p>
                 
                 <div class="text-center pt-4 border-t border-slate-800">
-                    <p class="text-xs text-slate-400">Already registered? <button onclick="switchAuthMode('login')" class="text-emerald-400 font-bold hover:underline">Sign in</button></p>
+                    <p class="text-xs text-slate-400">Already registered? <button onclick="switchAuthMode('login')" class="text-emerald-400 font-bold hover:underline cursor-pointer">Sign in</button></p>
                 </div>
             </div>
 
             <!-- Dashboard State -->
             <div id="farmer-dashboard-box" class="hidden space-y-6">
-                <div class="flex justify-between items-center bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                <div class="flex justify-between items-center bg-slate-950 p-4 rounded-2xl border border-slate-800 shadow-inner">
                     <div>
                         <p class="text-[10px] text-emerald-400 font-black tracking-widest uppercase">Verified Producer</p>
                         <p id="farmer-display-name" class="font-extrabold text-white text-base"></p>
@@ -123,11 +130,11 @@
 
                 <!-- REVENUE & SALES STATS -->
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-emerald-950/30 border border-emerald-900/50 p-4 rounded-2xl">
+                    <div class="bg-emerald-950/30 border border-emerald-900/50 p-4 rounded-2xl shadow-sm">
                         <p class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider mb-1">Total Revenue</p>
                         <p id="stat-revenue" class="text-2xl font-black text-white">GH₵ 0.00</p>
                     </div>
-                    <div class="bg-slate-950 border border-slate-800 p-4 rounded-2xl">
+                    <div class="bg-slate-950 border border-slate-800 p-4 rounded-2xl shadow-sm">
                         <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Completed Sales</p>
                         <p id="stat-orders" class="text-2xl font-black text-white">0</p>
                     </div>
@@ -137,10 +144,10 @@
                 <div class="border-t border-slate-800 pt-6">
                     <h3 class="font-extrabold text-sm text-white mb-3 uppercase tracking-wider">Post New Harvest Listing</h3>
                     <div class="space-y-3">
-                        <input type="text" id="new-name" placeholder="Product Name (e.g. Fresh Tomatoes)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
+                        <input type="text" id="new-name" placeholder="Product Name (e.g. Kontomire, Garden Eggs, Yam)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
                         <div class="grid grid-cols-2 gap-3">
                             <input type="text" id="new-category" placeholder="Category (e.g. Vegetables)" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
-                            <input type="text" id="new-unit" placeholder="Unit (e.g. Crate, Bag)" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
+                            <input type="text" id="new-unit" placeholder="Unit (e.g. Crate, Tuber, Bag)" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             <input type="number" id="new-price" placeholder="Price per unit (GH₵)" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
@@ -180,6 +187,7 @@
         const API_URL = "https://agri-connect-api-3.onrender.com";
         const PAYSTACK_PUBLIC_KEY = "pk_test_ffde682ae681d0e542d6e7758e2a39a1debff8cd";
         let currentCategory = "All";
+        let searchKeyword = "";
         let farmerToken = localStorage.getItem("farmer_token") || "";
 
         loadProducts();
@@ -189,14 +197,14 @@
             if (view === 'marketplace') {
                 document.getElementById('view-marketplace').classList.remove('hidden');
                 document.getElementById('view-farmer').classList.add('hidden');
-                document.getElementById('btn-market').className = "bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm";
-                document.getElementById('btn-farmer').className = "text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition";
+                document.getElementById('btn-market').className = "bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer";
+                document.getElementById('btn-farmer').className = "text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer";
                 loadProducts();
             } else {
                 document.getElementById('view-marketplace').classList.add('hidden');
                 document.getElementById('view-farmer').classList.remove('hidden');
-                document.getElementById('btn-farmer').className = "bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm";
-                document.getElementById('btn-market').className = "text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition";
+                document.getElementById('btn-farmer').className = "bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer";
+                document.getElementById('btn-market').className = "text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer";
                 if (farmerToken) showDashboardState();
                 else switchAuthMode('login');
             }
@@ -216,17 +224,23 @@
             currentCategory = cat;
             document.querySelectorAll('.category-btn').forEach(btn => {
                 if (btn.innerText.includes(cat) || (cat === 'All' && btn.innerText.includes('All'))) {
-                    btn.className = "category-btn bg-emerald-600 text-white px-3.5 py-1.5 rounded-xl text-xs font-semibold transition shadow-sm";
+                    btn.className = "category-btn bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer";
                 } else {
-                    btn.className = "category-btn bg-slate-900 text-slate-300 px-3.5 py-1.5 rounded-xl text-xs font-semibold hover:bg-slate-800 transition border border-slate-800";
+                    btn.className = "category-btn bg-slate-900 text-slate-300 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-800 transition border border-slate-800 cursor-pointer";
                 }
             });
             loadProducts();
         }
 
+        function handleSearch() {
+            searchKeyword = document.getElementById('search-input').value.trim();
+            loadProducts();
+        }
+
         async function loadProducts() {
-            let url = `${API_URL}/api/v1/products`;
-            if (currentCategory !== 'All') url += `?category=${currentCategory}`;
+            let url = `${API_URL}/api/v1/products?`;
+            if (currentCategory !== 'All') url += `category=${currentCategory}&`;
+            if (searchKeyword) url += `search=${encodeURIComponent(searchKeyword)}`;
 
             try {
                 const res = await fetch(url);
@@ -235,14 +249,14 @@
                 grid.innerHTML = '';
 
                 if (!data.results || data.results.length === 0) {
-                    grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-16 text-sm">No active harvest listings found in this category.</p>`;
+                    grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-16 text-sm">No harvest listings matched your search or category filter.</p>`;
                     return;
                 }
 
                 data.results.forEach(item => {
                     const imgSrc = item.image_url || "https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=600&q=80";
                     grid.innerHTML += `
-                        <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-md flex flex-col justify-between hover:border-emerald-500/50 transition">
+                        <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-lg flex flex-col justify-between hover:border-emerald-500/50 transition">
                             <img src="${imgSrc}" alt="${item.product_name}" class="w-full h-48 object-cover">
                             <div class="p-5 flex flex-col flex-grow justify-between">
                                 <div>
@@ -254,7 +268,7 @@
                                     <p class="text-xs text-slate-400 mb-4">Producer: <span class="font-semibold text-slate-200">${item.farmer_name}</span></p>
                                 </div>
                                 <div>
-                                    <div class="flex justify-between items-baseline mb-4 bg-slate-950 p-3 rounded-2xl border border-slate-800">
+                                    <div class="flex justify-between items-baseline mb-4 bg-slate-950 p-3 rounded-2xl border border-slate-800 shadow-inner">
                                         <span class="text-xl font-black text-emerald-400">GH₵ ${parseFloat(item.price_ghs).toFixed(2)}</span>
                                         <span class="text-xs text-slate-300 font-semibold">${item.quantity_available} ${item.unit}s left</span>
                                     </div>
@@ -322,7 +336,6 @@
             document.getElementById('farmer-login-box').classList.add('hidden');
             document.getElementById('farmer-dashboard-box').classList.remove('hidden');
             
-            // Fetch session details to display correct name
             try {
                 const res = await fetch(`${API_URL}/api/v1/farmer/sales`, {
                     headers: { 'Authorization': `Bearer ${farmerToken}` }
@@ -339,10 +352,11 @@
                 } else {
                     data.orders.forEach(order => {
                         container.innerHTML += `
-                            <div class="bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs flex justify-between items-center">
+                            <div class="bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs flex justify-between items-center shadow-inner">
                                 <div>
                                     <p class="font-bold text-white">${order.product_name} <span class="text-emerald-400">(${order.quantity_ordered} unit)</span></p>
                                     <p class="text-[11px] text-slate-400">Buyer: ${order.buyer_name} (${order.buyer_phone})</p>
+                                    <p class="text-[10px] text-emerald-500 font-semibold">📍 Deliver to: ${order.buyer_location || 'Accra'}</p>
                                 </div>
                                 <div class="text-right">
                                     <p class="font-black text-emerald-400">GH₵ ${parseFloat(order.grand_total).toFixed(2)}</p>
@@ -462,6 +476,8 @@
             if (!buyer_email) return;
             const buyer_phone = prompt(`Enter phone number (e.g. 024XXXXXXX):`);
             if (!buyer_phone) return;
+            const buyer_location = prompt(`Enter your delivery location / address in Ghana (e.g. East Legon, Kumasi, Adenta):`, "Accra");
+            if (!buyer_location) return;
             const qtyStr = prompt(`Enter quantity needed (Available: ${maxStock} ${unit}s):`);
             const quantity_ordered = parseInt(qtyStr);
             if (isNaN(quantity_ordered) || quantity_ordered <= 0 || quantity_ordered > maxStock) {
@@ -483,7 +499,7 @@
                 currency: "GHS",
                 ref: 'AGRI_' + Math.floor((Math.random() * 1000000000) + 1),
                 callback: function(response) {
-                    completeOrderOnBackend(itemId, buyer_name, buyer_phone, quantity_ordered, delivery_option);
+                    completeOrderOnBackend(itemId, buyer_name, buyer_phone, buyer_location, quantity_ordered, delivery_option);
                 },
                 onClose: function() {
                     alert("Payment cancelled.");
@@ -492,17 +508,17 @@
             handler.openIframe();
         }
 
-        async function completeOrderOnBackend(item_id, buyer_name, buyer_phone, quantity_ordered, delivery_option) {
+        async function completeOrderOnBackend(item_id, buyer_name, buyer_phone, buyer_location, quantity_ordered, delivery_option) {
             try {
                 const res = await fetch(`${API_URL}/api/v1/order`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ buyer_name, buyer_phone, item_id, quantity_ordered, delivery_option })
+                    body: JSON.stringify({ buyer_name, buyer_phone, buyer_location, item_id, quantity_ordered, delivery_option })
                 });
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.detail || "Order processing failed");
 
-                alert(`🎉 Payment Successful & Order Confirmed!\nTotal Paid: ${data.order_summary.grand_total_ghs}`);
+                alert(`🎉 Payment Successful & Order Confirmed!\nTotal Paid: ${data.order_summary.grand_total_ghs}\nDeliver to: ${buyer_location}`);
                 loadProducts();
             } catch (err) {
                 alert("Order recording error: " + err.message);
