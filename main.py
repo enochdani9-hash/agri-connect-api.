@@ -6,7 +6,7 @@ from supabase import create_client, Client
 import os
 import resend
 
-app = FastAPI(title="AgriConnect Production API", version="2.8")
+app = FastAPI(title="AgriConnect Production API", version="2.9")
 
 # --- CORS VIP PASS ---
 app.add_middleware(
@@ -46,9 +46,9 @@ class OrderRequest(BaseModel, extra="allow"):
 
 @app.get("/")
 def home():
-    return {"message": "AgriConnect Production API is live with Fixed Metadata & Order Tracking."}
+    return {"message": "AgriConnect Production API is live with Fixed Metadata & Duplicate Account Prevention."}
 
-# --- 1. FARMER SIGN-UP (With Duplicate Guard) ---
+# --- 1. FARMER SIGN-UP (Fixed Duplicate & Metadata Saving) ---
 @app.post("/api/v1/auth/signup")
 def farmer_signup(data: SignupRequest):
     try:
@@ -64,15 +64,20 @@ def farmer_signup(data: SignupRequest):
                 }
             }
         })
-        if not res.user:
-            raise HTTPException(status_code=400, detail="Registration failed or email already registered.")
+        
+        if not res.user or (res.user.identities and len(res.user.identities) == 0):
+            raise HTTPException(status_code=400, detail="An account with this email address already exists.")
+            
         return {
             "status": "Success",
             "message": "Farmer account created successfully!",
             "user": res.user
         }
     except Exception as e:
-        raise HTTPException(status_code=400, detail="Email might already be registered or password is too weak.")
+        error_msg = str(e)
+        if "already registered" in error_msg.lower() or "user already registered" in error_msg.lower():
+            raise HTTPException(status_code=400, detail="This email is already registered. Please sign in instead.")
+        raise HTTPException(status_code=400, detail=error_msg)
 
 # --- 2. FARMER LOGIN ---
 @app.post("/api/v1/auth/login")
@@ -104,7 +109,7 @@ def get_products(category: Optional[str] = None):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-# --- 4. FARMER POST PRODUCT WITH PROPER METADATA FIX ---
+# --- 4. FARMER POST PRODUCT WITH PROPER METADATA EXTRACTION ---
 @app.post("/api/v1/products")
 async def create_product(
     product_name: str = Form(...),
