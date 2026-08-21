@@ -46,10 +46,9 @@
                     </div>
                 </div>
                 
-                <div class="flex items-center gap-2 bg-slate-950 p-1.5 rounded-2xl border border-slate-800 shadow-sm">
-                    <button onclick="toggleView('marketplace')" id="btn-market" class="bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer">Marketplace</button>
-                    <button onclick="toggleView('buyer')" id="btn-buyer" class="text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer">🛒 Buyer Hub</button>
-                    <button onclick="toggleView('farmer')" id="btn-farmer" class="text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer">🌾 Farmer Portal</button>
+                <!-- DYNAMIC ROLE-BASED NAVIGATION -->
+                <div id="nav-controls" class="flex items-center gap-2 bg-slate-950 p-1.5 rounded-2xl border border-slate-800 shadow-sm">
+                    <!-- Injected dynamically based on whether logged in as buyer or farmer -->
                 </div>
             </div>
         </header>
@@ -64,10 +63,8 @@
                         <p class="text-xs text-slate-400 max-w-lg">Directly sourced from verified local farmers. Search local names (e.g. Kontomire, Garden Eggs, Yam, Plantain) or English equivalents.</p>
                     </div>
                     
-                    <!-- DYNAMIC AUTOFILL-FREE SEARCH CONTAINER -->
-                    <div id="search-container-wrapper" class="w-full md:w-80 relative">
-                        <!-- Search input injected via JS to block browser email matching -->
-                    </div>
+                    <!-- AUTOFILL-FREE SEARCH CONTAINER -->
+                    <div id="search-container-wrapper" class="w-full md:w-80 relative"></div>
                 </div>
 
                 <!-- Categories -->
@@ -268,11 +265,11 @@
         let searchKeyword = "";
         let farmerToken = localStorage.getItem("farmer_token") || "";
         let buyerToken = localStorage.getItem("buyer_token") || "";
+        let activeRole = localStorage.getItem("agri_role") || "";
         
         let cart = JSON.parse(localStorage.getItem("agri_cart")) || [];
         let favorites = JSON.parse(localStorage.getItem("agri_favorites")) || [];
 
-        // Dynamically inject search input via JavaScript to completely prevent Chrome autofill email matching
         window.addEventListener('DOMContentLoaded', () => {
             const wrapper = document.getElementById('search-container-wrapper');
             if (wrapper) {
@@ -289,22 +286,42 @@
             if (localStorage.getItem("agri_entered")) {
                 document.getElementById('view-landing').classList.add('hidden');
                 document.getElementById('main-app-container').classList.remove('hidden');
+                renderHeaderNav();
                 loadProducts();
             }
         });
 
         function enterApp(role) {
             localStorage.setItem("agri_entered", "true");
+            localStorage.setItem("agri_role", role);
+            activeRole = role;
             document.getElementById('view-landing').classList.add('hidden');
             document.getElementById('main-app-container').classList.remove('hidden');
+            renderHeaderNav();
             if (role === 'buyer') toggleView('buyer');
             else toggleView('farmer');
         }
 
         function returnToLanding() {
             localStorage.removeItem("agri_entered");
+            localStorage.removeItem("agri_role");
             document.getElementById('main-app-container').classList.add('hidden');
             document.getElementById('view-landing').classList.remove('hidden');
+        }
+
+        function renderHeaderNav() {
+            const nav = document.getElementById('nav-controls');
+            if (activeRole === 'buyer') {
+                nav.innerHTML = `
+                    <button onclick="toggleView('marketplace')" id="btn-market" class="bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer">Marketplace</button>
+                    <button onclick="toggleView('buyer')" id="btn-buyer" class="text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer">🛒 Buyer Hub</button>
+                `;
+            } else {
+                nav.innerHTML = `
+                    <button onclick="toggleView('marketplace')" id="btn-market" class="bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer">Marketplace</button>
+                    <button onclick="toggleView('farmer')" id="btn-farmer" class="text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer">🌾 Farmer Portal</button>
+                `;
+            }
         }
 
         function toggleView(view) {
@@ -312,22 +329,22 @@
             document.getElementById('view-buyer').classList.add('hidden');
             document.getElementById('view-farmer').classList.add('hidden');
             
-            document.getElementById('btn-market').className = "text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer";
-            document.getElementById('btn-buyer').className = "text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer";
-            document.getElementById('btn-farmer').className = "text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer";
+            if(document.getElementById('btn-market')) document.getElementById('btn-market').className = "text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer";
+            if(document.getElementById('btn-buyer')) document.getElementById('btn-buyer').className = "text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer";
+            if(document.getElementById('btn-farmer')) document.getElementById('btn-farmer').className = "text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer";
 
             if (view === 'marketplace') {
                 document.getElementById('view-marketplace').classList.remove('hidden');
-                document.getElementById('btn-market').className = "bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer";
+                if(document.getElementById('btn-market')) document.getElementById('btn-market').className = "bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer";
                 loadProducts();
             } else if (view === 'buyer') {
                 document.getElementById('view-buyer').classList.remove('hidden');
-                document.getElementById('btn-buyer').className = "bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer";
+                if(document.getElementById('btn-buyer')) document.getElementById('btn-buyer').className = "bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer";
                 if (buyerToken) showBuyerDashboard();
                 else switchBuyerAuth('login');
             } else {
                 document.getElementById('view-farmer').classList.remove('hidden');
-                document.getElementById('btn-farmer').className = "bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer";
+                if(document.getElementById('btn-farmer')) document.getElementById('btn-farmer').className = "bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer";
                 if (farmerToken) showDashboardState();
                 else switchAuthMode('login');
             }
@@ -477,9 +494,7 @@
         function logoutBuyer() {
             buyerToken = "";
             localStorage.removeItem("buyer_token");
-            document.getElementById('buyer-dashboard-container').classList.add('hidden');
-            document.getElementById('buyer-auth-container').classList.remove('hidden');
-            switchBuyerAuth('login');
+            returnToLanding();
         }
 
         function addToCart(id, name, price, unit, maxStock) {
@@ -742,8 +757,7 @@
         function logoutFarmer() {
             farmerToken = "";
             localStorage.removeItem("farmer_token");
-            document.getElementById('farmer-dashboard-box').classList.add('hidden');
-            switchAuthMode('login');
+            returnToLanding();
         }
 
         async function loadMyListings() {
