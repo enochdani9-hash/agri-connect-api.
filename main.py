@@ -6,7 +6,7 @@ from supabase import create_client, Client
 import os
 import resend
 
-app = FastAPI(title="AgriConnect Production API", version="2.11")
+app = FastAPI(title="AgriConnect Production API", version="2.12")
 
 # --- CORS VIP PASS ---
 app.add_middleware(
@@ -40,19 +40,19 @@ class LoginRequest(BaseModel):
 class OrderRequest(BaseModel, extra="allow"):
     buyer_name: str
     buyer_phone: str
+    buyer_location: Optional[str] = "Accra"
     item_id: int
     quantity_ordered: int
     delivery_option: str
 
 @app.get("/")
 def home():
-    return {"message": "AgriConnect Production API is live with Strict Duplicate Protection."}
+    return {"message": "AgriConnect Production API is live with Buyer Location & Advanced Search Support."}
 
 # --- 1. FARMER SIGN-UP (Strict Duplicate Block via Admin Check) ---
 @app.post("/api/v1/auth/signup")
 def farmer_signup(data: SignupRequest):
     try:
-        # Check if email already exists using Supabase admin list
         existing_users = supabase.auth.admin.list_users()
         for user in existing_users:
             if user.email.lower() == data.email.lower():
@@ -98,16 +98,26 @@ def farmer_login(data: LoginRequest):
     except Exception as e:
         raise HTTPException(status_code=401, detail="Invalid email or password.")
 
-# --- 3. GET ALL MARKETPLACE PRODUCTS ---
+# --- 3. GET ALL MARKETPLACE PRODUCTS WITH SEARCH ---
 @app.get("/api/v1/products")
-def get_products(category: Optional[str] = None):
+def get_products(category: Optional[str] = None, search: Optional[str] = None):
     try:
         query = supabase.table("products").select("*")
         if category and category.lower() != "all":
             query = query.ilike("category", category)
         
         response = query.execute()
-        return {"total_listings": len(response.data), "results": response.data}
+        data = response.data
+
+        # Filter by search term locally if provided (matches English or Ghanaian local names)
+        if search:
+            s = search.lower()
+            data = [
+                item for item in data 
+                if s in item["product_name"].lower() or s in item["category"].lower() or s in item.get("region", "").lower()
+            ]
+
+        return {"total_listings": len(data), "results": data}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -220,7 +230,7 @@ def delete_product(product_id: int, authorization: Optional[str] = Header(None))
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-# --- 7. PLACE AN ORDER & SAVE RECORD ---
+# --- 7. PLACE AN ORDER & SAVE RECORD (With Buyer Location) ---
 @app.post("/api/v1/order")
 def create_order(order: OrderRequest):
     try:
@@ -248,6 +258,7 @@ def create_order(order: OrderRequest):
             "farmer_name": item["farmer_name"],
             "buyer_name": order.buyer_name,
             "buyer_phone": order.buyer_phone,
+            "buyer_location": order.buyer_location,
             "quantity_ordered": order.quantity_ordered,
             "grand_total": grand_total,
             "delivery_option": order.delivery_option
