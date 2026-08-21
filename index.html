@@ -61,10 +61,17 @@
                         <p class="text-xs text-slate-400 max-w-lg">Directly sourced from verified local farmers. Search local names (e.g. Kontomire, Garden Eggs, Yam, Plantain) or English equivalents.</p>
                     </div>
                     
-                    <!-- AUTOFILL-PROOF SEARCH BAR -->
+                    <!-- BULLETPROOF SEARCH BAR (Tricks Chrome's Scanner) -->
                     <div class="w-full md:w-80 relative">
-                        <input type="text" id="crop-search-box" oninput="handleSearch()" placeholder="Search harvest (e.g. Tomatoes...)" autocomplete="off" class="w-full bg-slate-950 border border-emerald-800/60 rounded-2xl pl-11 pr-4 py-3 text-xs text-white outline-none focus:border-emerald-500 shadow-inner">
-                        <span class="absolute left-4 top-3.5 text-emerald-400 text-sm">🔍</span>
+                        <form autocomplete="off" onsubmit="event.preventDefault();" class="w-full">
+                            <!-- Hidden fake inputs to absorb Chrome's autofill -->
+                            <input type="email" style="display:none" aria-hidden="true">
+                            <input type="password" style="display:none" aria-hidden="true">
+                            
+                            <!-- Actual Search Box -->
+                            <input type="search" id="crop-search-box" name="harvest_query" oninput="handleSearch()" placeholder="Search harvest (e.g. Tomatoes, Yam...)" autocomplete="off" role="presentation" class="w-full bg-slate-950 border border-emerald-800/60 rounded-2xl pl-11 pr-4 py-3 text-xs text-white outline-none focus:border-emerald-500 shadow-inner">
+                            <span class="absolute left-4 top-3.5 text-emerald-400 text-sm">🔍</span>
+                        </form>
                     </div>
                 </div>
 
@@ -266,47 +273,44 @@
         let searchKeyword = "";
         let farmerToken = localStorage.getItem("farmer_token") || "";
         let buyerToken = localStorage.getItem("buyer_token") || "";
-        let activeRole = localStorage.getItem("agri_role") || "";
+        let activeRole = "";
         
         let cart = JSON.parse(localStorage.getItem("agri_cart")) || [];
         let favorites = JSON.parse(localStorage.getItem("agri_favorites")) || [];
 
-        // ALWAYS force landing page to show on a fresh visit unless explicitly entered in this session
+        // ALWAYS force landing page to show on a fresh visit / reload
         window.addEventListener('DOMContentLoaded', () => {
+            // Clear the search box just in case
             const searchBox = document.getElementById('crop-search-box');
-            if (searchBox) {
-                searchBox.value = ""; // Force clear any cached email values
-                setTimeout(() => { searchBox.value = ""; }, 100); // Double-tap clear for stubborn browser autofills
-            }
+            if (searchBox) searchBox.value = ""; 
 
-            if (localStorage.getItem("agri_entered") && activeRole) {
-                document.getElementById('view-landing').classList.add('hidden');
-                document.getElementById('main-app-container').classList.remove('hidden');
-                renderHeaderNav();
-                loadProducts();
-            } else {
-                document.getElementById('view-landing').classList.remove('hidden');
-                document.getElementById('main-app-container').classList.add('hidden');
-            }
+            // Force show the landing gate, hide the main app
+            document.getElementById('view-landing').classList.remove('hidden');
+            document.getElementById('main-app-container').classList.add('hidden');
         });
 
         function enterApp(role) {
-            localStorage.setItem("agri_entered", "true");
-            localStorage.setItem("agri_role", role);
             activeRole = role;
+            
+            // Hide landing gate, show main app
             document.getElementById('view-landing').classList.add('hidden');
             document.getElementById('main-app-container').classList.remove('hidden');
+            
             renderHeaderNav();
-            if (role === 'buyer') toggleView('buyer');
-            else toggleView('farmer');
+            if (role === 'buyer') toggleView('marketplace'); // Buyers generally want to see the market first
+            else toggleView('farmer'); // Farmers want to see their portal first
         }
 
         function returnToLanding() {
-            localStorage.removeItem("agri_entered");
-            localStorage.removeItem("agri_role");
             activeRole = "";
             document.getElementById('main-app-container').classList.add('hidden');
             document.getElementById('view-landing').classList.remove('hidden');
+            
+            // Log out completely when returning to gate
+            buyerToken = "";
+            farmerToken = "";
+            localStorage.removeItem("buyer_token");
+            localStorage.removeItem("farmer_token");
         }
 
         function renderHeaderNav() {
@@ -492,8 +496,6 @@
         }
 
         function logoutBuyer() {
-            buyerToken = "";
-            localStorage.removeItem("buyer_token");
             returnToLanding();
         }
 
@@ -755,8 +757,6 @@
         }
 
         function logoutFarmer() {
-            farmerToken = "";
-            localStorage.removeItem("farmer_token");
             returnToLanding();
         }
 
