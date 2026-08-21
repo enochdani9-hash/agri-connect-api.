@@ -47,9 +47,7 @@
                 </div>
                 
                 <!-- DYNAMIC ROLE-BASED NAVIGATION -->
-                <div id="nav-controls" class="flex items-center gap-2 bg-slate-950 p-1.5 rounded-2xl border border-slate-800 shadow-sm">
-                    <!-- Injected dynamically based on whether logged in as buyer or farmer -->
-                </div>
+                <div id="nav-controls" class="flex items-center gap-2 bg-slate-950 p-1.5 rounded-2xl border border-slate-800 shadow-sm"></div>
             </div>
         </header>
 
@@ -63,8 +61,11 @@
                         <p class="text-xs text-slate-400 max-w-lg">Directly sourced from verified local farmers. Search local names (e.g. Kontomire, Garden Eggs, Yam, Plantain) or English equivalents.</p>
                     </div>
                     
-                    <!-- AUTOFILL-FREE SEARCH CONTAINER -->
-                    <div id="search-container-wrapper" class="w-full md:w-80 relative"></div>
+                    <!-- SEARCH BAR -->
+                    <div class="w-full md:w-80 relative">
+                        <input type="text" id="crop-search-box" oninput="handleSearch()" placeholder="Search harvest (e.g. Tomatoes...)" autocomplete="off" class="w-full bg-slate-950 border border-emerald-800/60 rounded-2xl pl-11 pr-4 py-3 text-xs text-white outline-none focus:border-emerald-500 shadow-inner">
+                        <span class="absolute left-4 top-3.5 text-emerald-400 text-sm">🔍</span>
+                    </div>
                 </div>
 
                 <!-- Categories -->
@@ -270,26 +271,18 @@
         let cart = JSON.parse(localStorage.getItem("agri_cart")) || [];
         let favorites = JSON.parse(localStorage.getItem("agri_favorites")) || [];
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const wrapper = document.getElementById('search-container-wrapper');
-            if (wrapper) {
-                const searchInput = document.createElement('input');
-                searchInput.type = "search";
-                searchInput.id = "crop-search-box";
-                searchInput.placeholder = "Search harvest (e.g. Tomatoes, Yam...)";
-                searchInput.setAttribute("autocomplete", "off");
-                searchInput.className = "w-full bg-slate-950 border border-emerald-800/60 rounded-2xl pl-11 pr-4 py-3 text-xs text-white outline-none focus:border-emerald-500 shadow-inner";
-                searchInput.addEventListener('input', handleSearch);
-                wrapper.appendChild(searchInput);
-            }
-
-            if (localStorage.getItem("agri_entered")) {
-                document.getElementById('view-landing').classList.add('hidden');
-                document.getElementById('main-app-container').classList.remove('hidden');
-                renderHeaderNav();
-                loadProducts();
-            }
-        });
+        // Explicitly check role session state on load
+        if (localStorage.getItem("agri_entered") && activeRole) {
+            document.getElementById('view-landing').classList.add('hidden');
+            document.getElementById('main-app-container').classList.remove('hidden');
+            renderHeaderNav();
+            loadProducts();
+        } else {
+            localStorage.removeItem("agri_entered");
+            localStorage.removeItem("agri_role");
+            document.getElementById('view-landing').classList.remove('hidden');
+            document.getElementById('main-app-container').classList.add('hidden');
+        }
 
         function enterApp(role) {
             localStorage.setItem("agri_entered", "true");
@@ -305,6 +298,7 @@
         function returnToLanding() {
             localStorage.removeItem("agri_entered");
             localStorage.removeItem("agri_role");
+            activeRole = "";
             document.getElementById('main-app-container').classList.add('hidden');
             document.getElementById('view-landing').classList.remove('hidden');
         }
