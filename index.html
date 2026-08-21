@@ -6,98 +6,125 @@
     <title>AgriConnect | Global P2P Agricultural Marketplace</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://js.paystack.co/v1/inline.js"></script>
+    <style>
+        /* Custom Ultra-Modern Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #020617; } /* slate-950 */
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; } /* slate-800 */
+        ::-webkit-scrollbar-thumb:hover { background: #10b981; } /* emerald-500 */
+        
+        /* Smooth Fade In Animation */
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen selection:bg-emerald-500 selection:text-white">
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen selection:bg-emerald-500 selection:text-white relative overflow-x-hidden">
+
+    <!-- Ambient Background Glows -->
+    <div class="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-teal-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
 
     <!-- WELCOME LANDING GATE -->
-    <div id="view-landing" class="min-h-screen flex items-center justify-center p-6 relative overflow-hidden bg-gradient-to-br from-slate-950 via-emerald-950/20 to-slate-950 z-50">
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.08)_0,transparent_70%)]"></div>
-        <div class="max-w-xl w-full bg-slate-900/90 backdrop-blur-xl border border-emerald-500/20 rounded-3xl p-8 shadow-2xl relative z-10 text-center space-y-8">
-            <div class="w-20 h-20 mx-auto rounded-3xl bg-emerald-600/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 text-3xl shadow-inner animate-pulse">🌍</div>
+    <div id="view-landing" class="min-h-screen flex items-center justify-center p-6 relative overflow-hidden z-50">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
+        <div class="max-w-xl w-full bg-slate-900/60 backdrop-blur-2xl border border-white/5 rounded-[2rem] p-10 shadow-[0_0_50px_-12px_rgba(16,185,129,0.15)] relative z-10 text-center space-y-8 fade-in">
+            <div class="w-24 h-24 mx-auto rounded-[2rem] bg-gradient-to-br from-emerald-500/20 to-teal-500/5 border border-emerald-500/30 flex items-center justify-center text-4xl shadow-inner animate-pulse">🌍</div>
             <div>
-                <h1 class="text-3xl font-black tracking-tight text-white mb-2">Welcome to AgriConnect <span class="text-emerald-400 text-xs px-2.5 py-1 bg-emerald-950 border border-emerald-800 rounded-full">GLOBAL</span></h1>
-                <p class="text-xs text-slate-400">The borderless Direct Farm-to-Consumer network. Buy and sell harvests anywhere in the world.</p>
+                <h1 class="text-4xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-slate-400 mb-3">AgriConnect <span class="text-emerald-400 text-[10px] font-extrabold px-2.5 py-1 bg-emerald-950/80 border border-emerald-800/50 rounded-full tracking-widest align-middle ml-2 shadow-[0_0_15px_rgba(16,185,129,0.3)]">GLOBAL</span></h1>
+                <p class="text-sm text-slate-400 font-medium px-4">The borderless Direct Farm-to-Consumer network. Buy and sell harvests anywhere in the world.</p>
             </div>
             
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                <button onclick="enterApp('buyer')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold p-5 rounded-2xl transition shadow-lg shadow-emerald-900/40 flex flex-col items-center gap-2 cursor-pointer group">
-                    <span class="text-2xl group-hover:scale-110 transition">🛒</span>
-                    <span class="text-sm">I'm a Global Buyer</span>
-                    <span class="text-[10px] text-emerald-200 font-normal">Source international produce</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4">
+                <button onclick="enterApp('buyer')" class="bg-gradient-to-b from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-bold p-6 rounded-3xl transition-all duration-300 shadow-[0_10px_30px_-10px_rgba(16,185,129,0.5)] hover:shadow-[0_15px_40px_-10px_rgba(16,185,129,0.7)] hover:-translate-y-1 flex flex-col items-center gap-3 cursor-pointer group border border-emerald-400/20">
+                    <span class="text-3xl group-hover:scale-125 transition-transform duration-300 drop-shadow-md">🛒</span>
+                    <span class="text-sm tracking-wide">I'm a Global Buyer</span>
+                    <span class="text-[11px] text-emerald-100/70 font-normal">Source international produce</span>
                 </button>
-                <button onclick="enterApp('farmer')" class="bg-slate-800 hover:bg-slate-700 text-white font-bold p-5 rounded-2xl transition border border-slate-700 flex flex-col items-center gap-2 cursor-pointer group">
-                    <span class="text-2xl group-hover:scale-110 transition">🌾</span>
-                    <span class="text-sm">I'm a Farmer/Producer</span>
-                    <span class="text-[10px] text-slate-400 font-normal">Sell to international markets</span>
+                <button onclick="enterApp('farmer')" class="bg-slate-800/80 hover:bg-slate-700 backdrop-blur-md text-white font-bold p-6 rounded-3xl transition-all duration-300 border border-slate-600/50 hover:border-slate-500 hover:shadow-xl hover:-translate-y-1 flex flex-col items-center gap-3 cursor-pointer group">
+                    <span class="text-3xl group-hover:scale-125 transition-transform duration-300 drop-shadow-md">🌾</span>
+                    <span class="text-sm tracking-wide">I'm a Producer</span>
+                    <span class="text-[11px] text-slate-400 font-normal">Sell to international markets</span>
                 </button>
             </div>
         </div>
     </div>
 
     <!-- MAIN APP CONTAINER -->
-    <div id="main-app-container" class="hidden">
-        <header class="bg-slate-900/90 backdrop-blur-md border-b border-emerald-900/40 sticky top-0 z-50">
-            <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-                <div class="flex items-center gap-3 cursor-pointer" onclick="returnToLanding()">
-                    <div class="w-10 h-10 rounded-2xl bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xl shadow-inner">🌍</div>
+    <div id="main-app-container" class="hidden relative z-10">
+        <header class="bg-slate-950/70 backdrop-blur-xl border-b border-white/5 sticky top-0 z-50 transition-all duration-300">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-4 cursor-pointer group" onclick="returnToLanding()">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/5 border border-emerald-500/30 flex items-center justify-center text-xl group-hover:scale-105 transition-transform">🌍</div>
                     <div>
-                        <h1 class="text-xl font-black tracking-tight text-white flex items-center gap-2">AgriConnect</h1>
-                        <p class="text-[11px] text-slate-400">Global Trade Network</p>
+                        <h1 class="text-xl font-black tracking-tight text-white group-hover:text-emerald-400 transition-colors">AgriConnect</h1>
+                        <p class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Global Trade Network</p>
                     </div>
                 </div>
                 
-                <div id="nav-controls" class="flex items-center gap-2 bg-slate-950 p-1.5 rounded-2xl border border-slate-800 shadow-sm"></div>
+                <div id="nav-controls" class="flex items-center gap-1.5 bg-slate-900/80 p-1.5 rounded-2xl border border-white/5 shadow-inner"></div>
             </div>
         </header>
 
-        <main class="max-w-7xl mx-auto px-6 py-8">
+        <main class="max-w-7xl mx-auto px-6 py-10">
 
             <!-- MARKETPLACE VIEW -->
-            <div id="view-marketplace">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 bg-gradient-to-r from-emerald-950/40 via-slate-900 to-slate-900 p-8 rounded-3xl border border-emerald-900/30 shadow-2xl">
-                    <div>
-                        <h2 class="text-3xl font-black text-white mb-2 tracking-tight">Global Harvests</h2>
-                        <p class="text-xs text-slate-400 max-w-lg">Sourced from verified farms worldwide. Search by product, category, or country origin.</p>
+            <div id="view-marketplace" class="fade-in">
+                <div class="flex flex-col lg:flex-row justify-between items-center gap-8 mb-10 bg-slate-900/40 backdrop-blur-xl border border-white/5 p-8 lg:p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-transparent pointer-events-none"></div>
+                    <div class="relative z-10">
+                        <h2 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 mb-3 tracking-tight">Global Harvests</h2>
+                        <p class="text-sm text-slate-400 max-w-lg leading-relaxed">Sourced directly from verified farms worldwide. Search by product, category, or country origin.</p>
                     </div>
                     
-                    <div class="w-full md:w-80 relative">
-                        <form autocomplete="off" onsubmit="event.preventDefault();" class="w-full">
+                    <div class="w-full lg:w-[22rem] relative z-10">
+                        <form autocomplete="off" onsubmit="event.preventDefault();" class="w-full relative group">
                             <input type="email" style="display:none" aria-hidden="true">
                             <input type="password" style="display:none" aria-hidden="true">
-                            <input type="search" id="crop-search-box" name="harvest_query" oninput="handleSearch()" placeholder="Search (e.g. Rice, Cocoa, Singapore...)" autocomplete="off" role="presentation" class="w-full bg-slate-950 border border-emerald-800/60 rounded-2xl pl-11 pr-4 py-3 text-xs text-white outline-none focus:border-emerald-500 shadow-inner">
-                            <span class="absolute left-4 top-3.5 text-emerald-400 text-sm">🔍</span>
+                            <div class="absolute inset-0 bg-emerald-500/20 blur-xl rounded-full group-hover:opacity-100 opacity-0 transition-opacity duration-500 pointer-events-none"></div>
+                            <input type="search" id="crop-search-box" name="harvest_query" oninput="handleSearch()" placeholder="Search (e.g. Cocoa, Singapore...)" autocomplete="off" role="presentation" class="w-full bg-slate-950/80 backdrop-blur-md border border-slate-700/50 rounded-2xl pl-12 pr-4 py-4 text-sm text-white outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all shadow-inner relative z-10">
+                            <span class="absolute left-4 top-4 text-emerald-500 text-lg z-20">🔍</span>
                         </form>
                     </div>
                 </div>
 
-                <div class="flex flex-wrap items-center gap-2 mb-8">
-                    <button onclick="filterCategory('All')" class="category-btn bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer">All Categories</button>
-                    <button onclick="filterCategory('Grains')" class="category-btn bg-slate-900 text-slate-300 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-800 transition border border-slate-800 cursor-pointer">Grains</button>
-                    <button onclick="filterCategory('Vegetables')" class="category-btn bg-slate-900 text-slate-300 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-800 transition border border-slate-800 cursor-pointer">Vegetables</button>
-                    <button onclick="filterCategory('Poultry')" class="category-btn bg-slate-900 text-slate-300 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-800 transition border border-slate-800 cursor-pointer">Poultry</button>
-                    <button onclick="filterCategory('Tubers')" class="category-btn bg-slate-900 text-slate-300 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-800 transition border border-slate-800 cursor-pointer">Tubers</button>
+                <div class="flex flex-wrap items-center gap-3 mb-10">
+                    <button onclick="filterCategory('All')" class="category-btn bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-[0_4px_15px_-3px_rgba(16,185,129,0.4)]">All Categories</button>
+                    <button onclick="filterCategory('Grains')" class="category-btn bg-slate-900 border border-slate-800 hover:border-slate-600 text-slate-300 px-5 py-2.5 rounded-xl text-xs font-bold transition-all">Grains</button>
+                    <button onclick="filterCategory('Vegetables')" class="category-btn bg-slate-900 border border-slate-800 hover:border-slate-600 text-slate-300 px-5 py-2.5 rounded-xl text-xs font-bold transition-all">Vegetables</button>
+                    <button onclick="filterCategory('Poultry')" class="category-btn bg-slate-900 border border-slate-800 hover:border-slate-600 text-slate-300 px-5 py-2.5 rounded-xl text-xs font-bold transition-all">Poultry</button>
+                    <button onclick="filterCategory('Tubers')" class="category-btn bg-slate-900 border border-slate-800 hover:border-slate-600 text-slate-300 px-5 py-2.5 rounded-xl text-xs font-bold transition-all">Tubers</button>
                 </div>
 
-                <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
             </div>
 
             <!-- BUYER HUB -->
-            <div id="view-buyer" class="hidden max-w-3xl mx-auto space-y-6">
-                <div id="buyer-auth-container" class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl">
-                    <div id="buyer-login-box" class="space-y-4">
-                        <h2 class="text-2xl font-black text-white">Global Buyer Login</h2>
-                        <input type="email" id="buyer-login-email" autocomplete="off" placeholder="Email" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-emerald-500">
-                        <input type="password" id="buyer-login-password" autocomplete="off" placeholder="Password" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-emerald-500">
-                        <button onclick="loginBuyer()" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl text-xs hover:bg-emerald-500 transition cursor-pointer">Sign In</button>
+            <div id="view-buyer" class="hidden max-w-4xl mx-auto space-y-8 fade-in">
+                <div id="buyer-auth-container" class="bg-slate-900/60 backdrop-blur-xl border border-white/5 rounded-[2.5rem] p-10 shadow-2xl relative overflow-hidden max-w-md mx-auto">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <div id="buyer-login-box" class="space-y-5 relative z-10">
+                        <div class="text-center mb-8">
+                            <h2 class="text-3xl font-black text-white">Global Buyer</h2>
+                            <p class="text-sm text-slate-400 mt-2">Log in to manage your shopping cart.</p>
+                        </div>
+                        <input type="email" id="buyer-login-email" autocomplete="off" placeholder="Email" class="w-full bg-slate-950/80 border border-slate-800 focus:border-emerald-500 rounded-xl px-5 py-3.5 text-sm text-white outline-none transition-colors">
+                        <input type="password" id="buyer-login-password" autocomplete="off" placeholder="Password" class="w-full bg-slate-950/80 border border-slate-800 focus:border-emerald-500 rounded-xl px-5 py-3.5 text-sm text-white outline-none transition-colors">
+                        <button onclick="loginBuyer()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold py-4 rounded-xl text-sm hover:scale-[1.02] transition-transform shadow-lg shadow-emerald-900/30">Sign In</button>
                         <p id="buyer-login-err" class="text-rose-400 text-xs text-center"></p>
-                        <p class="text-xs text-slate-400 text-center pt-2">New buyer? <button onclick="switchBuyerAuth('signup')" class="text-emerald-400 font-bold hover:underline cursor-pointer">Register</button></p>
+                        <p class="text-sm text-slate-400 text-center pt-4 border-t border-slate-800">New buyer? <button onclick="switchBuyerAuth('signup')" class="text-emerald-400 font-bold hover:text-emerald-300 transition">Register here</button></p>
                     </div>
 
-                    <div id="buyer-signup-box" class="hidden space-y-4">
-                        <h2 class="text-2xl font-black text-white">Create Buyer Account</h2>
-                        <div class="grid grid-cols-2 gap-3">
-                            <input type="text" id="buyer-su-name" autocomplete="off" placeholder="Full Name" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none">
-                            <select id="buyer-su-country" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
+                    <div id="buyer-signup-box" class="hidden space-y-5 relative z-10">
+                        <div class="text-center mb-8">
+                            <h2 class="text-3xl font-black text-white">Create Account</h2>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="text" id="buyer-su-name" autocomplete="off" placeholder="Full Name" class="bg-slate-950/80 border border-slate-800 focus:border-emerald-500 rounded-xl px-4 py-3 text-sm text-white outline-none transition">
+                            <select id="buyer-su-country" class="bg-slate-950/80 border border-slate-800 focus:border-emerald-500 rounded-xl px-4 py-3 text-sm text-white outline-none transition appearance-none">
                                 <option value="Ghana">🇬🇭 Ghana</option>
                                 <option value="Singapore">🇸🇬 Singapore</option>
                                 <option value="China">🇨🇳 China</option>
@@ -106,110 +133,164 @@
                                 <option value="Haiti">🇭🇹 Haiti</option>
                             </select>
                         </div>
-                        <div class="grid grid-cols-2 gap-3">
-                            <input type="text" id="buyer-su-phone" autocomplete="off" placeholder="Phone Code & Number" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none">
-                            <input type="text" id="buyer-su-loc" autocomplete="off" placeholder="City / Delivery Address" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none">
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="text" id="buyer-su-phone" autocomplete="off" placeholder="Int. Phone" class="bg-slate-950/80 border border-slate-800 focus:border-emerald-500 rounded-xl px-4 py-3 text-sm text-white outline-none transition">
+                            <input type="text" id="buyer-su-loc" autocomplete="off" placeholder="City / Address" class="bg-slate-950/80 border border-slate-800 focus:border-emerald-500 rounded-xl px-4 py-3 text-sm text-white outline-none transition">
                         </div>
-                        <input type="email" id="buyer-su-email" autocomplete="off" placeholder="Email Address" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none">
-                        <input type="password" id="buyer-su-password" autocomplete="off" placeholder="Password" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none">
-                        <button onclick="signupBuyer()" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl text-xs hover:bg-emerald-500 transition cursor-pointer">Register</button>
+                        <input type="email" id="buyer-su-email" autocomplete="off" placeholder="Email Address" class="w-full bg-slate-950/80 border border-slate-800 focus:border-emerald-500 rounded-xl px-4 py-3 text-sm text-white outline-none transition">
+                        <input type="password" id="buyer-su-password" autocomplete="off" placeholder="Password" class="w-full bg-slate-950/80 border border-slate-800 focus:border-emerald-500 rounded-xl px-4 py-3 text-sm text-white outline-none transition">
+                        <button onclick="signupBuyer()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold py-4 rounded-xl text-sm hover:scale-[1.02] transition-transform shadow-lg shadow-emerald-900/30">Register Securely</button>
                         <p id="buyer-su-err" class="text-rose-400 text-xs text-center"></p>
-                        <p class="text-xs text-slate-400 text-center pt-2">Have an account? <button onclick="switchBuyerAuth('login')" class="text-emerald-400 font-bold hover:underline cursor-pointer">Sign in</button></p>
+                        <p class="text-sm text-slate-400 text-center pt-4 border-t border-slate-800">Have an account? <button onclick="switchBuyerAuth('login')" class="text-emerald-400 font-bold hover:text-emerald-300 transition">Sign in</button></p>
                     </div>
                 </div>
 
-                <div id="buyer-dashboard-container" class="hidden space-y-6">
-                    <div class="flex justify-between items-center bg-slate-900 p-4 rounded-2xl border border-slate-800">
-                        <div>
-                            <p class="text-[10px] text-emerald-400 font-black tracking-widest uppercase">Global Consumer</p>
-                            <p id="buyer-display-name" class="font-extrabold text-white text-base"></p>
+                <div id="buyer-dashboard-container" class="hidden space-y-8">
+                    <div class="flex justify-between items-center bg-slate-900/80 backdrop-blur-md p-6 rounded-[2rem] border border-white/5 shadow-lg">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-xl border border-slate-700">👤</div>
+                            <div>
+                                <p class="text-[10px] text-emerald-400 font-bold tracking-widest uppercase mb-1">Verified Consumer</p>
+                                <p id="buyer-display-name" class="font-black text-white text-xl tracking-tight"></p>
+                            </div>
                         </div>
-                        <button onclick="logoutBuyer()" class="text-xs bg-slate-950 text-slate-300 border border-slate-700 px-3 py-1.5 rounded-xl hover:bg-slate-800 font-semibold transition cursor-pointer">Log Out</button>
+                        <button onclick="logoutBuyer()" class="text-xs bg-rose-500/10 text-rose-400 border border-rose-500/20 px-4 py-2 rounded-xl hover:bg-rose-500/20 font-bold transition cursor-pointer">Log Out</button>
                     </div>
 
-                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl">
-                        <div class="flex justify-between items-center mb-6 border-b border-slate-800 pb-4">
-                            <h2 class="text-2xl font-black text-white">Shopping Cart</h2>
-                            <span id="cart-count-badge" class="bg-emerald-950 text-emerald-400 border border-emerald-800 px-3 py-1 rounded-full text-xs font-bold">0 items</span>
+                    <div class="grid lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2 bg-slate-900/60 backdrop-blur-xl border border-white/5 rounded-[2rem] p-8 shadow-xl">
+                            <div class="flex justify-between items-center mb-8 pb-4 border-b border-slate-800">
+                                <h2 class="text-2xl font-black text-white">Shopping Cart</h2>
+                                <span id="cart-count-badge" class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-full text-xs font-bold">0 items</span>
+                            </div>
+                            <div id="cart-items-container" class="space-y-4 mb-8 max-h-96 overflow-y-auto pr-2"></div>
                         </div>
-                        <div id="cart-items-container" class="space-y-3 mb-6 max-h-72 overflow-y-auto pr-2"></div>
-                        <button onclick="checkoutCart()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl text-xs hover:bg-emerald-500 transition shadow-lg shadow-emerald-900/30 cursor-pointer">Process Global Checkout</button>
+                        
+                        <div class="bg-slate-900/60 backdrop-blur-xl border border-white/5 rounded-[2rem] p-8 shadow-xl h-fit">
+                            <h3 class="text-xl font-black text-white mb-6">Order Summary</h3>
+                            <div class="space-y-4 bg-slate-950/50 p-6 rounded-2xl border border-slate-800 mb-6">
+                                <div class="flex justify-between text-sm text-slate-400">
+                                    <span>Subtotal</span>
+                                    <span id="cart-subtotal" class="font-bold text-white">GH₵ 0.00</span>
+                                </div>
+                                <div class="flex justify-between text-sm text-slate-400">
+                                    <span>Global Logistics</span>
+                                    <span class="font-bold text-emerald-400">+ GH₵ 50.00</span>
+                                </div>
+                                <div class="border-t border-slate-800 pt-4 flex justify-between items-end">
+                                    <span class="text-sm font-bold text-white">Total</span>
+                                    <span id="cart-grandtotal" class="text-emerald-400 text-2xl font-black">GH₵ 50.00</span>
+                                </div>
+                            </div>
+                            <button onclick="checkoutCart()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold py-4 rounded-xl text-sm hover:scale-[1.02] transition-transform shadow-[0_10px_20px_-10px_rgba(16,185,129,0.5)]">Process Global Checkout</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- FARMER PORTAL -->
-            <div id="view-farmer" class="hidden max-w-xl mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
-                <div id="farmer-login-box" class="space-y-4">
-                    <div class="text-center mb-6">
-                        <h2 class="text-2xl font-black text-white">Global Farmer Login</h2>
+            <div id="view-farmer" class="hidden max-w-4xl mx-auto space-y-8 fade-in">
+                <div id="farmer-auth-container" class="bg-slate-900/60 backdrop-blur-xl border border-white/5 rounded-[2.5rem] p-10 shadow-2xl relative overflow-hidden max-w-md mx-auto">
+                    <div id="farmer-login-box" class="space-y-5 relative z-10">
+                        <div class="text-center mb-8">
+                            <h2 class="text-3xl font-black text-white">Producer Login</h2>
+                            <p class="text-sm text-slate-400 mt-2">Manage your global export business.</p>
+                        </div>
+                        <input type="email" id="login-email" autocomplete="off" class="w-full bg-slate-950/80 border border-slate-800 focus:border-emerald-500 rounded-xl px-5 py-3.5 text-sm text-white outline-none transition" placeholder="Email">
+                        <input type="password" id="login-password" autocomplete="off" class="w-full bg-slate-950/80 border border-slate-800 focus:border-emerald-500 rounded-xl px-5 py-3.5 text-sm text-white outline-none transition" placeholder="Password">
+                        <button onclick="loginFarmer()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold py-4 rounded-xl text-sm hover:scale-[1.02] transition-transform shadow-lg shadow-emerald-900/30">Access Dashboard</button>
+                        <p id="login-err" class="text-rose-400 text-xs text-center font-medium"></p>
+                        <p class="text-sm text-slate-400 text-center pt-4 border-t border-slate-800">New producer? <button onclick="switchAuthMode('signup')" class="text-emerald-400 font-bold hover:text-emerald-300">Register Farm</button></p>
                     </div>
-                    <input type="email" id="login-email" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-emerald-500" placeholder="Email">
-                    <input type="password" id="login-password" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-emerald-500" placeholder="Password">
-                    <button onclick="loginFarmer()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl text-xs hover:bg-emerald-500 transition cursor-pointer">Access Dashboard</button>
-                    <p id="login-err" class="text-rose-400 text-xs text-center font-medium"></p>
-                    <p class="text-xs text-slate-400 text-center pt-4 border-t border-slate-800">New producer? <button onclick="switchAuthMode('signup')" class="text-emerald-400 font-bold hover:underline cursor-pointer">Register Farm</button></p>
+
+                    <div id="farmer-signup-box" class="hidden space-y-5 relative z-10">
+                        <div class="text-center mb-8">
+                            <h2 class="text-3xl font-black text-white">Register Farm Profile</h2>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="text" id="signup-name" autocomplete="off" class="bg-slate-950/80 border border-slate-800 focus:border-emerald-500 rounded-xl px-4 py-3 text-sm text-white outline-none" placeholder="Farm Name">
+                            <select id="signup-country" class="bg-slate-950/80 border border-slate-800 focus:border-emerald-500 rounded-xl px-4 py-3 text-sm text-white outline-none appearance-none">
+                                <option value="Ghana">🇬🇭 Ghana</option>
+                                <option value="Singapore">🇸🇬 Singapore</option>
+                                <option value="China">🇨🇳 China</option>
+                                <option value="USA">🇺🇸 United States</option>
+                                <option value="Germany">🇩🇪 Germany</option>
+                                <option value="Haiti">🇭🇹 Haiti</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="text" id="signup-region" autocomplete="off" class="bg-slate-950/80 border border-slate-800 focus:border-emerald-500 rounded-xl px-4 py-3 text-sm text-white outline-none" placeholder="Region">
+                            <input type="text" id="signup-phone" autocomplete="off" class="bg-slate-950/80 border border-slate-800 focus:border-emerald-500 rounded-xl px-4 py-3 text-sm text-white outline-none" placeholder="Int. Phone">
+                        </div>
+                        <input type="email" id="signup-email" autocomplete="off" class="w-full bg-slate-950/80 border border-slate-800 focus:border-emerald-500 rounded-xl px-4 py-3 text-sm text-white outline-none" placeholder="Email Address">
+                        <input type="password" id="signup-password" autocomplete="off" class="w-full bg-slate-950/80 border border-slate-800 focus:border-emerald-500 rounded-xl px-4 py-3 text-sm text-white outline-none" placeholder="Password">
+                        <button onclick="signupFarmer()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold py-4 rounded-xl text-sm hover:scale-[1.02] transition-transform">Register</button>
+                        <p id="signup-err" class="text-rose-400 text-xs text-center font-medium"></p>
+                        <p class="text-sm text-slate-400 text-center pt-4 border-t border-slate-800">Have an account? <button onclick="switchAuthMode('login')" class="text-emerald-400 font-bold hover:text-emerald-300">Sign in</button></p>
+                    </div>
                 </div>
 
-                <div id="farmer-signup-box" class="hidden space-y-4">
-                    <div class="text-center mb-6">
-                        <h2 class="text-2xl font-black text-white">Register Farm Profile</h2>
+                <div id="farmer-dashboard-box" class="hidden space-y-8">
+                    <div class="flex justify-between items-center bg-slate-900/80 backdrop-blur-md p-6 rounded-[2rem] border border-white/5 shadow-lg">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-emerald-950 rounded-full flex items-center justify-center text-xl border border-emerald-800">🚜</div>
+                            <div>
+                                <p class="text-[10px] text-emerald-400 font-bold tracking-widest uppercase mb-1">Verified Producer</p>
+                                <p id="farmer-display-name" class="font-black text-white text-xl tracking-tight"></p>
+                            </div>
+                        </div>
+                        <button onclick="logoutFarmer()" class="text-xs bg-rose-500/10 text-rose-400 border border-rose-500/20 px-4 py-2 rounded-xl hover:bg-rose-500/20 font-bold transition cursor-pointer">Log Out</button>
                     </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <input type="text" id="signup-name" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none" placeholder="Farm / Producer Name">
-                        <select id="signup-country" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
-                            <option value="Ghana">🇬🇭 Ghana</option>
-                            <option value="Singapore">🇸🇬 Singapore</option>
-                            <option value="China">🇨🇳 China</option>
-                            <option value="USA">🇺🇸 United States</option>
-                            <option value="Germany">🇩🇪 Germany</option>
-                            <option value="Haiti">🇭🇹 Haiti</option>
-                        </select>
-                    </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <input type="text" id="signup-region" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none" placeholder="State / Region">
-                        <input type="text" id="signup-phone" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none" placeholder="Int. Phone Code & No.">
-                    </div>
-                    <input type="email" id="signup-email" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none" placeholder="Email Address">
-                    <input type="password" id="signup-password" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none" placeholder="Password">
-                    <button onclick="signupFarmer()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl text-xs hover:bg-emerald-500 transition cursor-pointer">Register</button>
-                    <p id="signup-err" class="text-rose-400 text-xs text-center font-medium"></p>
-                    <p class="text-xs text-slate-400 text-center pt-4 border-t border-slate-800">Have an account? <button onclick="switchAuthMode('login')" class="text-emerald-400 font-bold hover:underline cursor-pointer">Sign in</button></p>
-                </div>
 
-                <div id="farmer-dashboard-box" class="hidden space-y-6">
-                    <div class="flex justify-between items-center bg-slate-950 p-4 rounded-2xl border border-slate-800 shadow-inner">
-                        <div>
-                            <p class="text-[10px] text-emerald-400 font-black tracking-widest uppercase">Verified Global Producer</p>
-                            <p id="farmer-display-name" class="font-extrabold text-white text-base"></p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-gradient-to-br from-emerald-900/40 to-slate-900 border border-emerald-500/20 p-8 rounded-[2rem] shadow-xl relative overflow-hidden">
+                            <div class="absolute right-0 top-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl"></div>
+                            <p class="text-xs text-emerald-400 font-bold uppercase tracking-wider mb-2 relative z-10">Total Global Revenue</p>
+                            <p id="stat-revenue" class="text-4xl font-black text-white tracking-tight relative z-10">0.00</p>
                         </div>
-                        <button onclick="logoutFarmer()" class="text-xs bg-slate-900 text-slate-300 border border-slate-700 px-3 py-1.5 rounded-xl hover:bg-slate-800 font-semibold transition cursor-pointer">Log Out</button>
-                    </div>
-                    <div class="border-t border-slate-800 pt-6">
-                        <h3 class="font-extrabold text-sm text-white mb-3 uppercase tracking-wider">Post New Harvest</h3>
-                        <div class="space-y-3">
-                            <input type="text" id="new-name" placeholder="Product Name" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none">
-                            <div class="grid grid-cols-2 gap-3">
-                                <input type="text" id="new-category" placeholder="Category (e.g. Grains)" autocomplete="off" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none">
-                                <input type="text" id="new-unit" placeholder="Unit (e.g. kg, tons)" autocomplete="off" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none">
-                            </div>
-                            <div class="grid grid-cols-3 gap-3">
-                                <select id="new-currency" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
-                                    <option value="USD">USD ($)</option>
-                                    <option value="GHS">GHS (GH₵)</option>
-                                    <option value="SGD">SGD (S$)</option>
-                                    <option value="EUR">EUR (€)</option>
-                                </select>
-                                <input type="number" id="new-price" placeholder="Price" autocomplete="off" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none col-span-2">
-                            </div>
-                            <input type="number" id="new-qty" placeholder="Quantity Available" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none">
-                            <input type="file" id="new-image" accept="image/*" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-xs text-slate-400 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-emerald-600 file:text-white cursor-pointer">
-                            <button onclick="postProduct()" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl text-xs hover:bg-emerald-500 transition shadow-md cursor-pointer">Publish Globally</button>
+                        <div class="bg-slate-900/60 backdrop-blur-md border border-slate-800 p-8 rounded-[2rem] shadow-xl relative overflow-hidden">
+                            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-2 relative z-10">Completed Export Sales</p>
+                            <p id="stat-orders" class="text-4xl font-black text-white tracking-tight relative z-10">0</p>
                         </div>
                     </div>
-                    <div class="border-t border-slate-800 pt-6">
-                        <h3 class="font-extrabold text-sm text-white mb-3 uppercase tracking-wider">Your Active Inventory</h3>
-                        <div id="my-listings-list" class="space-y-2.5 max-h-44 overflow-y-auto pr-1"></div>
+
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div class="bg-slate-900/60 backdrop-blur-xl border border-white/5 rounded-[2rem] p-8 shadow-xl">
+                            <h3 class="font-black text-xl text-white mb-6">Post New Harvest</h3>
+                            <div class="space-y-4">
+                                <input type="text" id="new-name" placeholder="Product Name" autocomplete="off" class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <input type="text" id="new-category" placeholder="Category" autocomplete="off" class="bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500">
+                                    <input type="text" id="new-unit" placeholder="Unit (e.g. tons)" autocomplete="off" class="bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500">
+                                </div>
+                                <div class="grid grid-cols-3 gap-4">
+                                    <select id="new-currency" class="bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 appearance-none">
+                                        <option value="USD">USD ($)</option>
+                                        <option value="GHS">GHS (GH₵)</option>
+                                        <option value="SGD">SGD (S$)</option>
+                                        <option value="EUR">EUR (€)</option>
+                                    </select>
+                                    <input type="number" id="new-price" placeholder="Price" autocomplete="off" class="bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 col-span-2">
+                                </div>
+                                <input type="number" id="new-qty" placeholder="Quantity Available" autocomplete="off" class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500">
+                                <div class="bg-slate-950/50 border border-dashed border-slate-700 rounded-2xl p-4 text-center hover:border-emerald-500 transition-colors">
+                                    <label class="block text-xs font-bold text-slate-400 mb-2 cursor-pointer">Upload Product Photo</label>
+                                    <input type="file" id="new-image" accept="image/*" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-600/20 file:text-emerald-400 cursor-pointer">
+                                </div>
+                                <button onclick="postProduct()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold py-4 rounded-xl text-sm hover:scale-[1.02] transition-transform shadow-[0_10px_20px_-10px_rgba(16,185,129,0.5)] mt-2">Publish to Global Market</button>
+                            </div>
+                        </div>
+
+                        <div class="space-y-8">
+                            <div class="bg-slate-900/60 backdrop-blur-xl border border-white/5 rounded-[2rem] p-8 shadow-xl">
+                                <h3 class="font-black text-xl text-white mb-6">Active Inventory</h3>
+                                <div id="my-listings-list" class="space-y-3 max-h-64 overflow-y-auto pr-2"></div>
+                            </div>
+                            <div class="bg-slate-900/60 backdrop-blur-xl border border-white/5 rounded-[2rem] p-8 shadow-xl">
+                                <h3 class="font-black text-xl text-white mb-6">Customer Orders</h3>
+                                <div id="sales-history-list" class="space-y-3 max-h-64 overflow-y-auto pr-2"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -220,7 +301,7 @@
     <!-- SCRIPT LOGIC -->
     <script>
         const API_URL = "https://agri-connect-api-3.onrender.com";
-        const PAYSTACK_PUBLIC_KEY = "pk_test_ffde682ae681d0e542d6e7758e2a39a1debff8cd"; // Note: For real global payouts, Stripe Connect integration would replace Paystack here.
+        const PAYSTACK_PUBLIC_KEY = "pk_test_ffde682ae681d0e542d6e7758e2a39a1debff8cd";
         let currentCategory = "All";
         let searchKeyword = "";
         let farmerToken = localStorage.getItem("farmer_token") || "";
@@ -229,8 +310,10 @@
         
         let cart = JSON.parse(localStorage.getItem("agri_cart")) || [];
 
-        // FORCE LANDING PAGE ON EVERY RELOAD
         window.addEventListener('DOMContentLoaded', () => {
+            const searchBox = document.getElementById('crop-search-box');
+            if (searchBox) searchBox.value = ""; 
+
             document.getElementById('view-landing').classList.remove('hidden');
             document.getElementById('main-app-container').classList.add('hidden');
         });
@@ -238,7 +321,11 @@
         function enterApp(role) {
             activeRole = role;
             document.getElementById('view-landing').classList.add('hidden');
-            document.getElementById('main-app-container').classList.remove('hidden');
+            
+            const mainApp = document.getElementById('main-app-container');
+            mainApp.classList.remove('hidden');
+            mainApp.classList.add('fade-in');
+            
             renderHeaderNav();
             if (role === 'buyer') toggleView('marketplace');
             else toggleView('farmer');
@@ -247,7 +334,10 @@
         function returnToLanding() {
             activeRole = "";
             document.getElementById('main-app-container').classList.add('hidden');
-            document.getElementById('view-landing').classList.remove('hidden');
+            const landing = document.getElementById('view-landing');
+            landing.classList.remove('hidden');
+            landing.classList.add('fade-in');
+            
             buyerToken = "";
             farmerToken = "";
             localStorage.removeItem("buyer_token");
@@ -256,15 +346,19 @@
 
         function renderHeaderNav() {
             const nav = document.getElementById('nav-controls');
+            const baseBtn = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer border";
+            const activeBtn = `${baseBtn} bg-emerald-600 text-white border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.4)]`;
+            const inactiveBtn = `${baseBtn} bg-slate-950 text-slate-400 border-slate-800 hover:text-white hover:border-slate-600`;
+
             if (activeRole === 'buyer') {
                 nav.innerHTML = `
-                    <button onclick="toggleView('marketplace')" id="btn-market" class="bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer">Marketplace</button>
-                    <button onclick="toggleView('buyer')" id="btn-buyer" class="text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer">🛒 Buyer Hub</button>
+                    <button onclick="toggleView('marketplace')" id="btn-market" class="${inactiveBtn}">Marketplace</button>
+                    <button onclick="toggleView('buyer')" id="btn-buyer" class="${inactiveBtn}">🛒 Hub</button>
                 `;
             } else {
                 nav.innerHTML = `
-                    <button onclick="toggleView('marketplace')" id="btn-market" class="bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer">Marketplace</button>
-                    <button onclick="toggleView('farmer')" id="btn-farmer" class="text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer">🌾 Farmer Portal</button>
+                    <button onclick="toggleView('marketplace')" id="btn-market" class="${inactiveBtn}">Marketplace</button>
+                    <button onclick="toggleView('farmer')" id="btn-farmer" class="${inactiveBtn}">🌾 Portal</button>
                 `;
             }
         }
@@ -274,24 +368,38 @@
             document.getElementById('view-buyer').classList.add('hidden');
             document.getElementById('view-farmer').classList.add('hidden');
             
-            if(document.getElementById('btn-market')) document.getElementById('btn-market').className = "text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer";
-            if(document.getElementById('btn-buyer')) document.getElementById('btn-buyer').className = "text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer";
-            if(document.getElementById('btn-farmer')) document.getElementById('btn-farmer').className = "text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer";
+            const activeBtnClass = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer border bg-emerald-600 text-white border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.4)]";
+            const inactiveBtnClass = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer border bg-slate-950 text-slate-400 border-slate-800 hover:text-white hover:border-slate-600";
+
+            if(document.getElementById('btn-market')) document.getElementById('btn-market').className = inactiveBtnClass;
+            if(document.getElementById('btn-buyer')) document.getElementById('btn-buyer').className = inactiveBtnClass;
+            if(document.getElementById('btn-farmer')) document.getElementById('btn-farmer').className = inactiveBtnClass;
 
             if (view === 'marketplace') {
                 document.getElementById('view-marketplace').classList.remove('hidden');
-                if(document.getElementById('btn-market')) document.getElementById('btn-market').className = "bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer";
+                document.getElementById('view-marketplace').classList.add('fade-in');
+                if(document.getElementById('btn-market')) document.getElementById('btn-market').className = activeBtnClass;
                 loadProducts();
             } else if (view === 'buyer') {
                 document.getElementById('view-buyer').classList.remove('hidden');
-                if(document.getElementById('btn-buyer')) document.getElementById('btn-buyer').className = "bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer";
+                document.getElementById('view-buyer').classList.add('fade-in');
+                if(document.getElementById('btn-buyer')) document.getElementById('btn-buyer').className = activeBtnClass;
                 if (buyerToken) showBuyerDashboard();
-                else switchBuyerAuth('login');
+                else {
+                    document.getElementById('buyer-auth-container').classList.remove('hidden');
+                    document.getElementById('buyer-dashboard-container').classList.add('hidden');
+                    switchBuyerAuth('login');
+                }
             } else {
                 document.getElementById('view-farmer').classList.remove('hidden');
-                if(document.getElementById('btn-farmer')) document.getElementById('btn-farmer').className = "bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer";
+                document.getElementById('view-farmer').classList.add('fade-in');
+                if(document.getElementById('btn-farmer')) document.getElementById('btn-farmer').className = activeBtnClass;
                 if (farmerToken) showDashboardState();
-                else switchAuthMode('login');
+                else {
+                    document.getElementById('farmer-auth-container').classList.remove('hidden');
+                    document.getElementById('farmer-dashboard-box').classList.add('hidden');
+                    switchAuthMode('login');
+                }
             }
         }
 
@@ -299,9 +407,11 @@
             if (mode === 'signup') {
                 document.getElementById('buyer-login-box').classList.add('hidden');
                 document.getElementById('buyer-signup-box').classList.remove('hidden');
+                document.getElementById('buyer-signup-box').classList.add('fade-in');
             } else {
                 document.getElementById('buyer-signup-box').classList.add('hidden');
                 document.getElementById('buyer-login-box').classList.remove('hidden');
+                document.getElementById('buyer-login-box').classList.add('fade-in');
             }
         }
 
@@ -309,9 +419,11 @@
             if (mode === 'signup') {
                 document.getElementById('farmer-login-box').classList.add('hidden');
                 document.getElementById('farmer-signup-box').classList.remove('hidden');
+                document.getElementById('farmer-signup-box').classList.add('fade-in');
             } else {
                 document.getElementById('farmer-signup-box').classList.add('hidden');
                 document.getElementById('farmer-login-box').classList.remove('hidden');
+                document.getElementById('farmer-login-box').classList.add('fade-in');
             }
         }
 
@@ -319,9 +431,9 @@
             currentCategory = cat;
             document.querySelectorAll('.category-btn').forEach(btn => {
                 if (btn.innerText.includes(cat) || (cat === 'All' && btn.innerText.includes('All'))) {
-                    btn.className = "category-btn bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer";
+                    btn.className = "category-btn bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-[0_4px_15px_-3px_rgba(16,185,129,0.4)]";
                 } else {
-                    btn.className = "category-btn bg-slate-900 text-slate-300 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-800 transition border border-slate-800 cursor-pointer";
+                    btn.className = "category-btn bg-slate-900 border border-slate-800 hover:border-slate-600 text-slate-300 px-5 py-2.5 rounded-xl text-xs font-bold transition-all";
                 }
             });
             loadProducts();
@@ -345,7 +457,7 @@
                 grid.innerHTML = '';
 
                 if (!data.results || data.results.length === 0) {
-                    grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-16 text-sm">No harvest listings found globally.</p>`;
+                    grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-20 text-sm border border-dashed border-slate-800 rounded-3xl">No harvests found matching your criteria.</p>`;
                     return;
                 }
 
@@ -354,25 +466,29 @@
                     const itemCurrency = item.currency || "USD";
                     
                     grid.innerHTML += `
-                        <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-lg flex flex-col justify-between hover:border-emerald-500/50 transition">
-                            <img src="${imgSrc}" class="w-full h-48 object-cover">
-                            <div class="p-5 flex flex-col flex-grow justify-between">
+                        <div class="group bg-slate-900/50 backdrop-blur-sm border border-slate-800/80 hover:border-emerald-500/50 rounded-[2rem] overflow-hidden transition-all duration-300 hover:shadow-[0_15px_40px_-15px_rgba(16,185,129,0.2)] flex flex-col justify-between">
+                            <div class="h-52 overflow-hidden relative">
+                                <img src="${imgSrc}" class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80"></div>
+                                <div class="absolute bottom-3 left-4 flex gap-2">
+                                    <span class="bg-emerald-500/20 backdrop-blur-md text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-3 py-1.5 rounded-full shadow-lg">${item.category}</span>
+                                </div>
+                            </div>
+                            <div class="p-6 flex flex-col flex-grow justify-between">
                                 <div>
-                                    <div class="flex justify-between items-start mb-3">
-                                        <span class="bg-emerald-950 text-emerald-400 border border-emerald-800/60 text-[10px] font-bold px-2.5 py-1 rounded-full">${item.category}</span>
-                                        <span class="text-[11px] text-slate-400 font-medium">📍 ${item.country || 'Global'}</span>
+                                    <div class="flex justify-between items-start mb-1">
+                                        <h3 class="text-xl font-black text-white tracking-tight">${item.product_name}</h3>
                                     </div>
-                                    <h3 class="text-lg font-bold text-white mb-1">${item.product_name}</h3>
-                                    <p class="text-xs text-slate-400 mb-4">Producer: <span class="font-semibold text-slate-200">${item.farmer_name}</span></p>
+                                    <p class="text-xs text-slate-400 mb-5 flex items-center gap-1.5"><span class="text-[10px]">📍</span> ${item.country || 'Global'} • ${item.farmer_name}</p>
                                 </div>
                                 <div>
-                                    <div class="flex justify-between items-baseline mb-4 bg-slate-950 p-3 rounded-2xl border border-slate-800 shadow-inner">
-                                        <span class="text-xl font-black text-emerald-400">${itemCurrency} ${parseFloat(item.price).toFixed(2)}</span>
-                                        <span class="text-xs text-slate-300 font-semibold">${item.quantity_available} ${item.unit}s left</span>
+                                    <div class="flex justify-between items-baseline mb-5 bg-slate-950/60 p-4 rounded-2xl border border-white/5">
+                                        <span class="text-2xl font-black text-emerald-400">${itemCurrency} ${parseFloat(item.price).toFixed(2)}</span>
+                                        <span class="text-xs text-slate-400 font-medium">${item.quantity_available} ${item.unit}s left</span>
                                     </div>
-                                    <div class="grid grid-cols-2 gap-2">
-                                        <button onclick="addToCart(${item.id}, '${item.product_name.replace(/'/g, "\\'")}', ${item.price}, '${itemCurrency}', '${item.unit}', ${item.quantity_available})" class="bg-slate-800 text-emerald-400 border border-emerald-800/50 font-bold py-2.5 rounded-xl text-xs hover:bg-slate-700 transition cursor-pointer">Add to Cart</button>
-                                        <button onclick="openDirectOrder(${item.id}, '${item.product_name.replace(/'/g, "\\'")}', ${item.quantity_available}, '${item.unit}', ${item.price}, '${itemCurrency}')" class="bg-emerald-600 text-white font-bold py-2.5 rounded-xl text-xs hover:bg-emerald-500 transition shadow-md cursor-pointer">Buy Now</button>
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <button onclick="addToCart(${item.id}, '${item.product_name.replace(/'/g, "\\'")}', ${item.price}, '${itemCurrency}', '${item.unit}', ${item.quantity_available})" class="bg-slate-800/80 text-emerald-400 border border-emerald-500/30 font-bold py-3 rounded-xl text-xs hover:bg-slate-700 hover:text-emerald-300 transition-colors">Add to Cart</button>
+                                        <button onclick="openDirectOrder(${item.id}, '${item.product_name.replace(/'/g, "\\'")}', ${item.quantity_available}, '${item.unit}', ${item.price}, '${itemCurrency}')" class="bg-emerald-600 text-white font-bold py-3 rounded-xl text-xs hover:bg-emerald-500 transition-colors shadow-lg shadow-emerald-900/20">Buy Now</button>
                                     </div>
                                 </div>
                             </div>
@@ -421,6 +537,7 @@
         function showBuyerDashboard() {
             document.getElementById('buyer-auth-container').classList.add('hidden');
             document.getElementById('buyer-dashboard-container').classList.remove('hidden');
+            document.getElementById('buyer-dashboard-container').classList.add('fade-in');
             document.getElementById('buyer-display-name').innerText = "Verified Global Shopper";
             updateCartUI();
         }
@@ -454,37 +571,42 @@
             container.innerHTML = '';
             
             if (cart.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-500 text-center py-6">Your shopping cart is empty.</p>`;
+                container.innerHTML = `<div class="bg-slate-950/50 border border-dashed border-slate-800 rounded-2xl p-8 text-center text-slate-500 text-sm">Your shopping cart is empty.</div>`;
                 document.getElementById('cart-count-badge').innerText = "0 items";
+                document.getElementById('cart-subtotal').innerText = "GH₵ 0.00";
+                document.getElementById('cart-grandtotal').innerText = "GH₵ 0.00";
                 return;
             }
 
             let totalItems = 0;
+            let subtotal = 0;
             cart.forEach(item => {
                 totalItems += item.qty;
+                subtotal += item.price * item.qty;
                 container.innerHTML += `
-                    <div class="bg-slate-950 border border-slate-800 p-3 rounded-2xl flex justify-between items-center text-xs">
+                    <div class="bg-slate-950/80 border border-white/5 p-4 rounded-2xl flex justify-between items-center text-sm transition hover:border-slate-700">
                         <div>
                             <p class="font-bold text-white">${item.name}</p>
-                            <p class="text-[11px] text-slate-400">${item.currency} ${item.price} per ${item.unit}</p>
+                            <p class="text-xs text-slate-400 mt-1">${item.currency} ${item.price} per ${item.unit}</p>
                         </div>
-                        <div class="flex items-center gap-3">
-                            <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-800 px-2 py-1 rounded-xl">
-                                <button onclick="updateCartQty(${item.id}, -1)" class="text-slate-400 hover:text-white px-1 font-bold cursor-pointer">-</button>
-                                <span class="font-bold text-white w-6 text-center">${item.qty}</span>
-                                <button onclick="updateCartQty(${item.id}, 1)" class="text-slate-400 hover:text-white px-1 font-bold cursor-pointer">+</button>
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center gap-2 bg-slate-900 border border-slate-700 p-1 rounded-xl">
+                                <button onclick="updateCartQty(${item.id}, -1)" class="text-slate-400 hover:text-white hover:bg-slate-800 w-7 h-7 rounded-lg font-bold transition">-</button>
+                                <span class="font-bold text-white w-6 text-center text-xs">${item.qty}</span>
+                                <button onclick="updateCartQty(${item.id}, 1)" class="text-slate-400 hover:text-white hover:bg-slate-800 w-7 h-7 rounded-lg font-bold transition">+</button>
                             </div>
-                            <span class="font-black text-emerald-400 w-16 text-right">${item.currency} ${(item.price * item.qty).toFixed(2)}</span>
+                            <span class="font-black text-emerald-400 w-20 text-right">${item.currency} ${(item.price * item.qty).toFixed(2)}</span>
                         </div>
                     </div>
                 `;
             });
             document.getElementById('cart-count-badge').innerText = `${totalItems} items`;
+            document.getElementById('cart-subtotal').innerText = `Total Subtotal`; // Simplification due to multi-currency
+            document.getElementById('cart-grandtotal').innerText = `Calculated at Checkout`;
         }
 
         function checkoutCart() {
             if (cart.length === 0) return;
-            // Cross-border dynamic checkout would go here. We will prompt simulation for prototype.
             const buyer_name = prompt("Enter full name:");
             const buyer_email = prompt("Enter email:");
             const buyer_phone = prompt("Enter phone number:");
@@ -503,6 +625,7 @@
 
         function openDirectOrder(itemId, productName, maxStock, unit, unitPrice, currency) {
             const buyer_name = prompt(`Name for ordering ${productName}:`);
+            if(!buyer_name) return;
             const buyer_phone = prompt(`International Phone number:`);
             const buyer_country = prompt(`Enter your Country (e.g. USA, Singapore, Ghana):`);
             const buyer_location = prompt(`Enter full Delivery Address:`);
@@ -561,9 +684,41 @@
         }
 
         async function showDashboardState() {
-            document.getElementById('farmer-signup-box').classList.add('hidden');
-            document.getElementById('farmer-login-box').classList.add('hidden');
+            document.getElementById('farmer-auth-container').classList.add('hidden');
             document.getElementById('farmer-dashboard-box').classList.remove('hidden');
+            document.getElementById('farmer-dashboard-box').classList.add('fade-in');
+            
+            try {
+                const res = await fetch(`${API_URL}/api/v1/farmer/sales`, { headers: { 'Authorization': `Bearer ${farmerToken}` } });
+                const data = await res.json();
+                document.getElementById('farmer-display-name').innerText = data.farmer || "Verified Producer";
+                
+                // Show USD revenue as aggregate for prototype
+                const totalRev = data.revenue_by_currency ? (data.revenue_by_currency['USD'] || 0) : 0;
+                document.getElementById('stat-revenue').innerText = `$ ${parseFloat(totalRev).toFixed(2)}`;
+                document.getElementById('stat-orders').innerText = data.total_orders || 0;
+
+                const container = document.getElementById('sales-history-list');
+                container.innerHTML = '';
+                if (!data.orders || data.orders.length === 0) {
+                    container.innerHTML = `<div class="bg-slate-950/50 border border-dashed border-slate-800 rounded-2xl p-6 text-center text-slate-500 text-sm">No global orders yet.</div>`;
+                } else {
+                    data.orders.forEach(order => {
+                        container.innerHTML += `
+                            <div class="bg-slate-950/80 border border-white/5 p-4 rounded-2xl flex justify-between items-center text-sm transition hover:border-slate-700">
+                                <div>
+                                    <p class="font-bold text-white">${order.product_name} <span class="text-emerald-400 text-xs">(${order.quantity_ordered}x)</span></p>
+                                    <p class="text-[11px] text-slate-400 mt-1">👤 ${order.buyer_name} • 📍 ${order.buyer_country}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-black text-emerald-400">${order.currency} ${parseFloat(order.grand_total_amount).toFixed(2)}</p>
+                                    <span class="text-[9px] uppercase tracking-wider text-slate-500">${order.delivery_option}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            } catch (e) {}
             loadMyListings();
         }
 
@@ -575,17 +730,21 @@
                 const data = await res.json();
                 const container = document.getElementById('my-listings-list');
                 container.innerHTML = '';
+                if (!data.results || data.results.length === 0) {
+                    container.innerHTML = `<div class="bg-slate-950/50 border border-dashed border-slate-800 rounded-2xl p-6 text-center text-slate-500 text-sm">No active listings in your inventory.</div>`;
+                    return;
+                }
                 data.results.forEach(item => {
                     container.innerHTML += `
-                        <div class="flex justify-between items-center bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs">
-                            <div class="flex items-center gap-3">
-                                <img src="${item.image_url}" class="w-10 h-10 object-cover rounded-lg">
+                        <div class="bg-slate-950/80 border border-white/5 p-4 rounded-2xl flex justify-between items-center text-sm transition hover:border-slate-700">
+                            <div class="flex items-center gap-4">
+                                <img src="${item.image_url}" class="w-12 h-12 object-cover rounded-xl border border-slate-800">
                                 <div>
                                     <p class="font-bold text-white">${item.product_name}</p>
-                                    <p class="text-[11px] text-slate-400">${item.currency || 'USD'} ${item.price} • ${item.quantity_available} ${item.unit}s</p>
+                                    <p class="text-[11px] text-emerald-400 font-medium mt-1">${item.currency || 'USD'} ${item.price} • ${item.quantity_available} ${item.unit}s</p>
                                 </div>
                             </div>
-                            <button onclick="deleteListing(${item.id})" class="text-rose-400 text-[11px] font-bold px-2 py-1 bg-rose-950/40 rounded-lg cursor-pointer">Delete</button>
+                            <button onclick="deleteListing(${item.id})" class="text-rose-400 hover:text-white hover:bg-rose-500 text-[11px] font-bold px-3 py-1.5 bg-rose-500/10 rounded-xl border border-rose-500/20 transition-colors">Remove</button>
                         </div>
                     `;
                 });
