@@ -19,8 +19,11 @@
                     <p class="text-[11px] text-slate-400">Direct Farm-to-Urban Marketplace & Logistics Hub</p>
                 </div>
             </div>
+            
+            <!-- NAV SWITCHERS -->
             <div class="flex items-center gap-2 bg-slate-950 p-1.5 rounded-2xl border border-slate-800 shadow-sm">
                 <button onclick="toggleView('marketplace')" id="btn-market" class="bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer">Marketplace</button>
+                <button onclick="toggleView('buyer')" id="btn-buyer" class="text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer">🛒 Buyer Cart</button>
                 <button onclick="toggleView('farmer')" id="btn-farmer" class="text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer">🌾 Farmer Portal</button>
             </div>
         </div>
@@ -33,12 +36,12 @@
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 bg-gradient-to-r from-emerald-950/40 via-slate-900 to-slate-900 p-8 rounded-3xl border border-emerald-900/30 shadow-2xl">
                 <div>
                     <h2 class="text-3xl font-black text-white mb-2 tracking-tight">Fresh Ghanaian Harvests</h2>
-                    <p class="text-xs text-slate-400 max-w-lg">Directly sourced from verified local farmers and farmer groups. Search by local names (e.g. Kontomire, Garden Eggs, Yam) or English equivalents.</p>
+                    <p class="text-xs text-slate-400 max-w-lg">Directly sourced from verified local farmers. Search local names (e.g. Kontomire, Garden Eggs, Yam, Plantain) or English equivalents.</p>
                 </div>
                 
-                <!-- SEARCH BAR -->
+                <!-- SEARCH BAR (Autofill disabled to prevent email popups) -->
                 <div class="w-full md:w-80 relative">
-                    <input type="text" id="search-input" oninput="handleSearch()" placeholder="Search (e.g. Tomatoes, Plantain, Yam...)" class="w-full bg-slate-950 border border-emerald-800/60 rounded-2xl pl-11 pr-4 py-3 text-xs text-white outline-none focus:border-emerald-500 shadow-inner">
+                    <input type="text" id="search-input" oninput="handleSearch()" placeholder="Search harvest (e.g. Tomatoes, Yam...)" autocomplete="off" name="no-autofill-search" class="w-full bg-slate-950 border border-emerald-800/60 rounded-2xl pl-11 pr-4 py-3 text-xs text-white outline-none focus:border-emerald-500 shadow-inner">
                     <span class="absolute left-4 top-3.5 text-emerald-400 text-sm">🔍</span>
                 </div>
             </div>
@@ -57,6 +60,49 @@
             </div>
         </div>
 
+        <!-- BUYER CART & SHOPPING VIEW -->
+        <div id="view-buyer" class="hidden max-w-3xl mx-auto space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl">
+                <div class="flex justify-between items-center mb-6 border-b border-slate-800 pb-4">
+                    <div>
+                        <h2 class="text-2xl font-black text-white">Your Shopping Cart</h2>
+                        <p class="text-xs text-slate-400">Review your selected farm produce before checkout.</p>
+                    </div>
+                    <span id="cart-count-badge" class="bg-emerald-950 text-emerald-400 border border-emerald-800 px-3 py-1 rounded-full text-xs font-bold">0 items</span>
+                </div>
+
+                <!-- Cart Items List -->
+                <div id="cart-items-container" class="space-y-3 mb-6 max-h-72 overflow-y-auto pr-2">
+                    <!-- Dynamic cart rows -->
+                </div>
+
+                <!-- Cart Summary & Checkout -->
+                <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+                    <div class="flex justify-between text-xs text-slate-400">
+                        <span>Subtotal</span>
+                        <span id="cart-subtotal" class="font-bold text-white">GH₵ 0.00</span>
+                    </div>
+                    <div class="flex justify-between text-xs text-slate-400">
+                        <span>Fulfillment (Default Batch Delivery)</span>
+                        <span class="font-bold text-emerald-400">GH₵ 50.00</span>
+                    </div>
+                    <div class="border-t border-slate-800 pt-3 flex justify-between text-sm font-black text-white">
+                        <span>Grand Total</span>
+                        <span id="cart-grandtotal" class="text-emerald-400 text-lg">GH₵ 50.00</span>
+                    </div>
+                    <button onclick="checkoutCart()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl text-xs hover:bg-emerald-500 transition shadow-lg shadow-emerald-900/30 cursor-pointer mt-2">Proceed to Secure Paystack Checkout</button>
+                </div>
+            </div>
+
+            <!-- Buyer Favorites Section -->
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl">
+                <h3 class="text-lg font-black text-white mb-4">❤️ Your Saved Favorites</h3>
+                <div id="favorites-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Dynamic favorites -->
+                </div>
+            </div>
+        </div>
+
         <!-- FARMER PORTAL VIEW -->
         <div id="view-farmer" class="hidden max-w-xl mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
             
@@ -64,15 +110,15 @@
             <div id="farmer-login-box" class="space-y-4">
                 <div class="text-center mb-6">
                     <h2 class="text-2xl font-black text-white">Farmer Portal Sign In</h2>
-                    <p class="text-xs text-slate-400 mt-1">Manage your active listings and track your sales revenue.</p>
+                    <p class="text-xs text-slate-400 mt-1">Manage active listings and track your sales revenue.</p>
                 </div>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Email Address</label>
-                    <input type="email" id="login-email" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="farmer@example.com">
+                    <input type="email" id="login-email" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="farmer@example.com">
                 </div>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Password</label>
-                    <input type="password" id="login-password" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="••••••••">
+                    <input type="password" id="login-password" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="••••••••">
                 </div>
                 <button onclick="loginFarmer()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl text-xs hover:bg-emerald-500 transition shadow-lg shadow-emerald-900/30 cursor-pointer">Access Dashboard</button>
                 <p id="login-err" class="text-rose-400 text-xs text-center font-medium"></p>
@@ -90,25 +136,25 @@
                 </div>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Farm / Producer Name</label>
-                    <input type="text" id="signup-name" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="Kofi Organic Farms">
+                    <input type="text" id="signup-name" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="Kofi Organic Farms">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Region</label>
-                        <input type="text" id="signup-region" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="Greater Accra">
+                        <input type="text" id="signup-region" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="Greater Accra">
                     </div>
                     <div>
                         <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Phone Number</label>
-                        <input type="text" id="signup-phone" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="0241234567">
+                        <input type="text" id="signup-phone" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="0241234567">
                     </div>
                 </div>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Email Address</label>
-                    <input type="email" id="signup-email" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="farmer@example.com">
+                    <input type="email" id="signup-email" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="farmer@example.com">
                 </div>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Password</label>
-                    <input type="password" id="signup-password" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="••••••••">
+                    <input type="password" id="signup-password" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 transition" placeholder="••••••••">
                 </div>
                 <button onclick="signupFarmer()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl text-xs hover:bg-emerald-500 transition shadow-lg shadow-emerald-900/30 cursor-pointer">Register Farm Account</button>
                 <p id="signup-err" class="text-rose-400 text-xs text-center font-medium"></p>
@@ -144,14 +190,14 @@
                 <div class="border-t border-slate-800 pt-6">
                     <h3 class="font-extrabold text-sm text-white mb-3 uppercase tracking-wider">Post New Harvest Listing</h3>
                     <div class="space-y-3">
-                        <input type="text" id="new-name" placeholder="Product Name (e.g. Kontomire, Garden Eggs, Yam)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
+                        <input type="text" id="new-name" placeholder="Product Name (e.g. Kontomire, Garden Eggs, Yam)" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
                         <div class="grid grid-cols-2 gap-3">
-                            <input type="text" id="new-category" placeholder="Category (e.g. Vegetables)" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
-                            <input type="text" id="new-unit" placeholder="Unit (e.g. Crate, Tuber, Bag)" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
+                            <input type="text" id="new-category" placeholder="Category (e.g. Vegetables)" autocomplete="off" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
+                            <input type="text" id="new-unit" placeholder="Unit (e.g. Crate, Tuber, Bag)" autocomplete="off" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
                         </div>
                         <div class="grid grid-cols-2 gap-3">
-                            <input type="number" id="new-price" placeholder="Price per unit (GH₵)" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
-                            <input type="number" id="new-qty" placeholder="Quantity Available" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
+                            <input type="number" id="new-price" placeholder="Price per unit (GH₵)" autocomplete="off" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
+                            <input type="number" id="new-qty" placeholder="Quantity Available" autocomplete="off" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
                         </div>
                         <div>
                             <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Product Photo</label>
@@ -189,22 +235,37 @@
         let currentCategory = "All";
         let searchKeyword = "";
         let farmerToken = localStorage.getItem("farmer_token") || "";
+        
+        // Cart & Favorites state in LocalStorage
+        let cart = JSON.parse(localStorage.getItem("agri_cart")) || [];
+        let favorites = JSON.parse(localStorage.getItem("agri_favorites")) || [];
 
         loadProducts();
+        updateCartUI();
+        loadFavoritesUI();
         if (farmerToken) showDashboardState();
 
         function toggleView(view) {
+            document.getElementById('view-marketplace').classList.add('hidden');
+            document.getElementById('view-buyer').classList.add('hidden');
+            document.getElementById('view-farmer').classList.add('hidden');
+            
+            document.getElementById('btn-market').className = "text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer";
+            document.getElementById('btn-buyer').className = "text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer";
+            document.getElementById('btn-farmer').className = "text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer";
+
             if (view === 'marketplace') {
                 document.getElementById('view-marketplace').classList.remove('hidden');
-                document.getElementById('view-farmer').classList.add('hidden');
                 document.getElementById('btn-market').className = "bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer";
-                document.getElementById('btn-farmer').className = "text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer";
                 loadProducts();
+            } else if (view === 'buyer') {
+                document.getElementById('view-buyer').classList.remove('hidden');
+                document.getElementById('btn-buyer').className = "bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer";
+                updateCartUI();
+                loadFavoritesUI();
             } else {
-                document.getElementById('view-marketplace').classList.add('hidden');
                 document.getElementById('view-farmer').classList.remove('hidden');
                 document.getElementById('btn-farmer').className = "bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer";
-                document.getElementById('btn-market').className = "text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer";
                 if (farmerToken) showDashboardState();
                 else switchAuthMode('login');
             }
@@ -255,9 +316,15 @@
 
                 data.results.forEach(item => {
                     const imgSrc = item.image_url || "https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=600&q=80";
+                    const isFav = favorites.some(f => f.id === item.id);
                     grid.innerHTML += `
                         <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-lg flex flex-col justify-between hover:border-emerald-500/50 transition">
-                            <img src="${imgSrc}" alt="${item.product_name}" class="w-full h-48 object-cover">
+                            <div class="relative">
+                                <img src="${imgSrc}" alt="${item.product_name}" class="w-full h-48 object-cover">
+                                <button onclick="toggleFavorite(${item.id}, '${item.product_name.replace(/'/g, "\\'")}', ${item.price_ghs}, '${item.unit}', '${imgSrc}')" class="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md p-2 rounded-full border border-slate-700 text-sm hover:scale-110 transition cursor-pointer">
+                                    ${isFav ? '❤️' : '🤍'}
+                                </button>
+                            </div>
                             <div class="p-5 flex flex-col flex-grow justify-between">
                                 <div>
                                     <div class="flex justify-between items-start mb-3">
@@ -272,7 +339,10 @@
                                         <span class="text-xl font-black text-emerald-400">GH₵ ${parseFloat(item.price_ghs).toFixed(2)}</span>
                                         <span class="text-xs text-slate-300 font-semibold">${item.quantity_available} ${item.unit}s left</span>
                                     </div>
-                                    <button onclick="openOrderPrompt(${item.id}, '${item.product_name.replace(/'/g, "\\'")}', ${item.quantity_available}, '${item.unit}', ${item.price_ghs})" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl text-xs hover:bg-emerald-500 transition shadow-lg shadow-emerald-900/20 cursor-pointer">Pay & Order Now</button>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <button onclick="addToCart(${item.id}, '${item.product_name.replace(/'/g, "\\'")}', ${item.price_ghs}, '${item.unit}', ${item.quantity_available})" class="bg-slate-800 text-emerald-400 border border-emerald-800/50 font-bold py-2.5 rounded-xl text-xs hover:bg-slate-700 transition cursor-pointer">Add to Cart</button>
+                                        <button onclick="openDirectOrder(${item.id}, '${item.product_name.replace(/'/g, "\\'")}', ${item.quantity_available}, '${item.unit}', ${item.price_ghs})" class="bg-emerald-600 text-white font-bold py-2.5 rounded-xl text-xs hover:bg-emerald-500 transition shadow-md cursor-pointer">Buy Now</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -283,6 +353,211 @@
             }
         }
 
+        // --- SHOPPING CART LOGIC ---
+        function addToCart(id, name, price, unit, maxStock) {
+            const existing = cart.find(item => item.id === id);
+            if (existing) {
+                if (existing.qty < maxStock) existing.qty += 1;
+                else alert(`Only ${maxStock} ${unit}s available in stock.`);
+            } else {
+                cart.push({ id, name, price, unit, qty: 1, maxStock });
+            }
+            localStorage.setItem("agri_cart", JSON.stringify(cart));
+            updateCartUI();
+            alert(`🛒 Added ${name} to your cart!`);
+        }
+
+        function updateCartQty(id, change) {
+            const item = cart.find(i => i.id === id);
+            if (!item) return;
+            item.qty += change;
+            if (item.qty <= 0) {
+                cart = cart.filter(i => i.id !== id);
+            } else if (item.qty > item.maxStock) {
+                item.qty = item.maxStock;
+                alert(`Maximum available stock reached.`);
+            }
+            localStorage.setItem("agri_cart", JSON.stringify(cart));
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            container.innerHTML = '';
+            let subtotal = 0;
+            let totalItems = 0;
+
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 text-center py-6">Your shopping cart is empty.</p>`;
+                document.getElementById('cart-subtotal').innerText = "GH₵ 0.00";
+                document.getElementById('cart-grandtotal').innerText = "GH₵ 50.00";
+                document.getElementById('cart-count-badge').innerText = "0 items";
+                return;
+            }
+
+            cart.forEach(item => {
+                subtotal += item.price * item.qty;
+                totalItems += item.qty;
+                container.innerHTML += `
+                    <div class="bg-slate-950 border border-slate-800 p-3 rounded-2xl flex justify-between items-center text-xs">
+                        <div>
+                            <p class="font-bold text-white">${item.name}</p>
+                            <p class="text-[11px] text-slate-400">GH₵ ${item.price} per ${item.unit}</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-800 px-2 py-1 rounded-xl">
+                                <button onclick="updateCartQty(${item.id}, -1)" class="text-slate-400 hover:text-white px-1 font-bold cursor-pointer">-</button>
+                                <span class="font-bold text-white w-6 text-center">${item.qty}</span>
+                                <button onclick="updateCartQty(${item.id}, 1)" class="text-slate-400 hover:text-white px-1 font-bold cursor-pointer">+</button>
+                            </div>
+                            <span class="font-black text-emerald-400 w-16 text-right">GH₵ ${(item.price * item.qty).toFixed(2)}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            const grandTotal = subtotal + 50.00; // default delivery fee
+            document.getElementById('cart-subtotal').innerText = `GH₵ ${subtotal.toFixed(2)}`;
+            document.getElementById('cart-grandtotal').innerText = `GH₵ ${grandTotal.toFixed(2)}`;
+            document.getElementById('cart-count-badge').innerText = `${totalItems} items`;
+        }
+
+        // --- FAVORITES LOGIC ---
+        function toggleFavorite(id, name, price, unit, imageUrl) {
+            const index = favorites.findIndex(f => f.id === id);
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push({ id, name, price, unit, imageUrl });
+            }
+            localStorage.setItem("agri_favorites", JSON.stringify(favorites));
+            loadProducts();
+            loadFavoritesUI();
+        }
+
+        function loadFavoritesUI() {
+            const container = document.getElementById('favorites-container');
+            container.innerHTML = '';
+            if (favorites.length === 0) {
+                container.innerHTML = `<p class="col-span-full text-xs text-slate-500">No favorite items saved yet. Tap the heart icon on any harvest to save it.</p>`;
+                return;
+            }
+
+            favorites.forEach(fav => {
+                container.innerHTML += `
+                    <div class="bg-slate-950 border border-slate-800 p-3 rounded-2xl flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-3">
+                            <img src="${fav.imageUrl}" class="w-12 h-12 object-cover rounded-xl border border-slate-800">
+                            <div>
+                                <p class="font-bold text-white">${fav.name}</p>
+                                <p class="text-[11px] text-emerald-400 font-semibold">GH₵ ${fav.price} per ${fav.unit}</p>
+                            </div>
+                        </div>
+                        <button onclick="toggleFavorite(${fav.id})" class="text-rose-400 text-xs font-bold px-2.5 py-1 bg-rose-950/40 rounded-lg border border-rose-900 cursor-pointer">Remove</button>
+                    </div>
+                `;
+            });
+        }
+
+        // --- CHECKOUT CART ---
+        function checkoutCart() {
+            if (cart.length === 0) {
+                alert("Your shopping cart is empty.");
+                return;
+            }
+
+            const buyer_name = prompt("Enter your full name:");
+            if (!buyer_name) return;
+            const buyer_email = prompt("Enter your email for payment receipt:");
+            if (!buyer_email) return;
+            const buyer_phone = prompt("Enter your phone number (e.g. 024XXXXXXX):");
+            if (!buyer_phone) return;
+            const buyer_location = prompt("Enter your delivery address / location in Ghana (e.g. East Legon, Kumasi):", "Accra");
+            if (!buyer_location) return;
+
+            let subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            let grandTotal = subtotal + 50.00;
+            let amountInPesewas = Math.round(grandTotal * 100);
+
+            let handler = PaystackPop.setup({
+                key: PAYSTACK_PUBLIC_KEY,
+                email: buyer_email,
+                amount: amountInPesewas,
+                currency: "GHS",
+                ref: 'AGRI_CART_' + Math.floor((Math.random() * 1000000000) + 1),
+                callback: function(response) {
+                    // Process each item in cart sequentially on backend
+                    cart.forEach(item => {
+                        completeOrderOnBackend(item.id, buyer_name, buyer_phone, buyer_location, item.qty, "Batch Delivery");
+                    });
+                    alert("🎉 Cart Order Successfully Paid & Placed!");
+                    cart = [];
+                    localStorage.removeItem("agri_cart");
+                    updateCartUI();
+                    toggleView('marketplace');
+                },
+                onClose: function() {
+                    alert("Payment cancelled.");
+                }
+            });
+            handler.openIframe();
+        }
+
+        // --- DIRECT BUY NOW ---
+        function openDirectOrder(itemId, productName, maxStock, unit, unitPrice) {
+            const buyer_name = prompt(`Enter your name for ordering ${productName}:`);
+            if (!buyer_name) return;
+            const buyer_email = prompt(`Enter email address for receipt:`);
+            if (!buyer_email) return;
+            const buyer_phone = prompt(`Enter phone number (e.g. 024XXXXXXX):`);
+            if (!buyer_phone) return;
+            const buyer_location = prompt(`Enter delivery location in Ghana (e.g. Osu, Kumasi):`, "Accra");
+            if (!buyer_location) return;
+            const qtyStr = prompt(`Enter quantity needed (Available: ${maxStock} ${unit}s):`);
+            const quantity_ordered = parseInt(qtyStr);
+            if (isNaN(quantity_ordered) || quantity_ordered <= 0 || quantity_ordered > maxStock) {
+                alert("Invalid quantity entered.");
+                return;
+            }
+            const delivery_choice = prompt(`Select fulfillment:\n1. Farm Pickup (GH₵ 0)\n2. Batch Delivery (+ GH₵ 50)\nEnter 1 or 2:`, "1");
+            if (!delivery_choice) return;
+
+            const delivery_option = delivery_choice === "2" ? "Batch Delivery" : "Farm Pickup";
+            const delivery_fee = delivery_option === "Batch Delivery" ? 50.00 : 0.00;
+            const grandTotalGHS = (quantity_ordered * unitPrice) + delivery_fee;
+            const amountInPesewas = Math.round(grandTotalGHS * 100);
+
+            let handler = PaystackPop.setup({
+                key: PAYSTACK_PUBLIC_KEY,
+                email: buyer_email,
+                amount: amountInPesewas,
+                currency: "GHS",
+                ref: 'AGRI_' + Math.floor((Math.random() * 1000000000) + 1),
+                callback: function(response) {
+                    completeOrderOnBackend(itemId, buyer_name, buyer_phone, buyer_location, quantity_ordered, delivery_option);
+                    alert(`🎉 Payment Successful & Order Confirmed!\nTotal Paid: GH₵ ${grandTotalGHS.toFixed(2)}`);
+                    loadProducts();
+                },
+                onClose: function() {
+                    alert("Payment cancelled.");
+                }
+            });
+            handler.openIframe();
+        }
+
+        async function completeOrderOnBackend(item_id, buyer_name, buyer_phone, buyer_location, quantity_ordered, delivery_option) {
+            try {
+                await fetch(`${API_URL}/api/v1/order`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ buyer_name, buyer_phone, buyer_location, item_id, quantity_ordered, delivery_option })
+                });
+            } catch (err) {
+                console.error("Order recording error:", err);
+            }
+        }
+
+        // --- FARMER AUTH & DASHBOARD LOGIC ---
         async function loginFarmer() {
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
@@ -466,62 +741,6 @@
                 showDashboardState();
             } catch (err) {
                 alert(err.message);
-            }
-        }
-
-        function openOrderPrompt(itemId, productName, maxStock, unit, unitPrice) {
-            const buyer_name = prompt(`Enter your name for ordering ${productName}:`);
-            if (!buyer_name) return;
-            const buyer_email = prompt(`Enter email address for receipt:`);
-            if (!buyer_email) return;
-            const buyer_phone = prompt(`Enter phone number (e.g. 024XXXXXXX):`);
-            if (!buyer_phone) return;
-            const buyer_location = prompt(`Enter your delivery location / address in Ghana (e.g. East Legon, Kumasi, Adenta):`, "Accra");
-            if (!buyer_location) return;
-            const qtyStr = prompt(`Enter quantity needed (Available: ${maxStock} ${unit}s):`);
-            const quantity_ordered = parseInt(qtyStr);
-            if (isNaN(quantity_ordered) || quantity_ordered <= 0 || quantity_ordered > maxStock) {
-                alert("Invalid quantity entered.");
-                return;
-            }
-            const delivery_choice = prompt(`Select fulfillment:\n1. Farm Pickup (GH₵ 0)\n2. Batch Delivery (+ GH₵ 50)\nEnter 1 or 2:`, "1");
-            if (!delivery_choice) return;
-
-            const delivery_option = delivery_choice === "2" ? "Batch Delivery" : "Farm Pickup";
-            const delivery_fee = delivery_option === "Batch Delivery" ? 50.00 : 0.00;
-            const grandTotalGHS = (quantity_ordered * unitPrice) + delivery_fee;
-            const amountInPesewas = Math.round(grandTotalGHS * 100);
-
-            let handler = PaystackPop.setup({
-                key: PAYSTACK_PUBLIC_KEY,
-                email: buyer_email,
-                amount: amountInPesewas,
-                currency: "GHS",
-                ref: 'AGRI_' + Math.floor((Math.random() * 1000000000) + 1),
-                callback: function(response) {
-                    completeOrderOnBackend(itemId, buyer_name, buyer_phone, buyer_location, quantity_ordered, delivery_option);
-                },
-                onClose: function() {
-                    alert("Payment cancelled.");
-                }
-            });
-            handler.openIframe();
-        }
-
-        async function completeOrderOnBackend(item_id, buyer_name, buyer_phone, buyer_location, quantity_ordered, delivery_option) {
-            try {
-                const res = await fetch(`${API_URL}/api/v1/order`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ buyer_name, buyer_phone, buyer_location, item_id, quantity_ordered, delivery_option })
-                });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.detail || "Order processing failed");
-
-                alert(`🎉 Payment Successful & Order Confirmed!\nTotal Paid: ${data.order_summary.grand_total_ghs}\nDeliver to: ${buyer_location}`);
-                loadProducts();
-            } catch (err) {
-                alert("Order recording error: " + err.message);
             }
         }
     </script>
