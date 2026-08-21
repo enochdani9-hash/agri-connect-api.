@@ -6,7 +6,7 @@ from supabase import create_client, Client
 import os
 import resend
 
-app = FastAPI(title="AgriConnect Production API", version="2.7")
+app = FastAPI(title="AgriConnect Production API", version="2.8")
 
 # --- CORS VIP PASS ---
 app.add_middleware(
@@ -46,9 +46,9 @@ class OrderRequest(BaseModel, extra="allow"):
 
 @app.get("/")
 def home():
-    return {"message": "AgriConnect Production API is live with Orders History and Sales Tracking."}
+    return {"message": "AgriConnect Production API is live with Fixed Metadata & Order Tracking."}
 
-# --- 1. FARMER SIGN-UP ---
+# --- 1. FARMER SIGN-UP (With Duplicate Guard) ---
 @app.post("/api/v1/auth/signup")
 def farmer_signup(data: SignupRequest):
     try:
@@ -64,13 +64,15 @@ def farmer_signup(data: SignupRequest):
                 }
             }
         })
+        if not res.user:
+            raise HTTPException(status_code=400, detail="Registration failed or email already registered.")
         return {
             "status": "Success",
             "message": "Farmer account created successfully!",
             "user": res.user
         }
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="Email might already be registered or password is too weak.")
 
 # --- 2. FARMER LOGIN ---
 @app.post("/api/v1/auth/login")
@@ -102,7 +104,7 @@ def get_products(category: Optional[str] = None):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-# --- 4. FARMER POST PRODUCT WITH IMAGE UPLOAD (PROTECTED) ---
+# --- 4. FARMER POST PRODUCT WITH PROPER METADATA FIX ---
 @app.post("/api/v1/products")
 async def create_product(
     product_name: str = Form(...),
@@ -125,9 +127,9 @@ async def create_product(
             raise HTTPException(status_code=401, detail="Unauthorized access.")
         
         metadata = user_data.user_metadata or {}
-        farmer_name = metadata.get("farmer_name", "Verified Farmer")
+        farmer_name = metadata.get("farmer_name") or user_data.email.split("@")[0]
         region = metadata.get("region", "Greater Accra")
-        farmer_email = metadata.get("email", user_data.email)
+        farmer_email = metadata.get("email") or user_data.email
 
         image_url = "https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=600&q=80"
 
@@ -180,7 +182,7 @@ def get_my_listings(authorization: Optional[str] = Header(None)):
             raise HTTPException(status_code=401, detail="Unauthorized access.")
         
         metadata = user_data.user_metadata or {}
-        farmer_name = metadata.get("farmer_name")
+        farmer_name = metadata.get("farmer_name") or user_data.email.split("@")[0]
 
         response = supabase.table("products").select("*").eq("farmer_name", farmer_name).execute()
         return {
@@ -211,7 +213,7 @@ def delete_product(product_id: int, authorization: Optional[str] = Header(None))
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-# --- 7. PLACE AN ORDER & SAVE TO ORDERS TABLE ---
+# --- 7. PLACE AN ORDER & SAVE RECORD ---
 @app.post("/api/v1/order")
 def create_order(order: OrderRequest):
     try:
@@ -230,11 +232,9 @@ def create_order(order: OrderRequest):
         delivery_fee = 50.00 if order.delivery_option.lower() == "batch delivery" else 0.00
         grand_total = subtotal + delivery_fee
         
-        # Update inventory stock
         new_quantity = item["quantity_available"] - order.quantity_ordered
         supabase.table("products").update({"quantity_available": new_quantity}).eq("id", order.item_id).execute()
         
-        # Save order record to the orders history table
         order_record = {
             "item_id": order.item_id,
             "product_name": item["product_name"],
@@ -246,35 +246,6 @@ def create_order(order: OrderRequest):
             "delivery_option": order.delivery_option
         }
         supabase.table("orders").insert(order_record).execute()
-
-        # Trigger Email Notification
-        farmer_email = item.get("farmer_email")
-        if farmer_email:
-            try:
-                params = {
-                    "from": "AgriConnect <onboarding@resend.dev>",
-                    "to": [farmer_email],
-                    "subject": f"🌱 New Harvest Order: {item['product_name']}!",
-                    "html": f"""
-                        <h2>New Order Received!</h2>
-                        <p>Hello <b>{item['farmer_name']}</b>,</p>
-                        <p>An urban buyer has just successfully paid for your harvest on AgriConnect:</p>
-                        <ul>
-                            <li><b>Product:</b> {item['product_name']}</li>
-                            <li><b>Quantity Ordered:</b> {order.quantity_ordered} {item['unit']}(s)</li>
-                            <li><b>Fulfillment:</b> {order.delivery_option}</li>
-                            <li><b>Total Payout:</b> GH₵ {grand_total:,.2f}</li>
-                        </ul>
-                        <h3>Buyer Contact Details:</h3>
-                        <ul>
-                            <li><b>Name:</b> {order.buyer_name}</li>
-                            <li><b>Phone:</b> {order.buyer_phone}</li>
-                        </ul>
-                    """
-                }
-                resend.Emails.send(params)
-            except Exception as email_err:
-                print(f"Email notification error: {email_err}")
 
         return {
             "status": "Order Successfully Placed",
@@ -306,7 +277,7 @@ def get_farmer_sales(authorization: Optional[str] = Header(None)):
             raise HTTPException(status_code=401, detail="Unauthorized access.")
         
         metadata = user_data.user_metadata or {}
-        farmer_name = metadata.get("farmer_name")
+        farmer_name = metadata.get("farmer_name") or user_data.email.split("@")[0]
 
         response = supabase.table("orders").select("*").eq("farmer_name", farmer_name).order("created_at", desc=True).execute()
         orders = response.data
