@@ -61,7 +61,7 @@
                         <p class="text-xs text-slate-400 max-w-lg">Directly sourced from verified local farmers. Search local names (e.g. Kontomire, Garden Eggs, Yam, Plantain) or English equivalents.</p>
                     </div>
                     
-                    <!-- SEARCH BAR -->
+                    <!-- AUTOFILL-PROOF SEARCH BAR -->
                     <div class="w-full md:w-80 relative">
                         <input type="text" id="crop-search-box" oninput="handleSearch()" placeholder="Search harvest (e.g. Tomatoes...)" autocomplete="off" class="w-full bg-slate-950 border border-emerald-800/60 rounded-2xl pl-11 pr-4 py-3 text-xs text-white outline-none focus:border-emerald-500 shadow-inner">
                         <span class="absolute left-4 top-3.5 text-emerald-400 text-sm">🔍</span>
@@ -271,18 +271,24 @@
         let cart = JSON.parse(localStorage.getItem("agri_cart")) || [];
         let favorites = JSON.parse(localStorage.getItem("agri_favorites")) || [];
 
-        // Explicitly check role session state on load
-        if (localStorage.getItem("agri_entered") && activeRole) {
-            document.getElementById('view-landing').classList.add('hidden');
-            document.getElementById('main-app-container').classList.remove('hidden');
-            renderHeaderNav();
-            loadProducts();
-        } else {
-            localStorage.removeItem("agri_entered");
-            localStorage.removeItem("agri_role");
-            document.getElementById('view-landing').classList.remove('hidden');
-            document.getElementById('main-app-container').classList.add('hidden');
-        }
+        // ALWAYS force landing page to show on a fresh visit unless explicitly entered in this session
+        window.addEventListener('DOMContentLoaded', () => {
+            const searchBox = document.getElementById('crop-search-box');
+            if (searchBox) {
+                searchBox.value = ""; // Force clear any cached email values
+                setTimeout(() => { searchBox.value = ""; }, 100); // Double-tap clear for stubborn browser autofills
+            }
+
+            if (localStorage.getItem("agri_entered") && activeRole) {
+                document.getElementById('view-landing').classList.add('hidden');
+                document.getElementById('main-app-container').classList.remove('hidden');
+                renderHeaderNav();
+                loadProducts();
+            } else {
+                document.getElementById('view-landing').classList.remove('hidden');
+                document.getElementById('main-app-container').classList.add('hidden');
+            }
+        });
 
         function enterApp(role) {
             localStorage.setItem("agri_entered", "true");
