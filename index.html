@@ -39,9 +39,9 @@
                     <p class="text-xs text-slate-400 max-w-lg">Directly sourced from verified local farmers. Search local names (e.g. Kontomire, Garden Eggs, Yam, Plantain) or English equivalents.</p>
                 </div>
                 
-                <!-- FIXED SEARCH BAR (Using type="search" & custom name to block email autofill) -->
+                <!-- BULLETPROOF SEARCH BAR (Autofill completely blocked via readonly onfocus trick) -->
                 <div class="w-full md:w-80 relative">
-                    <input type="search" id="crop-search-box" name="crop_query" oninput="handleSearch()" placeholder="Search harvest (e.g. Tomatoes, Yam...)" autocomplete="off" class="w-full bg-slate-950 border border-emerald-800/60 rounded-2xl pl-11 pr-4 py-3 text-xs text-white outline-none focus:border-emerald-500 shadow-inner">
+                    <input type="text" id="crop-search-box" name="harvest_query_xyz" oninput="handleSearch()" placeholder="Search harvest (e.g. Tomatoes, Yam...)" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" class="w-full bg-slate-950 border border-emerald-800/60 rounded-2xl pl-11 pr-4 py-3 text-xs text-white outline-none focus:border-emerald-500 shadow-inner">
                     <span class="absolute left-4 top-3.5 text-emerald-400 text-sm">🔍</span>
                 </div>
             </div>
@@ -142,7 +142,6 @@
 
         <!-- FARMER PORTAL VIEW -->
         <div id="view-farmer" class="hidden max-w-xl mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
-            <!-- Farmer Login / Dashboard components remain fully active here -->
             <div id="farmer-login-box" class="space-y-4">
                 <div class="text-center mb-6">
                     <h2 class="text-2xl font-black text-white">Farmer Portal Sign In</h2>
@@ -475,6 +474,7 @@
 
         function updateCartUI() {
             const container = document.getElementById('cart-items-container');
+            if(!container) return;
             container.innerHTML = '';
             let subtotal = 0;
             let totalItems = 0;
