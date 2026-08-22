@@ -7,18 +7,18 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://js.paystack.co/v1/inline.js"></script>
     <style>
-        /* Custom Ultra-Modern Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #020617; } /* slate-950 */
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; } /* slate-800 */
-        ::-webkit-scrollbar-thumb:hover { background: #10b981; } /* emerald-500 */
-        
-        /* Smooth Fade In Animation */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #10b981; }
         .fade-in { animation: fadeIn 0.4s ease-out forwards; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        /* Hide scrollbar for horizontal filter menus */
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen selection:bg-emerald-500 selection:text-white relative overflow-x-hidden">
@@ -34,19 +34,19 @@
             <div class="w-24 h-24 mx-auto rounded-[2rem] bg-gradient-to-br from-emerald-500/20 to-teal-500/5 border border-emerald-500/30 flex items-center justify-center text-4xl shadow-inner animate-pulse">🌍</div>
             <div>
                 <h1 class="text-4xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-slate-400 mb-3">AgriConnect <span class="text-emerald-400 text-[10px] font-extrabold px-2.5 py-1 bg-emerald-950/80 border border-emerald-800/50 rounded-full tracking-widest align-middle ml-2 shadow-[0_0_15px_rgba(16,185,129,0.3)]">GLOBAL</span></h1>
-                <p class="text-sm text-slate-400 font-medium px-4">The borderless Direct Farm-to-Consumer network. Buy and sell harvests anywhere in the world.</p>
+                <p class="text-sm text-slate-400 font-medium px-4">The borderless Direct Farm-to-Consumer network. Buy and sell harvests, animals, and equipment worldwide.</p>
             </div>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4">
                 <button onclick="enterApp('buyer')" class="bg-gradient-to-b from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-bold p-6 rounded-3xl transition-all duration-300 shadow-[0_10px_30px_-10px_rgba(16,185,129,0.5)] hover:shadow-[0_15px_40px_-10px_rgba(16,185,129,0.7)] hover:-translate-y-1 flex flex-col items-center gap-3 cursor-pointer group border border-emerald-400/20">
                     <span class="text-3xl group-hover:scale-125 transition-transform duration-300 drop-shadow-md">🛒</span>
                     <span class="text-sm tracking-wide">I'm a Global Buyer</span>
-                    <span class="text-[11px] text-emerald-100/70 font-normal">Source international produce</span>
+                    <span class="text-[11px] text-emerald-100/70 font-normal">Source produce & equipment</span>
                 </button>
                 <button onclick="enterApp('farmer')" class="bg-slate-800/80 hover:bg-slate-700 backdrop-blur-md text-white font-bold p-6 rounded-3xl transition-all duration-300 border border-slate-600/50 hover:border-slate-500 hover:shadow-xl hover:-translate-y-1 flex flex-col items-center gap-3 cursor-pointer group">
                     <span class="text-3xl group-hover:scale-125 transition-transform duration-300 drop-shadow-md">🌾</span>
                     <span class="text-sm tracking-wide">I'm a Producer</span>
-                    <span class="text-[11px] text-slate-400 font-normal">Sell to international markets</span>
+                    <span class="text-[11px] text-slate-400 font-normal">Sell inventory to the world</span>
                 </button>
             </div>
         </div>
@@ -72,11 +72,11 @@
 
             <!-- MARKETPLACE VIEW -->
             <div id="view-marketplace" class="fade-in">
-                <div class="flex flex-col lg:flex-row justify-between items-center gap-8 mb-10 bg-slate-900/40 backdrop-blur-xl border border-white/5 p-8 lg:p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+                <div class="flex flex-col lg:flex-row justify-between items-center gap-8 mb-8 bg-slate-900/40 backdrop-blur-xl border border-white/5 p-8 lg:p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-transparent pointer-events-none"></div>
                     <div class="relative z-10">
-                        <h2 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 mb-3 tracking-tight">Global Harvests</h2>
-                        <p class="text-sm text-slate-400 max-w-lg leading-relaxed">Sourced directly from verified farms worldwide. Search by product, category, or country origin.</p>
+                        <h2 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 mb-3 tracking-tight">Global Inventory</h2>
+                        <p class="text-sm text-slate-400 max-w-lg leading-relaxed">Source directly from verified agricultural operations worldwide.</p>
                     </div>
                     
                     <div class="w-full lg:w-[22rem] relative z-10">
@@ -84,18 +84,39 @@
                             <input type="email" style="display:none" aria-hidden="true">
                             <input type="password" style="display:none" aria-hidden="true">
                             <div class="absolute inset-0 bg-emerald-500/20 blur-xl rounded-full group-hover:opacity-100 opacity-0 transition-opacity duration-500 pointer-events-none"></div>
-                            <input type="search" id="crop-search-box" name="harvest_query" oninput="handleSearch()" placeholder="Search (e.g. Cocoa, Singapore...)" autocomplete="off" role="presentation" class="w-full bg-slate-950/80 backdrop-blur-md border border-slate-700/50 rounded-2xl pl-12 pr-4 py-4 text-sm text-white outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all shadow-inner relative z-10">
+                            <input type="search" id="crop-search-box" name="harvest_query" oninput="handleSearch()" placeholder="Search tools, food, animals..." autocomplete="off" role="presentation" class="w-full bg-slate-950/80 backdrop-blur-md border border-slate-700/50 rounded-2xl pl-12 pr-4 py-4 text-sm text-white outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all shadow-inner relative z-10">
                             <span class="absolute left-4 top-4 text-emerald-500 text-lg z-20">🔍</span>
                         </form>
                     </div>
                 </div>
 
-                <div class="flex flex-wrap items-center gap-3 mb-10">
-                    <button onclick="filterCategory('All')" class="category-btn bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-[0_4px_15px_-3px_rgba(16,185,129,0.4)]">All Categories</button>
-                    <button onclick="filterCategory('Grains')" class="category-btn bg-slate-900 border border-slate-800 hover:border-slate-600 text-slate-300 px-5 py-2.5 rounded-xl text-xs font-bold transition-all">Grains</button>
-                    <button onclick="filterCategory('Vegetables')" class="category-btn bg-slate-900 border border-slate-800 hover:border-slate-600 text-slate-300 px-5 py-2.5 rounded-xl text-xs font-bold transition-all">Vegetables</button>
-                    <button onclick="filterCategory('Poultry')" class="category-btn bg-slate-900 border border-slate-800 hover:border-slate-600 text-slate-300 px-5 py-2.5 rounded-xl text-xs font-bold transition-all">Poultry</button>
-                    <button onclick="filterCategory('Tubers')" class="category-btn bg-slate-900 border border-slate-800 hover:border-slate-600 text-slate-300 px-5 py-2.5 rounded-xl text-xs font-bold transition-all">Tubers</button>
+                <!-- CATEGORIZED FILTERS -->
+                <div class="space-y-4 mb-10 bg-slate-900/30 p-5 rounded-[2rem] border border-white/5">
+                    <!-- Food Section -->
+                    <div class="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-hide">
+                        <span class="text-[10px] font-black text-emerald-500 uppercase tracking-widest mr-2 min-w-fit">🥬 Food & Produce</span>
+                        <button onclick="filterCategory('All')" class="category-btn bg-emerald-600 text-white px-5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap">All Categories</button>
+                        <button onclick="filterCategory('Vegetables')" class="category-btn bg-slate-950 border border-slate-800 text-slate-300 px-5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap">Vegetables</button>
+                        <button onclick="filterCategory('Tubers')" class="category-btn bg-slate-950 border border-slate-800 text-slate-300 px-5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap">Tubers</button>
+                        <button onclick="filterCategory('Grains')" class="category-btn bg-slate-950 border border-slate-800 text-slate-300 px-5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap">Grains & Seeds</button>
+                        <button onclick="filterCategory('Fruits')" class="category-btn bg-slate-950 border border-slate-800 text-slate-300 px-5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap">Fruits</button>
+                    </div>
+                    
+                    <!-- Animals Section -->
+                    <div class="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-hide border-t border-slate-800/50 pt-4">
+                        <span class="text-[10px] font-black text-amber-500 uppercase tracking-widest mr-2 min-w-fit">🐔 Animals & Livestock</span>
+                        <button onclick="filterCategory('Poultry')" class="category-btn bg-slate-950 border border-slate-800 text-slate-300 px-5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap">Poultry</button>
+                        <button onclick="filterCategory('Livestock')" class="category-btn bg-slate-950 border border-slate-800 text-slate-300 px-5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap">Livestock (Cattle/Goats)</button>
+                        <button onclick="filterCategory('Seafood')" class="category-btn bg-slate-950 border border-slate-800 text-slate-300 px-5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap">Seafood & Fish</button>
+                    </div>
+
+                    <!-- Tools Section -->
+                    <div class="flex items-center gap-3 overflow-x-auto scrollbar-hide border-t border-slate-800/50 pt-4">
+                        <span class="text-[10px] font-black text-blue-500 uppercase tracking-widest mr-2 min-w-fit">🚜 Tools & Equipment</span>
+                        <button onclick="filterCategory('Hand Tools')" class="category-btn bg-slate-950 border border-slate-800 text-slate-300 px-5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap">Hand Tools</button>
+                        <button onclick="filterCategory('Machinery')" class="category-btn bg-slate-950 border border-slate-800 text-slate-300 px-5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap">Heavy Machinery</button>
+                        <button onclick="filterCategory('Supplies')" class="category-btn bg-slate-950 border border-slate-800 text-slate-300 px-5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap">Fertilizers & Supplies</button>
+                    </div>
                 </div>
 
                 <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
@@ -171,15 +192,11 @@
                             <div class="space-y-4 bg-slate-950/50 p-6 rounded-2xl border border-slate-800 mb-6">
                                 <div class="flex justify-between text-sm text-slate-400">
                                     <span>Subtotal</span>
-                                    <span id="cart-subtotal" class="font-bold text-white">GH₵ 0.00</span>
-                                </div>
-                                <div class="flex justify-between text-sm text-slate-400">
-                                    <span>Global Logistics</span>
-                                    <span class="font-bold text-emerald-400">+ GH₵ 50.00</span>
+                                    <span id="cart-subtotal" class="font-bold text-white">Calculated at checkout</span>
                                 </div>
                                 <div class="border-t border-slate-800 pt-4 flex justify-between items-end">
                                     <span class="text-sm font-bold text-white">Total</span>
-                                    <span id="cart-grandtotal" class="text-emerald-400 text-2xl font-black">GH₵ 50.00</span>
+                                    <span id="cart-grandtotal" class="text-emerald-400 text-lg font-black">Ready to Process</span>
                                 </div>
                             </div>
                             <button onclick="checkoutCart()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold py-4 rounded-xl text-sm hover:scale-[1.02] transition-transform shadow-[0_10px_20px_-10px_rgba(16,185,129,0.5)]">Process Global Checkout</button>
@@ -200,15 +217,15 @@
                         <input type="password" id="login-password" autocomplete="off" class="w-full bg-slate-950/80 border border-slate-800 focus:border-emerald-500 rounded-xl px-5 py-3.5 text-sm text-white outline-none transition" placeholder="Password">
                         <button onclick="loginFarmer()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold py-4 rounded-xl text-sm hover:scale-[1.02] transition-transform shadow-lg shadow-emerald-900/30">Access Dashboard</button>
                         <p id="login-err" class="text-rose-400 text-xs text-center font-medium"></p>
-                        <p class="text-sm text-slate-400 text-center pt-4 border-t border-slate-800">New producer? <button onclick="switchAuthMode('signup')" class="text-emerald-400 font-bold hover:text-emerald-300">Register Farm</button></p>
+                        <p class="text-sm text-slate-400 text-center pt-4 border-t border-slate-800">New producer? <button onclick="switchAuthMode('signup')" class="text-emerald-400 font-bold hover:text-emerald-300">Register Farm/Business</button></p>
                     </div>
 
                     <div id="farmer-signup-box" class="hidden space-y-5 relative z-10">
                         <div class="text-center mb-8">
-                            <h2 class="text-3xl font-black text-white">Register Farm Profile</h2>
+                            <h2 class="text-3xl font-black text-white">Register Business</h2>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
-                            <input type="text" id="signup-name" autocomplete="off" class="bg-slate-950/80 border border-slate-800 focus:border-emerald-500 rounded-xl px-4 py-3 text-sm text-white outline-none" placeholder="Farm Name">
+                            <input type="text" id="signup-name" autocomplete="off" class="bg-slate-950/80 border border-slate-800 focus:border-emerald-500 rounded-xl px-4 py-3 text-sm text-white outline-none" placeholder="Business Name">
                             <select id="signup-country" class="bg-slate-950/80 border border-slate-800 focus:border-emerald-500 rounded-xl px-4 py-3 text-sm text-white outline-none appearance-none">
                                 <option value="Ghana">🇬🇭 Ghana</option>
                                 <option value="Singapore">🇸🇬 Singapore</option>
@@ -235,7 +252,7 @@
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 bg-emerald-950 rounded-full flex items-center justify-center text-xl border border-emerald-800">🚜</div>
                             <div>
-                                <p class="text-[10px] text-emerald-400 font-bold tracking-widest uppercase mb-1">Verified Producer</p>
+                                <p class="text-[10px] text-emerald-400 font-bold tracking-widest uppercase mb-1">Verified Global Producer</p>
                                 <p id="farmer-display-name" class="font-black text-white text-xl tracking-tight"></p>
                             </div>
                         </div>
@@ -249,19 +266,37 @@
                             <p id="stat-revenue" class="text-4xl font-black text-white tracking-tight relative z-10">0.00</p>
                         </div>
                         <div class="bg-slate-900/60 backdrop-blur-md border border-slate-800 p-8 rounded-[2rem] shadow-xl relative overflow-hidden">
-                            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-2 relative z-10">Completed Export Sales</p>
+                            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-2 relative z-10">Completed Sales</p>
                             <p id="stat-orders" class="text-4xl font-black text-white tracking-tight relative z-10">0</p>
                         </div>
                     </div>
 
                     <div class="grid lg:grid-cols-2 gap-8">
                         <div class="bg-slate-900/60 backdrop-blur-xl border border-white/5 rounded-[2rem] p-8 shadow-xl">
-                            <h3 class="font-black text-xl text-white mb-6">Post New Harvest</h3>
+                            <h3 class="font-black text-xl text-white mb-6">Post New Listing</h3>
                             <div class="space-y-4">
-                                <input type="text" id="new-name" placeholder="Product Name" autocomplete="off" class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500">
+                                <input type="text" id="new-name" placeholder="Item Name (e.g. Tractor, Maize, Goats)" autocomplete="off" class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500">
+                                
                                 <div class="grid grid-cols-2 gap-4">
-                                    <input type="text" id="new-category" placeholder="Category" autocomplete="off" class="bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500">
-                                    <input type="text" id="new-unit" placeholder="Unit (e.g. tons)" autocomplete="off" class="bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500">
+                                    <select id="new-category" class="bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500">
+                                        <optgroup label="Food & Produce">
+                                            <option value="Vegetables">Vegetables</option>
+                                            <option value="Tubers">Tubers</option>
+                                            <option value="Grains">Grains & Seeds</option>
+                                            <option value="Fruits">Fruits</option>
+                                        </optgroup>
+                                        <optgroup label="Livestock & Animals">
+                                            <option value="Poultry">Poultry</option>
+                                            <option value="Livestock">Livestock (Cattle/Goats)</option>
+                                            <option value="Seafood">Seafood / Fish</option>
+                                        </optgroup>
+                                        <optgroup label="Tools & Equipment">
+                                            <option value="Hand Tools">Hand Tools</option>
+                                            <option value="Machinery">Heavy Machinery</option>
+                                            <option value="Supplies">Fertilizers & Supplies</option>
+                                        </optgroup>
+                                    </select>
+                                    <input type="text" id="new-unit" placeholder="Unit (e.g. Head, Unit, kg)" autocomplete="off" class="bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500">
                                 </div>
                                 <div class="grid grid-cols-3 gap-4">
                                     <select id="new-currency" class="bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 appearance-none">
@@ -270,11 +305,11 @@
                                         <option value="SGD">SGD (S$)</option>
                                         <option value="EUR">EUR (€)</option>
                                     </select>
-                                    <input type="number" id="new-price" placeholder="Price" autocomplete="off" class="bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 col-span-2">
+                                    <input type="number" id="new-price" placeholder="Price per unit" autocomplete="off" class="bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 col-span-2">
                                 </div>
                                 <input type="number" id="new-qty" placeholder="Quantity Available" autocomplete="off" class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500">
                                 <div class="bg-slate-950/50 border border-dashed border-slate-700 rounded-2xl p-4 text-center hover:border-emerald-500 transition-colors">
-                                    <label class="block text-xs font-bold text-slate-400 mb-2 cursor-pointer">Upload Product Photo</label>
+                                    <label class="block text-xs font-bold text-slate-400 mb-2 cursor-pointer">Upload Listing Photo</label>
                                     <input type="file" id="new-image" accept="image/*" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-600/20 file:text-emerald-400 cursor-pointer">
                                 </div>
                                 <button onclick="postProduct()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold py-4 rounded-xl text-sm hover:scale-[1.02] transition-transform shadow-[0_10px_20px_-10px_rgba(16,185,129,0.5)] mt-2">Publish to Global Market</button>
@@ -430,10 +465,10 @@
         function filterCategory(cat) {
             currentCategory = cat;
             document.querySelectorAll('.category-btn').forEach(btn => {
-                if (btn.innerText.includes(cat) || (cat === 'All' && btn.innerText.includes('All'))) {
-                    btn.className = "category-btn bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-[0_4px_15px_-3px_rgba(16,185,129,0.4)]";
+                if (btn.innerText.includes(cat) || (cat === 'All Categories' && btn.innerText.includes('All'))) {
+                    btn.className = "category-btn bg-emerald-600 text-white px-5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap shadow-[0_4px_15px_-3px_rgba(16,185,129,0.4)]";
                 } else {
-                    btn.className = "category-btn bg-slate-900 border border-slate-800 hover:border-slate-600 text-slate-300 px-5 py-2.5 rounded-xl text-xs font-bold transition-all";
+                    btn.className = "category-btn bg-slate-950 border border-slate-800 text-slate-300 hover:border-slate-600 px-5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap";
                 }
             });
             loadProducts();
@@ -457,7 +492,7 @@
                 grid.innerHTML = '';
 
                 if (!data.results || data.results.length === 0) {
-                    grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-20 text-sm border border-dashed border-slate-800 rounded-3xl">No harvests found matching your criteria.</p>`;
+                    grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-20 text-sm border border-dashed border-slate-800 rounded-3xl">No listings found matching your criteria.</p>`;
                     return;
                 }
 
@@ -573,16 +608,12 @@
             if (cart.length === 0) {
                 container.innerHTML = `<div class="bg-slate-950/50 border border-dashed border-slate-800 rounded-2xl p-8 text-center text-slate-500 text-sm">Your shopping cart is empty.</div>`;
                 document.getElementById('cart-count-badge').innerText = "0 items";
-                document.getElementById('cart-subtotal').innerText = "GH₵ 0.00";
-                document.getElementById('cart-grandtotal').innerText = "GH₵ 0.00";
                 return;
             }
 
             let totalItems = 0;
-            let subtotal = 0;
             cart.forEach(item => {
                 totalItems += item.qty;
-                subtotal += item.price * item.qty;
                 container.innerHTML += `
                     <div class="bg-slate-950/80 border border-white/5 p-4 rounded-2xl flex justify-between items-center text-sm transition hover:border-slate-700">
                         <div>
@@ -601,13 +632,12 @@
                 `;
             });
             document.getElementById('cart-count-badge').innerText = `${totalItems} items`;
-            document.getElementById('cart-subtotal').innerText = `Total Subtotal`; // Simplification due to multi-currency
-            document.getElementById('cart-grandtotal').innerText = `Calculated at Checkout`;
         }
 
         function checkoutCart() {
             if (cart.length === 0) return;
             const buyer_name = prompt("Enter full name:");
+            if(!buyer_name) return;
             const buyer_email = prompt("Enter email:");
             const buyer_phone = prompt("Enter phone number:");
             const buyer_country = prompt("Enter Country (e.g. USA, Singapore, Ghana):");
@@ -693,7 +723,6 @@
                 const data = await res.json();
                 document.getElementById('farmer-display-name').innerText = data.farmer || "Verified Producer";
                 
-                // Show USD revenue as aggregate for prototype
                 const totalRev = data.revenue_by_currency ? (data.revenue_by_currency['USD'] || 0) : 0;
                 document.getElementById('stat-revenue').innerText = `$ ${parseFloat(totalRev).toFixed(2)}`;
                 document.getElementById('stat-orders').innerText = data.total_orders || 0;
@@ -767,7 +796,7 @@
                     headers: { 'Authorization': `Bearer ${farmerToken}` },
                     body: formData
                 });
-                alert("Global Harvest published!");
+                alert("Global Listing published!");
                 loadMyListings();
             } catch (err) {}
         }
