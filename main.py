@@ -6,12 +6,19 @@ from supabase import create_client, Client
 import os
 import resend
 
-app = FastAPI(title="AgriConnect Global API", version="3.0")
+app = FastAPI(title="AgriConnect Global API", version="3.0 - Secured")
 
-# --- CORS VIP PASS ---
+# --- CORS VIP PASS (LOCKED DOWN) ---
+ALLOWED_ORIGINS = [
+    "https://enochdani9-hash.github.io",  # Your official live frontend
+    "http://localhost:3000",              # Allowed for local testing
+    "http://127.0.0.1:5500",              # Allowed for local VS Code Live Server testing
+    "http://127.0.0.1:8000"               # Allowed for local Python server testing
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  
+    allow_origins=ALLOWED_ORIGINS,  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -58,7 +65,7 @@ class OrderRequest(BaseModel, extra="allow"):
 
 @app.get("/")
 def home():
-    return {"message": "AgriConnect Global API is live."}
+    return {"message": "AgriConnect Global API is securely live."}
 
 # --- 1. FARMER SIGN-UP ---
 @app.post("/api/v1/auth/signup")
@@ -244,8 +251,9 @@ def create_order(order: OrderRequest):
             raise HTTPException(status_code=400, detail="Exceeds stock.")
         
         subtotal = order.quantity_ordered * float(item["price"])
-        # Global logistics flat fee integration marker (simplified for now)
-        delivery_fee = 50.00 if order.delivery_option.lower() == "batch delivery" else 0.00
+        
+        # Cross-border shipping fee logic marker
+        delivery_fee = 50.00 if order.delivery_option.lower() == "global cargo" else 0.00
         grand_total = subtotal + delivery_fee
         
         new_quantity = item["quantity_available"] - order.quantity_ordered
