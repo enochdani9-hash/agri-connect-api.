@@ -2,7 +2,9 @@ fastapi
 uvicorn
 sqlalchemy
 pydantic
+pydantic[email]
 websockets
 python-jose[cryptography]
 passlib[bcrypt]
 python-multipart
+email-validator
