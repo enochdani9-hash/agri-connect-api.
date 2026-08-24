@@ -1,7 +1,5 @@
 fastapi
 uvicorn
-pydantic[email]
-requests
-supabase
-python-multipart
-resend
+sqlalchemy
+pydantic
+websockets
