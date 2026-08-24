@@ -1,4 +1,5 @@
 import random
+import bcrypt
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
 
@@ -11,31 +12,27 @@ from fastapi import (
     WebSocketDisconnect,
     status,
 )
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, EmailStr
 from sqlalchemy import Column, DateTime, Float, Integer, String, create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
-
-# For Authentication (passlib for passwords, jose for JWT tokens)
-from passlib.context import CryptContext
 from jose import jwt, JWTError
 
 # ==============================================================================
 # 1. SECURITY & CONFIGURATION
 # ==============================================================================
-SECRET_KEY = "super-secret-agriconnect-key"  # In production, use environment variables
+SECRET_KEY = "super-secret-agriconnect-key"  
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 hours
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/login")
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """Verifies a plain password against the stored bcrypt hash."""
+    return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
 
-def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
-
-def get_password_hash(password):
-    return pwd_context.hash(password)
+def get_password_hash(password: str) -> str:
+    """Generates a secure hash using standard bcrypt."""
+    salt = bcrypt.gensalt()
+    return bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
 
 def create_access_token(data: dict):
     to_encode = data.copy()
@@ -80,6 +77,7 @@ class OrderDB(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     product_id = Column(Integer, nullable=False)
     buyer_id = Column(Integer, nullable=False)
+    buyer_name = Column(String, nullable=False)
     quantity = Column(Integer, nullable=False)
     total_amount_ghs = Column(Float, nullable=False)
     target_currency = Column(String, default="GHS")
@@ -106,10 +104,15 @@ class UserCreate(BaseModel):
     full_name: str
     location_or_region: str
 
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
 class Token(BaseModel):
     access_token: str
     token_type: str
     role: str
+    full_name: str
 
 class ProductCreate(BaseModel):
     product_name: str
@@ -139,9 +142,9 @@ class OrderCreate(BaseModel):
     currency: str = "GHS"
 
 # ==============================================================================
-# 4. FASTAPI APP & AUTH DEPENDENCIES
+# 4. FASTAPI APP & AUTH MIDDLEWARE
 # ==============================================================================
-app = FastAPI(title="AgriConnect Global API", version="2.1.0")
+app = FastAPI(title="AgriConnect Global API", version="2.2.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -151,26 +154,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-    )
+def get_current_user_from_token(token: str, db: Session):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("sub")
         if email is None:
-            raise credentials_exception
+            return None
+        return db.query(UserDB).filter(UserDB.email == email).first()
     except JWTError:
-        raise credentials_exception
-    
-    user = db.query(UserDB).filter(UserDB.email == email).first()
-    if user is None:
-        raise credentials_exception
-    return user
+        return None
 
 # ==============================================================================
-# 5. AUTHENTICATION ENDPOINTS (Restored!)
+# 5. AUTHENTICATION ENDPOINTS
 # ==============================================================================
 @app.post("/api/v1/signup", response_model=Token)
 def signup(user_data: UserCreate, db: Session = Depends(get_db)):
@@ -189,25 +184,26 @@ def signup(user_data: UserCreate, db: Session = Depends(get_db)):
     db.commit()
     
     access_token = create_access_token(data={"sub": new_user.email, "role": new_user.role})
-    return {"access_token": access_token, "token_type": "bearer", "role": new_user.role}
+    return {"access_token": access_token, "token_type": "bearer", "role": new_user.role, "full_name": new_user.full_name}
 
 @app.post("/api/v1/login", response_model=Token)
-def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    user = db.query(UserDB).filter(UserDB.email == form_data.username).first()
-    if not user or not verify_password(form_data.password, user.hashed_password):
+def login(credentials: LoginRequest, db: Session = Depends(get_db)):
+    user = db.query(UserDB).filter(UserDB.email == credentials.email).first()
+    if not user or not verify_password(credentials.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Incorrect email or password")
     
     access_token = create_access_token(data={"sub": user.email, "role": user.role})
-    return {"access_token": access_token, "token_type": "bearer", "role": user.role}
+    return {"access_token": access_token, "token_type": "bearer", "role": user.role, "full_name": user.full_name}
 
 # ==============================================================================
-# 6. MARKETPLACE & LOGISTICS (The Upgrades)
+# 6. MARKETPLACE (Products & Orders)
 # ==============================================================================
 EXCHANGE_RATES_TO_GHS = {"GHS": 1.0, "USD": 0.065, "EUR": 0.060, "NGN": 98.50}
 
 @app.post("/api/v1/products", response_model=ProductResponse)
-def create_product(product: ProductCreate, db: Session = Depends(get_db), current_user: UserDB = Depends(get_current_user)):
-    if current_user.role != "farmer":
+def create_product(product: ProductCreate, token: str, db: Session = Depends(get_db)):
+    current_user = get_current_user_from_token(token, db)
+    if not current_user or current_user.role != "farmer":
         raise HTTPException(status_code=403, detail="Only farmers can post products")
         
     db_product = ProductDB(
@@ -234,17 +230,22 @@ def list_products(currency: str = "GHS", db: Session = Depends(get_db)):
         ) for p in products
     ]
 
-# Logistics OTP Mock DB
+# ==============================================================================
+# 7. LOGISTICS & DISPATCH (OTP Verification)
+# ==============================================================================
 shipments_db = {}
 
 @app.post("/api/v1/logistics/dispatch/{order_id}")
 def initiate_dispatch(order_id: int):
     otp = str(random.randint(100000, 999999))
     shipments_db[order_id] = {"otp": otp, "status": "DISPATCHED"}
-    return {"message": "Dispatch initiated", "buyer_otp": otp}
+    return {"message": "Dispatch initiated successfully", "buyer_otp": otp}
 
-# WebSockets
+# ==============================================================================
+# 8. LIVE CHAT (WebSockets)
+# ==============================================================================
 chat_manager = {}
+
 @app.websocket("/ws/chat/{order_id}/{user_name}")
 async def websocket_chat(websocket: WebSocket, order_id: int, user_name: str):
     await websocket.accept()
@@ -258,3 +259,30 @@ async def websocket_chat(websocket: WebSocket, order_id: int, user_name: str):
                 await connection.send_json({"sender": user_name, "message": text})
     except WebSocketDisconnect:
         chat_manager[order_id].remove(websocket)
+
+# ==============================================================================
+# 9. SMART PRICING & MARKET INTELLIGENCE
+# ==============================================================================
+REGIONAL_BENCHMARKS = {
+    "poultry": {"avg_price": 120.0, "unit": "birds", "min": 95.0, "max": 140.0},
+    "tomatoes": {"avg_price": 450.0, "unit": "crates", "min": 380.0, "max": 520.0},
+}
+
+@app.get("/api/v1/intelligence/price-advisory")
+def get_price_advisory(commodity: str, farmer_price: float, quantity: int = 1):
+    key = commodity.lower().strip()
+    benchmark = REGIONAL_BENCHMARKS.get(key)
+
+    if not benchmark:
+        return {"status": "NO_HISTORICAL_DATA", "message": "No regional data available."}
+
+    avg = benchmark["avg_price"]
+    diff_percent = round(((farmer_price - avg) / avg) * 100, 1)
+
+    return {
+        "commodity": commodity,
+        "farmer_price": farmer_price,
+        "regional_average": avg,
+        "price_variance": f"{diff_percent}%",
+        "benchmark_range": f"{benchmark['min']} - {benchmark['max']} GHS per {benchmark['unit']}",
+    }
