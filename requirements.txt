@@ -5,6 +5,6 @@ pydantic
 pydantic[email]
 websockets
 python-jose[cryptography]
-passlib[bcrypt]
+bcrypt
 python-multipart
 email-validator
