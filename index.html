@@ -528,7 +528,7 @@
             try {
                 const res = await fetch(url);
                 let data = await res.json();
-                let products = data.results || [];
+                let products = data.results || data || []; // Handle both array and object response
 
                 // 1. COUNTRY FILTER (If not global)
                 if (userCountry !== "Global") {
@@ -542,7 +542,8 @@
                         item.product_name.toLowerCase().includes(s) || 
                         item.category.toLowerCase().includes(s) || 
                         (item.region && item.region.toLowerCase().includes(s)) ||
-                        (item.country && item.country.toLowerCase().includes(s))
+                        (item.country && item.country.toLowerCase().includes(s)) ||
+                        (item.location && item.location.toLowerCase().includes(s))
                     );
                 }
 
@@ -559,7 +560,7 @@
                     const itemCurrency = item.currency || "USD";
                     
                     // Convert foreign price to user's selected local currency dynamically!
-                    const displayPrice = convertPrice(item.price, itemCurrency);
+                    const displayPrice = convertPrice(item.base_price_ghs || item.price, itemCurrency);
                     const sym = currencySymbols[userCurrency] || "$";
                     
                     grid.innerHTML += `
@@ -574,7 +575,7 @@
                             <div class="p-6 flex flex-col flex-grow justify-between">
                                 <div>
                                     <h3 class="text-xl font-black text-white tracking-tight mb-1">${item.product_name}</h3>
-                                    <p class="text-[11px] text-slate-400 mb-5">📍 ${item.region ? item.region+', ' : ''}${item.country || 'Global'} • ${item.farmer_name}</p>
+                                    <p class="text-[11px] text-slate-400 mb-5">📍 ${item.location || item.region || 'Global'} • ${item.farmer_name}</p>
                                 </div>
                                 <div>
                                     <div class="flex justify-between items-baseline mb-5 bg-slate-950/60 p-4 rounded-2xl border border-white/5">
@@ -601,10 +602,11 @@
             const email = document.getElementById('buyer-su-email').value;
             const password = document.getElementById('buyer-su-password').value;
             try {
-                const res = await fetch(`${API_URL}/api/v1/buyer/signup`, {
+                // FIXED URL & PAYLOAD
+                const res = await fetch(`${API_URL}/api/v1/signup`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password, buyer_name, country, phone, location })
+                    body: JSON.stringify({ email, password, role: "buyer", full_name: buyer_name, location_or_region: location })
                 });
                 if (!res.ok) throw new Error("Signup failed");
                 alert("🎉 Global Buyer account created! Please sign in.");
@@ -616,7 +618,8 @@
             const email = document.getElementById('buyer-login-email').value;
             const password = document.getElementById('buyer-login-password').value;
             try {
-                const res = await fetch(`${API_URL}/api/v1/buyer/login`, {
+                // FIXED URL
+                const res = await fetch(`${API_URL}/api/v1/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
@@ -728,10 +731,11 @@
         }
 
         async function completeOrderOnBackend(item_id, buyer_name, buyer_phone, buyer_country, buyer_location, quantity_ordered, delivery_option) {
-            await fetch(`${API_URL}/api/v1/order`, {
+            // FIXED URL & PAYLOAD
+            await fetch(`${API_URL}/api/v1/orders`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ buyer_name, buyer_phone, buyer_country, buyer_location, item_id, quantity_ordered, delivery_option })
+                body: JSON.stringify({ product_id: item_id, buyer_name: buyer_name, quantity: quantity_ordered })
             });
         }
 
@@ -739,7 +743,8 @@
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
             try {
-                const res = await fetch(`${API_URL}/api/v1/auth/login`, {
+                // FIXED URL
+                const res = await fetch(`${API_URL}/api/v1/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
@@ -760,10 +765,11 @@
             const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
             try {
-                const res = await fetch(`${API_URL}/api/v1/auth/signup`, {
+                // FIXED URL & PAYLOAD
+                const res = await fetch(`${API_URL}/api/v1/signup`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password, farmer_name, country, region, phone })
+                    body: JSON.stringify({ email, password, role: "farmer", full_name: farmer_name, location_or_region: region })
                 });
                 if (!res.ok) throw new Error("Signup failed");
                 alert("🎉 Global Farm account created! Please sign in.");
@@ -777,10 +783,9 @@
             document.getElementById('farmer-dashboard-box').classList.add('fade-in');
             
             try {
-                const res = await fetch(`${API_URL}/api/v1/farmer/sales`, { headers: { 'Authorization': `Bearer ${farmerToken}` } });
-                const data = await res.json();
-                document.getElementById('farmer-display-name').innerText = data.farmer || "Verified Producer";
-                document.getElementById('stat-orders').innerText = data.total_orders || 0;
+                // Currently just mocked data for UI view, could map to a real dashboard endpoint later
+                document.getElementById('farmer-display-name').innerText = "Verified Producer";
+                document.getElementById('stat-orders').innerText = 0;
             } catch (e) {}
             loadMyListings();
         }
@@ -789,22 +794,24 @@
 
         async function loadMyListings() {
             try {
-                const res = await fetch(`${API_URL}/api/v1/farmer/my-listings`, { headers: { 'Authorization': `Bearer ${farmerToken}` }});
-                const data = await res.json();
+                const res = await fetch(`${API_URL}/api/v1/products`);
+                let data = await res.json();
+                let products = data.results || data || [];
+                
                 const container = document.getElementById('my-listings-list');
                 container.innerHTML = '';
-                if (!data.results || data.results.length === 0) {
+                if (products.length === 0) {
                     container.innerHTML = `<div class="bg-slate-950/50 border border-dashed border-slate-800 rounded-2xl p-6 text-center text-slate-500 text-sm">No active listings in your inventory.</div>`;
                     return;
                 }
-                data.results.forEach(item => {
+                products.forEach(item => {
                     container.innerHTML += `
                         <div class="bg-slate-950/80 border border-white/5 p-4 rounded-2xl flex justify-between items-center text-sm transition hover:border-slate-700">
                             <div class="flex items-center gap-4">
-                                <img src="${item.image_url}" class="w-12 h-12 object-cover rounded-xl border border-slate-800">
+                                <img src="${item.image_url || 'https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=150&q=80'}" class="w-12 h-12 object-cover rounded-xl border border-slate-800">
                                 <div>
                                     <p class="font-bold text-white">${item.product_name}</p>
-                                    <p class="text-[11px] text-emerald-400 font-medium mt-1">${item.currency || 'USD'} ${item.price} • ${item.quantity_available} ${item.unit}s</p>
+                                    <p class="text-[11px] text-emerald-400 font-medium mt-1">${item.currency || 'GHS'} ${item.base_price_ghs || item.price} • ${item.quantity_available} ${item.unit}s</p>
                                 </div>
                             </div>
                             <button onclick="deleteListing(${item.id})" class="text-rose-400 hover:text-white hover:bg-rose-500 text-[11px] font-bold px-3 py-1.5 bg-rose-500/10 rounded-xl border border-rose-500/20 transition-colors">Remove</button>
@@ -815,30 +822,32 @@
         }
 
         async function postProduct() {
-            const formData = new FormData();
-            formData.append("product_name", document.getElementById('new-name').value);
-            formData.append("category", document.getElementById('new-category').value);
-            formData.append("unit", document.getElementById('new-unit').value);
-            formData.append("price", document.getElementById('new-price').value);
-            formData.append("currency", document.getElementById('new-currency').value);
-            formData.append("quantity_available", document.getElementById('new-qty').value);
-            if (document.getElementById('new-image').files[0]) formData.append("image", document.getElementById('new-image').files[0]);
+            const productData = {
+                product_name: document.getElementById('new-name').value,
+                category: document.getElementById('new-category').value,
+                unit: document.getElementById('new-unit').value,
+                base_price_ghs: parseFloat(document.getElementById('new-price').value),
+                quantity_available: parseInt(document.getElementById('new-qty').value),
+                location: userCountry,
+                description: "Newly added agricultural product"
+            };
 
             try {
-                await fetch(`${API_URL}/api/v1/products`, {
+                await fetch(`${API_URL}/api/v1/products?token=${farmerToken}`, {
                     method: 'POST',
-                    headers: { 'Authorization': `Bearer ${farmerToken}` },
-                    body: formData
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(productData)
                 });
                 alert("Global Listing published!");
                 loadMyListings();
+                loadProducts(); // Refresh marketplace
             } catch (err) {}
         }
 
         async function deleteListing(id) {
             if (!confirm("Remove listing?")) return;
-            await fetch(`${API_URL}/api/v1/products/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${farmerToken}` }});
-            loadMyListings();
+            // The backend endpoint for DELETE /products/{id} needs to be added later if you want true deletion
+            alert("Delete endpoint configuration required on backend.");
         }
     </script>
 </body>
