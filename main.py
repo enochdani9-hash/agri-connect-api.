@@ -1,21 +1,11 @@
 import os
-import random
 import bcrypt
-import requests
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional
+from typing import List, Optional
 
-from fastapi import (
-    FastAPI,
-    HTTPException,
-    Depends,
-    Query,
-    WebSocket,
-    WebSocketDisconnect,
-    status,
-)
+from fastapi import FastAPI, HTTPException, Depends, Query
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from sqlalchemy import Column, DateTime, Float, Integer, String, create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
 from jose import jwt, JWTError
@@ -25,12 +15,12 @@ from jose import jwt, JWTError
 # ==============================================================================
 SECRET_KEY = "super-secret-agriconnect-key"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 hours
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
 
-def verify_password(plain_password: str, hashed_password: str) -> bool:
+def verify_password(plain_password, hashed_password):
     return bcrypt.checkpw(plain_password.encode("utf-8"), hashed_password.encode("utf-8"))
 
-def get_password_hash(password: str) -> str:
+def get_password_hash(password):
     salt = bcrypt.gensalt()
     return bcrypt.hashpw(password.encode("utf-8"), salt).decode("utf-8")
 
@@ -41,9 +31,9 @@ def create_access_token(data: dict):
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 # ==============================================================================
-# 2. CLOUD DATABASE CONFIGURATION (PostgreSQL / Supabase)
+# 2. CLOUD DATABASE (Supabase)
 # ==============================================================================
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./agriconnect.db")
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./agriconnect_classifieds.db")
 
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
@@ -61,9 +51,8 @@ class UserDB(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
-    role = Column(String, nullable=False, default="buyer")
+    role = Column(String, nullable=False, default="farmer")
     full_name = Column(String, nullable=False)
-    location_or_region = Column(String, nullable=False)
 
 class ProductDB(Base):
     __tablename__ = "products"
@@ -71,25 +60,11 @@ class ProductDB(Base):
     product_name = Column(String, index=True, nullable=False)
     category = Column(String, index=True, nullable=False)
     base_price_ghs = Column(Float, nullable=False)
-    quantity_available = Column(Integer, nullable=False)
     unit = Column(String, nullable=False)
     farmer_name = Column(String, nullable=False)
     farmer_id = Column(Integer, nullable=True)
-    location = Column(String, index=True, nullable=False)
-    description = Column(String, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-
-class OrderDB(Base):
-    __tablename__ = "orders"
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    product_id = Column(Integer, nullable=False)
-    buyer_id = Column(Integer, nullable=True)
-    buyer_name = Column(String, nullable=False)
-    quantity = Column(Integer, nullable=False)
-    total_amount_ghs = Column(Float, nullable=False)
-    target_currency = Column(String, default="GHS")
-    converted_total = Column(Float, nullable=False)
-    status = Column(String, default="PENDING_ESCROW")
+    phone_number = Column(String, nullable=False)
+    neighborhood = Column(String, index=True, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 
 Base.metadata.create_all(bind=engine)
@@ -107,11 +82,8 @@ def get_db():
 class UserCreate(BaseModel):
     email: str
     password: str
-    role: Optional[str] = "buyer"
-    full_name: Optional[str] = None
-    name: Optional[str] = None
-    location_or_region: Optional[str] = "Global"
-    location: Optional[str] = None
+    role: Optional[str] = "farmer"
+    full_name: str
 
 class LoginRequest(BaseModel):
     email: str
@@ -127,54 +99,25 @@ class ProductCreate(BaseModel):
     product_name: str
     category: str
     base_price_ghs: float
-    quantity_available: int
     unit: str
-    location: str
-    description: Optional[str] = None
+    phone_number: str
+    neighborhood: str
 
 class ProductResponse(BaseModel):
     id: int
     product_name: str
     category: str
     base_price_ghs: float
-    converted_price: float
-    currency: str
-    quantity_available: int
     unit: str
     farmer_name: str
-    location: str
-    description: Optional[str]
-
-class OrderCreate(BaseModel):
-    product_id: int
-    buyer_name: Optional[str] = "Anonymous Buyer"
-    quantity: int
-    currency: str = "GHS"
-
-class OrderResponse(BaseModel):
-    id: int
-    product_id: int
-    buyer_name: str
-    quantity: int
-    total_amount_ghs: float
-    target_currency: str
-    converted_total: float
-    status: str
+    phone_number: str
+    neighborhood: str
     created_at: datetime
 
-class DispatchUpdate(BaseModel):
-    status: str
-    current_location: str
-    driver_notes: Optional[str] = None
-
-class DeliveryVerification(BaseModel):
-    order_id: int
-    delivery_otp: str
-
 # ==============================================================================
-# 4. FASTAPI APP & CORS
+# 4. FASTAPI APP & ENDPOINTS
 # ==============================================================================
-app = FastAPI(title="AgriConnect Global API", version="2.5.0")
+app = FastAPI(title="AgriConnect Classifieds API", version="3.0.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -184,48 +127,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-EXCHANGE_RATES_TO_GHS = {
-    "GHS": 1.0,
-    "USD": 0.065,
-    "EUR": 0.060,
-    "GBP": 0.052,
-    "NGN": 98.50,
-    "XOF": 40.00,
-}
-
 def get_current_user_from_token(token: str, db: Session):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("sub")
-        if email is None:
-            return None
         return db.query(UserDB).filter(UserDB.email == email).first()
     except JWTError:
         return None
 
-# ==============================================================================
-# 5. AUTHENTICATION
-# ==============================================================================
-@app.get("/")
-def root():
-    return {"status": "online", "platform": "AgriConnect Global API", "docs_url": "/docs"}
-
-@app.post("/signup", response_model=Token)
 @app.post("/api/v1/signup", response_model=Token)
 def signup(user_data: UserCreate, db: Session = Depends(get_db)):
     if db.query(UserDB).filter(UserDB.email == user_data.email).first():
         raise HTTPException(status_code=400, detail="Email already registered")
     
-    display_name = user_data.full_name or user_data.name or user_data.email.split("@")[0]
-    user_location = user_data.location_or_region or user_data.location or "Global"
-    
-    hashed_pw = get_password_hash(user_data.password)
     new_user = UserDB(
         email=user_data.email,
-        hashed_password=hashed_pw,
-        role=user_data.role or "buyer",
-        full_name=display_name,
-        location_or_region=user_location,
+        hashed_password=get_password_hash(user_data.password),
+        role=user_data.role,
+        full_name=user_data.full_name,
     )
     db.add(new_user)
     db.commit()
@@ -234,7 +153,6 @@ def signup(user_data: UserCreate, db: Session = Depends(get_db)):
     access_token = create_access_token(data={"sub": new_user.email, "role": new_user.role})
     return {"access_token": access_token, "token_type": "bearer", "role": new_user.role, "full_name": new_user.full_name}
 
-@app.post("/login", response_model=Token)
 @app.post("/api/v1/login", response_model=Token)
 def login(credentials: LoginRequest, db: Session = Depends(get_db)):
     user = db.query(UserDB).filter(UserDB.email == credentials.email).first()
@@ -244,144 +162,28 @@ def login(credentials: LoginRequest, db: Session = Depends(get_db)):
     access_token = create_access_token(data={"sub": user.email, "role": user.role})
     return {"access_token": access_token, "token_type": "bearer", "role": user.role, "full_name": user.full_name}
 
-# ==============================================================================
-# 6. PRODUCTS & ORDERS
-# ==============================================================================
-@app.post("/products", response_model=ProductResponse)
 @app.post("/api/v1/products", response_model=ProductResponse)
-def create_product(product: ProductCreate, token: Optional[str] = None, db: Session = Depends(get_db)):
-    farmer_name = "Verified Local Farmer"
-    farmer_id = None
-    if token:
-        user = get_current_user_from_token(token, db)
-        if user:
-            farmer_name = user.full_name
-            farmer_id = user.id
+def create_product(product: ProductCreate, token: str = Query(...), db: Session = Depends(get_db)):
+    user = get_current_user_from_token(token, db)
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid token")
 
     db_product = ProductDB(
         **product.model_dump(),
-        farmer_name=farmer_name,
-        farmer_id=farmer_id,
+        farmer_name=user.full_name,
+        farmer_id=user.id,
     )
     db.add(db_product)
     db.commit()
     db.refresh(db_product)
+    return ProductResponse(**db_product.__dict__)
 
-    return ProductResponse(**db_product.__dict__, converted_price=db_product.base_price_ghs, currency="GHS")
-
-@app.get("/products", response_model=List[ProductResponse])
 @app.get("/api/v1/products", response_model=List[ProductResponse])
-def list_products(category: Optional[str] = Query(None), location: Optional[str] = Query(None), currency: str = Query("GHS"), search: Optional[str] = Query(None), db: Session = Depends(get_db)):
+def list_products(category: Optional[str] = Query(None), neighborhood: Optional[str] = Query(None), search: Optional[str] = Query(None), db: Session = Depends(get_db)):
     query = db.query(ProductDB)
     if category: query = query.filter(ProductDB.category.ilike(f"%{category}%"))
-    if location: query = query.filter(ProductDB.location.ilike(f"%{location}%"))
-    if search: query = query.filter((ProductDB.product_name.ilike(f"%{search}%")) | (ProductDB.description.ilike(f"%{search}%")))
-
-    products = query.all()
-    rate = EXCHANGE_RATES_TO_GHS.get(currency.upper(), 1.0)
-    return [ProductResponse(**p.__dict__, converted_price=round(p.base_price_ghs * rate, 2), currency=currency.upper()) for p in products]
-
-@app.post("/orders", response_model=OrderResponse)
-@app.post("/api/v1/orders", response_model=OrderResponse)
-def place_order(order: OrderCreate, db: Session = Depends(get_db)):
-    product = db.query(ProductDB).filter(ProductDB.id == order.product_id).first()
-    if not product: raise HTTPException(status_code=404, detail="Product not found")
-    if product.quantity_available < order.quantity: raise HTTPException(status_code=400, detail="Requested quantity exceeds stock")
-
-    product.quantity_available -= order.quantity
-    total_ghs = product.base_price_ghs * order.quantity
-    curr = order.currency.upper()
-    rate = EXCHANGE_RATES_TO_GHS.get(curr, 1.0)
-    converted_total = round(total_ghs * rate, 2)
-
-    new_order = OrderDB(
-        product_id=order.product_id,
-        buyer_name=order.buyer_name or "Anonymous Buyer",
-        quantity=order.quantity,
-        total_amount_ghs=total_ghs,
-        target_currency=curr,
-        converted_total=converted_total,
-        status="PENDING_ESCROW",
-    )
-    db.add(new_order)
-    db.commit()
-    db.refresh(new_order)
-    return OrderResponse(**new_order.__dict__)
-
-# ==============================================================================
-# 7. LOGISTICS & OTP DISPATCH
-# ==============================================================================
-shipments_db: Dict[int, dict] = {}
-
-@app.post("/logistics/dispatch/{order_id}")
-@app.post("/api/v1/logistics/dispatch/{order_id}")
-def initiate_dispatch(order_id: int, pickup: str = "Farm", dropoff: str = "Hub"):
-    otp = str(random.randint(100000, 999999))
-    now = datetime.utcnow().isoformat()
-    shipments_db[order_id] = {
-        "order_id": order_id, "status": "HARVESTING", "pickup_location": pickup, "dropoff_location": dropoff,
-        "delivery_otp": otp, "updated_at": now, "timeline": [{"status": "HARVESTING", "location": pickup, "timestamp": now}],
-    }
-    return {"message": "Dispatch initiated", "order_id": order_id, "buyer_otp": otp}
-
-@app.patch("/logistics/status/{order_id}")
-@app.patch("/api/v1/logistics/status/{order_id}")
-def update_shipment_status(order_id: int, update: DispatchUpdate):
-    if order_id not in shipments_db: raise HTTPException(status_code=404, detail="Shipment not found")
-    shipment = shipments_db[order_id]
-    shipment["status"] = update.status
-    shipment["current_location"] = update.current_location
-    shipment["timeline"].append({"status": update.status, "location": update.current_location, "notes": update.driver_notes, "timestamp": datetime.utcnow().isoformat()})
-    return {"message": "Shipment updated", "shipment": shipment}
-
-@app.post("/logistics/verify-delivery")
-@app.post("/api/v1/logistics/verify-delivery")
-def verify_delivery(data: DeliveryVerification, db: Session = Depends(get_db)):
-    if data.order_id not in shipments_db: raise HTTPException(status_code=404, detail="Shipment not found")
-    shipment = shipments_db[data.order_id]
-    if shipment["delivery_otp"] != data.delivery_otp: raise HTTPException(status_code=400, detail="Invalid OTP")
-    shipment["status"] = "DELIVERED"
-    order = db.query(OrderDB).filter(OrderDB.id == data.order_id).first()
-    if order:
-        order.status = "DELIVERED"
-        db.commit()
-    return {"status": "SUCCESS", "message": "Delivery verified and completed"}
-
-# ==============================================================================
-# 8. WEBSOCKET LIVE CHAT
-# ==============================================================================
-chat_rooms: Dict[int, List[WebSocket]] = {}
-
-@app.websocket("/ws/chat/{order_id}/{user_name}")
-async def websocket_chat(websocket: WebSocket, order_id: int, user_name: str):
-    await websocket.accept()
-    if order_id not in chat_rooms: chat_rooms[order_id] = []
-    chat_rooms[order_id].append(websocket)
-    try:
-        while True:
-            text = await websocket.receive_text()
-            for conn in chat_rooms[order_id]: await conn.send_json({"sender": user_name, "message": text, "timestamp": datetime.utcnow().strftime("%H:%M:%S")})
-    except WebSocketDisconnect:
-        chat_rooms[order_id].remove(websocket)
-
-# ==============================================================================
-# 9. PAYSTACK ESCROW INTEGRATION
-# ==============================================================================
-PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY", "sk_test_your_secret_key")
-
-@app.post("/api/v1/payments/verify/{reference}")
-def verify_escrow_payment(reference: str, order_id: int, db: Session = Depends(get_db)):
-    url = f"https://api.paystack.co/transaction/verify/{reference}"
-    headers = {"Authorization": f"Bearer {PAYSTACK_SECRET_KEY}"}
-    response = requests.get(url, headers=headers)
+    if neighborhood: query = query.filter(ProductDB.neighborhood.ilike(f"%{neighborhood}%"))
+    if search: query = query.filter((ProductDB.product_name.ilike(f"%{search}%")) | (ProductDB.neighborhood.ilike(f"%{search}%")))
     
-    if response.status_code == 200:
-        data = response.json()
-        if data["data"]["status"] == "success":
-            order = db.query(OrderDB).filter(OrderDB.id == order_id).first()
-            if order:
-                order.status = "ESCROW_FUNDED"
-                db.commit()
-                return {"status": "success", "message": "Payment verified. Funds held in escrow."}
-                
-    raise HTTPException(status_code=400, detail="Payment verification failed or invalid reference")
+    products = query.order_by(ProductDB.created_at.desc()).all()
+    return [ProductResponse(**p.__dict__) for p in products]
