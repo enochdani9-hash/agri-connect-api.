@@ -15,7 +15,7 @@ from jose import jwt, JWTError
 # ==============================================================================
 SECRET_KEY = "super-secret-agriconnect-key"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 # 1 week
 
 def verify_password(plain_password, hashed_password):
     return bcrypt.checkpw(plain_password.encode("utf-8"), hashed_password.encode("utf-8"))
@@ -33,7 +33,7 @@ def create_access_token(data: dict):
 # ==============================================================================
 # 2. CLOUD DATABASE (Supabase)
 # ==============================================================================
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./agriconnect_classifieds.db")
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./agriconnect_jiji.db")
 
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
@@ -46,23 +46,26 @@ else:
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
+# NEW TABLES (v2) to avoid clashing with your old Escrow tables in Supabase
 class UserDB(Base):
-    __tablename__ = "users"
+    __tablename__ = "users_v2"
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
-    role = Column(String, nullable=False, default="farmer")
     full_name = Column(String, nullable=False)
+    phone_number = Column(String, nullable=False)
+    age = Column(Integer, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
 
 class ProductDB(Base):
-    __tablename__ = "products"
+    __tablename__ = "products_v2"
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     product_name = Column(String, index=True, nullable=False)
     category = Column(String, index=True, nullable=False)
     base_price_ghs = Column(Float, nullable=False)
     unit = Column(String, nullable=False)
-    farmer_name = Column(String, nullable=False)
-    farmer_id = Column(Integer, nullable=True)
+    seller_name = Column(String, nullable=False)
+    seller_id = Column(Integer, nullable=False)
     phone_number = Column(String, nullable=False)
     neighborhood = Column(String, index=True, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -80,10 +83,11 @@ def get_db():
 # 3. PYDANTIC SCHEMAS
 # ==============================================================================
 class UserCreate(BaseModel):
-    email: str
-    password: str
-    role: Optional[str] = "farmer"
     full_name: str
+    email: str
+    phone_number: str
+    age: int
+    password: str
 
 class LoginRequest(BaseModel):
     email: str
@@ -92,7 +96,6 @@ class LoginRequest(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
-    role: str
     full_name: str
 
 class ProductCreate(BaseModel):
@@ -100,7 +103,6 @@ class ProductCreate(BaseModel):
     category: str
     base_price_ghs: float
     unit: str
-    phone_number: str
     neighborhood: str
 
 class ProductResponse(BaseModel):
@@ -109,7 +111,7 @@ class ProductResponse(BaseModel):
     category: str
     base_price_ghs: float
     unit: str
-    farmer_name: str
+    seller_name: str
     phone_number: str
     neighborhood: str
     created_at: datetime
@@ -117,7 +119,7 @@ class ProductResponse(BaseModel):
 # ==============================================================================
 # 4. FASTAPI APP & ENDPOINTS
 # ==============================================================================
-app = FastAPI(title="AgriConnect Classifieds API", version="3.0.0")
+app = FastAPI(title="AgriConnect Jiji-Clone API", version="4.0.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -143,15 +145,16 @@ def signup(user_data: UserCreate, db: Session = Depends(get_db)):
     new_user = UserDB(
         email=user_data.email,
         hashed_password=get_password_hash(user_data.password),
-        role=user_data.role,
         full_name=user_data.full_name,
+        phone_number=user_data.phone_number,
+        age=user_data.age
     )
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
     
-    access_token = create_access_token(data={"sub": new_user.email, "role": new_user.role})
-    return {"access_token": access_token, "token_type": "bearer", "role": new_user.role, "full_name": new_user.full_name}
+    access_token = create_access_token(data={"sub": new_user.email})
+    return {"access_token": access_token, "token_type": "bearer", "full_name": new_user.full_name}
 
 @app.post("/api/v1/login", response_model=Token)
 def login(credentials: LoginRequest, db: Session = Depends(get_db)):
@@ -159,19 +162,27 @@ def login(credentials: LoginRequest, db: Session = Depends(get_db)):
     if not user or not verify_password(credentials.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Incorrect email or password")
     
-    access_token = create_access_token(data={"sub": user.email, "role": user.role})
-    return {"access_token": access_token, "token_type": "bearer", "role": user.role, "full_name": user.full_name}
+    access_token = create_access_token(data={"sub": user.email})
+    return {"access_token": access_token, "token_type": "bearer", "full_name": user.full_name}
+
+@app.get("/api/v1/me")
+def verify_token(token: str = Query(...), db: Session = Depends(get_db)):
+    user = get_current_user_from_token(token, db)
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    return {"full_name": user.full_name, "email": user.email, "phone_number": user.phone_number}
 
 @app.post("/api/v1/products", response_model=ProductResponse)
 def create_product(product: ProductCreate, token: str = Query(...), db: Session = Depends(get_db)):
     user = get_current_user_from_token(token, db)
     if not user:
-        raise HTTPException(status_code=401, detail="Invalid token")
+        raise HTTPException(status_code=401, detail="Must be logged in to post an ad")
 
     db_product = ProductDB(
         **product.model_dump(),
-        farmer_name=user.full_name,
-        farmer_id=user.id,
+        seller_name=user.full_name,
+        seller_id=user.id,
+        phone_number=user.phone_number, # Inherits phone number automatically from User Account
     )
     db.add(db_product)
     db.commit()
