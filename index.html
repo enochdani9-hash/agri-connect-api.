@@ -3,417 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgriConnect | Premium Global Marketplace</title>
+    <title>AgriConnect | Accra Poultry & Meat Classifieds</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://js.paystack.co/v1/inline.js"></script>
     <style>
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #10b981; }
         .fade-in { animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-        .slide-up { animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px) scale(0.99); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        input:-webkit-autofill,
-        input:-webkit-autofill:hover, 
-        input:-webkit-autofill:focus, 
-        input:-webkit-autofill:active{
-            -webkit-box-shadow: 0 0 0 30px #020617 inset !important;
-            -webkit-text-fill-color: white !important;
-            transition: background-color 5000s ease-in-out 0s;
-        }
+        input:-webkit-autofill { -webkit-box-shadow: 0 0 0 30px #020617 inset !important; -webkit-text-fill-color: white !important; }
     </style>
 </head>
 <body class="bg-[#020617] text-slate-100 font-sans min-h-screen selection:bg-emerald-500 selection:text-white relative overflow-x-hidden">
 
     <div class="fixed top-[-20%] left-[-10%] w-[50%] h-[50%] bg-emerald-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
-    <div class="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-teal-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
     <div id="toast-container" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 pointer-events-none"></div>
 
-    <div id="view-landing" class="min-h-screen flex items-center justify-center p-6 relative overflow-hidden z-50">
-        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
-        <div class="max-w-md w-full bg-slate-900/40 backdrop-blur-2xl border border-white/10 rounded-[2rem] p-8 shadow-[0_0_80px_-15px_rgba(16,185,129,0.15)] relative z-10 text-center space-y-6 fade-in">
-            <div class="w-20 h-20 mx-auto rounded-3xl bg-gradient-to-br from-emerald-500/20 to-teal-500/5 border border-emerald-500/40 flex items-center justify-center text-3xl shadow-[inset_0_0_20px_rgba(16,185,129,0.2)] animate-pulse">🌍</div>
-            <div>
-                <h1 class="text-3xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-slate-200 to-slate-500 mb-2 drop-shadow-sm">AgriConnect</h1>
-                <p class="text-xs text-slate-400 font-medium px-4 leading-relaxed">The borderless Direct Farm-to-Consumer network.</p>
-            </div>
-            
-            <div class="bg-[#020617]/50 p-5 rounded-2xl border border-slate-800/80 text-left space-y-3 shadow-inner">
-                <p class="text-[10px] font-black text-emerald-400 uppercase tracking-widest text-center">Select Trading Region</p>
-                <div class="relative">
-                    <select id="user-country-select" class="w-full bg-slate-900 border border-slate-700/80 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 appearance-none text-center cursor-pointer font-medium transition-all"></select>
-                    <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none text-slate-400 text-xs">▼</div>
-                </div>
-            </div>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                <button onclick="enterApp('buyer')" class="bg-gradient-to-b from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-bold p-4 rounded-2xl transition-all duration-300 shadow-[0_15px_30px_-10px_rgba(16,185,129,0.4)] hover:shadow-[0_20px_40px_-10px_rgba(16,185,129,0.6)] hover:-translate-y-1 flex flex-col items-center gap-2 cursor-pointer border border-emerald-400/30 group">
-                    <span class="text-2xl group-hover:scale-110 transition-transform duration-300 drop-shadow-md">🛒</span>
-                    <span class="text-xs tracking-wide">Enter as Buyer</span>
-                </button>
-                <button onclick="enterApp('farmer')" class="bg-slate-800/80 hover:bg-slate-700 backdrop-blur-md text-white font-bold p-4 rounded-2xl transition-all duration-300 border border-slate-600/50 hover:border-slate-400 hover:shadow-2xl hover:-translate-y-1 flex flex-col items-center gap-2 cursor-pointer group">
-                    <span class="text-2xl group-hover:scale-110 transition-transform duration-300 drop-shadow-md">🚜</span>
-                    <span class="text-xs tracking-wide">Enter as Producer</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div id="main-app-container" class="hidden relative z-10">
-        <header class="bg-[#020617]/80 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-50 transition-all duration-300 shadow-sm">
-            <div class="max-w-7xl mx-auto px-6 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
-                <div class="flex items-center gap-3 cursor-pointer group" onclick="returnToLanding()">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/5 border border-emerald-500/30 flex items-center justify-center text-lg group-hover:scale-105 transition-transform shadow-inner">🌍</div>
+    <div id="main-app-container" class="relative z-10">
+        <header class="bg-[#020617]/80 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
+                <div class="flex items-center gap-3 cursor-pointer group" onclick="toggleView('marketplace')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/5 border border-emerald-500/30 flex items-center justify-center text-lg shadow-inner">🐔</div>
                     <div>
                         <h1 class="text-lg font-black tracking-tight text-white group-hover:text-emerald-400 transition-colors">AgriConnect</h1>
-                        <p id="user-location-display" class="text-[9px] font-black text-emerald-500 uppercase tracking-widest">Global Network</p>
+                        <p class="text-[9px] font-black text-emerald-500 uppercase tracking-widest">Accra Direct Market</p>
                     </div>
                 </div>
-                <div id="nav-controls" class="flex items-center gap-1.5 bg-slate-900/60 p-1 rounded-xl border border-white/5 shadow-inner"></div>
+                <div id="nav-controls" class="flex items-center gap-2">
+                    <button onclick="toggleView('marketplace')" id="btn-market" class="px-4 py-2 rounded-lg text-xs font-bold bg-emerald-600 text-white border border-emerald-500">Browse Leads</button>
+                    <button onclick="toggleView('farmer')" id="btn-farmer" class="px-4 py-2 rounded-lg text-xs font-bold bg-[#020617]/50 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-900/30">Post Ad (Free)</button>
+                </div>
             </div>
         </header>
 
         <main class="max-w-7xl mx-auto px-6 py-8 min-h-[80vh]">
 
-            <div id="view-marketplace" class="fade-in hidden">
-                <div class="flex flex-col lg:flex-row justify-between items-center gap-6 mb-8 bg-slate-900/40 backdrop-blur-2xl border border-white/5 p-6 lg:p-8 rounded-[2rem] shadow-xl relative overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-transparent to-transparent pointer-events-none"></div>
-                    <div class="relative z-10">
-                        <h2 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 tracking-tight mb-2">Marketplace</h2>
-                        <p id="market-subtitle" class="text-xs text-slate-400 max-w-sm leading-relaxed font-medium">Source directly from verified agricultural operations.</p>
+            <!-- MARKETPLACE VIEW (Public) -->
+            <div id="view-marketplace" class="fade-in">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-8 bg-slate-900/40 border border-white/5 p-6 rounded-[2rem]">
+                    <div>
+                        <h2 class="text-3xl font-black text-white tracking-tight mb-2">Accra Livestock & Poultry</h2>
+                        <p class="text-xs text-slate-400">Connect directly with local farmers via WhatsApp. No middlemen.</p>
                     </div>
-                    
-                    <div class="w-full lg:w-[22rem] relative z-10">
-                        <form autocomplete="off" onsubmit="event.preventDefault();" class="w-full relative group">
-                            <input type="search" id="crop-search-box" oninput="handleSearch()" placeholder="Search crops, livestock..." class="w-full bg-[#020617]/80 backdrop-blur-md border border-slate-700/80 rounded-xl pl-10 pr-4 py-3 text-sm text-white outline-none focus:border-emerald-500 transition-all font-medium">
-                            <span class="absolute left-3 top-3.5 text-emerald-500 text-sm z-20">🔍</span>
-                        </form>
+                    <div class="w-full md:w-[22rem]">
+                        <input type="search" id="crop-search-box" oninput="handleSearch()" placeholder="Search by neighborhood or item..." class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 outline-none">
                     </div>
                 </div>
 
-                <div class="space-y-4 mb-8 bg-slate-900/20 p-5 rounded-[2rem] border border-white/5 backdrop-blur-md">
-                    <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
-                        <span class="text-[9px] font-black text-emerald-500 uppercase tracking-widest mr-2 min-w-fit bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">🥬 Food</span>
-                        <button onclick="filterCategory('All')" class="category-btn active-cat">All</button>
-                        <button onclick="filterCategory('Vegetables')" class="category-btn inactive-cat">Vegetables</button>
-                        <button onclick="filterCategory('Tubers')" class="category-btn inactive-cat">Tubers</button>
-                        <button onclick="filterCategory('Grains')" class="category-btn inactive-cat">Grains & Seeds</button>
-                        <button onclick="filterCategory('Fruits')" class="category-btn inactive-cat">Fruits</button>
-                    </div>
-                    <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide border-t border-slate-800/50 pt-3">
-                        <span class="text-[9px] font-black text-amber-500 uppercase tracking-widest mr-2 min-w-fit bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">🐔 Animals</span>
-                        <button onclick="filterCategory('Poultry')" class="category-btn inactive-cat">Live Poultry</button>
-                        <button onclick="filterCategory('Meat')" class="category-btn inactive-cat">Meat Cuts</button>
-                        <button onclick="filterCategory('Eggs')" class="category-btn inactive-cat">Eggs</button>
-                        <button onclick="filterCategory('Livestock')" class="category-btn inactive-cat">Cattle/Goats</button>
-                    </div>
-                    <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide border-t border-slate-800/50 pt-3">
-                        <span class="text-[9px] font-black text-blue-500 uppercase tracking-widest mr-2 min-w-fit bg-blue-500/10 px-2.5 py-1 rounded-full border border-blue-500/20">🚜 Tools</span>
-                        <button onclick="filterCategory('Hand Tools')" class="category-btn inactive-cat">Hand Tools</button>
-                        <button onclick="filterCategory('Machinery')" class="category-btn inactive-cat">Heavy Machinery</button>
-                        <button onclick="filterCategory('Supplies')" class="category-btn inactive-cat">Supplies</button>
-                    </div>
+                <div class="flex items-center gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
+                    <button onclick="filterCategory('All')" class="category-btn bg-emerald-600 text-white px-5 py-2 rounded-xl text-[10px] font-black tracking-wide border border-emerald-500 active-cat">All</button>
+                    <button onclick="filterCategory('Poultry')" class="category-btn bg-[#020617]/50 border border-slate-800 text-slate-300 px-5 py-2 rounded-xl text-[10px] font-bold">Live Birds</button>
+                    <button onclick="filterCategory('Eggs')" class="category-btn bg-[#020617]/50 border border-slate-800 text-slate-300 px-5 py-2 rounded-xl text-[10px] font-bold">Eggs</button>
+                    <button onclick="filterCategory('Meat')" class="category-btn bg-[#020617]/50 border border-slate-800 text-slate-300 px-5 py-2 rounded-xl text-[10px] font-bold">Dressed Meat</button>
+                    <button onclick="filterCategory('Livestock')" class="category-btn bg-[#020617]/50 border border-slate-800 text-slate-300 px-5 py-2 rounded-xl text-[10px] font-bold">Goats & Sheep</button>
                 </div>
 
                 <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-12"></div>
             </div>
 
-            <div id="view-buyer" class="hidden max-w-4xl mx-auto fade-in">
-                
-                <div id="buyer-auth-container" class="bg-slate-900/40 backdrop-blur-2xl border border-white/10 rounded-[2rem] p-8 shadow-2xl relative overflow-hidden max-w-sm mx-auto mt-6">
-                    <div id="buyer-login-box" class="space-y-4 relative z-10">
-                        <div class="text-center mb-6"><h2 class="text-2xl font-black text-white tracking-tight">Buyer Login</h2></div>
-                        <input type="email" id="buyer-login-email" placeholder="Email Address" class="auth-input">
-                        <div class="relative w-full">
-                            <input type="password" id="buyer-login-password" placeholder="Password" class="auth-input pr-10">
-                            <button onclick="togglePassword('buyer-login-password')" class="absolute right-3 top-3.5 text-slate-400 hover:text-emerald-400 transition-colors">👁️</button>
-                        </div>
-                        <div class="flex justify-between items-center mt-1">
-                            <label class="flex items-center text-[11px] text-slate-400 cursor-pointer"><input type="checkbox" class="mr-2 accent-emerald-500"> Remember me</label>
-                            <button onclick="forgotPasswordWhatsApp()" class="text-[11px] text-emerald-400 hover:text-emerald-300 font-bold">Forgot Password?</button>
-                        </div>
-                        <button onclick="loginBuyer()" class="auth-btn mt-2">Secure Sign In</button>
-                        <p class="text-xs text-slate-400 text-center pt-4 mt-2 border-t border-slate-800">New buyer? <button onclick="switchBuyerAuth('signup')" class="text-emerald-400 font-bold hover:text-emerald-300 transition">Register Account</button></p>
-                    </div>
-
-                    <div id="buyer-signup-box" class="hidden space-y-4 relative z-10">
-                        <div class="text-center mb-4"><h2 class="text-2xl font-black text-white tracking-tight">Create Account</h2></div>
-                        <input type="text" id="buyer-su-name" placeholder="Full Name" class="auth-input">
-                        <input type="email" id="buyer-su-email" placeholder="Email Address" class="auth-input">
-                        <div class="grid grid-cols-2 gap-3">
-                            <select id="buyer-su-country" class="auth-input appearance-none cursor-pointer text-xs"></select>
-                            <input type="text" id="buyer-su-loc" placeholder="City" class="auth-input">
-                        </div>
-                        <div class="relative w-full">
-                            <input type="password" id="buyer-su-password" placeholder="Create Password" class="auth-input pr-10">
-                            <button onclick="togglePassword('buyer-su-password')" class="absolute right-3 top-3.5 text-slate-400 hover:text-emerald-400 transition-colors">👁️</button>
-                        </div>
-                        <button onclick="signupBuyer()" class="auth-btn mt-2">Register Securely</button>
-                        <p class="text-xs text-slate-400 text-center pt-4 mt-2 border-t border-slate-800">Have an account? <button onclick="switchBuyerAuth('login')" class="text-emerald-400 font-bold hover:text-emerald-300 transition">Sign In</button></p>
-                    </div>
-                </div>
-
-                <div id="buyer-dashboard-container" class="hidden space-y-6 slide-up mt-4">
-                    <div class="flex justify-between items-center bg-slate-900/60 backdrop-blur-xl p-6 rounded-[2rem] border border-white/5 shadow-xl">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-[#020617] rounded-xl flex items-center justify-center text-xl border border-slate-800 shadow-inner">👤</div>
-                            <div>
-                                <p class="text-[9px] text-emerald-400 font-black tracking-widest uppercase mb-0.5">Verified Consumer</p>
-                                <p id="buyer-display-name" class="font-black text-white text-xl tracking-tight"></p>
-                            </div>
-                        </div>
-                        <button onclick="logoutBuyer()" class="text-xs bg-rose-500/10 text-rose-400 border border-rose-500/20 px-4 py-2 rounded-lg hover:bg-rose-500/20 font-bold transition">Log Out</button>
-                    </div>
-
-                    <div class="grid lg:grid-cols-3 gap-6">
-                        <div class="lg:col-span-2 bg-slate-900/40 backdrop-blur-xl border border-white/5 rounded-[2rem] p-6 shadow-xl">
-                            <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-800">
-                                <h2 class="text-xl font-black text-white tracking-tight">Shopping Cart</h2>
-                                <span id="cart-count-badge" class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full text-[10px] font-black tracking-wider uppercase">0 items</span>
-                            </div>
-                            <div id="cart-items-container" class="space-y-3 mb-4 max-h-[400px] overflow-y-auto pr-2 custom-scroll"></div>
-                        </div>
-                        <div class="bg-slate-900/40 backdrop-blur-xl border border-white/5 rounded-[2rem] p-6 shadow-xl h-fit">
-                            <h3 class="text-lg font-black text-white mb-4 tracking-tight">Order Summary</h3>
-                            <button onclick="checkoutCart()" class="auth-btn">Checkout</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            <!-- FARMER / SELLER PORTAL -->
             <div id="view-farmer" class="hidden max-w-4xl mx-auto fade-in">
                 
-                <div id="farmer-auth-container" class="bg-slate-900/40 backdrop-blur-2xl border border-white/10 rounded-[2rem] p-8 shadow-2xl relative overflow-hidden max-w-sm mx-auto mt-6">
-                    <div id="farmer-login-box" class="space-y-4 relative z-10">
-                        <div class="text-center mb-6"><h2 class="text-2xl font-black text-white tracking-tight">Producer Login</h2></div>
-                        <input type="email" id="login-email" class="auth-input" placeholder="Email Address">
-                        <div class="relative w-full">
-                            <input type="password" id="login-password" class="auth-input pr-10" placeholder="Password">
-                            <button onclick="togglePassword('login-password')" class="absolute right-3 top-3.5 text-slate-400 hover:text-emerald-400 transition-colors">👁️</button>
-                        </div>
-                        <div class="flex justify-between items-center mt-1">
-                            <label class="flex items-center text-[11px] text-slate-400 cursor-pointer"><input type="checkbox" class="mr-2 accent-emerald-500"> Remember me</label>
-                            <button onclick="forgotPasswordWhatsApp()" class="text-[11px] text-emerald-400 hover:text-emerald-300 font-bold">Forgot Password?</button>
-                        </div>
-                        <button onclick="loginFarmer()" class="auth-btn mt-2">Access Dashboard</button>
-                        <p class="text-xs text-slate-400 text-center pt-4 mt-2 border-t border-slate-800">New producer? <button onclick="switchAuthMode('signup')" class="text-emerald-400 font-bold hover:text-emerald-300 transition">Register Farm</button></p>
+                <div id="farmer-auth-container" class="bg-slate-900/40 border border-white/10 rounded-[2rem] p-8 max-w-sm mx-auto">
+                    <div id="farmer-login-box" class="space-y-4">
+                        <h2 class="text-2xl font-black text-white text-center mb-6">Seller Login</h2>
+                        <input type="email" id="login-email" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white" placeholder="Email Address">
+                        <input type="password" id="login-password" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white" placeholder="Password">
+                        <button onclick="loginFarmer()" class="w-full bg-emerald-600 text-white font-black py-3 rounded-xl text-sm mt-2">Log In</button>
+                        <p class="text-xs text-slate-400 text-center pt-4">New seller? <button onclick="switchAuthMode('signup')" class="text-emerald-400 font-bold">Create Account</button></p>
                     </div>
 
-                    <div id="farmer-signup-box" class="hidden space-y-4 relative z-10">
-                        <div class="text-center mb-4"><h2 class="text-2xl font-black text-white tracking-tight">Register Business</h2></div>
-                        <input type="text" id="signup-name" class="auth-input" placeholder="Business Name">
-                        <input type="email" id="signup-email" class="auth-input" placeholder="Email Address">
-                        <div class="grid grid-cols-2 gap-3">
-                            <select id="signup-country" class="auth-input appearance-none cursor-pointer text-xs"></select>
-                            <input type="text" id="signup-region" class="auth-input" placeholder="Region">
-                        </div>
-                        <div class="relative w-full">
-                            <input type="password" id="signup-password" class="auth-input pr-10" placeholder="Create Password">
-                            <button onclick="togglePassword('signup-password')" class="absolute right-3 top-3.5 text-slate-400 hover:text-emerald-400 transition-colors">👁️</button>
-                        </div>
-                        <button onclick="signupFarmer()" class="auth-btn mt-2">Register Business</button>
-                        <p class="text-xs text-slate-400 text-center pt-4 mt-2 border-t border-slate-800">Have an account? <button onclick="switchAuthMode('login')" class="text-emerald-400 font-bold hover:text-emerald-300 transition">Sign In</button></p>
+                    <div id="farmer-signup-box" class="hidden space-y-4">
+                        <h2 class="text-2xl font-black text-white text-center mb-4">Register Farm</h2>
+                        <input type="text" id="signup-name" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white" placeholder="Business / Farm Name">
+                        <input type="email" id="signup-email" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white" placeholder="Email Address">
+                        <input type="password" id="signup-password" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white" placeholder="Create Password">
+                        <button onclick="signupFarmer()" class="w-full bg-emerald-600 text-white font-black py-3 rounded-xl text-sm mt-2">Register</button>
+                        <p class="text-xs text-slate-400 text-center pt-4">Have an account? <button onclick="switchAuthMode('login')" class="text-emerald-400 font-bold">Sign In</button></p>
                     </div>
                 </div>
 
-                <div id="farmer-dashboard-box" class="hidden space-y-6 slide-up mt-4">
-                    <div class="flex justify-between items-center bg-slate-900/60 backdrop-blur-xl p-6 rounded-[2rem] border border-white/5 shadow-xl">
+                <div id="farmer-dashboard-box" class="hidden space-y-6">
+                    <div class="flex justify-between items-center bg-slate-900/60 p-6 rounded-[2rem] border border-white/5">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-emerald-950 rounded-xl flex items-center justify-center text-xl border border-emerald-800 shadow-inner">🚜</div>
+                            <div class="w-12 h-12 bg-emerald-950 rounded-xl flex items-center justify-center text-xl border border-emerald-800">🚜</div>
                             <div>
-                                <p class="text-[9px] text-emerald-400 font-black tracking-widest uppercase mb-0.5">Verified Producer</p>
-                                <p id="farmer-display-name" class="font-black text-white text-xl tracking-tight"></p>
+                                <p class="text-[9px] text-emerald-400 font-black tracking-widest uppercase">Verified Seller</p>
+                                <p id="farmer-display-name" class="font-black text-white text-xl"></p>
                             </div>
                         </div>
-                        <button onclick="logoutFarmer()" class="text-xs bg-rose-500/10 text-rose-400 border border-rose-500/20 px-4 py-2 rounded-lg hover:bg-rose-500/20 font-bold transition">Log Out</button>
+                        <button onclick="logoutFarmer()" class="text-xs bg-rose-500/10 text-rose-400 border border-rose-500/20 px-4 py-2 rounded-lg font-bold">Log Out</button>
                     </div>
 
                     <div class="grid lg:grid-cols-2 gap-6">
-                        <div class="bg-slate-900/40 backdrop-blur-xl border border-white/5 rounded-[2rem] p-6 shadow-xl">
-                            <h3 class="font-black text-xl text-white mb-5 tracking-tight">Post New Inventory</h3>
+                        <div class="bg-slate-900/40 border border-white/5 rounded-[2rem] p-6 shadow-xl">
+                            <h3 class="font-black text-xl text-white mb-5">Post Ad (Currently Free)</h3>
                             <div class="space-y-4">
-                                <input type="text" id="new-name" placeholder="Item Name (e.g. Maize, Eggs)" class="auth-input">
+                                <input type="text" id="new-name" placeholder="Headline (e.g. 30 Crates of Large Eggs)" class="w-full bg-[#020617] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white">
                                 <div class="grid grid-cols-2 gap-4">
-                                    <select id="new-category" class="auth-input appearance-none cursor-pointer text-sm">
-                                        <optgroup label="Food & Produce"><option value="Vegetables">Vegetables</option><option value="Tubers">Tubers</option><option value="Grains">Grains & Seeds</option><option value="Fruits">Fruits</option></optgroup>
-                                        <optgroup label="Animals"><option value="Poultry">Live Poultry</option><option value="Meat">Meat Cuts</option><option value="Eggs">Eggs</option><option value="Livestock">Cattle / Goats</option></optgroup>
-                                        <optgroup label="Equipment"><option value="Hand Tools">Hand Tools</option><option value="Machinery">Heavy Machinery</option><option value="Supplies">Supplies</option></optgroup>
+                                    <select id="new-category" class="w-full bg-[#020617] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white cursor-pointer">
+                                        <option value="Poultry">Live Birds (Broilers/Layers)</option>
+                                        <option value="Eggs">Eggs</option>
+                                        <option value="Meat">Dressed Meat</option>
+                                        <option value="Livestock">Goats / Sheep</option>
                                     </select>
-                                    <input type="text" id="new-unit" placeholder="Unit (e.g. kg)" class="auth-input">
+                                    <input type="text" id="new-unit" placeholder="Unit (e.g. per crate, per bird)" class="w-full bg-[#020617] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white">
                                 </div>
-                                <div class="grid grid-cols-3 gap-4">
-                                    <select id="new-currency" class="auth-input appearance-none cursor-pointer text-sm"><option value="GHS">GHS</option><option value="USD">USD</option></select>
-                                    <input type="number" id="new-price" placeholder="Price" class="auth-input col-span-2">
+                                <input type="number" id="new-price" placeholder="Price in GHS" class="w-full bg-[#020617] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white">
+                                
+                                <!-- Lead Routing Info -->
+                                <div class="grid grid-cols-2 gap-4 p-4 border border-emerald-500/30 bg-emerald-950/20 rounded-xl">
+                                    <input type="text" id="new-neighborhood" placeholder="Neighborhood (e.g. Madina)" class="w-full bg-[#020617] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white">
+                                    <input type="text" id="new-phone" placeholder="WhatsApp Number" class="w-full bg-[#020617] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white">
                                 </div>
-                                <input type="number" id="new-qty" placeholder="Quantity Available" class="auth-input">
-                                <button id="post-btn" onclick="postProduct()" class="auth-btn mt-2">Publish</button>
+
+                                <button id="post-btn" onclick="postProduct()" class="w-full bg-emerald-600 text-white font-black py-3 rounded-xl text-sm hover:scale-[1.02] transition-transform">Publish Ad</button>
                             </div>
                         </div>
 
-                        <div class="bg-slate-900/40 backdrop-blur-xl border border-white/5 rounded-[2rem] p-6 shadow-xl">
-                            <h3 class="font-black text-xl text-white mb-4 tracking-tight">Active Inventory</h3>
+                        <div class="bg-slate-900/40 border border-white/5 rounded-[2rem] p-6 shadow-xl">
+                            <h3 class="font-black text-xl text-white mb-4">My Live Ads</h3>
                             <div id="my-listings-list" class="space-y-2 max-h-[350px] overflow-y-auto pr-2 custom-scroll"></div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </main>
     </div>
 
-    <!-- SCRIPT LOGIC -->
     <script>
         const API_URL = "https://agri-connect-api-3.onrender.com";
-        const PAYSTACK_PUBLIC_KEY = "pk_test_ffde682ae681d0e542d6e7758e2a39a1debff8cd";
-        
-        const activeCatClass = "category-btn bg-emerald-600 text-white px-5 py-2 rounded-xl text-[10px] font-black tracking-wide transition-all whitespace-nowrap shadow-[0_5px_20px_-5px_rgba(16,185,129,0.5)] border border-emerald-500";
-        const inactiveCatClass = "category-btn bg-[#020617]/50 border border-slate-800 text-slate-300 hover:border-slate-600 px-5 py-2 rounded-xl text-[10px] font-bold transition-all whitespace-nowrap";
-        
-        document.querySelectorAll('.auth-input').forEach(el => {
-            el.className = "w-full bg-[#020617]/80 border border-slate-700/80 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 transition-all font-medium placeholder-slate-500";
-        });
-        document.querySelectorAll('.auth-btn').forEach(el => {
-            el.className = "w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black py-3 rounded-xl text-sm hover:scale-[1.02] transition-transform shadow-lg tracking-wide";
-        });
-
         let currentCategory = "All";
         let searchKeyword = "";
         let farmerToken = localStorage.getItem("farmer_token") || "";
-        let buyerToken = localStorage.getItem("buyer_token") || "";
-        let activeRole = "";
-        let cart = JSON.parse(localStorage.getItem("agri_cart")) || [];
 
-        const globalNations = ["Global", "Ghana", "USA", "Nigeria", "UK", "Canada", "Singapore", "Kenya", "South Africa"];
-        const exchangeRates = { "USD": 1.0, "GHS": 15.0, "NGN": 1500.0, "EUR": 0.92, "GBP": 0.79 };
-        const currencySymbols = { "USD": "$", "GHS": "GH₵", "NGN": "₦", "EUR": "€", "GBP": "£" };
-        const countryCurrencyMap = { "Global": "USD", "Ghana": "GHS", "USA": "USD", "Nigeria": "NGN", "UK": "GBP" };
-        
-        let userCountry = "Global";
-        let userCurrency = "USD";
-
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            const isError = type === 'error';
-            toast.className = `p-3 px-5 rounded-xl shadow-2xl backdrop-blur-xl border flex items-center gap-2 slide-up ${isError ? 'bg-rose-950/90 border-rose-500/50 text-rose-100' : 'bg-emerald-950/90 border-emerald-500/50 text-emerald-100'}`;
-            toast.innerHTML = `<span class="text-lg">${isError ? '⚠️' : '✅'}</span><span class="text-xs font-bold tracking-wide">${message}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateY(10px)'; toast.style.transition = 'all 0.3s'; setTimeout(() => toast.remove(), 300); }, 3500);
-        }
-
-        function togglePassword(inputId) {
-            const input = document.getElementById(inputId);
-            input.type = input.type === "password" ? "text" : "password";
-        }
-
-        function forgotPasswordWhatsApp() {
-            const phone = prompt("Enter your WhatsApp number to receive a secure reset code:");
-            if (phone) {
-                showToast(`WhatsApp OTP sent to ${phone}. (Backend Twilio/Meta integration pending)`);
-            }
+        function showToast(msg, type='success') {
+            const c = document.getElementById('toast-container');
+            const t = document.createElement('div');
+            t.className = `p-3 px-5 rounded-xl shadow-xl backdrop-blur-xl border flex items-center gap-2 slide-up ${type === 'error' ? 'bg-rose-950 border-rose-500 text-rose-100' : 'bg-emerald-950 border-emerald-500 text-emerald-100'}`;
+            t.innerHTML = `<span class="text-xs font-bold">${msg}</span>`;
+            c.appendChild(t);
+            setTimeout(() => { t.remove(); }, 3000);
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            ['user-country-select', 'buyer-su-country', 'signup-country'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
-                    el.innerHTML = '';
-                    globalNations.forEach(nation => {
-                        let opt = document.createElement("option");
-                        opt.value = nation;
-                        opt.innerText = (nation === "Global" ? "🌍 " : "") + nation;
-                        el.appendChild(opt);
-                    });
-                }
-            });
-            document.getElementById('view-landing').classList.remove('hidden');
-            
-            document.querySelectorAll('.auth-input').forEach(el => el.className = "w-full bg-[#020617]/80 border border-slate-700/80 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 transition-all font-medium placeholder-slate-500");
-            document.querySelectorAll('.auth-btn').forEach(el => el.className = "w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black py-3 rounded-xl text-sm hover:scale-[1.02] transition-transform shadow-lg tracking-wide");
-            document.querySelectorAll('.category-btn').forEach(el => el.className = el.classList.contains('active-cat') ? activeCatClass : inactiveCatClass);
-        });
-
-        function convertPrice(price, fromCur) {
-            const baseRate = exchangeRates[fromCur] || 1.0;
-            const targetRate = exchangeRates[userCurrency] || 1.0;
-            return ((price / baseRate) * targetRate).toFixed(2);
-        }
-
-        function enterApp(role) {
-            userCountry = document.getElementById('user-country-select').value;
-            userCurrency = countryCurrencyMap[userCountry] || "USD";
-            document.getElementById('user-location-display').innerText = userCountry === "Global" ? "Global Network" : `${userCountry} Market`;
-            activeRole = role;
-            document.getElementById('view-landing').classList.add('hidden');
-            document.getElementById('main-app-container').classList.remove('hidden');
-            document.getElementById('main-app-container').classList.add('fade-in');
-            renderHeaderNav();
-            role === 'buyer' ? toggleView('marketplace') : toggleView('farmer');
-        }
-
-        function returnToLanding() {
-            activeRole = "";
-            document.getElementById('main-app-container').classList.add('hidden');
-            document.getElementById('view-landing').classList.remove('hidden');
-            buyerToken = ""; farmerToken = "";
-            localStorage.removeItem("buyer_token"); localStorage.removeItem("farmer_token");
-        }
-
-        function renderHeaderNav() {
-            const nav = document.getElementById('nav-controls');
-            const inactive = "px-4 py-2 rounded-lg text-[10px] font-bold transition-all border bg-[#020617]/50 text-slate-400 border-slate-800 hover:text-white hover:border-slate-600";
-            if (activeRole === 'buyer') {
-                nav.innerHTML = `<button onclick="toggleView('marketplace')" id="btn-market" class="${inactive}">Marketplace</button><button onclick="toggleView('buyer')" id="btn-buyer" class="${inactive}">🛒 Hub</button>`;
-            } else {
-                nav.innerHTML = `<button onclick="toggleView('marketplace')" id="btn-market" class="${inactive}">Marketplace</button><button onclick="toggleView('farmer')" id="btn-farmer" class="${inactive}">🚜 Portal</button>`;
+            loadProducts();
+            if(farmerToken) {
+                document.getElementById('farmer-auth-container').classList.add('hidden');
+                document.getElementById('farmer-dashboard-box').classList.remove('hidden');
+                loadMyListings();
             }
-        }
+        });
 
         function toggleView(view) {
             document.getElementById('view-marketplace').classList.add('hidden');
-            document.getElementById('view-buyer').classList.add('hidden');
             document.getElementById('view-farmer').classList.add('hidden');
-            const active = "px-4 py-2 rounded-lg text-[10px] font-bold transition-all border bg-emerald-600 text-white border-emerald-500 shadow-md";
-            const inactive = "px-4 py-2 rounded-lg text-[10px] font-bold transition-all border bg-[#020617]/50 text-slate-400 border-slate-800";
-            if(document.getElementById('btn-market')) document.getElementById('btn-market').className = inactive;
-            if(document.getElementById('btn-buyer')) document.getElementById('btn-buyer').className = inactive;
-            if(document.getElementById('btn-farmer')) document.getElementById('btn-farmer').className = inactive;
+            
+            const btnMarket = document.getElementById('btn-market');
+            const btnFarmer = document.getElementById('btn-farmer');
+            const activeStyle = "px-4 py-2 rounded-lg text-xs font-bold bg-emerald-600 text-white border border-emerald-500";
+            const inactiveStyle = "px-4 py-2 rounded-lg text-xs font-bold bg-[#020617]/50 text-emerald-400 border border-emerald-500/30";
 
             if (view === 'marketplace') {
                 document.getElementById('view-marketplace').classList.remove('hidden');
-                if(document.getElementById('btn-market')) document.getElementById('btn-market').className = active;
+                btnMarket.className = activeStyle;
+                btnFarmer.className = inactiveStyle;
                 loadProducts();
-            } else if (view === 'buyer') {
-                document.getElementById('view-buyer').classList.remove('hidden');
-                if(document.getElementById('btn-buyer')) document.getElementById('btn-buyer').className = active;
-                if (buyerToken) showBuyerDashboard();
-                else { document.getElementById('buyer-auth-container').classList.remove('hidden'); document.getElementById('buyer-dashboard-container').classList.add('hidden'); }
             } else {
                 document.getElementById('view-farmer').classList.remove('hidden');
-                if(document.getElementById('btn-farmer')) document.getElementById('btn-farmer').className = active;
-                if (farmerToken) showDashboardState();
-                else { document.getElementById('farmer-auth-container').classList.remove('hidden'); document.getElementById('farmer-dashboard-box').classList.add('hidden'); }
-            }
-        }
-
-        function switchBuyerAuth(mode) {
-            if (mode === 'signup') {
-                document.getElementById('buyer-login-box').classList.add('hidden');
-                document.getElementById('buyer-signup-box').classList.remove('hidden');
-            } else {
-                document.getElementById('buyer-signup-box').classList.add('hidden');
-                document.getElementById('buyer-login-box').classList.remove('hidden');
+                btnFarmer.className = activeStyle;
+                btnMarket.className = inactiveStyle;
             }
         }
 
@@ -429,7 +194,13 @@
 
         function filterCategory(cat) {
             currentCategory = cat;
-            document.querySelectorAll('.category-btn').forEach(btn => btn.className = (btn.innerText.includes(cat) || (cat === 'All' && btn.innerText.includes('All Categories'))) ? activeCatClass : inactiveCatClass);
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                if (btn.innerText.includes(cat) || (cat === 'All' && btn.innerText === 'All')) {
+                    btn.className = "category-btn bg-emerald-600 text-white px-5 py-2 rounded-xl text-[10px] font-black tracking-wide border border-emerald-500 active-cat";
+                } else {
+                    btn.className = "category-btn bg-[#020617]/50 border border-slate-800 text-slate-300 px-5 py-2 rounded-xl text-[10px] font-bold";
+                }
+            });
             loadProducts();
         }
 
@@ -438,55 +209,73 @@
             loadProducts();
         }
 
-        async function signupBuyer() {
-            const buyer_name = document.getElementById('buyer-su-name').value.trim();
-            const email = document.getElementById('buyer-su-email').value.trim();
-            const password = document.getElementById('buyer-su-password').value.trim();
-            if(!buyer_name || !email || !password) return showToast("Please fill all required fields", "error");
-            try {
-                const res = await fetch(`${API_URL}/api/v1/signup`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password, role: "buyer", full_name: buyer_name, location_or_region: "Global" })
-                });
-                if (!res.ok) { const e = await res.json(); throw new Error(e.detail || "Signup failed"); }
-                showToast("Account created successfully!");
-                switchBuyerAuth('login');
-            } catch (err) { showToast(err.message, "error"); }
+        // --- DIRECT WHATSAPP ROUTING ---
+        function openWhatsApp(phone, itemName, price, unit) {
+            // Cleans the phone number (removes spaces, adds country code if missing)
+            let cleanPhone = phone.replace(/\D/g, '');
+            if(cleanPhone.startsWith('0')) cleanPhone = '233' + cleanPhone.substring(1); // Default to Ghana code
+            
+            const message = encodeURIComponent(`Hello! I saw your ad for *${itemName}* (GH₵${price} / ${unit}) on AgriConnect. Is this still available?`);
+            window.open(`https://wa.me/${cleanPhone}?text=${message}`, '_blank');
         }
 
-        async function loginBuyer() {
-            const email = document.getElementById('buyer-login-email').value.trim();
-            const password = document.getElementById('buyer-login-password').value.trim();
-            if(!email || !password) return showToast("Enter email and password", "error");
+        async function loadProducts() {
             try {
-                const res = await fetch(`${API_URL}/api/v1/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
+                const res = await fetch(`${API_URL}/api/v1/products`);
+                let products = await res.json();
+                
+                if (currentCategory !== 'All') products = products.filter(p => p.category.includes(currentCategory));
+                if (searchKeyword) {
+                    const s = searchKeyword.toLowerCase();
+                    products = products.filter(item => item.product_name.toLowerCase().includes(s) || item.neighborhood.toLowerCase().includes(s));
+                }
+
+                const grid = document.getElementById('product-grid');
+                grid.innerHTML = '';
+                if (products.length === 0) return grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-10 text-sm">No ads found in this category.</p>`;
+                
+                products.forEach(item => {
+                    grid.innerHTML += `
+                        <div class="group bg-[#020617]/60 border border-slate-800 hover:border-emerald-500/50 rounded-[1.5rem] overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col justify-between">
+                            <div class="p-5 flex flex-col flex-grow justify-between h-full">
+                                <div>
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[9px] font-black tracking-widest uppercase px-2 py-1 rounded-md">${item.category}</span>
+                                        <span class="text-[10px] text-slate-400 font-bold">📍 ${item.neighborhood}</span>
+                                    </div>
+                                    <h3 class="text-lg font-black text-white tracking-tight mb-1">${item.product_name}</h3>
+                                    <p class="text-xs text-slate-400 mb-4 font-medium">Sold by: ${item.farmer_name}</p>
+                                </div>
+                                <div>
+                                    <div class="flex items-baseline mb-4">
+                                        <span class="text-xl font-black text-emerald-400">GH₵${item.base_price_ghs}</span>
+                                        <span class="text-xs text-slate-400 ml-1">/ ${item.unit}</span>
+                                    </div>
+                                    <button onclick="openWhatsApp('${item.phone_number}', '${item.product_name}', ${item.base_price_ghs}, '${item.unit}')" class="w-full bg-[#25D366]/20 text-[#25D366] hover:bg-[#25D366] hover:text-white font-black py-2.5 rounded-xl text-xs transition-colors border border-[#25D366]/50 flex justify-center items-center gap-2 shadow-lg">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.015c-.198 0-.52.074-.792.347-.272.273-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+                                        Message on WhatsApp
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
                 });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.detail || "Login failed");
-                buyerToken = data.access_token;
-                localStorage.setItem("buyer_token", buyerToken);
-                showToast("Logged in successfully!");
-                showBuyerDashboard();
-            } catch (err) { showToast(err.message, "error"); }
+            } catch (err) {}
         }
 
         async function signupFarmer() {
-            const farmer_name = document.getElementById('signup-name').value.trim();
+            const name = document.getElementById('signup-name').value.trim();
             const email = document.getElementById('signup-email').value.trim();
             const password = document.getElementById('signup-password').value.trim();
-            if(!farmer_name || !email || !password) return showToast("Please fill all required fields", "error");
+            if(!name || !email || !password) return showToast("Fill all fields", "error");
             try {
                 const res = await fetch(`${API_URL}/api/v1/signup`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password, role: "farmer", full_name: farmer_name, location_or_region: "Global" })
+                    body: JSON.stringify({ email, password, role: "farmer", full_name: name })
                 });
-                if (!res.ok) { const e = await res.json(); throw new Error(e.detail || "Signup failed"); }
-                showToast("Producer account created!");
+                if (!res.ok) throw new Error("Signup failed");
+                showToast("Account created!");
                 switchAuthMode('login');
             } catch (err) { showToast(err.message, "error"); }
         }
@@ -502,73 +291,22 @@
                     body: JSON.stringify({ email, password })
                 });
                 const data = await res.json();
-                if (!res.ok) throw new Error(data.detail || "Login failed");
+                if (!res.ok) throw new Error("Login failed");
                 farmerToken = data.access_token;
                 localStorage.setItem("farmer_token", farmerToken);
-                showToast("Logged in successfully!");
-                showDashboardState();
+                document.getElementById('farmer-auth-container').classList.add('hidden');
+                document.getElementById('farmer-dashboard-box').classList.remove('hidden');
+                document.getElementById('farmer-display-name').innerText = data.full_name;
+                loadMyListings();
             } catch (err) { showToast(err.message, "error"); }
         }
 
-        function logoutFarmer() { showToast("Logged out"); returnToLanding(); }
-        function logoutBuyer() { showToast("Logged out"); returnToLanding(); }
-
-        function showBuyerDashboard() {
-            document.getElementById('buyer-auth-container').classList.add('hidden');
-            document.getElementById('buyer-dashboard-container').classList.remove('hidden');
-            document.getElementById('buyer-display-name').innerText = "Verified " + userCountry + " Shopper";
-            updateCartUI();
-        }
-
-        function showDashboardState() {
-            document.getElementById('farmer-auth-container').classList.add('hidden');
-            document.getElementById('farmer-dashboard-box').classList.remove('hidden');
-            document.getElementById('farmer-display-name').innerText = "Verified Producer";
-            loadMyListings();
-        }
-
-        async function loadProducts() {
-            try {
-                const res = await fetch(`${API_URL}/api/v1/products`);
-                let products = await res.json();
-                if (currentCategory !== 'All') products = products.filter(p => p.category.includes(currentCategory));
-                if (searchKeyword) {
-                    const s = searchKeyword.toLowerCase();
-                    products = products.filter(item => item.product_name.toLowerCase().includes(s) || item.location.toLowerCase().includes(s));
-                }
-                const grid = document.getElementById('product-grid');
-                grid.innerHTML = '';
-                if (products.length === 0) {
-                    grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-10 text-sm border border-dashed border-slate-800 rounded-2xl">No inventory found.</p>`;
-                    return;
-                }
-                products.forEach(item => {
-                    const displayPrice = convertPrice(item.base_price_ghs, item.currency || "GHS");
-                    const sym = currencySymbols[userCurrency] || "$";
-                    grid.innerHTML += `
-                        <div class="group bg-[#020617]/60 backdrop-blur-xl border border-slate-800/80 hover:border-emerald-500/50 rounded-[1.5rem] overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col justify-between">
-                            <div class="h-40 overflow-hidden relative">
-                                <div class="w-full h-full bg-slate-900 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-700">🌾</div>
-                                <div class="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent opacity-90"></div>
-                                <div class="absolute bottom-3 left-4"><span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[9px] font-black tracking-widest uppercase px-2 py-1 rounded-md">${item.category}</span></div>
-                            </div>
-                            <div class="p-5 pt-2 flex flex-col flex-grow justify-between">
-                                <div>
-                                    <h3 class="text-lg font-black text-white tracking-tight mb-1">${item.product_name}</h3>
-                                    <p class="text-[9px] text-slate-400 mb-4 font-bold uppercase">📍 ${item.location} • ${item.farmer_name}</p>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between items-baseline mb-4 bg-slate-900/60 p-3 rounded-xl border border-white/5">
-                                        <span class="text-xl font-black text-emerald-400 tracking-tight">${sym}${displayPrice}</span>
-                                        <span class="text-[9px] text-slate-400 font-bold uppercase">${item.quantity_available} ${item.unit}s</span>
-                                    </div>
-                                    <button onclick="addToCart(${item.id}, '${item.product_name}', ${displayPrice}, '${sym}', '${item.unit}', ${item.quantity_available})" class="w-full bg-slate-800/80 hover:bg-emerald-600 text-white font-black py-2.5 rounded-xl text-xs transition-colors border border-slate-700 hover:border-emerald-500">Add to Cart</button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-            } catch (err) {}
+        function logoutFarmer() { 
+            farmerToken = ""; 
+            localStorage.removeItem("farmer_token"); 
+            document.getElementById('farmer-dashboard-box').classList.add('hidden');
+            document.getElementById('farmer-auth-container').classList.remove('hidden');
+            showToast("Logged out"); 
         }
 
         async function postProduct() {
@@ -577,25 +315,24 @@
             const catStr = document.getElementById('new-category').value;
             const unitStr = document.getElementById('new-unit').value.trim();
             const priceVal = parseFloat(document.getElementById('new-price').value);
-            const qtyVal = parseInt(document.getElementById('new-qty').value);
+            const nbdStr = document.getElementById('new-neighborhood').value.trim();
+            const phoneStr = document.getElementById('new-phone').value.trim();
             
-            if (!nameStr || !unitStr) return showToast("Product Name and Unit are required.", "error");
-            if (isNaN(priceVal) || priceVal <= 0) return showToast("Please enter a valid price.", "error");
-            if (isNaN(qtyVal) || qtyVal <= 0) return showToast("Please enter a valid quantity.", "error");
+            if (!nameStr || !unitStr || !nbdStr || !phoneStr) return showToast("All fields are required.", "error");
 
             try {
                 btn.innerText = "Publishing..."; btn.style.opacity = "0.7";
                 const res = await fetch(`${API_URL}/api/v1/products?token=${farmerToken}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ product_name: nameStr, category: catStr, unit: unitStr, base_price_ghs: priceVal, quantity_available: qtyVal, location: userCountry, description: "Global listing" })
+                    body: JSON.stringify({ product_name: nameStr, category: catStr, unit: unitStr, base_price_ghs: priceVal, neighborhood: nbdStr, phone_number: phoneStr })
                 });
-                if(!res.ok) throw new Error("Failed to post product");
-                showToast("Listing Published!");
-                ['new-name', 'new-price', 'new-qty'].forEach(id => document.getElementById(id).value = '');
+                if(!res.ok) throw new Error("Failed to post");
+                showToast("Ad Published Successfully!");
+                ['new-name', 'new-price', 'new-unit', 'new-neighborhood', 'new-phone'].forEach(id => document.getElementById(id).value = '');
                 loadMyListings(); loadProducts();
             } catch (err) { showToast(err.message, "error"); } 
-            finally { btn.innerText = "Publish"; btn.style.opacity = "1"; }
+            finally { btn.innerText = "Publish Ad"; btn.style.opacity = "1"; }
         }
 
         async function loadMyListings() {
@@ -604,113 +341,15 @@
                 let products = await res.json();
                 const container = document.getElementById('my-listings-list');
                 container.innerHTML = '';
-                if (products.length === 0) return container.innerHTML = `<div class="bg-[#020617]/50 border border-dashed border-slate-800 rounded-xl p-4 text-center text-slate-500 text-xs font-medium">No active listings.</div>`;
+                if (products.length === 0) return container.innerHTML = `<div class="bg-[#020617]/50 border border-slate-800 rounded-xl p-4 text-center text-slate-500 text-xs">No active ads.</div>`;
                 products.forEach(item => {
                     container.innerHTML += `
                         <div class="bg-[#020617]/80 border border-slate-800 p-3 rounded-xl flex justify-between items-center text-xs">
-                            <div><p class="font-black text-white text-sm">${item.product_name}</p><p class="text-[9px] text-emerald-400 font-bold uppercase mt-1">${item.currency || 'GHS'} ${item.base_price_ghs} • ${item.quantity_available} ${item.unit}s</p></div>
-                            <button onclick="showToast('Admin config needed for deletion', 'error')" class="text-rose-400 text-[9px] font-black uppercase px-3 py-1.5 bg-rose-500/10 rounded-lg border border-rose-500/20">Remove</button>
+                            <div><p class="font-black text-white text-sm">${item.product_name}</p><p class="text-[9px] text-emerald-400 font-bold uppercase mt-1">GH₵ ${item.base_price_ghs} / ${item.unit} • 📍 ${item.neighborhood}</p></div>
                         </div>
                     `;
                 });
             } catch (err) {}
-        }
-        
-        function addToCart(id, name, price, currency, unit, maxStock) {
-            const existing = cart.find(item => item.id === id);
-            if (existing) { if (existing.qty < maxStock) existing.qty += 1; } 
-            else { cart.push({ id, name, price, currency, unit, qty: 1, maxStock }); }
-            localStorage.setItem("agri_cart", JSON.stringify(cart));
-            updateCartUI(); showToast(`Added ${name} to cart!`);
-        }
-
-        function updateCartQty(id, change) {
-            const item = cart.find(i => i.id === id);
-            if (!item) return;
-            item.qty += change;
-            if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
-            localStorage.setItem("agri_cart", JSON.stringify(cart));
-            updateCartUI();
-        }
-
-        function updateCartUI() {
-            const container = document.getElementById('cart-items-container');
-            if(!container) return;
-            container.innerHTML = '';
-            if (cart.length === 0) {
-                document.getElementById('cart-count-badge').innerText = "0 items";
-                return container.innerHTML = `<div class="bg-[#020617]/50 border border-dashed border-slate-800 rounded-xl p-6 text-center text-slate-500 text-xs">Cart is empty.</div>`;
-            }
-            let total = 0;
-            cart.forEach(item => {
-                total += item.qty;
-                container.innerHTML += `
-                    <div class="bg-[#020617]/80 border border-slate-800 p-3 rounded-xl flex justify-between items-center text-xs mb-2">
-                        <div><p class="font-black text-white">${item.name}</p><p class="text-[9px] font-bold text-slate-400 mt-1">${item.currency} ${item.price} / ${item.unit}</p></div>
-                        <div class="flex items-center gap-3">
-                            <div class="flex gap-1 bg-slate-900 border border-slate-700 p-1 rounded-lg">
-                                <button onclick="updateCartQty(${item.id}, -1)" class="w-5 h-5 bg-[#020617] rounded text-slate-400">-</button>
-                                <span class="w-4 text-center text-white font-bold">${item.qty}</span>
-                                <button onclick="updateCartQty(${item.id}, 1)" class="w-5 h-5 bg-[#020617] rounded text-slate-400">+</button>
-                            </div>
-                            <span class="font-black text-emerald-400 w-12 text-right">${item.currency} ${(item.price * item.qty).toFixed(2)}</span>
-                        </div>
-                    </div>
-                `;
-            });
-            document.getElementById('cart-count-badge').innerText = `${total} items`;
-        }
-
-        function checkoutCart() {
-            if (cart.length === 0) return showToast("Cart is empty", "error");
-            
-            const email = prompt("Enter your email for the receipt:");
-            if(!email) return;
-
-            let totalAmount = 0;
-            cart.forEach(item => totalAmount += (item.price * item.qty));
-            
-            const amountInSmallestUnit = Math.round(totalAmount * 100);
-
-            let handler = PaystackPop.setup({
-                key: PAYSTACK_PUBLIC_KEY, 
-                email: email,
-                amount: amountInSmallestUnit,
-                currency: 'GHS',
-                ref: 'AC_' + Math.floor((Math.random() * 1000000000) + 1),
-                callback: function(response) {
-                    showToast("Payment received! Verifying escrow...", "success");
-                    processVerifiedOrders(response.reference);
-                },
-                onClose: function() {
-                    showToast("Transaction cancelled.", "error");
-                }
-            });
-            handler.openIframe();
-        }
-
-        async function processVerifiedOrders(reference) {
-            try {
-                for (const item of cart) {
-                    const orderRes = await fetch(`${API_URL}/api/v1/orders`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ product_id: item.id, buyer_name: "Verified Buyer", quantity: item.qty })
-                    });
-                    const orderData = await orderRes.json();
-
-                    await fetch(`${API_URL}/api/v1/payments/verify/${reference}?order_id=${orderData.id}`, {
-                        method: 'POST'
-                    });
-                }
-                showToast("🎉 Payment Verified! Funds secured in Escrow.");
-                cart = [];
-                localStorage.removeItem("agri_cart");
-                updateCartUI();
-                toggleView('marketplace');
-            } catch (err) {
-                showToast("Failed to verify payment on server.", "error");
-            }
         }
     </script>
 </body>
