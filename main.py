@@ -1,6 +1,7 @@
 import os
 import random
 import bcrypt
+import requests
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
 
@@ -27,11 +28,9 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 hours
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verifies a plain password against the stored bcrypt hash."""
     return bcrypt.checkpw(plain_password.encode("utf-8"), hashed_password.encode("utf-8"))
 
 def get_password_hash(password: str) -> str:
-    """Generates a secure hash using standard bcrypt."""
     salt = bcrypt.gensalt()
     return bcrypt.hashpw(password.encode("utf-8"), salt).decode("utf-8")
 
@@ -44,14 +43,11 @@ def create_access_token(data: dict):
 # ==============================================================================
 # 2. CLOUD DATABASE CONFIGURATION (PostgreSQL / Supabase)
 # ==============================================================================
-# Fetch the URL from Render environment variables, fallback to local SQLite for safety
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./agriconnect.db")
 
-# SQLAlchemy requires the protocol to be 'postgresql://', but some cloud providers use 'postgres://'
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
-# Only SQLite requires the 'check_same_thread' argument
 if "sqlite" in DATABASE_URL:
     engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 else:
@@ -65,7 +61,7 @@ class UserDB(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
-    role = Column(String, nullable=False, default="buyer")  # 'farmer' or 'buyer'
+    role = Column(String, nullable=False, default="buyer")
     full_name = Column(String, nullable=False)
     location_or_region = Column(String, nullable=False)
 
@@ -178,7 +174,7 @@ class DeliveryVerification(BaseModel):
 # ==============================================================================
 # 4. FASTAPI APP & CORS
 # ==============================================================================
-app = FastAPI(title="AgriConnect Global API", version="2.4.0")
+app = FastAPI(title="AgriConnect Global API", version="2.5.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -208,15 +204,11 @@ def get_current_user_from_token(token: str, db: Session):
         return None
 
 # ==============================================================================
-# 5. AUTHENTICATION (Accepts both /login and /api/v1/login)
+# 5. AUTHENTICATION
 # ==============================================================================
 @app.get("/")
 def root():
-    return {
-        "status": "online",
-        "platform": "AgriConnect Global API",
-        "docs_url": "/docs",
-    }
+    return {"status": "online", "platform": "AgriConnect Global API", "docs_url": "/docs"}
 
 @app.post("/signup", response_model=Token)
 @app.post("/api/v1/signup", response_model=Token)
@@ -240,12 +232,7 @@ def signup(user_data: UserCreate, db: Session = Depends(get_db)):
     db.refresh(new_user)
     
     access_token = create_access_token(data={"sub": new_user.email, "role": new_user.role})
-    return {
-        "access_token": access_token,
-        "token_type": "bearer",
-        "role": new_user.role,
-        "full_name": new_user.full_name,
-    }
+    return {"access_token": access_token, "token_type": "bearer", "role": new_user.role, "full_name": new_user.full_name}
 
 @app.post("/login", response_model=Token)
 @app.post("/api/v1/login", response_model=Token)
@@ -255,23 +242,14 @@ def login(credentials: LoginRequest, db: Session = Depends(get_db)):
         raise HTTPException(status_code=401, detail="Incorrect email or password")
     
     access_token = create_access_token(data={"sub": user.email, "role": user.role})
-    return {
-        "access_token": access_token,
-        "token_type": "bearer",
-        "role": user.role,
-        "full_name": user.full_name,
-    }
+    return {"access_token": access_token, "token_type": "bearer", "role": user.role, "full_name": user.full_name}
 
 # ==============================================================================
 # 6. PRODUCTS & ORDERS
 # ==============================================================================
 @app.post("/products", response_model=ProductResponse)
 @app.post("/api/v1/products", response_model=ProductResponse)
-def create_product(
-    product: ProductCreate,
-    token: Optional[str] = None,
-    db: Session = Depends(get_db),
-):
+def create_product(product: ProductCreate, token: Optional[str] = None, db: Session = Depends(get_db)):
     farmer_name = "Verified Local Farmer"
     farmer_id = None
     if token:
@@ -289,69 +267,26 @@ def create_product(
     db.commit()
     db.refresh(db_product)
 
-    return ProductResponse(
-        id=db_product.id,
-        product_name=db_product.product_name,
-        category=db_product.category,
-        base_price_ghs=db_product.base_price_ghs,
-        converted_price=db_product.base_price_ghs,
-        currency="GHS",
-        quantity_available=db_product.quantity_available,
-        unit=db_product.unit,
-        farmer_name=db_product.farmer_name,
-        location=db_product.location,
-        description=db_product.description,
-    )
+    return ProductResponse(**db_product.__dict__, converted_price=db_product.base_price_ghs, currency="GHS")
 
 @app.get("/products", response_model=List[ProductResponse])
 @app.get("/api/v1/products", response_model=List[ProductResponse])
-def list_products(
-    category: Optional[str] = Query(None),
-    location: Optional[str] = Query(None),
-    currency: str = Query("GHS"),
-    search: Optional[str] = Query(None),
-    db: Session = Depends(get_db),
-):
+def list_products(category: Optional[str] = Query(None), location: Optional[str] = Query(None), currency: str = Query("GHS"), search: Optional[str] = Query(None), db: Session = Depends(get_db)):
     query = db.query(ProductDB)
-    if category:
-        query = query.filter(ProductDB.category.ilike(f"%{category}%"))
-    if location:
-        query = query.filter(ProductDB.location.ilike(f"%{location}%"))
-    if search:
-        query = query.filter(
-            (ProductDB.product_name.ilike(f"%{search}%"))
-            | (ProductDB.description.ilike(f"%{search}%"))
-        )
+    if category: query = query.filter(ProductDB.category.ilike(f"%{category}%"))
+    if location: query = query.filter(ProductDB.location.ilike(f"%{location}%"))
+    if search: query = query.filter((ProductDB.product_name.ilike(f"%{search}%")) | (ProductDB.description.ilike(f"%{search}%")))
 
     products = query.all()
     rate = EXCHANGE_RATES_TO_GHS.get(currency.upper(), 1.0)
-
-    return [
-        ProductResponse(
-            id=p.id,
-            product_name=p.product_name,
-            category=p.category,
-            base_price_ghs=p.base_price_ghs,
-            converted_price=round(p.base_price_ghs * rate, 2),
-            currency=currency.upper(),
-            quantity_available=p.quantity_available,
-            unit=p.unit,
-            farmer_name=p.farmer_name,
-            location=p.location,
-            description=p.description,
-        )
-        for p in products
-    ]
+    return [ProductResponse(**p.__dict__, converted_price=round(p.base_price_ghs * rate, 2), currency=currency.upper()) for p in products]
 
 @app.post("/orders", response_model=OrderResponse)
 @app.post("/api/v1/orders", response_model=OrderResponse)
 def place_order(order: OrderCreate, db: Session = Depends(get_db)):
     product = db.query(ProductDB).filter(ProductDB.id == order.product_id).first()
-    if not product:
-        raise HTTPException(status_code=404, detail="Product not found")
-
-    if product.quantity_available < order.quantity:
-        raise HTTPException(status_code=400, detail="Requested quantity exceeds stock")
+    if not product: raise HTTPException(status_code=404, detail="Product not found")
+    if product.quantity_available < order.quantity: raise HTTPException(status_code=400, detail="Requested quantity exceeds stock")
 
     product.quantity_available -= order.quantity
     total_ghs = product.base_price_ghs * order.quantity
@@ -371,18 +306,7 @@ def place_order(order: OrderCreate, db: Session = Depends(get_db)):
     db.add(new_order)
     db.commit()
     db.refresh(new_order)
-
-    return OrderResponse(
-        id=new_order.id,
-        product_id=new_order.product_id,
-        buyer_name=new_order.buyer_name,
-        quantity=new_order.quantity,
-        total_amount_ghs=new_order.total_amount_ghs,
-        target_currency=new_order.target_currency,
-        converted_total=new_order.converted_total,
-        status=new_order.status,
-        created_at=new_order.created_at,
-    )
+    return OrderResponse(**new_order.__dict__)
 
 # ==============================================================================
 # 7. LOGISTICS & OTP DISPATCH
@@ -395,40 +319,27 @@ def initiate_dispatch(order_id: int, pickup: str = "Farm", dropoff: str = "Hub")
     otp = str(random.randint(100000, 999999))
     now = datetime.utcnow().isoformat()
     shipments_db[order_id] = {
-        "order_id": order_id,
-        "status": "HARVESTING",
-        "pickup_location": pickup,
-        "dropoff_location": dropoff,
-        "delivery_otp": otp,
-        "updated_at": now,
-        "timeline": [{"status": "HARVESTING", "location": pickup, "timestamp": now}],
+        "order_id": order_id, "status": "HARVESTING", "pickup_location": pickup, "dropoff_location": dropoff,
+        "delivery_otp": otp, "updated_at": now, "timeline": [{"status": "HARVESTING", "location": pickup, "timestamp": now}],
     }
     return {"message": "Dispatch initiated", "order_id": order_id, "buyer_otp": otp}
 
 @app.patch("/logistics/status/{order_id}")
 @app.patch("/api/v1/logistics/status/{order_id}")
 def update_shipment_status(order_id: int, update: DispatchUpdate):
-    if order_id not in shipments_db:
-        raise HTTPException(status_code=404, detail="Shipment not found")
+    if order_id not in shipments_db: raise HTTPException(status_code=404, detail="Shipment not found")
     shipment = shipments_db[order_id]
     shipment["status"] = update.status
     shipment["current_location"] = update.current_location
-    shipment["timeline"].append({
-        "status": update.status,
-        "location": update.current_location,
-        "notes": update.driver_notes,
-        "timestamp": datetime.utcnow().isoformat(),
-    })
+    shipment["timeline"].append({"status": update.status, "location": update.current_location, "notes": update.driver_notes, "timestamp": datetime.utcnow().isoformat()})
     return {"message": "Shipment updated", "shipment": shipment}
 
 @app.post("/logistics/verify-delivery")
 @app.post("/api/v1/logistics/verify-delivery")
 def verify_delivery(data: DeliveryVerification, db: Session = Depends(get_db)):
-    if data.order_id not in shipments_db:
-        raise HTTPException(status_code=404, detail="Shipment not found")
+    if data.order_id not in shipments_db: raise HTTPException(status_code=404, detail="Shipment not found")
     shipment = shipments_db[data.order_id]
-    if shipment["delivery_otp"] != data.delivery_otp:
-        raise HTTPException(status_code=400, detail="Invalid OTP")
+    if shipment["delivery_otp"] != data.delivery_otp: raise HTTPException(status_code=400, detail="Invalid OTP")
     shipment["status"] = "DELIVERED"
     order = db.query(OrderDB).filter(OrderDB.id == data.order_id).first()
     if order:
@@ -444,17 +355,33 @@ chat_rooms: Dict[int, List[WebSocket]] = {}
 @app.websocket("/ws/chat/{order_id}/{user_name}")
 async def websocket_chat(websocket: WebSocket, order_id: int, user_name: str):
     await websocket.accept()
-    if order_id not in chat_rooms:
-        chat_rooms[order_id] = []
+    if order_id not in chat_rooms: chat_rooms[order_id] = []
     chat_rooms[order_id].append(websocket)
     try:
         while True:
             text = await websocket.receive_text()
-            for conn in chat_rooms[order_id]:
-                await conn.send_json({
-                    "sender": user_name,
-                    "message": text,
-                    "timestamp": datetime.utcnow().strftime("%H:%M:%S"),
-                })
+            for conn in chat_rooms[order_id]: await conn.send_json({"sender": user_name, "message": text, "timestamp": datetime.utcnow().strftime("%H:%M:%S")})
     except WebSocketDisconnect:
         chat_rooms[order_id].remove(websocket)
+
+# ==============================================================================
+# 9. PAYSTACK ESCROW INTEGRATION
+# ==============================================================================
+PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY", "sk_test_your_secret_key")
+
+@app.post("/api/v1/payments/verify/{reference}")
+def verify_escrow_payment(reference: str, order_id: int, db: Session = Depends(get_db)):
+    url = f"https://api.paystack.co/transaction/verify/{reference}"
+    headers = {"Authorization": f"Bearer {PAYSTACK_SECRET_KEY}"}
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        data = response.json()
+        if data["data"]["status"] == "success":
+            order = db.query(OrderDB).filter(OrderDB.id == order_id).first()
+            if order:
+                order.status = "ESCROW_FUNDED"
+                db.commit()
+                return {"status": "success", "message": "Payment verified. Funds held in escrow."}
+                
+    raise HTTPException(status_code=400, detail="Payment verification failed or invalid reference")
