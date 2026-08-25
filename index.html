@@ -44,7 +44,12 @@
                 <p class="text-slate-400 mb-8 max-w-lg mx-auto relative z-10">Buy and sell fresh farm produce directly. Zero commissions, pure connections.</p>
                 
                 <div class="max-w-2xl mx-auto relative z-10 flex flex-col sm:flex-row gap-2">
-                    <input type="search" id="home-search" autocomplete="off" data-lpignore="true" data-form-type="other" name="search_fake_name" placeholder="Search 'Live Broilers' or 'Madina'..." class="w-full bg-[#020617] border border-slate-700 rounded-xl px-5 py-4 text-sm text-white focus:border-emerald-500 outline-none">
+                    <!-- CHROME AUTOFILL TRAP -->
+                    <input type="email" name="fake_email_trap" style="opacity: 0; position: absolute; z-index: -1;" aria-hidden="true" tabindex="-1">
+                    <input type="password" name="fake_password_trap" style="opacity: 0; position: absolute; z-index: -1;" aria-hidden="true" tabindex="-1">
+                    
+                    <!-- REAL SEARCH BAR -->
+                    <input type="search" id="home-search" autocomplete="new-password" placeholder="Search 'Live Broilers' or 'Madina'..." class="w-full bg-[#020617] border border-slate-700 rounded-xl px-5 py-4 text-sm text-white focus:border-emerald-500 outline-none">
                     <button onclick="executeSearch()" class="bg-emerald-600 text-white font-black px-8 py-4 rounded-xl hover:bg-emerald-500 transition-colors">Search</button>
                 </div>
             </div>
@@ -330,7 +335,7 @@
                                     <span class="text-2xl font-black text-emerald-400">GH₵${item.base_price_ghs}</span>
                                     <span class="text-xs text-slate-400 ml-1">/ ${item.unit}</span>
                                 </div>
-                                <button onclick="requireAuthToMessage('${item.phone_number}', '${item.product_name.replace(/'/g, "\\\\'")}', ${item.base_price_ghs}, '${item.unit}')" class="w-full bg-emerald-950/30 text-emerald-400 hover:bg-emerald-600 hover:text-white font-black py-3 rounded-xl text-xs transition-colors border border-emerald-500/50">
+                                <button onclick="requireAuthToMessage('${item.phone_number}', '${item.product_name.replace(/'/g, "\\'")}', ${item.base_price_ghs}, '${item.unit}')" class="w-full bg-emerald-950/30 text-emerald-400 hover:bg-emerald-600 hover:text-white font-black py-3 rounded-xl text-xs transition-colors border border-emerald-500/50">
                                     Contact via WhatsApp
                                 </button>
                             </div>
