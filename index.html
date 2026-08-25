@@ -77,7 +77,7 @@
     <!-- MAIN APP CONTAINER -->
     <div id="main-app-container" class="hidden relative z-10">
         <header class="bg-[#020617]/80 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-50 transition-all duration-300 shadow-sm">
-            <div class="max-w-6xl mx-auto px-6 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="max-w-7xl mx-auto px-6 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
                 <div class="flex items-center gap-3 cursor-pointer group" onclick="returnToLanding()">
                     <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/5 border border-emerald-500/30 flex items-center justify-center text-lg group-hover:scale-105 transition-transform shadow-inner">🌍</div>
                     <div>
@@ -89,7 +89,7 @@
             </div>
         </header>
 
-        <main class="max-w-6xl mx-auto px-6 py-8 min-h-[80vh]">
+        <main class="max-w-7xl mx-auto px-6 py-8 min-h-[80vh]">
 
             <!-- MARKETPLACE VIEW -->
             <div id="view-marketplace" class="fade-in hidden">
@@ -100,7 +100,7 @@
                         <p id="market-subtitle" class="text-xs text-slate-400 max-w-sm leading-relaxed font-medium">Source directly from verified agricultural operations.</p>
                     </div>
                     
-                    <div class="w-full lg:w-[20rem] relative z-10">
+                    <div class="w-full lg:w-[22rem] relative z-10">
                         <form autocomplete="off" onsubmit="event.preventDefault();" class="w-full relative group">
                             <input type="search" id="crop-search-box" oninput="handleSearch()" placeholder="Search crops, livestock..." class="w-full bg-[#020617]/80 backdrop-blur-md border border-slate-700/80 rounded-xl pl-10 pr-4 py-3 text-sm text-white outline-none focus:border-emerald-500 transition-all font-medium">
                             <span class="absolute left-3 top-3.5 text-emerald-500 text-sm z-20">🔍</span>
@@ -108,13 +108,28 @@
                     </div>
                 </div>
 
+                <!-- Restored Full Categories -->
                 <div class="space-y-4 mb-8 bg-slate-900/20 p-5 rounded-[2rem] border border-white/5 backdrop-blur-md">
                     <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
-                        <span class="text-[9px] font-black text-emerald-500 uppercase tracking-widest mr-2 min-w-fit bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">🥬 Food & Produce</span>
-                        <button onclick="filterCategory('All')" class="category-btn active-cat">All Categories</button>
+                        <span class="text-[9px] font-black text-emerald-500 uppercase tracking-widest mr-2 min-w-fit bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">🥬 Food</span>
+                        <button onclick="filterCategory('All')" class="category-btn active-cat">All</button>
                         <button onclick="filterCategory('Vegetables')" class="category-btn inactive-cat">Vegetables</button>
                         <button onclick="filterCategory('Tubers')" class="category-btn inactive-cat">Tubers</button>
                         <button onclick="filterCategory('Grains')" class="category-btn inactive-cat">Grains & Seeds</button>
+                        <button onclick="filterCategory('Fruits')" class="category-btn inactive-cat">Fruits</button>
+                    </div>
+                    <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide border-t border-slate-800/50 pt-3">
+                        <span class="text-[9px] font-black text-amber-500 uppercase tracking-widest mr-2 min-w-fit bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">🐔 Animals</span>
+                        <button onclick="filterCategory('Poultry')" class="category-btn inactive-cat">Live Poultry</button>
+                        <button onclick="filterCategory('Meat')" class="category-btn inactive-cat">Meat Cuts</button>
+                        <button onclick="filterCategory('Eggs')" class="category-btn inactive-cat">Eggs</button>
+                        <button onclick="filterCategory('Livestock')" class="category-btn inactive-cat">Cattle/Goats</button>
+                    </div>
+                    <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide border-t border-slate-800/50 pt-3">
+                        <span class="text-[9px] font-black text-blue-500 uppercase tracking-widest mr-2 min-w-fit bg-blue-500/10 px-2.5 py-1 rounded-full border border-blue-500/20">🚜 Tools</span>
+                        <button onclick="filterCategory('Hand Tools')" class="category-btn inactive-cat">Hand Tools</button>
+                        <button onclick="filterCategory('Machinery')" class="category-btn inactive-cat">Heavy Machinery</button>
+                        <button onclick="filterCategory('Supplies')" class="category-btn inactive-cat">Supplies</button>
                     </div>
                 </div>
 
@@ -132,7 +147,6 @@
                         </div>
                         <input type="email" id="buyer-login-email" placeholder="Email Address" class="auth-input">
                         
-                        <!-- Password with visibility toggle -->
                         <div class="relative w-full">
                             <input type="password" id="buyer-login-password" placeholder="Password" class="auth-input pr-10">
                             <button onclick="togglePassword('buyer-login-password')" class="absolute right-3 top-3.5 text-slate-400 hover:text-emerald-400 transition-colors">👁️</button>
@@ -140,7 +154,8 @@
 
                         <div class="flex justify-between items-center mt-1">
                             <label class="flex items-center text-[11px] text-slate-400 cursor-pointer"><input type="checkbox" class="mr-2 accent-emerald-500"> Remember me</label>
-                            <button onclick="forgotPassword()" class="text-[11px] text-emerald-400 hover:text-emerald-300 font-bold">Forgot Password?</button>
+                            <!-- WhatsApp Reset -->
+                            <button onclick="forgotPasswordWhatsApp()" class="text-[11px] text-emerald-400 hover:text-emerald-300 font-bold">Forgot Password?</button>
                         </div>
                         
                         <button onclick="loginBuyer()" class="auth-btn mt-2">Secure Sign In</button>
@@ -150,12 +165,6 @@
                     <div id="buyer-signup-box" class="hidden space-y-4 relative z-10">
                         <div class="text-center mb-4"><h2 class="text-2xl font-black text-white tracking-tight">Create Account</h2></div>
                         
-                        <!-- Auth Toggle -->
-                        <div class="flex gap-2 mb-4 p-1 bg-slate-950/60 rounded-xl border border-slate-800">
-                            <button class="flex-1 py-1.5 text-[11px] font-bold rounded-lg bg-emerald-600 text-white shadow-md">Email / Password</button>
-                            <button onclick="showToast('WhatsApp OTP requires Meta/Twilio API backend integration. Available in v2.0!', 'error')" class="flex-1 py-1.5 text-[11px] font-bold rounded-lg text-slate-400 hover:text-white transition">WhatsApp Code</button>
-                        </div>
-
                         <input type="text" id="buyer-su-name" placeholder="Full Name" class="auth-input">
                         <input type="email" id="buyer-su-email" placeholder="Email Address" class="auth-input">
                         <div class="grid grid-cols-2 gap-3">
@@ -220,7 +229,8 @@
                         
                         <div class="flex justify-between items-center mt-1">
                             <label class="flex items-center text-[11px] text-slate-400 cursor-pointer"><input type="checkbox" class="mr-2 accent-emerald-500"> Remember me</label>
-                            <button onclick="forgotPassword()" class="text-[11px] text-emerald-400 hover:text-emerald-300 font-bold">Forgot Password?</button>
+                            <!-- WhatsApp Reset -->
+                            <button onclick="forgotPasswordWhatsApp()" class="text-[11px] text-emerald-400 hover:text-emerald-300 font-bold">Forgot Password?</button>
                         </div>
 
                         <button onclick="loginFarmer()" class="auth-btn mt-2">Access Dashboard</button>
@@ -229,12 +239,6 @@
 
                     <div id="farmer-signup-box" class="hidden space-y-4 relative z-10">
                         <div class="text-center mb-4"><h2 class="text-2xl font-black text-white tracking-tight">Register Business</h2></div>
-                        
-                        <!-- Auth Toggle -->
-                        <div class="flex gap-2 mb-4 p-1 bg-slate-950/60 rounded-xl border border-slate-800">
-                            <button class="flex-1 py-1.5 text-[11px] font-bold rounded-lg bg-emerald-600 text-white shadow-md">Email / Password</button>
-                            <button onclick="showToast('WhatsApp OTP requires Meta/Twilio API backend integration. Available in v2.0!', 'error')" class="flex-1 py-1.5 text-[11px] font-bold rounded-lg text-slate-400 hover:text-white transition">WhatsApp Code</button>
-                        </div>
 
                         <input type="text" id="signup-name" class="auth-input" placeholder="Business Name">
                         <input type="email" id="signup-email" class="auth-input" placeholder="Email Address">
@@ -275,10 +279,24 @@
                                 <input type="text" id="new-name" placeholder="Item Name (e.g. Maize, Eggs)" class="auth-input">
                                 <div class="grid grid-cols-2 gap-4">
                                     <select id="new-category" class="auth-input appearance-none cursor-pointer text-sm">
-                                        <option value="Vegetables">Vegetables</option>
-                                        <option value="Tubers">Tubers</option>
-                                        <option value="Grains">Grains & Seeds</option>
-                                        <option value="Poultry">Live Poultry</option>
+                                        <!-- Restored Categories in Post form -->
+                                        <optgroup label="Food & Produce">
+                                            <option value="Vegetables">Vegetables</option>
+                                            <option value="Tubers">Tubers</option>
+                                            <option value="Grains">Grains & Seeds</option>
+                                            <option value="Fruits">Fruits</option>
+                                        </optgroup>
+                                        <optgroup label="Animals">
+                                            <option value="Poultry">Live Poultry</option>
+                                            <option value="Meat">Meat Cuts</option>
+                                            <option value="Eggs">Eggs</option>
+                                            <option value="Livestock">Cattle / Goats</option>
+                                        </optgroup>
+                                        <optgroup label="Equipment">
+                                            <option value="Hand Tools">Hand Tools</option>
+                                            <option value="Machinery">Heavy Machinery</option>
+                                            <option value="Supplies">Supplies</option>
+                                        </optgroup>
                                     </select>
                                     <input type="text" id="new-unit" placeholder="Unit (e.g. kg)" class="auth-input">
                                 </div>
@@ -351,10 +369,10 @@
             input.type = input.type === "password" ? "text" : "password";
         }
 
-        function forgotPassword() {
-            const email = prompt("Enter your account email to receive a password reset link:");
-            if (email) {
-                showToast(`Password reset instructions sent to ${email}`);
+        function forgotPasswordWhatsApp() {
+            const phone = prompt("Enter your WhatsApp number to receive a secure reset code:");
+            if (phone) {
+                showToast(`WhatsApp OTP sent to ${phone}. (Backend Twilio/Meta integration pending)`);
             }
         }
 
@@ -373,7 +391,6 @@
             });
             document.getElementById('view-landing').classList.remove('hidden');
             
-            // Re-apply classes
             document.querySelectorAll('.auth-input').forEach(el => el.className = "w-full bg-[#020617]/80 border border-slate-700/80 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 transition-all font-medium placeholder-slate-500");
             document.querySelectorAll('.auth-btn').forEach(el => el.className = "w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black py-3 rounded-xl text-sm hover:scale-[1.02] transition-transform shadow-lg tracking-wide");
             document.querySelectorAll('.category-btn').forEach(el => el.className = el.classList.contains('active-cat') ? activeCatClass : inactiveCatClass);
