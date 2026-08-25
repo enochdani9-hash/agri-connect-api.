@@ -1,3 +1,4 @@
+import os
 import random
 import bcrypt
 from datetime import datetime, timedelta
@@ -41,10 +42,21 @@ def create_access_token(data: dict):
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 # ==============================================================================
-# 2. DATABASE CONFIGURATION (SQLite)
+# 2. CLOUD DATABASE CONFIGURATION (PostgreSQL / Supabase)
 # ==============================================================================
-DATABASE_URL = "sqlite:///./agriconnect.db"
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+# Fetch the URL from Render environment variables, fallback to local SQLite for safety
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./agriconnect.db")
+
+# SQLAlchemy requires the protocol to be 'postgresql://', but some cloud providers use 'postgres://'
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+# Only SQLite requires the 'check_same_thread' argument
+if "sqlite" in DATABASE_URL:
+    engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+else:
+    engine = create_engine(DATABASE_URL)
+
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
@@ -102,7 +114,7 @@ class UserCreate(BaseModel):
     role: Optional[str] = "buyer"
     full_name: Optional[str] = None
     name: Optional[str] = None
-    location_or_region: Optional[str] = "Accra"
+    location_or_region: Optional[str] = "Global"
     location: Optional[str] = None
 
 class LoginRequest(BaseModel):
@@ -166,7 +178,7 @@ class DeliveryVerification(BaseModel):
 # ==============================================================================
 # 4. FASTAPI APP & CORS
 # ==============================================================================
-app = FastAPI(title="AgriConnect Global API", version="2.3.0")
+app = FastAPI(title="AgriConnect Global API", version="2.4.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -183,13 +195,6 @@ EXCHANGE_RATES_TO_GHS = {
     "GBP": 0.052,
     "NGN": 98.50,
     "XOF": 40.00,
-}
-
-REGIONAL_BENCHMARKS = {
-    "poultry": {"avg_price": 120.0, "unit": "birds", "min": 95.0, "max": 140.0},
-    "tomatoes": {"avg_price": 450.0, "unit": "crates", "min": 380.0, "max": 520.0},
-    "peppers": {"avg_price": 300.0, "unit": "bags", "min": 250.0, "max": 360.0},
-    "maize": {"avg_price": 280.0, "unit": "bags", "min": 240.0, "max": 320.0},
 }
 
 def get_current_user_from_token(token: str, db: Session):
@@ -220,7 +225,7 @@ def signup(user_data: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Email already registered")
     
     display_name = user_data.full_name or user_data.name or user_data.email.split("@")[0]
-    user_location = user_data.location_or_region or user_data.location or "Accra"
+    user_location = user_data.location_or_region or user_data.location or "Global"
     
     hashed_pw = get_password_hash(user_data.password)
     new_user = UserDB(
@@ -258,7 +263,7 @@ def login(credentials: LoginRequest, db: Session = Depends(get_db)):
     }
 
 # ==============================================================================
-# 6. PRODUCTS & ORDERS (Accepts direct and prefixed routes)
+# 6. PRODUCTS & ORDERS
 # ==============================================================================
 @app.post("/products", response_model=ProductResponse)
 @app.post("/api/v1/products", response_model=ProductResponse)
@@ -453,37 +458,3 @@ async def websocket_chat(websocket: WebSocket, order_id: int, user_name: str):
                 })
     except WebSocketDisconnect:
         chat_rooms[order_id].remove(websocket)
-
-# ==============================================================================
-# 9. SMART PRICING & MARKET INTELLIGENCE
-# ==============================================================================
-@app.get("/intelligence/price-advisory")
-@app.get("/api/v1/intelligence/price-advisory")
-def get_price_advisory(commodity: str, farmer_price: float, quantity: int = 1):
-    key = commodity.lower().strip()
-    benchmark = REGIONAL_BENCHMARKS.get(key)
-    if not benchmark:
-        return {"status": "NO_HISTORICAL_DATA", "message": "No benchmark data available"}
-    
-    avg = benchmark["avg_price"]
-    diff_percent = round(((farmer_price - avg) / avg) * 100, 1)
-    
-    discount = 0
-    if quantity >= 100:
-        discount = 10
-    elif quantity >= 50:
-        discount = 5
-        
-    suggested_total = round((farmer_price * quantity) * (1 - discount / 100), 2)
-    return {
-        "commodity": commodity,
-        "farmer_price": farmer_price,
-        "regional_average": avg,
-        "price_variance": f"{diff_percent}%",
-        "benchmark_range": f"{benchmark['min']} - {benchmark['max']} GHS per {benchmark['unit']}",
-        "bulk_analysis": {
-            "order_quantity": quantity,
-            "suggested_discount": f"{discount}%",
-            "estimated_total_ghs": suggested_total,
-        },
-    }
