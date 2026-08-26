@@ -53,7 +53,6 @@ class UserDB(Base):
     age = Column(Integer, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 
-# V3 Table to support images without breaking your old database
 class ProductDB(Base):
     __tablename__ = "products_v3"
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
@@ -65,7 +64,7 @@ class ProductDB(Base):
     seller_id = Column(Integer, nullable=False)
     phone_number = Column(String, nullable=False)
     neighborhood = Column(String, index=True, nullable=False)
-    image_data = Column(Text, nullable=True) # NEW: Stores the compressed image string
+    image_data = Column(Text, nullable=True) 
     created_at = Column(DateTime, default=datetime.utcnow)
 
 Base.metadata.create_all(bind=engine)
@@ -102,7 +101,7 @@ class ProductCreate(BaseModel):
     base_price_ghs: float
     unit: str
     neighborhood: str
-    image_data: Optional[str] = None # NEW
+    image_data: Optional[str] = None 
 
 class ProductResponse(BaseModel):
     id: int
@@ -113,13 +112,13 @@ class ProductResponse(BaseModel):
     seller_name: str
     phone_number: str
     neighborhood: str
-    image_data: Optional[str] = None # NEW
+    image_data: Optional[str] = None
     created_at: datetime
 
 # ==============================================================================
 # 4. FASTAPI APP & ENDPOINTS
 # ==============================================================================
-app = FastAPI(title="AgriConnect Classifieds API", version="4.1.0")
+app = FastAPI(title="AgriConnect Classifieds API", version="5.0.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -192,3 +191,26 @@ def list_products(category: Optional[str] = Query(None), neighborhood: Optional[
     
     products = query.order_by(ProductDB.created_at.desc()).all()
     return [ProductResponse(**p.__dict__) for p in products]
+
+# NEW: Get only the ads posted by the logged-in user
+@app.get("/api/v1/my-products", response_model=List[ProductResponse])
+def list_my_products(token: str = Query(...), db: Session = Depends(get_db)):
+    user = get_current_user_from_token(token, db)
+    if not user: raise HTTPException(status_code=401, detail="Must be logged in")
+    
+    products = db.query(ProductDB).filter(ProductDB.seller_id == user.id).order_by(ProductDB.created_at.desc()).all()
+    return [ProductResponse(**p.__dict__) for p in products]
+
+# NEW: Delete a specific ad
+@app.delete("/api/v1/products/{product_id}")
+def delete_product(product_id: int, token: str = Query(...), db: Session = Depends(get_db)):
+    user = get_current_user_from_token(token, db)
+    if not user: raise HTTPException(status_code=401, detail="Must be logged in")
+    
+    product = db.query(ProductDB).filter(ProductDB.id == product_id, ProductDB.seller_id == user.id).first()
+    if not product:
+        raise HTTPException(status_code=404, detail="Ad not found or you don't have permission to delete it")
+    
+    db.delete(product)
+    db.commit()
+    return {"detail": "Ad deleted successfully"}
