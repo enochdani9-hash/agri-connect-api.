@@ -71,11 +71,34 @@
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-2xl font-black text-white tracking-tight">Browse Categories</h3>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
-                    <div onclick="executeCategory('Poultry')" class="glass-card p-8 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group"><div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">🐔</div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Live Poultry</p></div>
-                    <div onclick="executeCategory('Eggs')" class="glass-card p-8 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group"><div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">🥚</div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Fresh Eggs</p></div>
-                    <div onclick="executeCategory('Meat')" class="glass-card p-8 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group"><div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">🥩</div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Dressed Meat</p></div>
-                    <div onclick="executeCategory('Livestock')" class="glass-card p-8 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group"><div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">🐐</div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Livestock</p></div>
+                <!-- 5-Column Grid with Realistic Images -->
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
+                    
+                    <div onclick="executeCategory('Poultry')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
+                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://images.unsplash.com/photo-1548550023-2bf3c49b3380?auto=format&fit=crop&w=200&q=80');"></div>
+                        <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Live Poultry</p>
+                    </div>
+
+                    <div onclick="executeCategory('Eggs')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
+                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://images.unsplash.com/photo-1587486913049-53fc88980cfc?auto=format&fit=crop&w=200&q=80');"></div>
+                        <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Fresh Eggs</p>
+                    </div>
+
+                    <div onclick="executeCategory('Meat')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
+                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=200&q=80');"></div>
+                        <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Dressed Meat</p>
+                    </div>
+
+                    <div onclick="executeCategory('Livestock')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
+                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://images.unsplash.com/photo-1524024973431-2ad916746881?auto=format&fit=crop&w=200&q=80');"></div>
+                        <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Livestock</p>
+                    </div>
+
+                    <div onclick="executeCategory('Machinery')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
+                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=200&q=80');"></div>
+                        <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Machinery</p>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -140,15 +163,17 @@
                 </div>
                 
                 <div class="space-y-4">
-                    <input type="text" id="post-name" placeholder="Headline (e.g. 50 Crates of Large Eggs)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
+                    <input type="text" id="post-name" placeholder="Headline (e.g. 50 Crates of Large Eggs, or Used Tractor)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
                     <div class="grid grid-cols-2 gap-4">
                         <select id="post-category" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-sm text-white cursor-pointer outline-none focus:border-emerald-500 appearance-none">
                             <option value="Poultry">Live Birds</option>
                             <option value="Eggs">Eggs</option>
                             <option value="Meat">Dressed Meat</option>
                             <option value="Livestock">Goats / Sheep</option>
+                            <!-- NEW MACHINERY CATEGORY -->
+                            <option value="Machinery">Tools & Machinery</option> 
                         </select>
-                        <input type="text" id="post-unit" placeholder="Unit (e.g. per crate)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
+                        <input type="text" id="post-unit" placeholder="Unit (e.g. per crate, per piece)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="relative">
@@ -305,7 +330,6 @@
             window.open(`tel:${cleanPhone}`, '_self');
         }
 
-        // NEW: Share Functionality
         function shareAd(name, price, unit) {
             const text = `Check out this fresh deal on AgriConnect: ${name} for GH₵${price} / ${unit}! Find this and more directly from Accra farmers at ${window.location.origin}`;
             if (navigator.share) {
@@ -332,7 +356,7 @@
                 const grid = document.getElementById('product-grid');
                 grid.innerHTML = '';
                 
-                if (products.length === 0) return grid.innerHTML = `<div class="col-span-full glass-card py-16 rounded-3xl text-center"><p class="text-slate-400 text-sm">No ads found. Be the first to post!</p></div>`;
+                if (products.length === 0) return grid.innerHTML = `<div class="col-span-full glass-card py-16 rounded-3xl text-center"><p class="text-slate-400 text-sm">No ads found in this category. Be the first to post!</p></div>`;
                 
                 products.forEach(item => {
                     let imageBlock = item.image_data 
