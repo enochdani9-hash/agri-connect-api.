@@ -11,8 +11,6 @@
         .fade-in { animation: fadeIn 0.3s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         input:-webkit-autofill { -webkit-box-shadow: 0 0 0 30px #020617 inset !important; -webkit-text-fill-color: white !important; }
-        
-        /* Image Preview Box Style */
         .image-preview-box { background-size: cover; background-position: center; }
     </style>
 </head>
@@ -28,8 +26,9 @@
             </div>
             <div class="flex gap-3 items-center">
                 <button id="nav-login-btn" onclick="navigate('auth')" class="text-sm font-bold text-slate-300 hover:text-emerald-400 hidden">Sign In</button>
-                <div id="nav-user-profile" class="hidden items-center gap-3">
-                    <span id="nav-user-name" class="text-xs font-bold text-emerald-400"></span>
+                <div id="nav-user-profile" class="hidden items-center gap-4">
+                    <span id="nav-user-name" class="text-xs font-bold text-slate-400 hidden md:block"></span>
+                    <button onclick="navigate('dashboard')" class="text-xs font-black text-emerald-400 hover:text-emerald-300">My Ads</button>
                     <button onclick="logout()" class="text-xs text-rose-400 hover:text-rose-300 font-bold">Logout</button>
                 </div>
                 <button onclick="requireAuthToPost()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-black px-5 py-2 rounded-xl shadow-lg shadow-emerald-600/20 transition-all">Post Ad</button>
@@ -56,18 +55,10 @@
             <div>
                 <h3 class="text-xl font-black text-white mb-4">Browse Categories</h3>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div onclick="executeCategory('Poultry')" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl cursor-pointer hover:border-emerald-500 text-center transition-all group">
-                        <div class="text-4xl mb-2 group-hover:scale-110 transition-transform">🐔</div><p class="font-bold text-sm text-slate-300">Live Poultry</p>
-                    </div>
-                    <div onclick="executeCategory('Eggs')" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl cursor-pointer hover:border-emerald-500 text-center transition-all group">
-                        <div class="text-4xl mb-2 group-hover:scale-110 transition-transform">🥚</div><p class="font-bold text-sm text-slate-300">Fresh Eggs</p>
-                    </div>
-                    <div onclick="executeCategory('Meat')" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl cursor-pointer hover:border-emerald-500 text-center transition-all group">
-                        <div class="text-4xl mb-2 group-hover:scale-110 transition-transform">🥩</div><p class="font-bold text-sm text-slate-300">Dressed Meat</p>
-                    </div>
-                    <div onclick="executeCategory('Livestock')" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl cursor-pointer hover:border-emerald-500 text-center transition-all group">
-                        <div class="text-4xl mb-2 group-hover:scale-110 transition-transform">🐐</div><p class="font-bold text-sm text-slate-300">Livestock</p>
-                    </div>
+                    <div onclick="executeCategory('Poultry')" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl cursor-pointer hover:border-emerald-500 text-center transition-all group"><div class="text-4xl mb-2 group-hover:scale-110 transition-transform">🐔</div><p class="font-bold text-sm text-slate-300">Live Poultry</p></div>
+                    <div onclick="executeCategory('Eggs')" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl cursor-pointer hover:border-emerald-500 text-center transition-all group"><div class="text-4xl mb-2 group-hover:scale-110 transition-transform">🥚</div><p class="font-bold text-sm text-slate-300">Fresh Eggs</p></div>
+                    <div onclick="executeCategory('Meat')" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl cursor-pointer hover:border-emerald-500 text-center transition-all group"><div class="text-4xl mb-2 group-hover:scale-110 transition-transform">🥩</div><p class="font-bold text-sm text-slate-300">Dressed Meat</p></div>
+                    <div onclick="executeCategory('Livestock')" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl cursor-pointer hover:border-emerald-500 text-center transition-all group"><div class="text-4xl mb-2 group-hover:scale-110 transition-transform">🐐</div><p class="font-bold text-sm text-slate-300">Livestock</p></div>
                 </div>
             </div>
         </div>
@@ -111,20 +102,17 @@
             </div>
         </div>
 
-        <!-- POST AD DASHBOARD (Now with Images!) -->
+        <!-- POST AD DASHBOARD -->
         <div id="view-post" class="fade-in hidden max-w-xl mx-auto mt-6">
             <h2 class="text-2xl font-black text-white mb-6">Post a New Ad</h2>
             <div class="bg-slate-900 border border-slate-800 p-8 rounded-[2rem] shadow-2xl space-y-4">
-                
-                <!-- IMAGE UPLOAD AREA -->
                 <div class="mb-4">
                     <label class="block text-xs font-bold text-slate-400 mb-2">Product Photo</label>
                     <div id="image-preview" class="w-full h-40 bg-[#020617] border-2 border-dashed border-slate-700 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-emerald-500 transition-colors image-preview-box" onclick="document.getElementById('post-image').click()">
-                        <span id="upload-text" class="text-slate-500 text-sm font-bold text-center px-4">📷 Click to upload a photo<br><span class="text-xs font-normal">Show buyers what you're selling!</span></span>
+                        <span id="upload-text" class="text-slate-500 text-sm font-bold text-center px-4">📷 Click to upload a photo</span>
                     </div>
                     <input type="file" id="post-image" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
                 </div>
-                
                 <input type="text" id="post-name" placeholder="Headline (e.g. 50 Crates of Large Eggs)" class="w-full bg-[#020617] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500">
                 <div class="grid grid-cols-2 gap-4">
                     <select id="post-category" class="w-full bg-[#020617] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white cursor-pointer outline-none">
@@ -139,9 +127,17 @@
                     <input type="number" id="post-price" placeholder="Price (GH₵)" class="w-full bg-[#020617] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500">
                     <input type="text" id="post-neighborhood" placeholder="Location (e.g. Madina)" class="w-full bg-[#020617] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500">
                 </div>
-                <p class="text-[10px] text-slate-500 mt-2">Your registered phone number will automatically be attached to this ad.</p>
                 <button id="submit-ad-btn" onclick="submitAd()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black py-4 rounded-xl text-sm transition-all shadow-lg mt-4">Publish Ad Now</button>
             </div>
+        </div>
+
+        <!-- MY ADS DASHBOARD -->
+        <div id="view-dashboard" class="fade-in hidden max-w-4xl mx-auto mt-6">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-black text-white">Manage My Ads</h2>
+                <button onclick="navigate('post')" class="text-xs bg-emerald-600/20 text-emerald-400 font-bold px-4 py-2 rounded-lg border border-emerald-500/50">Post New Ad</button>
+            </div>
+            <div id="my-ads-list" class="space-y-4"></div>
         </div>
 
     </main>
@@ -150,7 +146,7 @@
         const API_URL = "https://agri-connect-api-3.onrender.com";
         let agriToken = localStorage.getItem("agri_token") || "";
         let pendingAction = null;
-        let compressedImageData = null; // Stores the image string
+        let compressedImageData = null;
 
         function showToast(msg, type='success') {
             const c = document.getElementById('toast-container');
@@ -167,7 +163,7 @@
                     const res = await fetch(`${API_URL}/api/v1/me?token=${agriToken}`);
                     if (res.ok) {
                         const data = await res.json();
-                        document.getElementById('nav-user-name').innerText = data.full_name;
+                        document.getElementById('nav-user-name').innerText = `Hi, ${data.full_name}`;
                         document.getElementById('nav-user-profile').classList.remove('hidden');
                         document.getElementById('nav-user-profile').classList.add('flex');
                     } else { logout(); }
@@ -177,9 +173,11 @@
         });
 
         function navigate(view) {
-            ['view-home', 'view-marketplace', 'view-auth', 'view-post'].forEach(v => document.getElementById(v).classList.add('hidden'));
+            ['view-home', 'view-marketplace', 'view-auth', 'view-post', 'view-dashboard'].forEach(v => document.getElementById(v).classList.add('hidden'));
             document.getElementById(`view-${view}`).classList.remove('hidden');
+            
             if (view === 'marketplace') loadMarketplace('', '');
+            if (view === 'dashboard') loadMyAds();
         }
 
         function toggleAuthBox(box) {
@@ -192,6 +190,7 @@
             }
         }
 
+        // --- AUTH ---
         async function signupUser() {
             const name = document.getElementById('su-name').value.trim();
             const email = document.getElementById('su-email').value.trim();
@@ -201,11 +200,7 @@
             if(!name || !email || !age || !phone || !password) return showToast("All fields are required", "error");
             
             try {
-                const res = await fetch(`${API_URL}/api/v1/signup`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ full_name: name, email, age, phone_number: phone, password })
-                });
+                const res = await fetch(`${API_URL}/api/v1/signup`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ full_name: name, email, age, phone_number: phone, password }) });
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.detail || "Signup failed");
                 handleLoginSuccess(data);
@@ -218,11 +213,7 @@
             if(!email || !password) return showToast("Enter email and password", "error");
             
             try {
-                const res = await fetch(`${API_URL}/api/v1/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                });
+                const res = await fetch(`${API_URL}/api/v1/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) });
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.detail || "Login failed");
                 handleLoginSuccess(data);
@@ -234,29 +225,36 @@
             localStorage.setItem("agri_token", agriToken);
             showToast("Welcome back!");
             document.getElementById('nav-login-btn').classList.add('hidden');
-            document.getElementById('nav-user-name').innerText = data.full_name;
+            document.getElementById('nav-user-name').innerText = `Hi, ${data.full_name}`;
             document.getElementById('nav-user-profile').classList.remove('hidden');
             document.getElementById('nav-user-profile').classList.add('flex');
 
             if (pendingAction === 'post') { pendingAction = null; navigate('post'); } 
             else if (pendingAction && pendingAction.startsWith('wa:')) {
-                const parts = pendingAction.split(':');
-                pendingAction = null;
-                executeWhatsApp(parts[1], parts[2], parts[3], parts[4]);
-                navigate('marketplace');
-            } else { navigate('home'); }
+                const p = pendingAction.split(':'); pendingAction = null; executeWhatsApp(p[1], p[2], p[3], p[4]); navigate('marketplace');
+            } 
+            else if (pendingAction && pendingAction.startsWith('call:')) {
+                const p = pendingAction.split(':'); pendingAction = null; executeCall(p[1]); navigate('marketplace');
+            } 
+            else { navigate('dashboard'); }
         }
 
         function logout() { agriToken = ""; localStorage.removeItem("agri_token"); window.location.reload(); }
 
+        // --- PROTECTED ACTIONS ---
         function requireAuthToPost() {
             if (!agriToken) { pendingAction = 'post'; showToast("Please sign in to post an ad", "error"); navigate('auth'); } 
             else { navigate('post'); }
         }
 
         function requireAuthToMessage(phone, name, price, unit) {
-            if (!agriToken) { pendingAction = `wa:${phone}:${name}:${price}:${unit}`; showToast("Sign in to contact the seller", "error"); navigate('auth'); } 
+            if (!agriToken) { pendingAction = `wa:${phone}:${name}:${price}:${unit}`; showToast("Sign in to contact seller", "error"); navigate('auth'); } 
             else { executeWhatsApp(phone, name, price, unit); }
+        }
+
+        function requireAuthToCall(phone) {
+            if (!agriToken) { pendingAction = `call:${phone}`; showToast("Sign in to call seller", "error"); navigate('auth'); } 
+            else { executeCall(phone); }
         }
 
         function executeWhatsApp(phone, name, price, unit) {
@@ -266,12 +264,13 @@
             window.open(`https://wa.me/${cleanPhone}?text=${msg}`, '_blank');
         }
 
-        function executeSearch() {
-            const q = document.getElementById('home-search').value;
-            loadMarketplace('', q);
-            navigate('marketplace');
+        function executeCall(phone) {
+            let cleanPhone = phone.replace(/\D/g, '');
+            window.open(`tel:${cleanPhone}`, '_self');
         }
 
+        // --- MARKETPLACE ---
+        function executeSearch() { loadMarketplace('', document.getElementById('home-search').value); navigate('marketplace'); }
         function executeCategory(cat) { loadMarketplace(cat, ''); navigate('marketplace'); }
 
         async function loadMarketplace(category, search) {
@@ -289,7 +288,6 @@
                 if (products.length === 0) return grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-10 text-sm">No ads found. Be the first to post!</p>`;
                 
                 products.forEach(item => {
-                    // Decide if we show an image or a default color block
                     let imageBlock = item.image_data 
                         ? `<div class="h-40 w-full bg-slate-800 bg-cover bg-center" style="background-image: url('${item.image_data}')"></div>`
                         : `<div class="h-40 w-full bg-gradient-to-br from-emerald-900 to-slate-900 flex items-center justify-center text-3xl">🌾</div>`;
@@ -311,9 +309,14 @@
                                         <span class="text-2xl font-black text-emerald-400">GH₵${item.base_price_ghs}</span>
                                         <span class="text-xs text-slate-400 ml-1">/ ${item.unit}</span>
                                     </div>
-                                    <button onclick="requireAuthToMessage('${item.phone_number}', '${item.product_name.replace(/'/g, "\\'")}', ${item.base_price_ghs}, '${item.unit}')" class="w-full bg-emerald-950/30 text-emerald-400 hover:bg-emerald-600 hover:text-white font-black py-3 rounded-xl text-xs transition-colors border border-emerald-500/50">
-                                        Contact via WhatsApp
-                                    </button>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <button onclick="requireAuthToMessage('${item.phone_number}', '${item.product_name.replace(/'/g, "\\'")}', ${item.base_price_ghs}, '${item.unit}')" class="w-full bg-[#25D366]/20 text-[#25D366] hover:bg-[#25D366] hover:text-white font-black py-2.5 rounded-xl text-xs transition-colors border border-[#25D366]/50">
+                                            WhatsApp
+                                        </button>
+                                        <button onclick="requireAuthToCall('${item.phone_number}')" class="w-full bg-blue-500/20 text-blue-400 hover:bg-blue-600 hover:text-white font-black py-2.5 rounded-xl text-xs transition-colors border border-blue-500/50">
+                                            Call
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -322,31 +325,58 @@
             } catch (err) {}
         }
 
-        // --- IMAGE COMPRESSION & UPLOAD ---
+        // --- DASHBOARD: MY ADS ---
+        async function loadMyAds() {
+            try {
+                const res = await fetch(`${API_URL}/api/v1/my-products?token=${agriToken}`);
+                if (!res.ok) throw new Error();
+                const products = await res.json();
+                const list = document.getElementById('my-ads-list');
+                list.innerHTML = '';
+                
+                if (products.length === 0) return list.innerHTML = `<div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl text-center"><p class="text-slate-400 text-sm">You haven't posted any ads yet.</p></div>`;
+                
+                products.forEach(item => {
+                    list.innerHTML += `
+                        <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex justify-between items-center">
+                            <div class="flex items-center gap-4">
+                                ${item.image_data ? `<img src="${item.image_data}" class="w-12 h-12 rounded-lg object-cover">` : `<div class="w-12 h-12 bg-slate-800 rounded-lg flex items-center justify-center">🌾</div>`}
+                                <div>
+                                    <h3 class="font-black text-white text-sm">${item.product_name}</h3>
+                                    <p class="text-xs text-emerald-400 font-bold">GH₵${item.base_price_ghs} / ${item.unit}</p>
+                                </div>
+                            </div>
+                            <button onclick="deleteAd(${item.id})" class="text-xs bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white px-4 py-2 rounded-lg transition-colors border border-rose-500/30 font-bold">Delete</button>
+                        </div>
+                    `;
+                });
+            } catch (err) { showToast("Could not load your ads", "error"); }
+        }
+
+        async function deleteAd(id) {
+            if(!confirm("Are you sure you want to delete this ad? This cannot be undone.")) return;
+            try {
+                const res = await fetch(`${API_URL}/api/v1/products/${id}?token=${agriToken}`, { method: 'DELETE' });
+                if (!res.ok) throw new Error("Could not delete");
+                showToast("Ad deleted successfully");
+                loadMyAds(); // Refresh the list
+            } catch (err) { showToast(err.message, "error"); }
+        }
+
+        // --- POSTING & IMAGES ---
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
-
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = (e) => {
-                const img = new Image();
-                img.src = e.target.result;
+                const img = new Image(); img.src = e.target.result;
                 img.onload = () => {
-                    // Compress image using a hidden canvas
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 500; // Shrink to 500px wide
-                    const scaleSize = MAX_WIDTH / img.width;
-                    canvas.width = MAX_WIDTH;
-                    canvas.height = img.height * scaleSize;
-                    
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    
-                    // Convert back to a heavily compressed jpeg text string
+                    const MAX_WIDTH = 500; const scaleSize = MAX_WIDTH / img.width;
+                    canvas.width = MAX_WIDTH; canvas.height = img.height * scaleSize;
+                    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
                     compressedImageData = canvas.toDataURL('image/jpeg', 0.6); 
-                    
-                    // Update the UI Preview box
                     const previewBox = document.getElementById('image-preview');
                     document.getElementById('upload-text').style.display = 'none';
                     previewBox.style.backgroundImage = `url(${compressedImageData})`;
@@ -368,22 +398,18 @@
             try {
                 btn.innerText = "Publishing..."; btn.disabled = true;
                 const res = await fetch(`${API_URL}/api/v1/products?token=${agriToken}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    // Send the compressed image string directly to the backend
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ product_name, category, unit, base_price_ghs, neighborhood, image_data: compressedImageData })
                 });
                 if(!res.ok) throw new Error("Failed to post");
                 
                 showToast("Ad Published Successfully!");
-                
-                // Clear the form
                 ['post-name', 'post-price', 'post-unit', 'post-neighborhood'].forEach(id => document.getElementById(id).value = '');
                 document.getElementById('image-preview').style.backgroundImage = 'none';
                 document.getElementById('upload-text').style.display = 'block';
                 compressedImageData = null;
                 
-                navigate('marketplace');
+                navigate('dashboard'); 
             } catch (err) { showToast(err.message, "error"); } 
             finally { btn.innerText = "Publish Ad Now"; btn.disabled = false; }
         }
