@@ -8,136 +8,176 @@
     <style>
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-thumb { background: #10b981; border-radius: 10px; }
-        .fade-in { animation: fadeIn 0.3s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .floating-element { animation: float 6s ease-in-out infinite; }
         input:-webkit-autofill { -webkit-box-shadow: 0 0 0 30px #020617 inset !important; -webkit-text-fill-color: white !important; }
-        .image-preview-box { background-size: cover; background-position: center; }
+        .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
     </style>
 </head>
-<body class="bg-[#020617] text-slate-100 font-sans min-h-screen selection:bg-emerald-500 selection:text-white">
+<body class="bg-[#020617] text-slate-100 font-sans min-h-screen selection:bg-emerald-500 selection:text-white overflow-x-hidden">
+
+    <!-- Ambient Background Glow -->
+    <div class="fixed top-[-20%] left-[-10%] w-[50%] h-[50%] bg-emerald-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
 
     <div id="toast-container" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 pointer-events-none"></div>
 
-    <header class="bg-[#020617]/90 backdrop-blur-xl border-b border-slate-800 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-2 cursor-pointer" onclick="navigate('home')">
-                <div class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center text-sm shadow-lg shadow-emerald-500/20">🌾</div>
-                <h1 class="text-xl font-black tracking-tight text-white">AgriConnect</h1>
-            </div>
-            <div class="flex gap-3 items-center">
-                <button id="nav-login-btn" onclick="navigate('auth')" class="text-sm font-bold text-slate-300 hover:text-emerald-400 hidden">Sign In</button>
-                <div id="nav-user-profile" class="hidden items-center gap-4">
-                    <span id="nav-user-name" class="text-xs font-bold text-slate-400 hidden md:block"></span>
-                    <button onclick="navigate('dashboard')" class="text-xs font-black text-emerald-400 hover:text-emerald-300">My Ads</button>
-                    <button onclick="logout()" class="text-xs text-rose-400 hover:text-rose-300 font-bold">Logout</button>
+    <header class="bg-[#020617]/70 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-50 transition-all">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
+                <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-xl flex items-center justify-center text-lg shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">🌾</div>
+                <div>
+                    <h1 class="text-xl font-black tracking-tight text-white group-hover:text-emerald-400 transition-colors">AgriConnect</h1>
+                    <p class="text-[9px] font-black text-emerald-500 uppercase tracking-widest">Accra Direct</p>
                 </div>
-                <button onclick="requireAuthToPost()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-black px-5 py-2 rounded-xl shadow-lg shadow-emerald-600/20 transition-all">Post Ad</button>
+            </div>
+            <div class="flex gap-4 items-center">
+                <button id="nav-login-btn" onclick="navigate('auth')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 hidden transition-colors">Sign In</button>
+                <div id="nav-user-profile" class="hidden items-center gap-4 bg-white/5 px-4 py-1.5 rounded-full border border-white/10">
+                    <span id="nav-user-name" class="text-xs font-bold text-emerald-400 hidden md:block"></span>
+                    <button onclick="navigate('dashboard')" class="text-xs font-black text-white hover:text-emerald-300 transition-colors">My Ads</button>
+                    <div class="w-px h-3 bg-white/20"></div>
+                    <button onclick="logout()" class="text-xs text-rose-400 hover:text-rose-300 font-bold transition-colors">Logout</button>
+                </div>
+                <button onclick="requireAuthToPost()" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white text-xs font-black px-5 py-2.5 rounded-xl shadow-lg shadow-emerald-600/25 hover:shadow-emerald-500/40 hover:-translate-y-0.5 transition-all">Post Ad</button>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 py-8">
+    <main class="max-w-7xl mx-auto px-6 py-8 relative z-10">
         
         <!-- HOMEPAGE -->
-        <div id="view-home" class="fade-in space-y-12">
-            <div class="text-center py-16 px-4 bg-gradient-to-b from-slate-900 to-[#020617] rounded-[2rem] border border-slate-800 shadow-2xl relative overflow-hidden">
-                <h1 class="text-4xl md:text-5xl font-black text-white mb-4 relative z-10">Ghana's #1 Agric Marketplace</h1>
-                <p class="text-slate-400 mb-8 max-w-lg mx-auto relative z-10">Buy and sell fresh farm produce directly. Zero commissions, pure connections.</p>
+        <div id="view-home" class="fade-in space-y-16">
+            <div class="text-center py-20 px-4 glass-card rounded-[2.5rem] shadow-2xl relative overflow-hidden border-t border-white/10">
+                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
+                <div class="text-6xl mb-6 floating-element inline-block">🚜</div>
+                <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 mb-6 relative z-10 tracking-tight">The Farmers Market,<br>Now Online.</h1>
+                <p class="text-slate-400 mb-10 max-w-lg mx-auto relative z-10 text-sm md:text-base leading-relaxed">Buy and sell fresh farm produce directly in Accra. Zero commissions, pure connections.</p>
                 
-                <div class="max-w-2xl mx-auto relative z-10 flex flex-col sm:flex-row gap-2">
+                <div class="max-w-2xl mx-auto relative z-10 flex flex-col sm:flex-row gap-3">
                     <input type="email" name="fake_email_trap" style="opacity: 0; position: absolute; z-index: -1;" aria-hidden="true" tabindex="-1">
                     <input type="password" name="fake_password_trap" style="opacity: 0; position: absolute; z-index: -1;" aria-hidden="true" tabindex="-1">
-                    <input type="search" id="home-search" autocomplete="new-password" placeholder="Search 'Live Broilers' or 'Madina'..." class="w-full bg-[#020617] border border-slate-700 rounded-xl px-5 py-4 text-sm text-white focus:border-emerald-500 outline-none">
-                    <button onclick="executeSearch()" class="bg-emerald-600 text-white font-black px-8 py-4 rounded-xl hover:bg-emerald-500 transition-colors">Search</button>
+                    <div class="relative w-full">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">🔍</span>
+                        <input type="search" id="home-search" autocomplete="new-password" placeholder="Search 'Live Broilers' or 'Madina'..." class="w-full bg-[#020617]/50 border border-slate-700/80 rounded-2xl pl-12 pr-5 py-4 text-sm text-white focus:border-emerald-500 focus:bg-[#020617] outline-none transition-all shadow-inner">
+                    </div>
+                    <button onclick="executeSearch()" class="bg-emerald-600 text-white font-black px-10 py-4 rounded-2xl hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-500/20 transition-all shrink-0">Search</button>
                 </div>
             </div>
 
             <div>
-                <h3 class="text-xl font-black text-white mb-4">Browse Categories</h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div onclick="executeCategory('Poultry')" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl cursor-pointer hover:border-emerald-500 text-center transition-all group"><div class="text-4xl mb-2 group-hover:scale-110 transition-transform">🐔</div><p class="font-bold text-sm text-slate-300">Live Poultry</p></div>
-                    <div onclick="executeCategory('Eggs')" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl cursor-pointer hover:border-emerald-500 text-center transition-all group"><div class="text-4xl mb-2 group-hover:scale-110 transition-transform">🥚</div><p class="font-bold text-sm text-slate-300">Fresh Eggs</p></div>
-                    <div onclick="executeCategory('Meat')" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl cursor-pointer hover:border-emerald-500 text-center transition-all group"><div class="text-4xl mb-2 group-hover:scale-110 transition-transform">🥩</div><p class="font-bold text-sm text-slate-300">Dressed Meat</p></div>
-                    <div onclick="executeCategory('Livestock')" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl cursor-pointer hover:border-emerald-500 text-center transition-all group"><div class="text-4xl mb-2 group-hover:scale-110 transition-transform">🐐</div><p class="font-bold text-sm text-slate-300">Livestock</p></div>
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-black text-white tracking-tight">Browse Categories</h3>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
+                    <div onclick="executeCategory('Poultry')" class="glass-card p-8 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group"><div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">🐔</div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Live Poultry</p></div>
+                    <div onclick="executeCategory('Eggs')" class="glass-card p-8 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group"><div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">🥚</div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Fresh Eggs</p></div>
+                    <div onclick="executeCategory('Meat')" class="glass-card p-8 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group"><div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">🥩</div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Dressed Meat</p></div>
+                    <div onclick="executeCategory('Livestock')" class="glass-card p-8 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group"><div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">🐐</div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Livestock</p></div>
                 </div>
             </div>
         </div>
 
         <!-- MARKETPLACE -->
         <div id="view-marketplace" class="fade-in hidden space-y-6">
-            <div class="flex items-center justify-between">
-                <h2 class="text-2xl font-black text-white" id="market-title">Latest Ads</h2>
-                <button onclick="navigate('home')" class="text-xs font-bold text-emerald-400">← Back Home</button>
+            <div class="flex items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 backdrop-blur-sm">
+                <h2 class="text-2xl font-black text-white tracking-tight" id="market-title">Latest Ads</h2>
+                <button onclick="navigate('home')" class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-4 py-2 rounded-lg hover:bg-emerald-500/20 transition-colors">← Back Home</button>
             </div>
-            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
         </div>
 
         <!-- AUTHENTICATION -->
         <div id="view-auth" class="fade-in hidden max-w-sm mx-auto mt-10">
-            <div class="bg-slate-900 border border-slate-800 p-8 rounded-[2rem] shadow-2xl">
+            <div class="glass-card p-8 rounded-[2rem] shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
                 <div id="login-box">
                     <h2 class="text-2xl font-black text-white text-center mb-6">Welcome Back</h2>
                     <div class="space-y-4">
-                        <input type="email" id="login-email" placeholder="Email" class="w-full bg-[#020617] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 outline-none">
-                        <input type="password" id="login-password" placeholder="Password" class="w-full bg-[#020617] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 outline-none">
-                        <button onclick="loginUser()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black py-3 rounded-xl text-sm transition-all shadow-lg">Sign In</button>
+                        <input type="email" id="login-email" placeholder="Email" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3.5 text-sm text-white focus:border-emerald-500 outline-none transition-colors">
+                        <input type="password" id="login-password" placeholder="Password" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3.5 text-sm text-white focus:border-emerald-500 outline-none transition-colors">
+                        <button onclick="loginUser()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-4 rounded-xl text-sm transition-all shadow-lg hover:shadow-emerald-500/25">Sign In</button>
                     </div>
-                    <p class="text-xs text-slate-400 text-center mt-6">Don't have an account? <button onclick="toggleAuthBox('signup')" class="text-emerald-400 font-bold">Sign Up</button></p>
+                    <p class="text-xs text-slate-400 text-center mt-6">Don't have an account? <button onclick="toggleAuthBox('signup')" class="text-emerald-400 font-bold hover:text-emerald-300">Sign Up</button></p>
                 </div>
 
                 <div id="signup-box" class="hidden">
                     <h2 class="text-2xl font-black text-white text-center mb-6">Create Account</h2>
                     <div class="space-y-4">
-                        <input type="text" id="su-name" placeholder="Full Name" class="w-full bg-[#020617] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 outline-none">
-                        <input type="email" id="su-email" placeholder="Email Address" class="w-full bg-[#020617] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 outline-none">
+                        <input type="text" id="su-name" placeholder="Full Name" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 outline-none">
+                        <input type="email" id="su-email" placeholder="Email Address" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 outline-none">
                         <div class="grid grid-cols-3 gap-3">
-                            <input type="number" id="su-age" placeholder="Age" class="w-full bg-[#020617] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 outline-none col-span-1">
-                            <input type="tel" id="su-phone" placeholder="Phone Number" class="w-full bg-[#020617] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 outline-none col-span-2">
+                            <input type="number" id="su-age" placeholder="Age" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 outline-none col-span-1">
+                            <input type="tel" id="su-phone" placeholder="Phone Number" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 outline-none col-span-2">
                         </div>
-                        <input type="password" id="su-password" placeholder="Create Password" class="w-full bg-[#020617] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 outline-none">
-                        <button onclick="signupUser()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black py-3 rounded-xl text-sm transition-all shadow-lg">Create Account</button>
+                        <input type="password" id="su-password" placeholder="Create Password" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 outline-none">
+                        <button onclick="signupUser()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-4 rounded-xl text-sm transition-all shadow-lg">Create Account</button>
                     </div>
-                    <p class="text-xs text-slate-400 text-center mt-6">Already have an account? <button onclick="toggleAuthBox('login')" class="text-emerald-400 font-bold">Sign In</button></p>
+                    <p class="text-xs text-slate-400 text-center mt-6">Already have an account? <button onclick="toggleAuthBox('login')" class="text-emerald-400 font-bold hover:text-emerald-300">Sign In</button></p>
                 </div>
             </div>
         </div>
 
         <!-- POST AD DASHBOARD -->
-        <div id="view-post" class="fade-in hidden max-w-xl mx-auto mt-6">
-            <h2 class="text-2xl font-black text-white mb-6">Post a New Ad</h2>
-            <div class="bg-slate-900 border border-slate-800 p-8 rounded-[2rem] shadow-2xl space-y-4">
-                <div class="mb-4">
-                    <label class="block text-xs font-bold text-slate-400 mb-2">Product Photo</label>
-                    <div id="image-preview" class="w-full h-40 bg-[#020617] border-2 border-dashed border-slate-700 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-emerald-500 transition-colors image-preview-box" onclick="document.getElementById('post-image').click()">
-                        <span id="upload-text" class="text-slate-500 text-sm font-bold text-center px-4">📷 Click to upload a photo</span>
+        <div id="view-post" class="fade-in hidden max-w-2xl mx-auto mt-6">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 bg-emerald-500/20 rounded-xl flex items-center justify-center text-emerald-400 border border-emerald-500/30">📢</div>
+                <h2 class="text-2xl font-black text-white tracking-tight">Post a New Ad</h2>
+            </div>
+            
+            <div class="glass-card p-8 rounded-[2rem] shadow-2xl space-y-6">
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">Product Photo</label>
+                    <div id="image-preview" class="w-full h-48 bg-[#020617]/50 border-2 border-dashed border-slate-700 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-emerald-500 hover:bg-[#020617] transition-all image-preview-box group" onclick="document.getElementById('post-image').click()">
+                        <span id="upload-text" class="text-slate-500 text-sm font-bold text-center px-4 group-hover:text-emerald-400 transition-colors">
+                            <svg class="w-8 h-8 mx-auto mb-2 opacity-50 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                            Click to upload a photo
+                        </span>
                     </div>
                     <input type="file" id="post-image" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
                 </div>
-                <input type="text" id="post-name" placeholder="Headline (e.g. 50 Crates of Large Eggs)" class="w-full bg-[#020617] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500">
-                <div class="grid grid-cols-2 gap-4">
-                    <select id="post-category" class="w-full bg-[#020617] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white cursor-pointer outline-none">
-                        <option value="Poultry">Live Birds</option>
-                        <option value="Eggs">Eggs</option>
-                        <option value="Meat">Dressed Meat</option>
-                        <option value="Livestock">Goats / Sheep</option>
-                    </select>
-                    <input type="text" id="post-unit" placeholder="Unit (e.g. per crate)" class="w-full bg-[#020617] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500">
+                
+                <div class="space-y-4">
+                    <input type="text" id="post-name" placeholder="Headline (e.g. 50 Crates of Large Eggs)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
+                    <div class="grid grid-cols-2 gap-4">
+                        <select id="post-category" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-sm text-white cursor-pointer outline-none focus:border-emerald-500 appearance-none">
+                            <option value="Poultry">Live Birds</option>
+                            <option value="Eggs">Eggs</option>
+                            <option value="Meat">Dressed Meat</option>
+                            <option value="Livestock">Goats / Sheep</option>
+                        </select>
+                        <input type="text" id="post-unit" placeholder="Unit (e.g. per crate)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-sm">GH₵</span>
+                            <input type="number" id="post-price" placeholder="Price" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl pl-12 pr-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
+                        </div>
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">📍</span>
+                            <input type="text" id="post-neighborhood" placeholder="Location (e.g. Madina)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl pl-10 pr-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
+                        </div>
+                    </div>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <input type="number" id="post-price" placeholder="Price (GH₵)" class="w-full bg-[#020617] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500">
-                    <input type="text" id="post-neighborhood" placeholder="Location (e.g. Madina)" class="w-full bg-[#020617] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500">
+                <div class="pt-4 border-t border-white/5">
+                    <button id="submit-ad-btn" onclick="submitAd()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-4 rounded-xl text-sm transition-all shadow-lg hover:-translate-y-0.5">🚀 Publish Ad Now</button>
+                    <p class="text-[10px] text-center text-slate-500 mt-3 font-medium">Your registered phone number will automatically be attached to this ad.</p>
                 </div>
-                <button id="submit-ad-btn" onclick="submitAd()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black py-4 rounded-xl text-sm transition-all shadow-lg mt-4">Publish Ad Now</button>
             </div>
         </div>
 
         <!-- MY ADS DASHBOARD -->
         <div id="view-dashboard" class="fade-in hidden max-w-4xl mx-auto mt-6">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-black text-white">Manage My Ads</h2>
-                <button onclick="navigate('post')" class="text-xs bg-emerald-600/20 text-emerald-400 font-bold px-4 py-2 rounded-lg border border-emerald-500/50">Post New Ad</button>
+            <div class="flex items-center justify-between mb-8 glass-card p-6 rounded-2xl">
+                <div>
+                    <h2 class="text-2xl font-black text-white tracking-tight">Manage My Ads</h2>
+                    <p class="text-xs text-slate-400 mt-1">Delete items that are sold out.</p>
+                </div>
+                <button onclick="navigate('post')" class="text-xs bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl shadow-lg hover:bg-emerald-500 transition-colors">+ New Ad</button>
             </div>
-            <div id="my-ads-list" class="space-y-4"></div>
+            <div id="my-ads-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </div>
 
     </main>
@@ -151,10 +191,10 @@
         function showToast(msg, type='success') {
             const c = document.getElementById('toast-container');
             const t = document.createElement('div');
-            t.className = `p-3 px-5 rounded-xl shadow-xl border flex items-center gap-2 slide-up ${type === 'error' ? 'bg-rose-950 border-rose-500 text-rose-100' : 'bg-emerald-950 border-emerald-500 text-emerald-100'}`;
-            t.innerHTML = `<span class="text-xs font-bold">${msg}</span>`;
+            t.className = `p-4 pr-6 rounded-2xl shadow-2xl glass-card flex items-center gap-3 slide-up border-l-4 ${type === 'error' ? 'border-rose-500 text-rose-100' : 'border-emerald-500 text-emerald-100'}`;
+            t.innerHTML = `<span class="text-sm font-bold tracking-wide">${msg}</span>`;
             c.appendChild(t);
-            setTimeout(() => t.remove(), 3000);
+            setTimeout(() => { t.style.opacity = '0'; setTimeout(()=>t.remove(),300) }, 3000);
         }
 
         window.addEventListener('DOMContentLoaded', async () => {
@@ -163,7 +203,7 @@
                     const res = await fetch(`${API_URL}/api/v1/me?token=${agriToken}`);
                     if (res.ok) {
                         const data = await res.json();
-                        document.getElementById('nav-user-name').innerText = `Hi, ${data.full_name}`;
+                        document.getElementById('nav-user-name').innerText = `Hi, ${data.full_name.split(' ')[0]}`;
                         document.getElementById('nav-user-profile').classList.remove('hidden');
                         document.getElementById('nav-user-profile').classList.add('flex');
                     } else { logout(); }
@@ -175,19 +215,15 @@
         function navigate(view) {
             ['view-home', 'view-marketplace', 'view-auth', 'view-post', 'view-dashboard'].forEach(v => document.getElementById(v).classList.add('hidden'));
             document.getElementById(`view-${view}`).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             
             if (view === 'marketplace') loadMarketplace('', '');
             if (view === 'dashboard') loadMyAds();
         }
 
         function toggleAuthBox(box) {
-            if(box === 'login') {
-                document.getElementById('signup-box').classList.add('hidden');
-                document.getElementById('login-box').classList.remove('hidden');
-            } else {
-                document.getElementById('login-box').classList.add('hidden');
-                document.getElementById('signup-box').classList.remove('hidden');
-            }
+            if(box === 'login') { document.getElementById('signup-box').classList.add('hidden'); document.getElementById('login-box').classList.remove('hidden'); } 
+            else { document.getElementById('login-box').classList.add('hidden'); document.getElementById('signup-box').classList.remove('hidden'); }
         }
 
         // --- AUTH ---
@@ -225,7 +261,7 @@
             localStorage.setItem("agri_token", agriToken);
             showToast("Welcome back!");
             document.getElementById('nav-login-btn').classList.add('hidden');
-            document.getElementById('nav-user-name').innerText = `Hi, ${data.full_name}`;
+            document.getElementById('nav-user-name').innerText = `Hi, ${data.full_name.split(' ')[0]}`;
             document.getElementById('nav-user-profile').classList.remove('hidden');
             document.getElementById('nav-user-profile').classList.add('flex');
 
@@ -241,7 +277,7 @@
 
         function logout() { agriToken = ""; localStorage.removeItem("agri_token"); window.location.reload(); }
 
-        // --- PROTECTED ACTIONS ---
+        // --- ACTIONS ---
         function requireAuthToPost() {
             if (!agriToken) { pendingAction = 'post'; showToast("Please sign in to post an ad", "error"); navigate('auth'); } 
             else { navigate('post'); }
@@ -269,6 +305,17 @@
             window.open(`tel:${cleanPhone}`, '_self');
         }
 
+        // NEW: Share Functionality
+        function shareAd(name, price, unit) {
+            const text = `Check out this fresh deal on AgriConnect: ${name} for GH₵${price} / ${unit}! Find this and more directly from Accra farmers at ${window.location.origin}`;
+            if (navigator.share) {
+                navigator.share({ title: 'AgriConnect Deal', text: text, url: window.location.href }).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(text);
+                showToast("Ad text copied to clipboard!");
+            }
+        }
+
         // --- MARKETPLACE ---
         function executeSearch() { loadMarketplace('', document.getElementById('home-search').value); navigate('marketplace'); }
         function executeCategory(cat) { loadMarketplace(cat, ''); navigate('marketplace'); }
@@ -285,36 +332,40 @@
                 const grid = document.getElementById('product-grid');
                 grid.innerHTML = '';
                 
-                if (products.length === 0) return grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-10 text-sm">No ads found. Be the first to post!</p>`;
+                if (products.length === 0) return grid.innerHTML = `<div class="col-span-full glass-card py-16 rounded-3xl text-center"><p class="text-slate-400 text-sm">No ads found. Be the first to post!</p></div>`;
                 
                 products.forEach(item => {
                     let imageBlock = item.image_data 
-                        ? `<div class="h-40 w-full bg-slate-800 bg-cover bg-center" style="background-image: url('${item.image_data}')"></div>`
-                        : `<div class="h-40 w-full bg-gradient-to-br from-emerald-900 to-slate-900 flex items-center justify-center text-3xl">🌾</div>`;
+                        ? `<div class="h-48 w-full bg-slate-800 bg-cover bg-center border-b border-white/5" style="background-image: url('${item.image_data}')"></div>`
+                        : `<div class="h-48 w-full bg-gradient-to-br from-emerald-900/40 to-slate-900 flex items-center justify-center text-4xl border-b border-white/5">🌾</div>`;
 
                     grid.innerHTML += `
-                        <div class="bg-slate-900 border border-slate-800 hover:border-emerald-500/50 rounded-2xl flex flex-col justify-between transition-all overflow-hidden shadow-lg">
+                        <div class="glass-card hover:-translate-y-1 rounded-[2rem] flex flex-col justify-between transition-all duration-300 overflow-hidden shadow-xl hover:shadow-emerald-500/10 hover:border-emerald-500/30 group">
                             ${imageBlock}
-                            <div class="p-5 flex flex-col justify-between flex-grow">
+                            <div class="p-6 flex flex-col justify-between flex-grow">
                                 <div>
-                                    <div class="flex justify-between items-start mb-3">
-                                        <span class="bg-slate-800 text-slate-300 text-[10px] font-black uppercase px-2 py-1 rounded">${item.category}</span>
-                                        <span class="text-[10px] text-slate-400 font-bold">📍 ${item.neighborhood}</span>
+                                    <div class="flex justify-between items-start mb-4">
+                                        <span class="bg-white/5 text-slate-300 border border-white/10 text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-lg">${item.category}</span>
+                                        <span class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-1 rounded-md">📍 ${item.neighborhood}</span>
                                     </div>
-                                    <h3 class="text-lg font-black text-white mb-1 leading-tight">${item.product_name}</h3>
-                                    <p class="text-xs text-slate-400 mb-4">Seller: <span class="font-bold text-slate-300">${item.seller_name}</span></p>
+                                    <h3 class="text-xl font-black text-white mb-2 leading-tight group-hover:text-emerald-400 transition-colors">${item.product_name}</h3>
+                                    <p class="text-xs text-slate-400 mb-5 font-medium flex items-center gap-1"><span class="w-4 h-4 bg-slate-800 rounded-full flex items-center justify-center text-[8px]">👤</span> ${item.seller_name}</p>
                                 </div>
                                 <div>
-                                    <div class="flex items-baseline mb-4">
-                                        <span class="text-2xl font-black text-emerald-400">GH₵${item.base_price_ghs}</span>
-                                        <span class="text-xs text-slate-400 ml-1">/ ${item.unit}</span>
+                                    <div class="flex items-baseline mb-5">
+                                        <span class="text-3xl font-black text-white tracking-tight">GH₵${item.base_price_ghs}</span>
+                                        <span class="text-xs text-slate-400 ml-1 font-medium">/ ${item.unit}</span>
                                     </div>
-                                    <div class="grid grid-cols-2 gap-2">
-                                        <button onclick="requireAuthToMessage('${item.phone_number}', '${item.product_name.replace(/'/g, "\\'")}', ${item.base_price_ghs}, '${item.unit}')" class="w-full bg-[#25D366]/20 text-[#25D366] hover:bg-[#25D366] hover:text-white font-black py-2.5 rounded-xl text-xs transition-colors border border-[#25D366]/50">
-                                            WhatsApp
+                                    <div class="grid grid-cols-12 gap-2">
+                                        <button onclick="requireAuthToMessage('${item.phone_number}', '${item.product_name.replace(/'/g, "\\'")}', ${item.base_price_ghs}, '${item.unit}')" class="col-span-8 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white font-black py-3 rounded-xl text-xs transition-all border border-[#25D366]/30 flex items-center justify-center gap-2">
+                                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.015c-.198 0-.52.074-.792.347-.272.273-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+                                            Chat
                                         </button>
-                                        <button onclick="requireAuthToCall('${item.phone_number}')" class="w-full bg-blue-500/20 text-blue-400 hover:bg-blue-600 hover:text-white font-black py-2.5 rounded-xl text-xs transition-colors border border-blue-500/50">
-                                            Call
+                                        <button onclick="requireAuthToCall('${item.phone_number}')" class="col-span-2 bg-blue-500/10 text-blue-400 hover:bg-blue-600 hover:text-white font-black py-3 rounded-xl transition-all border border-blue-500/30 flex items-center justify-center" title="Call Seller">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                                        </button>
+                                        <button onclick="shareAd('${item.product_name.replace(/'/g, "\\'")}', ${item.base_price_ghs}, '${item.unit}')" class="col-span-2 bg-slate-700/30 text-slate-300 hover:bg-slate-700 hover:text-white font-black py-3 rounded-xl transition-all border border-slate-600 flex items-center justify-center" title="Share Ad">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
                                         </button>
                                     </div>
                                 </div>
@@ -334,19 +385,21 @@
                 const list = document.getElementById('my-ads-list');
                 list.innerHTML = '';
                 
-                if (products.length === 0) return list.innerHTML = `<div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl text-center"><p class="text-slate-400 text-sm">You haven't posted any ads yet.</p></div>`;
+                if (products.length === 0) return list.innerHTML = `<div class="col-span-full glass-card p-12 rounded-[2rem] text-center border-dashed"><p class="text-slate-400 text-sm">You haven't posted any ads yet. Your inventory will appear here.</p></div>`;
                 
                 products.forEach(item => {
                     list.innerHTML += `
-                        <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex justify-between items-center">
+                        <div class="glass-card p-4 rounded-2xl flex justify-between items-center group hover:border-white/10 transition-colors">
                             <div class="flex items-center gap-4">
-                                ${item.image_data ? `<img src="${item.image_data}" class="w-12 h-12 rounded-lg object-cover">` : `<div class="w-12 h-12 bg-slate-800 rounded-lg flex items-center justify-center">🌾</div>`}
+                                ${item.image_data ? `<img src="${item.image_data}" class="w-14 h-14 rounded-xl object-cover shadow-md">` : `<div class="w-14 h-14 bg-white/5 rounded-xl flex items-center justify-center border border-white/5">🌾</div>`}
                                 <div>
                                     <h3 class="font-black text-white text-sm">${item.product_name}</h3>
-                                    <p class="text-xs text-emerald-400 font-bold">GH₵${item.base_price_ghs} / ${item.unit}</p>
+                                    <p class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 inline-block px-2 py-0.5 rounded mt-1">GH₵${item.base_price_ghs} / ${item.unit}</p>
                                 </div>
                             </div>
-                            <button onclick="deleteAd(${item.id})" class="text-xs bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white px-4 py-2 rounded-lg transition-colors border border-rose-500/30 font-bold">Delete</button>
+                            <button onclick="deleteAd(${item.id})" class="w-10 h-10 flex items-center justify-center bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white rounded-xl transition-all border border-rose-500/20 shadow-sm" title="Delete Ad">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
                         </div>
                     `;
                 });
@@ -359,7 +412,7 @@
                 const res = await fetch(`${API_URL}/api/v1/products/${id}?token=${agriToken}`, { method: 'DELETE' });
                 if (!res.ok) throw new Error("Could not delete");
                 showToast("Ad deleted successfully");
-                loadMyAds(); // Refresh the list
+                loadMyAds(); 
             } catch (err) { showToast(err.message, "error"); }
         }
 
@@ -380,7 +433,7 @@
                     const previewBox = document.getElementById('image-preview');
                     document.getElementById('upload-text').style.display = 'none';
                     previewBox.style.backgroundImage = `url(${compressedImageData})`;
-                    previewBox.style.border = '2px solid #10b981';
+                    previewBox.classList.add('border-emerald-500');
                 }
             }
         }
@@ -396,7 +449,7 @@
             if (!product_name || !unit || !neighborhood || isNaN(base_price_ghs)) return showToast("Fill all fields correctly", "error");
 
             try {
-                btn.innerText = "Publishing..."; btn.disabled = true;
+                btn.innerHTML = "Publishing... ⏳"; btn.disabled = true;
                 const res = await fetch(`${API_URL}/api/v1/products?token=${agriToken}`, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ product_name, category, unit, base_price_ghs, neighborhood, image_data: compressedImageData })
@@ -405,13 +458,14 @@
                 
                 showToast("Ad Published Successfully!");
                 ['post-name', 'post-price', 'post-unit', 'post-neighborhood'].forEach(id => document.getElementById(id).value = '');
-                document.getElementById('image-preview').style.backgroundImage = 'none';
+                const preview = document.getElementById('image-preview');
+                preview.style.backgroundImage = 'none'; preview.classList.remove('border-emerald-500');
                 document.getElementById('upload-text').style.display = 'block';
                 compressedImageData = null;
                 
                 navigate('dashboard'); 
             } catch (err) { showToast(err.message, "error"); } 
-            finally { btn.innerText = "Publish Ad Now"; btn.disabled = false; }
+            finally { btn.innerHTML = "🚀 Publish Ad Now"; btn.disabled = false; }
         }
     </script>
 </body>
