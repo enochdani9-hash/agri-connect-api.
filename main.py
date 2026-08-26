@@ -6,7 +6,7 @@ from typing import List, Optional
 from fastapi import FastAPI, HTTPException, Depends, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from sqlalchemy import Column, DateTime, Float, Integer, String, create_engine
+from sqlalchemy import Column, DateTime, Float, Integer, String, Text, create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
 from jose import jwt, JWTError
 
@@ -15,7 +15,7 @@ from jose import jwt, JWTError
 # ==============================================================================
 SECRET_KEY = "super-secret-agriconnect-key"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 # 1 week
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 
 
 def verify_password(plain_password, hashed_password):
     return bcrypt.checkpw(plain_password.encode("utf-8"), hashed_password.encode("utf-8"))
@@ -38,15 +38,11 @@ DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./agriconnect_jiji.db")
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
-if "sqlite" in DATABASE_URL:
-    engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
-else:
-    engine = create_engine(DATABASE_URL)
+engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False} if "sqlite" in DATABASE_URL else {})
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
-# NEW TABLES (v2) to avoid clashing with your old Escrow tables in Supabase
 class UserDB(Base):
     __tablename__ = "users_v2"
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
@@ -57,8 +53,9 @@ class UserDB(Base):
     age = Column(Integer, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 
+# V3 Table to support images without breaking your old database
 class ProductDB(Base):
-    __tablename__ = "products_v2"
+    __tablename__ = "products_v3"
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     product_name = Column(String, index=True, nullable=False)
     category = Column(String, index=True, nullable=False)
@@ -68,6 +65,7 @@ class ProductDB(Base):
     seller_id = Column(Integer, nullable=False)
     phone_number = Column(String, nullable=False)
     neighborhood = Column(String, index=True, nullable=False)
+    image_data = Column(Text, nullable=True) # NEW: Stores the compressed image string
     created_at = Column(DateTime, default=datetime.utcnow)
 
 Base.metadata.create_all(bind=engine)
@@ -104,6 +102,7 @@ class ProductCreate(BaseModel):
     base_price_ghs: float
     unit: str
     neighborhood: str
+    image_data: Optional[str] = None # NEW
 
 class ProductResponse(BaseModel):
     id: int
@@ -114,12 +113,13 @@ class ProductResponse(BaseModel):
     seller_name: str
     phone_number: str
     neighborhood: str
+    image_data: Optional[str] = None # NEW
     created_at: datetime
 
 # ==============================================================================
 # 4. FASTAPI APP & ENDPOINTS
 # ==============================================================================
-app = FastAPI(title="AgriConnect Jiji-Clone API", version="4.0.0")
+app = FastAPI(title="AgriConnect Classifieds API", version="4.1.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -152,37 +152,31 @@ def signup(user_data: UserCreate, db: Session = Depends(get_db)):
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
-    
-    access_token = create_access_token(data={"sub": new_user.email})
-    return {"access_token": access_token, "token_type": "bearer", "full_name": new_user.full_name}
+    return {"access_token": create_access_token(data={"sub": new_user.email}), "token_type": "bearer", "full_name": new_user.full_name}
 
 @app.post("/api/v1/login", response_model=Token)
 def login(credentials: LoginRequest, db: Session = Depends(get_db)):
     user = db.query(UserDB).filter(UserDB.email == credentials.email).first()
     if not user or not verify_password(credentials.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Incorrect email or password")
-    
-    access_token = create_access_token(data={"sub": user.email})
-    return {"access_token": access_token, "token_type": "bearer", "full_name": user.full_name}
+    return {"access_token": create_access_token(data={"sub": user.email}), "token_type": "bearer", "full_name": user.full_name}
 
 @app.get("/api/v1/me")
 def verify_token(token: str = Query(...), db: Session = Depends(get_db)):
     user = get_current_user_from_token(token, db)
-    if not user:
-        raise HTTPException(status_code=401, detail="Invalid token")
+    if not user: raise HTTPException(status_code=401, detail="Invalid token")
     return {"full_name": user.full_name, "email": user.email, "phone_number": user.phone_number}
 
 @app.post("/api/v1/products", response_model=ProductResponse)
 def create_product(product: ProductCreate, token: str = Query(...), db: Session = Depends(get_db)):
     user = get_current_user_from_token(token, db)
-    if not user:
-        raise HTTPException(status_code=401, detail="Must be logged in to post an ad")
+    if not user: raise HTTPException(status_code=401, detail="Must be logged in")
 
     db_product = ProductDB(
         **product.model_dump(),
         seller_name=user.full_name,
         seller_id=user.id,
-        phone_number=user.phone_number, # Inherits phone number automatically from User Account
+        phone_number=user.phone_number,
     )
     db.add(db_product)
     db.commit()
