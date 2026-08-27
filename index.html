@@ -18,7 +18,6 @@
 </head>
 <body class="bg-[#020617] text-slate-100 font-sans min-h-screen selection:bg-emerald-500 selection:text-white overflow-x-hidden">
 
-    <!-- Ambient Background Glow -->
     <div class="fixed top-[-20%] left-[-10%] w-[50%] h-[50%] bg-emerald-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
     <div class="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
 
@@ -71,10 +70,9 @@
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-2xl font-black text-white tracking-tight">Browse Categories</h3>
                 </div>
-                <!-- 5-Column Grid -->
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
                     <div onclick="executeCategory('Poultry')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
-                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://images.unsplash.com/photo-1563213126-a4273aed2016?auto=format&fit=crop&w=200&q=80');"></div>
+                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://images.unsplash.com/photo-1516467508483-a7212febe31a?auto=format&fit=crop&w=200&q=80');"></div>
                         <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Live Poultry</p>
                     </div>
                     <div onclick="executeCategory('Eggs')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
@@ -90,7 +88,7 @@
                         <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Livestock</p>
                     </div>
                     <div onclick="executeCategory('Machinery')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
-                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=200&q=80');"></div>
+                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://images.unsplash.com/photo-1533167198188-4fb6574f1d43?auto=format&fit=crop&w=200&q=80');"></div>
                         <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Machinery</p>
                     </div>
                 </div>
@@ -99,9 +97,20 @@
 
         <!-- MARKETPLACE -->
         <div id="view-marketplace" class="fade-in hidden space-y-6">
-            <div class="flex items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 backdrop-blur-sm">
+            <div class="flex flex-col md:flex-row md:items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 backdrop-blur-sm gap-4">
                 <h2 class="text-2xl font-black text-white tracking-tight" id="market-title">Latest Ads</h2>
-                <button onclick="navigate('home')" class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-4 py-2 rounded-lg hover:bg-emerald-500/20 transition-colors">← Back Home</button>
+                
+                <div class="flex gap-2 flex-wrap">
+                    <select id="filter-location" onchange="executeFilters()" class="bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer appearance-none shadow-inner">
+                        <option value="">All Locations</option>
+                    </select>
+                    <select id="filter-sort" onchange="executeFilters()" class="bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer appearance-none shadow-inner">
+                        <option value="newest">Newest First</option>
+                        <option value="price_asc">Price: Low to High</option>
+                        <option value="price_desc">Price: High to Low</option>
+                    </select>
+                    <button onclick="navigate('home')" class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-4 py-2 rounded-xl hover:bg-emerald-500/20 transition-colors shrink-0">← Back Home</button>
+                </div>
             </div>
             <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
         </div>
@@ -216,6 +225,10 @@
         let agriToken = localStorage.getItem("agri_token") || "";
         let pendingAction = null;
         let compressedImageData = null;
+        
+        // Track the current search/category state so filters apply correctly
+        let currentCategoryState = "";
+        let currentSearchState = "";
 
         function showToast(msg, type='success') {
             const c = document.getElementById('toast-container');
@@ -227,6 +240,7 @@
         }
 
         window.addEventListener('DOMContentLoaded', async () => {
+            loadLocations(); // Pre-load neighborhood dropdown
             if (agriToken) {
                 try {
                     const res = await fetch(`${API_URL}/api/v1/me?token=${agriToken}`);
@@ -247,7 +261,6 @@
             document.getElementById('nav-user-profile').classList.remove('hidden');
             document.getElementById('nav-user-profile').classList.add('flex');
 
-            // Unhide Admin Panel if logged in as Founder
             if (email === "enochdani9@gmail.com") {
                 document.getElementById('admin-panel').classList.remove('hidden');
             }
@@ -258,7 +271,7 @@
             document.getElementById(`view-${view}`).classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
-            if (view === 'marketplace') loadMarketplace('', '');
+            if (view === 'marketplace') executeFilters(); // Load with current filters
             if (view === 'dashboard') loadMyAds();
         }
 
@@ -353,15 +366,13 @@
             }
         }
 
-        // --- ADMIN TOOLS ---
         async function verifySeller() {
             const targetEmail = document.getElementById('verify-email-input').value.trim();
             if(!targetEmail) return showToast("Enter an email address", "error");
 
             try {
                 const res = await fetch(`${API_URL}/api/v1/admin/verify?token=${agriToken}`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: targetEmail })
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: targetEmail })
                 });
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.detail);
@@ -370,15 +381,49 @@
             } catch (err) { showToast(err.message, "error"); }
         }
 
-        // --- MARKETPLACE ---
-        function executeSearch() { loadMarketplace('', document.getElementById('home-search').value); navigate('marketplace'); }
-        function executeCategory(cat) { loadMarketplace(cat, ''); navigate('marketplace'); }
+        // --- MARKETPLACE FILTERS ---
+        async function loadLocations() {
+            try {
+                const res = await fetch(`${API_URL}/api/v1/locations`);
+                const locations = await res.json();
+                const locSelect = document.getElementById('filter-location');
+                locSelect.innerHTML = '<option value="">All Locations</option>';
+                locations.forEach(loc => {
+                    if(loc) locSelect.innerHTML += `<option value="${loc}">${loc}</option>`;
+                });
+            } catch(e) {}
+        }
 
-        async function loadMarketplace(category, search) {
-            document.getElementById('market-title').innerText = category ? `${category} Ads` : "Latest Ads";
-            let url = `${API_URL}/api/v1/products?`;
-            if (category) url += `category=${category}&`;
-            if (search) url += `search=${search}`;
+        function executeSearch() { 
+            currentSearchState = document.getElementById('home-search').value;
+            currentCategoryState = ''; 
+            navigate('marketplace'); 
+        }
+        
+        function executeCategory(cat) { 
+            currentCategoryState = cat; 
+            currentSearchState = ''; 
+            navigate('marketplace'); 
+        }
+
+        // Called automatically by dropdown onchange
+        function executeFilters() {
+            loadMarketplace();
+        }
+
+        async function loadMarketplace() {
+            // Setup title
+            document.getElementById('market-title').innerText = currentCategoryState ? `${currentCategoryState} Ads` : (currentSearchState ? `Search Results` : "Latest Ads");
+            
+            // Read filter dropdowns
+            const sortVal = document.getElementById('filter-sort').value;
+            const locVal = document.getElementById('filter-location').value;
+
+            // Build URL
+            let url = `${API_URL}/api/v1/products?sort=${sortVal}`;
+            if (currentCategoryState) url += `&category=${currentCategoryState}`;
+            if (currentSearchState) url += `&search=${currentSearchState}`;
+            if (locVal) url += `&neighborhood=${locVal}`;
 
             try {
                 const res = await fetch(url);
@@ -386,7 +431,7 @@
                 const grid = document.getElementById('product-grid');
                 grid.innerHTML = '';
                 
-                if (products.length === 0) return grid.innerHTML = `<div class="col-span-full glass-card py-16 rounded-3xl text-center"><p class="text-slate-400 text-sm">No ads found in this category. Be the first to post!</p></div>`;
+                if (products.length === 0) return grid.innerHTML = `<div class="col-span-full glass-card py-16 rounded-3xl text-center"><p class="text-slate-400 text-sm">No ads found matching these filters.</p></div>`;
                 
                 products.forEach(item => {
                     let imageBlock = item.image_data 
@@ -478,6 +523,9 @@
                 const res = await fetch(`${API_URL}/api/v1/products/${id}?token=${agriToken}`, { method: 'DELETE' });
                 if (!res.ok) throw new Error("Could not delete");
                 showToast("Ad deleted successfully");
+                
+                // Refresh filters to update locations if needed, and reload My Ads
+                loadLocations();
                 loadMyAds(); 
             } catch (err) { showToast(err.message, "error"); }
         }
@@ -529,6 +577,7 @@
                 document.getElementById('upload-text').style.display = 'block';
                 compressedImageData = null;
                 
+                loadLocations(); // Refresh location list in case a new neighborhood was added
                 navigate('dashboard'); 
             } catch (err) { showToast(err.message, "error"); } 
             finally { btn.innerHTML = "🚀 Publish Ad Now"; btn.disabled = false; }
