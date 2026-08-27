@@ -70,41 +70,42 @@
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-2xl font-black text-white tracking-tight">Browse Categories</h3>
                 </div>
+                <!-- FIXED IMAGES USING PEXELS -->
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
                     <div onclick="executeCategory('Poultry')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
-                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://images.unsplash.com/photo-1516467508483-a7212febe31a?auto=format&fit=crop&w=200&q=80');"></div>
+                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://images.pexels.com/photos/1769279/pexels-photo-1769279.jpeg?auto=compress&cs=tinysrgb&w=200');"></div>
                         <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Live Poultry</p>
                     </div>
                     <div onclick="executeCategory('Eggs')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
-                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://images.unsplash.com/photo-1587486913049-53fc88980cfc?auto=format&fit=crop&w=200&q=80');"></div>
+                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://images.pexels.com/photos/162712/egg-white-food-healthy-162712.jpeg?auto=compress&cs=tinysrgb&w=200');"></div>
                         <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Fresh Eggs</p>
                     </div>
                     <div onclick="executeCategory('Meat')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
-                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=200&q=80');"></div>
+                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://images.pexels.com/photos/618771/pexels-photo-618771.jpeg?auto=compress&cs=tinysrgb&w=200');"></div>
                         <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Dressed Meat</p>
                     </div>
                     <div onclick="executeCategory('Livestock')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
-                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://images.unsplash.com/photo-1524024973431-2ad916746881?auto=format&fit=crop&w=200&q=80');"></div>
+                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://images.pexels.com/photos/288415/pexels-photo-288415.jpeg?auto=compress&cs=tinysrgb&w=200');"></div>
                         <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Livestock</p>
                     </div>
                     <div onclick="executeCategory('Machinery')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
-                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://images.unsplash.com/photo-1533167198188-4fb6574f1d43?auto=format&fit=crop&w=200&q=80');"></div>
+                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://images.pexels.com/photos/2101147/pexels-photo-2101147.jpeg?auto=compress&cs=tinysrgb&w=200');"></div>
                         <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Machinery</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- MARKETPLACE -->
+        <!-- MARKETPLACE WITH DROPDOWN FILTERS -->
         <div id="view-marketplace" class="fade-in hidden space-y-6">
             <div class="flex flex-col md:flex-row md:items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 backdrop-blur-sm gap-4">
                 <h2 class="text-2xl font-black text-white tracking-tight" id="market-title">Latest Ads</h2>
                 
                 <div class="flex gap-2 flex-wrap">
-                    <select id="filter-location" onchange="executeFilters()" class="bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer appearance-none shadow-inner">
+                    <select id="filter-location" onchange="executeFilters()" class="bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer shadow-inner">
                         <option value="">All Locations</option>
                     </select>
-                    <select id="filter-sort" onchange="executeFilters()" class="bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer appearance-none shadow-inner">
+                    <select id="filter-sort" onchange="executeFilters()" class="bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer shadow-inner">
                         <option value="newest">Newest First</option>
                         <option value="price_asc">Price: Low to High</option>
                         <option value="price_desc">Price: High to Low</option>
@@ -226,7 +227,6 @@
         let pendingAction = null;
         let compressedImageData = null;
         
-        // Track the current search/category state so filters apply correctly
         let currentCategoryState = "";
         let currentSearchState = "";
 
@@ -240,7 +240,7 @@
         }
 
         window.addEventListener('DOMContentLoaded', async () => {
-            loadLocations(); // Pre-load neighborhood dropdown
+            loadLocations(); 
             if (agriToken) {
                 try {
                     const res = await fetch(`${API_URL}/api/v1/me?token=${agriToken}`);
@@ -271,7 +271,7 @@
             document.getElementById(`view-${view}`).classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
-            if (view === 'marketplace') executeFilters(); // Load with current filters
+            if (view === 'marketplace') executeFilters(); 
             if (view === 'dashboard') loadMyAds();
         }
 
@@ -406,20 +406,16 @@
             navigate('marketplace'); 
         }
 
-        // Called automatically by dropdown onchange
         function executeFilters() {
             loadMarketplace();
         }
 
         async function loadMarketplace() {
-            // Setup title
             document.getElementById('market-title').innerText = currentCategoryState ? `${currentCategoryState} Ads` : (currentSearchState ? `Search Results` : "Latest Ads");
             
-            // Read filter dropdowns
             const sortVal = document.getElementById('filter-sort').value;
             const locVal = document.getElementById('filter-location').value;
 
-            // Build URL
             let url = `${API_URL}/api/v1/products?sort=${sortVal}`;
             if (currentCategoryState) url += `&category=${currentCategoryState}`;
             if (currentSearchState) url += `&search=${currentSearchState}`;
@@ -524,7 +520,6 @@
                 if (!res.ok) throw new Error("Could not delete");
                 showToast("Ad deleted successfully");
                 
-                // Refresh filters to update locations if needed, and reload My Ads
                 loadLocations();
                 loadMyAds(); 
             } catch (err) { showToast(err.message, "error"); }
@@ -577,7 +572,7 @@
                 document.getElementById('upload-text').style.display = 'block';
                 compressedImageData = null;
                 
-                loadLocations(); // Refresh location list in case a new neighborhood was added
+                loadLocations(); 
                 navigate('dashboard'); 
             } catch (err) { showToast(err.message, "error"); } 
             finally { btn.innerHTML = "🚀 Publish Ad Now"; btn.disabled = false; }
