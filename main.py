@@ -51,7 +51,7 @@ class UserDB(Base):
     full_name = Column(String, nullable=False)
     phone_number = Column(String, nullable=False)
     age = Column(Integer, nullable=False)
-    is_verified = Column(Boolean, default=False) # NEW: Trust Engine
+    is_verified = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 
 class ProductDB(Base):
@@ -126,7 +126,7 @@ class ProductResponse(BaseModel):
 # ==============================================================================
 # 4. FASTAPI APP & ENDPOINTS
 # ==============================================================================
-app = FastAPI(title="AgriConnect API", version="6.0.0")
+app = FastAPI(title="AgriConnect API", version="6.1.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -191,16 +191,35 @@ def create_product(product: ProductCreate, token: str = Query(...), db: Session 
     
     return ProductResponse(**db_product.__dict__, seller_verified=user.is_verified, seller_member_since=user.created_at.strftime("%B %Y"))
 
+# UPGRADED: Added sort logic
 @app.get("/api/v1/products", response_model=List[ProductResponse])
-def list_products(category: Optional[str] = Query(None), neighborhood: Optional[str] = Query(None), search: Optional[str] = Query(None), db: Session = Depends(get_db)):
-    # Cross-reference products with the seller's user profile to get trust badges
+def list_products(
+    category: Optional[str] = Query(None), 
+    neighborhood: Optional[str] = Query(None), 
+    search: Optional[str] = Query(None), 
+    sort: Optional[str] = Query("newest"),
+    db: Session = Depends(get_db)
+):
     query = db.query(ProductDB, UserDB).join(UserDB, ProductDB.seller_id == UserDB.id)
     if category: query = query.filter(ProductDB.category.ilike(f"%{category}%"))
     if neighborhood: query = query.filter(ProductDB.neighborhood.ilike(f"%{neighborhood}%"))
     if search: query = query.filter((ProductDB.product_name.ilike(f"%{search}%")) | (ProductDB.neighborhood.ilike(f"%{search}%")))
     
-    results = query.order_by(ProductDB.created_at.desc()).all()
+    if sort == "price_asc":
+        query = query.order_by(ProductDB.base_price_ghs.asc())
+    elif sort == "price_desc":
+        query = query.order_by(ProductDB.base_price_ghs.desc())
+    else:
+        query = query.order_by(ProductDB.created_at.desc())
+
+    results = query.all()
     return [ProductResponse(**p.__dict__, seller_verified=u.is_verified, seller_member_since=u.created_at.strftime("%B %Y")) for p, u in results]
+
+# NEW: Fetch unique neighborhoods to build the filter dropdown
+@app.get("/api/v1/locations", response_model=List[str])
+def list_locations(db: Session = Depends(get_db)):
+    locations = db.query(ProductDB.neighborhood).distinct().all()
+    return [loc[0] for loc in locations if loc[0]]
 
 @app.get("/api/v1/my-products", response_model=List[ProductResponse])
 def list_my_products(token: str = Query(...), db: Session = Depends(get_db)):
@@ -222,7 +241,6 @@ def delete_product(product_id: int, token: str = Query(...), db: Session = Depen
     db.commit()
     return {"detail": "Ad deleted successfully"}
 
-# NEW: The Founder Backdoor
 @app.post("/api/v1/admin/verify")
 def verify_seller(req: VerifyRequest, token: str = Query(...), db: Session = Depends(get_db)):
     user = get_current_user_from_token(token, db)
