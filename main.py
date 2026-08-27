@@ -6,7 +6,7 @@ from typing import List, Optional
 from fastapi import FastAPI, HTTPException, Depends, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from sqlalchemy import Column, DateTime, Float, Integer, String, Text, create_engine
+from sqlalchemy import Column, DateTime, Float, Integer, String, Text, Boolean, create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
 from jose import jwt, JWTError
 
@@ -44,17 +44,18 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 class UserDB(Base):
-    __tablename__ = "users_v2"
+    __tablename__ = "users_v3"
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     full_name = Column(String, nullable=False)
     phone_number = Column(String, nullable=False)
     age = Column(Integer, nullable=False)
+    is_verified = Column(Boolean, default=False) # NEW: Trust Engine
     created_at = Column(DateTime, default=datetime.utcnow)
 
 class ProductDB(Base):
-    __tablename__ = "products_v3"
+    __tablename__ = "products_v4"
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     product_name = Column(String, index=True, nullable=False)
     category = Column(String, index=True, nullable=False)
@@ -90,10 +91,15 @@ class LoginRequest(BaseModel):
     email: str
     password: str
 
+class VerifyRequest(BaseModel):
+    email: str
+
 class Token(BaseModel):
     access_token: str
     token_type: str
     full_name: str
+    email: str
+    is_verified: bool
 
 class ProductCreate(BaseModel):
     product_name: str
@@ -114,11 +120,13 @@ class ProductResponse(BaseModel):
     neighborhood: str
     image_data: Optional[str] = None
     created_at: datetime
+    seller_verified: bool = False
+    seller_member_since: str = ""
 
 # ==============================================================================
 # 4. FASTAPI APP & ENDPOINTS
 # ==============================================================================
-app = FastAPI(title="AgriConnect Classifieds API", version="5.0.0")
+app = FastAPI(title="AgriConnect API", version="6.0.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -151,20 +159,20 @@ def signup(user_data: UserCreate, db: Session = Depends(get_db)):
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
-    return {"access_token": create_access_token(data={"sub": new_user.email}), "token_type": "bearer", "full_name": new_user.full_name}
+    return {"access_token": create_access_token(data={"sub": new_user.email}), "token_type": "bearer", "full_name": new_user.full_name, "email": new_user.email, "is_verified": new_user.is_verified}
 
 @app.post("/api/v1/login", response_model=Token)
 def login(credentials: LoginRequest, db: Session = Depends(get_db)):
     user = db.query(UserDB).filter(UserDB.email == credentials.email).first()
     if not user or not verify_password(credentials.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Incorrect email or password")
-    return {"access_token": create_access_token(data={"sub": user.email}), "token_type": "bearer", "full_name": user.full_name}
+    return {"access_token": create_access_token(data={"sub": user.email}), "token_type": "bearer", "full_name": user.full_name, "email": user.email, "is_verified": user.is_verified}
 
 @app.get("/api/v1/me")
 def verify_token(token: str = Query(...), db: Session = Depends(get_db)):
     user = get_current_user_from_token(token, db)
     if not user: raise HTTPException(status_code=401, detail="Invalid token")
-    return {"full_name": user.full_name, "email": user.email, "phone_number": user.phone_number}
+    return {"full_name": user.full_name, "email": user.email, "phone_number": user.phone_number, "is_verified": user.is_verified}
 
 @app.post("/api/v1/products", response_model=ProductResponse)
 def create_product(product: ProductCreate, token: str = Query(...), db: Session = Depends(get_db)):
@@ -180,37 +188,49 @@ def create_product(product: ProductCreate, token: str = Query(...), db: Session 
     db.add(db_product)
     db.commit()
     db.refresh(db_product)
-    return ProductResponse(**db_product.__dict__)
+    
+    return ProductResponse(**db_product.__dict__, seller_verified=user.is_verified, seller_member_since=user.created_at.strftime("%B %Y"))
 
 @app.get("/api/v1/products", response_model=List[ProductResponse])
 def list_products(category: Optional[str] = Query(None), neighborhood: Optional[str] = Query(None), search: Optional[str] = Query(None), db: Session = Depends(get_db)):
-    query = db.query(ProductDB)
+    # Cross-reference products with the seller's user profile to get trust badges
+    query = db.query(ProductDB, UserDB).join(UserDB, ProductDB.seller_id == UserDB.id)
     if category: query = query.filter(ProductDB.category.ilike(f"%{category}%"))
     if neighborhood: query = query.filter(ProductDB.neighborhood.ilike(f"%{neighborhood}%"))
     if search: query = query.filter((ProductDB.product_name.ilike(f"%{search}%")) | (ProductDB.neighborhood.ilike(f"%{search}%")))
     
-    products = query.order_by(ProductDB.created_at.desc()).all()
-    return [ProductResponse(**p.__dict__) for p in products]
+    results = query.order_by(ProductDB.created_at.desc()).all()
+    return [ProductResponse(**p.__dict__, seller_verified=u.is_verified, seller_member_since=u.created_at.strftime("%B %Y")) for p, u in results]
 
-# NEW: Get only the ads posted by the logged-in user
 @app.get("/api/v1/my-products", response_model=List[ProductResponse])
 def list_my_products(token: str = Query(...), db: Session = Depends(get_db)):
     user = get_current_user_from_token(token, db)
     if not user: raise HTTPException(status_code=401, detail="Must be logged in")
     
-    products = db.query(ProductDB).filter(ProductDB.seller_id == user.id).order_by(ProductDB.created_at.desc()).all()
-    return [ProductResponse(**p.__dict__) for p in products]
+    results = db.query(ProductDB, UserDB).join(UserDB, ProductDB.seller_id == UserDB.id).filter(ProductDB.seller_id == user.id).order_by(ProductDB.created_at.desc()).all()
+    return [ProductResponse(**p.__dict__, seller_verified=u.is_verified, seller_member_since=u.created_at.strftime("%B %Y")) for p, u in results]
 
-# NEW: Delete a specific ad
 @app.delete("/api/v1/products/{product_id}")
 def delete_product(product_id: int, token: str = Query(...), db: Session = Depends(get_db)):
     user = get_current_user_from_token(token, db)
     if not user: raise HTTPException(status_code=401, detail="Must be logged in")
     
     product = db.query(ProductDB).filter(ProductDB.id == product_id, ProductDB.seller_id == user.id).first()
-    if not product:
-        raise HTTPException(status_code=404, detail="Ad not found or you don't have permission to delete it")
+    if not product: raise HTTPException(status_code=404, detail="Ad not found")
     
     db.delete(product)
     db.commit()
     return {"detail": "Ad deleted successfully"}
+
+# NEW: The Founder Backdoor
+@app.post("/api/v1/admin/verify")
+def verify_seller(req: VerifyRequest, token: str = Query(...), db: Session = Depends(get_db)):
+    user = get_current_user_from_token(token, db)
+    if not user: raise HTTPException(401, "Not logged in")
+    
+    target_user = db.query(UserDB).filter(UserDB.email == req.email).first()
+    if not target_user: raise HTTPException(404, "Farmer not found in database.")
+    
+    target_user.is_verified = True
+    db.commit()
+    return {"detail": f"{target_user.full_name} is now a Verified Seller!"}
