@@ -20,11 +20,17 @@
         .floating-element { animation: float 6s ease-in-out infinite; }
         input:-webkit-autofill { -webkit-box-shadow: 0 0 0 30px #020617 inset !important; -webkit-text-fill-color: white !important; }
         .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        
+        /* NEW: Scrolling Marquee Animation for Market Ticker */
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .animate-marquee { animation: marquee 25s linear infinite; }
     </style>
 </head>
 <body class="bg-[#020617] text-slate-100 font-sans min-h-screen selection:bg-emerald-500 selection:text-white overflow-x-hidden flex flex-col">
 
-    <!-- Background Elements -->
     <div class="fixed top-[-20%] left-[-10%] w-[50%] h-[50%] bg-emerald-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
     <div class="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
 
@@ -52,6 +58,20 @@
             </div>
         </div>
     </header>
+
+    <!-- NEW: REAL-TIME ACCRA MARKET INDEX TICKER -->
+    <div class="bg-[#020617] border-b border-white/5 relative z-40 hidden md:block overflow-hidden shadow-inner">
+        <div class="max-w-7xl mx-auto flex items-center pl-6">
+            <div class="bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider px-4 py-2 rounded-r-lg z-10 shrink-0 flex items-center gap-2 shadow-lg shadow-emerald-500/20">
+                <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> LIVE MARKET AVG
+            </div>
+            <div class="overflow-hidden flex-grow relative ml-4 mask-edges h-8 flex items-center">
+                <div class="flex gap-8 animate-marquee whitespace-nowrap" id="market-ticker">
+                    <span class="text-xs text-slate-400 font-medium">Gathering real-time Accra prices...</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- MAIN CONTENT -->
     <main class="max-w-7xl mx-auto px-6 py-8 relative z-10 flex-grow w-full">
@@ -220,7 +240,6 @@
                 <div class="space-y-4">
                     <input type="text" id="post-name" placeholder="Headline (e.g. 50 Crates of Large Eggs)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
                     
-                    <!-- MAGIC DESCRIPTION WRITER -->
                     <div class="relative">
                         <textarea id="post-description" placeholder="Describe your product... (e.g. Farm location, organic feed used, delivery options)" rows="4" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors"></textarea>
                         <button onclick="autoWriteDescription()" class="absolute bottom-3 right-3 bg-gradient-to-r from-emerald-600 to-teal-500 text-white text-[10px] font-black px-3 py-1.5 rounded-lg hover:shadow-lg hover:shadow-emerald-500/30 transition-all flex items-center gap-1">✨ Auto-Write</button>
@@ -256,15 +275,13 @@
             </div>
         </div>
 
-        <!-- MY DASHBOARD (WITH AGRONOMY INSIGHTS) -->
+        <!-- MY DASHBOARD -->
         <div id="view-dashboard" class="fade-in hidden max-w-4xl mx-auto mt-6 space-y-6">
-            
-            <!-- Daily Agronomy Insights Banner -->
             <div class="glass-card p-5 rounded-2xl border-l-4 border-emerald-500 flex flex-col md:flex-row items-center gap-4 shadow-lg shadow-emerald-900/10">
                 <div class="w-12 h-12 bg-emerald-500/20 rounded-full flex items-center justify-center text-xl shrink-0">🌱</div>
                 <div>
                     <h4 class="text-sm font-black text-white mb-1">Today's Agronomy Insight</h4>
-                    <p class="text-xs text-slate-300 leading-relaxed" id="agronomy-tip">Maintaining proper soil structure and organic matter drastically improves water retention for dry-season vegetable yields. Consider integrating poultry manure into your compost rotations to boost nitrogen levels.</p>
+                    <p class="text-xs text-slate-300 leading-relaxed" id="agronomy-tip">Maintaining proper soil structure and organic matter drastically improves water retention for dry-season vegetable yields.</p>
                 </div>
             </div>
 
@@ -278,7 +295,6 @@
             
             <div id="my-ads-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
 
-            <!-- SECRET ADMIN PANEL -->
             <div id="admin-panel" class="hidden mt-12 glass-card p-6 rounded-2xl border border-emerald-500/30">
                 <h3 class="text-lg font-black text-emerald-400 mb-2">🛡️ Founder Admin Tools</h3>
                 <p class="text-xs text-slate-400 mb-5">Grant the "Verified Seller" badge to trusted farmers on your platform.</p>
@@ -312,14 +328,9 @@
     </footer>
 
     <script>
-        // Initialize PWA Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').then(reg => {
-                    console.log('PWA ServiceWorker registered');
-                }).catch(err => {
-                    console.log('PWA ServiceWorker registration failed: ', err);
-                });
+                navigator.serviceWorker.register('/sw.js').catch(err => {});
             });
         }
 
@@ -343,6 +354,14 @@
         window.addEventListener('DOMContentLoaded', async () => {
             loadLocations(); 
             rotateAgronomyTips();
+            
+            // Automatically fetch marketplace data on load to populate the Ticker
+            fetch(`${API_URL}/api/v1/products?sort=newest`)
+                .then(res => res.json())
+                .then(data => {
+                    if(data.length > 0) buildMarketTicker(data);
+                }).catch(e => console.log(e));
+
             if (agriToken) {
                 try {
                     const res = await fetch(`${API_URL}/api/v1/me?token=${agriToken}`);
@@ -355,7 +374,46 @@
             navigate('home');
         });
 
-        // Smart Magic Auto-Writer Function
+        // NEW: Function to build the Real-Time Market Ticker safely on the frontend
+        function buildMarketTicker(products) {
+            if (!products || products.length === 0) return;
+
+            let categoryTotals = {};
+            let categoryCounts = {};
+
+            products.forEach(p => {
+                let priceStr = p.base_price_ghs ? p.base_price_ghs.toString() : "";
+                // This smart regex finds numbers even if they wrote "GHc 100 - 150 negotiable"
+                let matches = priceStr.match(/\d+(\.\d+)?/g);
+
+                if (matches && matches.length > 0) {
+                    // If it's a range, average it. Otherwise, use the number.
+                    let price = matches.length > 1
+                        ? (parseFloat(matches[0]) + parseFloat(matches[1])) / 2
+                        : parseFloat(matches[0]);
+
+                    if (!categoryTotals[p.category]) {
+                        categoryTotals[p.category] = 0;
+                        categoryCounts[p.category] = 0;
+                    }
+                    categoryTotals[p.category] += price;
+                    categoryCounts[p.category] += 1;
+                }
+            });
+
+            let tickerHtml = '';
+            for (let cat in categoryTotals) {
+                let avg = (categoryTotals[cat] / categoryCounts[cat]).toFixed(2);
+                tickerHtml += `<span class="text-xs font-bold text-slate-300">${cat}: <span class="text-emerald-400">GH₵${avg} Avg</span></span> <span class="text-slate-600 mx-4">•</span>`;
+            }
+
+            const ticker = document.getElementById('market-ticker');
+            if (tickerHtml !== '') {
+                // Double the HTML string to make the infinite CSS scroll animation seamless
+                ticker.innerHTML = tickerHtml + tickerHtml + tickerHtml + tickerHtml; 
+            }
+        }
+
         function autoWriteDescription() {
             const cat = document.getElementById('post-category').value;
             const name = document.getElementById('post-name').value || "my farm produce";
@@ -374,7 +432,6 @@
             showToast("Magic Description Applied!");
         }
 
-        // Daily Agronomy Insights Rotator
         function rotateAgronomyTips() {
             const tips = [
                 "Maintaining proper soil structure and organic matter drastically improves water retention for dry-season vegetable yields. Consider integrating poultry manure into your compost rotations to boost nitrogen levels.",
@@ -561,6 +618,9 @@
                 const grid = document.getElementById('product-grid');
                 grid.innerHTML = '';
                 
+                // Update the Ticker every time we load the marketplace
+                if(products.length > 0) buildMarketTicker(products);
+
                 if (products.length === 0) return grid.innerHTML = `<div class="col-span-full glass-card py-16 rounded-3xl text-center"><p class="text-slate-400 text-sm">No ads found matching these filters.</p></div>`;
                 
                 products.forEach(item => {
