@@ -70,11 +70,15 @@
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-2xl font-black text-white tracking-tight">Browse Categories</h3>
                 </div>
-                <!-- 5-Column Grid with mixed local/external Images -->
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
+                <!-- Extended Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-5">
                     <div onclick="executeCategory('Poultry')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
                         <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('poultry.jfif.jfif');"></div>
                         <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Live Poultry</p>
+                    </div>
+                    <div onclick="executeCategory('Chicks')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
+                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Day_old_chick_1.jpg/500px-Day_old_chick_1.jpg');"></div>
+                        <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Day-Old Chicks</p>
                     </div>
                     <div onclick="executeCategory('Eggs')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
                         <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Chicken_egg_2009-06-04.jpg/500px-Chicken_egg_2009-06-04.jpg');"></div>
@@ -83,6 +87,10 @@
                     <div onclick="executeCategory('Meat')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
                         <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('meat.jfif.jfif');"></div>
                         <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Dressed Meat</p>
+                    </div>
+                    <div onclick="executeCategory('Vegetables')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
+                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Marketvegetables.jpg/500px-Marketvegetables.jpg');"></div>
+                        <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Vegetables</p>
                     </div>
                     <div onclick="executeCategory('Livestock')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
                         <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('livestock.jfif.jfif');"></div>
@@ -96,7 +104,7 @@
             </div>
         </div>
 
-        <!-- MARKETPLACE WITH FULL ACCRA LOCATIONS & FILTERS -->
+        <!-- MARKETPLACE -->
         <div id="view-marketplace" class="fade-in hidden space-y-6">
             <div class="flex flex-col md:flex-row md:items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 backdrop-blur-sm gap-4">
                 <h2 class="text-2xl font-black text-white tracking-tight" id="market-title">Latest Ads</h2>
@@ -104,26 +112,6 @@
                 <div class="flex gap-2 flex-wrap">
                     <select id="filter-location" onchange="executeFilters()" class="bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer shadow-inner">
                         <option value="">All Locations</option>
-                        <option value="Achimota">Achimota</option>
-                        <option value="Adenta">Adenta</option>
-                        <option value="Airport Residential">Airport Residential</option>
-                        <option value="Ashaiman">Ashaiman</option>
-                        <option value="Cantonments">Cantonments</option>
-                        <option value="Dansoman">Dansoman</option>
-                        <option value="Dzorwulu">Dzorwulu</option>
-                        <option value="East Legon">East Legon</option>
-                        <option value="Kasoa">Kasoa</option>
-                        <option value="Kwabenya">Kwabenya</option>
-                        <option value="Labadi">Labadi</option>
-                        <option value="Lapaz">Lapaz</option>
-                        <option value="Madina">Madina</option>
-                        <option value="Nima">Nima</option>
-                        <option value="Osu">Osu</option>
-                        <option value="Roman Ridge">Roman Ridge</option>
-                        <option value="Spintex">Spintex</option>
-                        <option value="Tema">Tema</option>
-                        <option value="Tesano">Tesano</option>
-                        <option value="Teshie">Teshie</option>
                     </select>
                     <select id="filter-sort" onchange="executeFilters()" class="bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer shadow-inner">
                         <option value="newest">Newest First</option>
@@ -144,7 +132,10 @@
                     <h2 class="text-2xl font-black text-white text-center mb-6">Welcome Back</h2>
                     <div class="space-y-4">
                         <input type="email" id="login-email" placeholder="Email" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3.5 text-sm text-white focus:border-emerald-500 outline-none transition-colors">
-                        <input type="password" id="login-password" placeholder="Password" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3.5 text-sm text-white focus:border-emerald-500 outline-none transition-colors">
+                        <div class="relative">
+                            <input type="password" id="login-password" placeholder="Password" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3.5 text-sm text-white focus:border-emerald-500 outline-none transition-colors pr-12">
+                            <button onclick="togglePassword('login-password')" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-400 text-lg">👁️</button>
+                        </div>
                         <button onclick="loginUser()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-4 rounded-xl text-sm transition-all shadow-lg hover:shadow-emerald-500/25">Sign In</button>
                     </div>
                     <p class="text-xs text-slate-400 text-center mt-6">Don't have an account? <button onclick="toggleAuthBox('signup')" class="text-emerald-400 font-bold hover:text-emerald-300">Sign Up</button></p>
@@ -159,7 +150,10 @@
                             <input type="number" id="su-age" placeholder="Age" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 outline-none col-span-1">
                             <input type="tel" id="su-phone" placeholder="Phone Number" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 outline-none col-span-2">
                         </div>
-                        <input type="password" id="su-password" placeholder="Create Password" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 outline-none">
+                        <div class="relative">
+                            <input type="password" id="su-password" placeholder="Create Password" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 outline-none pr-12">
+                            <button onclick="togglePassword('su-password')" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-400 text-lg">👁️</button>
+                        </div>
                         <button onclick="signupUser()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-4 rounded-xl text-sm transition-all shadow-lg">Create Account</button>
                     </div>
                     <p class="text-xs text-slate-400 text-center mt-6">Already have an account? <button onclick="toggleAuthBox('login')" class="text-emerald-400 font-bold hover:text-emerald-300">Sign In</button></p>
@@ -176,27 +170,31 @@
             
             <div class="glass-card p-8 rounded-[2rem] shadow-2xl space-y-6">
                 <div>
-                    <label class="block text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">Product Photo</label>
-                    <div id="image-preview" class="w-full h-48 bg-[#020617]/50 border-2 border-dashed border-slate-700 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-emerald-500 hover:bg-[#020617] transition-all image-preview-box group" onclick="document.getElementById('post-image').click()">
+                    <label class="block text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">Product Photos (Select Multiple)</label>
+                    <div id="image-preview" class="w-full h-48 bg-[#020617]/50 border-2 border-dashed border-slate-700 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-emerald-500 hover:bg-[#020617] transition-all group overflow-hidden" onclick="document.getElementById('post-image').click()">
                         <span id="upload-text" class="text-slate-500 text-sm font-bold text-center px-4 group-hover:text-emerald-400 transition-colors">
                             <svg class="w-8 h-8 mx-auto mb-2 opacity-50 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-                            Click to upload a photo
+                            Click to upload photos
                         </span>
                     </div>
-                    <input type="file" id="post-image" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+                    <input type="file" id="post-image" accept="image/*" multiple class="hidden" onchange="handleImageUpload(event)">
                 </div>
                 
                 <div class="space-y-4">
-                    <input type="text" id="post-name" placeholder="Headline (e.g. 50 Crates of Large Eggs, or Used Tractor)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
+                    <input type="text" id="post-name" placeholder="Headline (e.g. 50 Crates of Large Eggs)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
+                    <textarea id="post-description" placeholder="Describe your product... (e.g. Farm location, organic feed used, delivery options)" rows="3" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors"></textarea>
+                    
                     <div class="grid grid-cols-2 gap-4">
                         <select id="post-category" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-sm text-white cursor-pointer outline-none focus:border-emerald-500 appearance-none">
                             <option value="Poultry">Live Birds</option>
+                            <option value="Chicks">Day-Old Chicks</option>
                             <option value="Eggs">Eggs</option>
                             <option value="Meat">Dressed Meat</option>
+                            <option value="Vegetables">Vegetables</option>
                             <option value="Livestock">Goats / Sheep</option>
                             <option value="Machinery">Tools & Machinery</option> 
                         </select>
-                        <input type="text" id="post-unit" placeholder="Unit (e.g. per crate, per piece)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
+                        <input type="text" id="post-unit" placeholder="Unit (e.g. per crate)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="relative">
@@ -245,7 +243,7 @@
         const API_URL = "https://agri-connect-api-3.onrender.com";
         let agriToken = localStorage.getItem("agri_token") || "";
         let pendingAction = null;
-        let compressedImageData = null;
+        let uploadedImages = []; // Stores array of images
         
         let currentCategoryState = "";
         let currentSearchState = "";
@@ -298,6 +296,11 @@
         function toggleAuthBox(box) {
             if(box === 'login') { document.getElementById('signup-box').classList.add('hidden'); document.getElementById('login-box').classList.remove('hidden'); } 
             else { document.getElementById('login-box').classList.add('hidden'); document.getElementById('signup-box').classList.remove('hidden'); }
+        }
+
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            field.type = field.type === "password" ? "text" : "password";
         }
 
         // --- AUTH ---
@@ -403,19 +406,11 @@
 
         // --- MARKETPLACE FILTERS ---
         async function loadLocations() {
-            try {
-                const res = await fetch(`${API_URL}/api/v1/locations`);
-                const dynamicLocations = await res.json();
-                const locSelect = document.getElementById('filter-location');
-                
-                const existingOptions = Array.from(locSelect.options).map(opt => opt.value);
-                
-                dynamicLocations.forEach(loc => {
-                    if(loc && !existingOptions.includes(loc)) {
-                        locSelect.innerHTML += `<option value="${loc}">${loc}</option>`;
-                    }
-                });
-            } catch(e) {}
+            const staticLocations = ["Achimota", "Adenta", "Airport Residential", "Ashaiman", "Cantonments", "Dansoman", "Dzorwulu", "East Legon", "Kasoa", "Kwabenya", "Labadi", "Lapaz", "Madina", "Nima", "Osu", "Roman Ridge", "Spintex", "Tema", "Tesano", "Teshie"];
+            const locSelect = document.getElementById('filter-location');
+            staticLocations.forEach(loc => {
+                locSelect.innerHTML += `<option value="${loc}">${loc}</option>`;
+            });
         }
 
         function executeSearch() { 
@@ -454,13 +449,23 @@
                 if (products.length === 0) return grid.innerHTML = `<div class="col-span-full glass-card py-16 rounded-3xl text-center"><p class="text-slate-400 text-sm">No ads found matching these filters.</p></div>`;
                 
                 products.forEach(item => {
-                    let imageBlock = item.image_data 
-                        ? `<div class="h-48 w-full bg-slate-800 bg-cover bg-center border-b border-white/5" style="background-image: url('${item.image_data}')"></div>`
+                    let parsedImages = [];
+                    if (item.image_data) {
+                        try { parsedImages = JSON.parse(item.image_data); } 
+                        catch(e) { parsedImages = [item.image_data]; }
+                    }
+
+                    let imageBlock = parsedImages.length > 0 
+                        ? `<div class="h-48 w-full bg-slate-800 bg-cover bg-center border-b border-white/5 relative" style="background-image: url('${parsedImages[0]}')">
+                             ${parsedImages.length > 1 ? `<span class="absolute bottom-3 right-3 bg-[#020617]/90 text-white text-xs px-3 py-1 rounded-lg font-black backdrop-blur-md border border-white/10">+${parsedImages.length - 1} Photos</span>` : ''}
+                           </div>`
                         : `<div class="h-48 w-full bg-gradient-to-br from-emerald-900/40 to-slate-900 flex items-center justify-center text-4xl border-b border-white/5">🌾</div>`;
                     
                     let verifiedBadge = item.seller_verified 
                         ? `<svg class="w-4 h-4 text-emerald-400 shrink-0" fill="currentColor" viewBox="0 0 20 20" title="Verified Seller"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>` 
                         : '';
+
+                    let descriptionText = item.description ? `<p class="text-xs text-slate-400 mb-4 line-clamp-2">${item.description}</p>` : '';
 
                     grid.innerHTML += `
                         <div class="glass-card hover:-translate-y-1 rounded-[2rem] flex flex-col justify-between transition-all duration-300 overflow-hidden shadow-xl hover:shadow-emerald-500/10 hover:border-emerald-500/30 group">
@@ -471,15 +476,15 @@
                                         <span class="bg-white/5 text-slate-300 border border-white/10 text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-lg">${item.category}</span>
                                         <span class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-1 rounded-md">📍 ${item.neighborhood}</span>
                                     </div>
-                                    <h3 class="text-xl font-black text-white mb-3 leading-tight group-hover:text-emerald-400 transition-colors">${item.product_name}</h3>
-                                    
+                                    <h3 class="text-xl font-black text-white mb-2 leading-tight group-hover:text-emerald-400 transition-colors">${item.product_name}</h3>
+                                    ${descriptionText}
                                     <div class="flex flex-col gap-1 mb-5">
                                         <div class="flex items-center gap-1 text-slate-300 text-xs font-bold">
                                             <span class="w-4 h-4 bg-slate-800 rounded-full flex items-center justify-center text-[8px]">👤</span> 
                                             <span class="truncate">${item.seller_name}</span>
                                             ${verifiedBadge}
                                         </div>
-                                        <p class="text-[10px] text-slate-500 font-medium pl-5">Joined ${item.seller_member_since}</p>
+                                        <p class="text-[10px] text-slate-500 font-medium pl-5">Joined ${item.seller_member_since || '2026'}</p>
                                     </div>
                                 </div>
                                 <div>
@@ -519,10 +524,16 @@
                 if (products.length === 0) return list.innerHTML = `<div class="col-span-full glass-card p-12 rounded-[2rem] text-center border-dashed"><p class="text-slate-400 text-sm">You haven't posted any ads yet. Your inventory will appear here.</p></div>`;
                 
                 products.forEach(item => {
+                    let parsedImages = [];
+                    if (item.image_data) {
+                        try { parsedImages = JSON.parse(item.image_data); } 
+                        catch(e) { parsedImages = [item.image_data]; }
+                    }
+
                     list.innerHTML += `
                         <div class="glass-card p-4 rounded-2xl flex justify-between items-center group hover:border-white/10 transition-colors">
                             <div class="flex items-center gap-4">
-                                ${item.image_data ? `<img src="${item.image_data}" class="w-14 h-14 rounded-xl object-cover shadow-md">` : `<div class="w-14 h-14 bg-white/5 rounded-xl flex items-center justify-center border border-white/5">🌾</div>`}
+                                ${parsedImages.length > 0 ? `<img src="${parsedImages[0]}" class="w-14 h-14 rounded-xl object-cover shadow-md">` : `<div class="w-14 h-14 bg-white/5 rounded-xl flex items-center justify-center border border-white/5">🌾</div>`}
                                 <div>
                                     <h3 class="font-black text-white text-sm">${item.product_name}</h3>
                                     <p class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 inline-block px-2 py-0.5 rounded mt-1">GH₵${item.base_price_ghs} / ${item.unit}</p>
@@ -544,59 +555,78 @@
                 if (!res.ok) throw new Error("Could not delete");
                 showToast("Ad deleted successfully");
                 
-                loadLocations();
                 loadMyAds(); 
             } catch (err) { showToast(err.message, "error"); }
         }
 
-        // --- POSTING & IMAGES ---
+        // --- POSTING & IMAGES (MULTIPLE PHOTOS) ---
         function handleImageUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = (e) => {
-                const img = new Image(); img.src = e.target.result;
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 500; const scaleSize = MAX_WIDTH / img.width;
-                    canvas.width = MAX_WIDTH; canvas.height = img.height * scaleSize;
-                    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
-                    compressedImageData = canvas.toDataURL('image/jpeg', 0.6); 
-                    const previewBox = document.getElementById('image-preview');
-                    document.getElementById('upload-text').style.display = 'none';
-                    previewBox.style.backgroundImage = `url(${compressedImageData})`;
-                    previewBox.classList.add('border-emerald-500');
-                }
+            const files = event.target.files;
+            if (!files.length) return;
+            
+            const previewBox = document.getElementById('image-preview');
+            document.getElementById('upload-text').style.display = 'none';
+            previewBox.classList.add('border-emerald-500');
+            
+            if (uploadedImages.length === 0) {
+                previewBox.innerHTML = '<div id="image-gallery" class="flex gap-3 p-3 overflow-x-auto w-full h-full items-center"></div>';
             }
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (e) => {
+                    const img = new Image(); img.src = e.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 500; const scaleSize = MAX_WIDTH / img.width;
+                        canvas.width = MAX_WIDTH; canvas.height = img.height * scaleSize;
+                        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+                        const compressedImageData = canvas.toDataURL('image/jpeg', 0.6); 
+                        
+                        uploadedImages.push(compressedImageData);
+                        document.getElementById('image-gallery').innerHTML += `<img src="${compressedImageData}" class="h-full w-auto object-cover rounded-xl border border-white/10 shrink-0 shadow-lg">`;
+                    }
+                }
+            });
         }
 
         async function submitAd() {
             const btn = document.getElementById('submit-ad-btn');
             const product_name = document.getElementById('post-name').value.trim();
+            const description = document.getElementById('post-description').value.trim();
             const category = document.getElementById('post-category').value;
             const unit = document.getElementById('post-unit').value.trim();
             const base_price_ghs = parseFloat(document.getElementById('post-price').value);
             const neighborhood = document.getElementById('post-neighborhood').value.trim();
             
-            if (!product_name || !unit || !neighborhood || isNaN(base_price_ghs)) return showToast("Fill all fields correctly", "error");
+            if (!product_name || !unit || !neighborhood || isNaN(base_price_ghs)) return showToast("Fill all required fields", "error");
+
+            const finalImageData = uploadedImages.length > 0 ? JSON.stringify(uploadedImages) : null;
 
             try {
                 btn.innerHTML = "Publishing... ⏳"; btn.disabled = true;
                 const res = await fetch(`${API_URL}/api/v1/products?token=${agriToken}`, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ product_name, category, unit, base_price_ghs, neighborhood, image_data: compressedImageData })
+                    body: JSON.stringify({ 
+                        product_name, category, unit, base_price_ghs, neighborhood, description,
+                        image_data: finalImageData 
+                    })
                 });
                 if(!res.ok) throw new Error("Failed to post");
                 
                 showToast("Ad Published Successfully!");
-                ['post-name', 'post-price', 'post-unit', 'post-neighborhood'].forEach(id => document.getElementById(id).value = '');
-                const preview = document.getElementById('image-preview');
-                preview.style.backgroundImage = 'none'; preview.classList.remove('border-emerald-500');
-                document.getElementById('upload-text').style.display = 'block';
-                compressedImageData = null;
+                ['post-name', 'post-description', 'post-price', 'post-unit', 'post-neighborhood'].forEach(id => document.getElementById(id).value = '');
                 
-                loadLocations(); 
+                const preview = document.getElementById('image-preview');
+                preview.innerHTML = `
+                    <span id="upload-text" class="text-slate-500 text-sm font-bold text-center px-4 group-hover:text-emerald-400 transition-colors">
+                        <svg class="w-8 h-8 mx-auto mb-2 opacity-50 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                        Click to upload photos
+                    </span>`;
+                preview.classList.remove('border-emerald-500');
+                uploadedImages = [];
+                
                 navigate('dashboard'); 
             } catch (err) { showToast(err.message, "error"); } 
             finally { btn.innerHTML = "🚀 Publish Ad Now"; btn.disabled = false; }
