@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AgriConnect | Classifieds</title>
+    
+    <!-- PWA Links -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#10b981">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2814/2814468.png">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -38,7 +44,7 @@
                 <button id="nav-login-btn" onclick="navigate('auth')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 hidden transition-colors">Sign In</button>
                 <div id="nav-user-profile" class="hidden items-center gap-4 bg-white/5 px-4 py-1.5 rounded-full border border-white/10">
                     <span id="nav-user-name" class="text-xs font-bold text-emerald-400 flex items-center gap-1 hidden md:flex"></span>
-                    <button onclick="navigate('dashboard')" class="text-xs font-black text-white hover:text-emerald-300 transition-colors">My Ads</button>
+                    <button onclick="navigate('dashboard')" class="text-xs font-black text-white hover:text-emerald-300 transition-colors">My Dashboard</button>
                     <div class="w-px h-3 bg-white/20"></div>
                     <button onclick="logout()" class="text-xs text-rose-400 hover:text-rose-300 font-bold transition-colors">Logout</button>
                 </div>
@@ -78,7 +84,6 @@
                         <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('poultry.jfif.jfif');"></div>
                         <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Live Poultry</p>
                     </div>
-                    <!-- FIXED CHICKS IMAGE -->
                     <div onclick="executeCategory('Chicks')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
                         <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://images.unsplash.com/photo-1619623257850-89196b0521e1?auto=format&fit=crop&w=500&q=80');"></div>
                         <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Day-Old Chicks</p>
@@ -115,12 +120,7 @@
                 <div class="space-y-6 text-slate-300 leading-relaxed text-base">
                     <p>AgriConnect was built with a simple but powerful mission: <strong class="text-emerald-400">to bridge the gap between hardworking farmers and eager buyers in Accra.</strong></p>
                     <p>For too long, the agricultural supply chain has been slowed down by middlemen, driving up costs for consumers and cutting into the profits of local farmers. We believe that technology can solve this.</p>
-                    <p>By providing a completely free, zero-commission digital marketplace, AgriConnect empowers poultry farmers, vegetable growers, and livestock rearers to showcase their fresh produce directly to the community. Whether you are looking for a single crate of eggs, day-old chicks for your own farm, or bulk vegetables for a restaurant, our platform connects you instantly via WhatsApp or a direct phone call.</p>
-                    
-                    <div class="p-6 bg-gradient-to-br from-emerald-900/30 to-teal-900/10 border border-emerald-500/20 rounded-2xl mt-8 shadow-inner">
-                        <h3 class="text-xl font-black text-white mb-2 flex items-center gap-2"><span>🌱</span> Our Vision</h3>
-                        <p class="text-slate-400 text-sm">To become Ghana's most trusted digital farmers' market, ensuring food security, increasing agricultural profitability, and delivering farm-fresh quality directly to every household.</p>
-                    </div>
+                    <p>By providing a completely free, zero-commission digital marketplace, AgriConnect empowers poultry farmers, vegetable growers, and livestock rearers to showcase their fresh produce directly to the community.</p>
                 </div>
             </div>
         </div>
@@ -128,33 +128,13 @@
         <!-- SUPPORT SECTION -->
         <div id="view-support" class="fade-in hidden max-w-2xl mx-auto mt-10">
             <div class="glass-card p-10 rounded-[2.5rem] shadow-2xl text-center relative overflow-hidden">
-                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
-                <div class="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 border border-emerald-500/30 shadow-lg shadow-emerald-500/10">🎧</div>
                 <h2 class="text-3xl font-black text-white mb-4 tracking-tight">Customer Support</h2>
-                <p class="text-slate-400 mb-10 max-w-md mx-auto text-sm">Need help with your account, have a question about a listing, or want to report an issue? Our team is always here for you.</p>
-                
-                <div class="space-y-4 max-w-sm mx-auto relative z-10">
+                <div class="space-y-4 max-w-sm mx-auto relative z-10 mt-8">
                     <a href="tel:0245641480" class="flex items-center justify-center gap-4 w-full bg-[#020617]/80 border border-slate-700 rounded-2xl px-6 py-5 text-white hover:border-emerald-500 transition-all shadow-lg group">
                         <span class="text-2xl group-hover:scale-110 transition-transform">📞</span>
                         <div class="text-left">
                             <span class="block text-[10px] text-slate-500 uppercase font-black tracking-wider">Call Us Direct</span>
                             <span class="font-black tracking-wide text-lg">024 564 1480</span>
-                        </div>
-                    </a>
-                    
-                    <a href="https://wa.me/233245641480" target="_blank" class="flex items-center justify-center gap-4 w-full bg-[#25D366]/10 border border-[#25D366]/30 rounded-2xl px-6 py-5 text-[#25D366] hover:bg-[#25D366] hover:text-white transition-all shadow-lg group">
-                        <span class="text-2xl group-hover:scale-110 transition-transform">💬</span>
-                        <div class="text-left">
-                            <span class="block text-[10px] uppercase font-black tracking-wider opacity-80">Message on</span>
-                            <span class="font-black tracking-wide text-lg">WhatsApp</span>
-                        </div>
-                    </a>
-                    
-                    <a href="mailto:agriconnect886@gmail.com" class="flex items-center justify-center gap-4 w-full bg-[#020617]/80 border border-slate-700 rounded-2xl px-6 py-5 text-white hover:border-blue-500 transition-all shadow-lg group">
-                        <span class="text-2xl group-hover:scale-110 transition-transform">✉️</span>
-                        <div class="text-left">
-                            <span class="block text-[10px] text-slate-500 uppercase font-black tracking-wider">Email Support</span>
-                            <span class="font-black tracking-wide text-sm">agriconnect886@gmail.com</span>
                         </div>
                     </a>
                 </div>
@@ -218,7 +198,7 @@
             </div>
         </div>
 
-        <!-- POST AD DASHBOARD -->
+        <!-- POST AD DASHBOARD (WITH SMART WRITER) -->
         <div id="view-post" class="fade-in hidden max-w-2xl mx-auto mt-6">
             <div class="flex items-center gap-3 mb-6">
                 <div class="w-10 h-10 bg-emerald-500/20 rounded-xl flex items-center justify-center text-emerald-400 border border-emerald-500/30">📢</div>
@@ -239,7 +219,12 @@
                 
                 <div class="space-y-4">
                     <input type="text" id="post-name" placeholder="Headline (e.g. 50 Crates of Large Eggs)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
-                    <textarea id="post-description" placeholder="Describe your product... (e.g. Farm location, organic feed used, delivery options)" rows="3" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors"></textarea>
+                    
+                    <!-- MAGIC DESCRIPTION WRITER -->
+                    <div class="relative">
+                        <textarea id="post-description" placeholder="Describe your product... (e.g. Farm location, organic feed used, delivery options)" rows="4" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors"></textarea>
+                        <button onclick="autoWriteDescription()" class="absolute bottom-3 right-3 bg-gradient-to-r from-emerald-600 to-teal-500 text-white text-[10px] font-black px-3 py-1.5 rounded-lg hover:shadow-lg hover:shadow-emerald-500/30 transition-all flex items-center gap-1">✨ Auto-Write</button>
+                    </div>
                     
                     <div class="grid grid-cols-2 gap-4">
                         <select id="post-category" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-sm text-white cursor-pointer outline-none focus:border-emerald-500 appearance-none">
@@ -271,9 +256,19 @@
             </div>
         </div>
 
-        <!-- MY ADS DASHBOARD -->
-        <div id="view-dashboard" class="fade-in hidden max-w-4xl mx-auto mt-6">
-            <div class="flex items-center justify-between mb-8 glass-card p-6 rounded-2xl">
+        <!-- MY DASHBOARD (WITH AGRONOMY INSIGHTS) -->
+        <div id="view-dashboard" class="fade-in hidden max-w-4xl mx-auto mt-6 space-y-6">
+            
+            <!-- Daily Agronomy Insights Banner -->
+            <div class="glass-card p-5 rounded-2xl border-l-4 border-emerald-500 flex flex-col md:flex-row items-center gap-4 shadow-lg shadow-emerald-900/10">
+                <div class="w-12 h-12 bg-emerald-500/20 rounded-full flex items-center justify-center text-xl shrink-0">🌱</div>
+                <div>
+                    <h4 class="text-sm font-black text-white mb-1">Today's Agronomy Insight</h4>
+                    <p class="text-xs text-slate-300 leading-relaxed" id="agronomy-tip">Maintaining proper soil structure and organic matter drastically improves water retention for dry-season vegetable yields. Consider integrating poultry manure into your compost rotations to boost nitrogen levels.</p>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between mb-2 glass-card p-6 rounded-2xl">
                 <div>
                     <h2 class="text-2xl font-black text-white tracking-tight">Manage My Ads</h2>
                     <p class="text-xs text-slate-400 mt-1">Delete items that are sold out.</p>
@@ -317,6 +312,17 @@
     </footer>
 
     <script>
+        // Initialize PWA Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(reg => {
+                    console.log('PWA ServiceWorker registered');
+                }).catch(err => {
+                    console.log('PWA ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+
         const API_URL = "https://agri-connect-api-3.onrender.com";
         let agriToken = localStorage.getItem("agri_token") || "";
         let pendingAction = null;
@@ -336,6 +342,7 @@
 
         window.addEventListener('DOMContentLoaded', async () => {
             loadLocations(); 
+            rotateAgronomyTips();
             if (agriToken) {
                 try {
                     const res = await fetch(`${API_URL}/api/v1/me?token=${agriToken}`);
@@ -347,6 +354,37 @@
             } else { document.getElementById('nav-login-btn').classList.remove('hidden'); }
             navigate('home');
         });
+
+        // Smart Magic Auto-Writer Function
+        function autoWriteDescription() {
+            const cat = document.getElementById('post-category').value;
+            const name = document.getElementById('post-name').value || "my farm produce";
+            
+            const templates = {
+                'Poultry': `Healthy, well-fed ${name} raised in a clean, spacious environment. Vaccinations are fully up to date. Excellent weight and ready for immediate sale. Contact for bulk pricing or delivery arrangements.`,
+                'Chicks': `High-quality, active day-old ${name}. Sourced from disease-free parent stock. Perfect for expanding your poultry operation. Minimum order quantities apply.`,
+                'Vegetables': `Freshly harvested ${name}. Grown using rich organic soil practices without harmful chemicals for maximum nutrition and shelf life. Perfect for restaurants, local markets, or bulk buyers.`,
+                'Eggs': `Fresh, cleanly sorted ${name}. Collected daily and safely crated to prevent breakages. Great yolk color and shell quality. Available for pickup or scheduled drop-offs.`,
+                'Livestock': `Strong, healthy ${name} ready for sale. Pasture-raised with excellent body condition. Available for inspection prior to purchase.`,
+                'Meat': `Cleanly dressed, hygienic ${name}. Processed under strict sanitary conditions. Available fresh or frozen based on your request.`,
+                'Machinery': `Reliable ${name} in excellent working condition. Well-maintained and ready to deploy on the farm immediately. Serious buyers only.`
+            };
+            
+            document.getElementById('post-description').value = templates[cat] || `High-quality ${name} available for immediate sale. Contact me directly for pricing negotiations and delivery options.`;
+            showToast("Magic Description Applied!");
+        }
+
+        // Daily Agronomy Insights Rotator
+        function rotateAgronomyTips() {
+            const tips = [
+                "Maintaining proper soil structure and organic matter drastically improves water retention for dry-season vegetable yields. Consider integrating poultry manure into your compost rotations to boost nitrogen levels.",
+                "To reduce heat stress in broilers during peak afternoon temperatures, ensure your poultry housing has proper cross-ventilation and add vitamin C to their drinking water.",
+                "Rotating crops across different families (like following legumes with leafy greens) naturally breaks pest life cycles and reduces the need for synthetic chemical interventions."
+            ];
+            const randomTip = tips[Math.floor(Math.random() * tips.length)];
+            const tipEl = document.getElementById('agronomy-tip');
+            if(tipEl) tipEl.innerText = randomTip;
+        }
 
         function setupUserProfile(fullName, isVerified, email) {
             const nameEl = document.getElementById('nav-user-name');
@@ -383,7 +421,6 @@
             field.type = field.type === "password" ? "text" : "password";
         }
 
-        // --- AUTH ---
         async function signupUser() {
             const name = document.getElementById('su-name').value.trim();
             const email = document.getElementById('su-email').value.trim();
@@ -431,7 +468,6 @@
 
         function logout() { agriToken = ""; localStorage.removeItem("agri_token"); window.location.reload(); }
 
-        // --- ACTIONS ---
         function requireAuthToPost() {
             if (!agriToken) { pendingAction = 'post'; showToast("Please sign in to post an ad", "error"); navigate('auth'); } 
             else { navigate('post'); }
@@ -484,7 +520,6 @@
             } catch (err) { showToast(err.message, "error"); }
         }
 
-        // --- MARKETPLACE FILTERS ---
         async function loadLocations() {
             const staticLocations = ["Achimota", "Adenta", "Airport Residential", "Ashaiman", "Cantonments", "Dansoman", "Dzorwulu", "East Legon", "Kasoa", "Kwabenya", "Labadi", "Lapaz", "Madina", "Nima", "Osu", "Roman Ridge", "Spintex", "Tema", "Tesano", "Teshie"];
             const locSelect = document.getElementById('filter-location');
@@ -592,7 +627,6 @@
             } catch (err) {}
         }
 
-        // --- DASHBOARD: MY ADS ---
         async function loadMyAds() {
             try {
                 const res = await fetch(`${API_URL}/api/v1/my-products?token=${agriToken}`);
@@ -634,12 +668,10 @@
                 const res = await fetch(`${API_URL}/api/v1/products/${id}?token=${agriToken}`, { method: 'DELETE' });
                 if (!res.ok) throw new Error("Could not delete");
                 showToast("Ad deleted successfully");
-                
                 loadMyAds(); 
             } catch (err) { showToast(err.message, "error"); }
         }
 
-        // --- POSTING & IMAGES (MULTIPLE PHOTOS FIX) ---
         function handleImageUpload(event) {
             const files = event.target.files;
             if (!files.length) return;
@@ -685,7 +717,6 @@
             const category = document.getElementById('post-category').value;
             const unit = document.getElementById('post-unit').value.trim();
             const neighborhood = document.getElementById('post-neighborhood').value.trim();
-            
             const base_price_ghs = document.getElementById('post-price').value.trim();
             
             if (!product_name || !unit || !neighborhood || !base_price_ghs) return showToast("Fill all required fields", "error");
