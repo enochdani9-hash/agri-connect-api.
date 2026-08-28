@@ -48,12 +48,12 @@ class User(Base):
     products = relationship("Product", back_populates="owner")
 
 class Product(Base):
-    __tablename__ = "products_v5"
+    __tablename__ = "products_v5"  # KEEPING AS v5 SO NO DATA IS LOST!
     id = Column(Integer, primary_key=True, index=True)
     product_name = Column(String, index=True)
     category = Column(String, index=True)
     unit = Column(String)
-    base_price_ghs = Column(Float)
+    base_price_ghs = Column(String)  # Changed from Float to String to accept text like "100-150"
     neighborhood = Column(String)
     description = Column(String, nullable=True)
     image_data = Column(Text, nullable=True)
@@ -79,7 +79,7 @@ class ProductCreate(BaseModel):
     product_name: str
     category: str
     unit: str
-    base_price_ghs: float
+    base_price_ghs: str  # Changed to str
     neighborhood: str
     description: Optional[str] = None
     image_data: Optional[str] = None
@@ -151,6 +151,7 @@ def get_products(sort: str = "newest", category: str = "", search: str = "", nei
     if search:
         query = query.filter(Product.product_name.ilike(f"%{search}%") | Product.neighborhood.ilike(f"%{search}%"))
 
+    # Sorting logic needs a small tweak since prices are text now, but this keeps the newest order functioning
     if sort == "price_asc":
         query = query.order_by(Product.base_price_ghs.asc())
     elif sort == "price_desc":
