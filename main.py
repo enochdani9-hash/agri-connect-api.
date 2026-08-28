@@ -1,132 +1,28 @@
 import os
-import bcrypt
 from datetime import datetime, timedelta
 from typing import List, Optional
-
-from fastapi import FastAPI, HTTPException, Depends, Query
+from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from sqlalchemy import Column, DateTime, Float, Integer, String, Text, Boolean, create_engine
-from sqlalchemy.orm import declarative_base, sessionmaker, Session
-from jose import jwt, JWTError
+from sqlalchemy import create_engine, Column, Integer, String, Float, Boolean, ForeignKey, Text, DateTime
+from sqlalchemy.orm import declarative_base, sessionmaker, Session, relationship
+from passlib.context import CryptContext
+from jose import JWTError, jwt
 
-# ==============================================================================
-# 1. SECURITY & CONFIGURATION
-# ==============================================================================
-SECRET_KEY = "super-secret-agriconnect-key"
+# --- CONFIGURATION ---
+SECRET_KEY = "agriconnect_super_secret_key"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 
+ACCESS_TOKEN_EXPIRE_DAYS = 30
 
-def verify_password(plain_password, hashed_password):
-    return bcrypt.checkpw(plain_password.encode("utf-8"), hashed_password.encode("utf-8"))
-
-def get_password_hash(password):
-    salt = bcrypt.gensalt()
-    return bcrypt.hashpw(password.encode("utf-8"), salt).decode("utf-8")
-
-def create_access_token(data: dict):
-    to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    to_encode.update({"exp": expire})
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-
-# ==============================================================================
-# 2. CLOUD DATABASE (Supabase)
-# ==============================================================================
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./agriconnect_jiji.db")
-
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False} if "sqlite" in DATABASE_URL else {})
-
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
-class UserDB(Base):
-    __tablename__ = "users_v3"
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    email = Column(String, unique=True, index=True, nullable=False)
-    hashed_password = Column(String, nullable=False)
-    full_name = Column(String, nullable=False)
-    phone_number = Column(String, nullable=False)
-    age = Column(Integer, nullable=False)
-    is_verified = Column(Boolean, default=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
-
-class ProductDB(Base):
-    __tablename__ = "products_v4"
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    product_name = Column(String, index=True, nullable=False)
-    category = Column(String, index=True, nullable=False)
-    base_price_ghs = Column(Float, nullable=False)
-    unit = Column(String, nullable=False)
-    seller_name = Column(String, nullable=False)
-    seller_id = Column(Integer, nullable=False)
-    phone_number = Column(String, nullable=False)
-    neighborhood = Column(String, index=True, nullable=False)
-    image_data = Column(Text, nullable=True) 
-    created_at = Column(DateTime, default=datetime.utcnow)
-
-Base.metadata.create_all(bind=engine)
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-# ==============================================================================
-# 3. PYDANTIC SCHEMAS
-# ==============================================================================
-class UserCreate(BaseModel):
-    full_name: str
-    email: str
-    phone_number: str
-    age: int
-    password: str
-
-class LoginRequest(BaseModel):
-    email: str
-    password: str
-
-class VerifyRequest(BaseModel):
-    email: str
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
-    full_name: str
-    email: str
-    is_verified: bool
-
-class ProductCreate(BaseModel):
-    product_name: str
-    category: str
-    base_price_ghs: float
-    unit: str
-    neighborhood: str
-    image_data: Optional[str] = None 
-
-class ProductResponse(BaseModel):
-    id: int
-    product_name: str
-    category: str
-    base_price_ghs: float
-    unit: str
-    seller_name: str
-    phone_number: str
-    neighborhood: str
-    image_data: Optional[str] = None
-    created_at: datetime
-    seller_verified: bool = False
-    seller_member_since: str = ""
-
-# ==============================================================================
-# 4. FASTAPI APP & ENDPOINTS
-# ==============================================================================
-app = FastAPI(title="AgriConnect API", version="6.1.0")
+app = FastAPI(title="AgriConnect API")
 
 app.add_middleware(
     CORSMiddleware,
@@ -136,119 +32,181 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-def get_current_user_from_token(token: str, db: Session):
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+# --- DATABASE MODELS ---
+class User(Base):
+    __tablename__ = "users_v3"
+    id = Column(Integer, primary_key=True, index=True)
+    full_name = Column(String)
+    email = Column(String, unique=True, index=True)
+    age = Column(Integer)
+    phone_number = Column(String)
+    hashed_password = Column(String)
+    is_verified = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    products = relationship("Product", back_populates="owner")
+
+class Product(Base):
+    __tablename__ = "products_v5"
+    id = Column(Integer, primary_key=True, index=True)
+    product_name = Column(String, index=True)
+    category = Column(String, index=True)
+    unit = Column(String)
+    base_price_ghs = Column(Float)
+    neighborhood = Column(String)
+    description = Column(String, nullable=True)
+    image_data = Column(Text, nullable=True)
+    farmer_id = Column(Integer, ForeignKey("users_v3.id"))
+    created_at = Column(DateTime, default=datetime.utcnow)
+    owner = relationship("User", back_populates="products")
+
+Base.metadata.create_all(bind=engine)
+
+# --- SCHEMAS ---
+class UserCreate(BaseModel):
+    full_name: str
+    email: str
+    age: int
+    phone_number: str
+    password: str
+
+class UserLogin(BaseModel):
+    email: str
+    password: str
+
+class ProductCreate(BaseModel):
+    product_name: str
+    category: str
+    unit: str
+    base_price_ghs: float
+    neighborhood: str
+    description: Optional[str] = None
+    image_data: Optional[str] = None
+
+class AdminVerify(BaseModel):
+    email: str
+
+# --- DEPENDENCIES ---
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+def get_current_user(token: str, db: Session = Depends(get_db)):
+    credentials_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials")
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        email: str = payload.get("sub")
-        return db.query(UserDB).filter(UserDB.email == email).first()
-    except JWTError:
-        return None
+        user_id: str = payload.get("sub")
+        if user_id is None: raise credentials_exception
+    except JWTError: raise credentials_exception
+    user = db.query(User).filter(User.id == int(user_id)).first()
+    if user is None: raise credentials_exception
+    return user
 
-@app.post("/api/v1/signup", response_model=Token)
-def signup(user_data: UserCreate, db: Session = Depends(get_db)):
-    if db.query(UserDB).filter(UserDB.email == user_data.email).first():
+# --- ENDPOINTS ---
+@app.post("/api/v1/signup")
+def signup(user: UserCreate, db: Session = Depends(get_db)):
+    if db.query(User).filter(User.email == user.email).first():
         raise HTTPException(status_code=400, detail="Email already registered")
-    
-    new_user = UserDB(
-        email=user_data.email,
-        hashed_password=get_password_hash(user_data.password),
-        full_name=user_data.full_name,
-        phone_number=user_data.phone_number,
-        age=user_data.age
-    )
-    db.add(new_user)
+    hashed_password = pwd_context.hash(user.password)
+    db_user = User(full_name=user.full_name, email=user.email, age=user.age, phone_number=user.phone_number, hashed_password=hashed_password)
+    db.add(db_user)
     db.commit()
-    db.refresh(new_user)
-    return {"access_token": create_access_token(data={"sub": new_user.email}), "token_type": "bearer", "full_name": new_user.full_name, "email": new_user.email, "is_verified": new_user.is_verified}
+    db.refresh(db_user)
+    token = jwt.encode({"sub": str(db_user.id), "exp": datetime.utcnow() + timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS)}, SECRET_KEY, algorithm=ALGORITHM)
+    return {"access_token": token, "full_name": db_user.full_name, "is_verified": db_user.is_verified, "email": db_user.email}
 
-@app.post("/api/v1/login", response_model=Token)
-def login(credentials: LoginRequest, db: Session = Depends(get_db)):
-    user = db.query(UserDB).filter(UserDB.email == credentials.email).first()
-    if not user or not verify_password(credentials.password, user.hashed_password):
-        raise HTTPException(status_code=401, detail="Incorrect email or password")
-    return {"access_token": create_access_token(data={"sub": user.email}), "token_type": "bearer", "full_name": user.full_name, "email": user.email, "is_verified": user.is_verified}
+@app.post("/api/v1/login")
+def login(user: UserLogin, db: Session = Depends(get_db)):
+    db_user = db.query(User).filter(User.email == user.email).first()
+    if not db_user or not pwd_context.verify(user.password, db_user.hashed_password):
+        raise HTTPException(status_code=400, detail="Incorrect email or password")
+    token = jwt.encode({"sub": str(db_user.id), "exp": datetime.utcnow() + timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS)}, SECRET_KEY, algorithm=ALGORITHM)
+    return {"access_token": token, "full_name": db_user.full_name, "is_verified": db_user.is_verified, "email": db_user.email}
 
 @app.get("/api/v1/me")
-def verify_token(token: str = Query(...), db: Session = Depends(get_db)):
-    user = get_current_user_from_token(token, db)
-    if not user: raise HTTPException(status_code=401, detail="Invalid token")
-    return {"full_name": user.full_name, "email": user.email, "phone_number": user.phone_number, "is_verified": user.is_verified}
+def get_me(token: str, db: Session = Depends(get_db)):
+    user = get_current_user(token, db)
+    return {"full_name": user.full_name, "is_verified": user.is_verified, "email": user.email}
 
-@app.post("/api/v1/products", response_model=ProductResponse)
-def create_product(product: ProductCreate, token: str = Query(...), db: Session = Depends(get_db)):
-    user = get_current_user_from_token(token, db)
-    if not user: raise HTTPException(status_code=401, detail="Must be logged in")
-
-    db_product = ProductDB(
-        **product.model_dump(),
-        seller_name=user.full_name,
-        seller_id=user.id,
-        phone_number=user.phone_number,
-    )
+@app.post("/api/v1/products")
+def create_product(product: ProductCreate, token: str, db: Session = Depends(get_db)):
+    user = get_current_user(token, db)
+    db_product = Product(**product.dict(), farmer_id=user.id)
     db.add(db_product)
     db.commit()
-    db.refresh(db_product)
-    
-    return ProductResponse(**db_product.__dict__, seller_verified=user.is_verified, seller_member_since=user.created_at.strftime("%B %Y"))
+    return {"msg": "Product created"}
 
-# UPGRADED: Added sort logic
-@app.get("/api/v1/products", response_model=List[ProductResponse])
-def list_products(
-    category: Optional[str] = Query(None), 
-    neighborhood: Optional[str] = Query(None), 
-    search: Optional[str] = Query(None), 
-    sort: Optional[str] = Query("newest"),
-    db: Session = Depends(get_db)
-):
-    query = db.query(ProductDB, UserDB).join(UserDB, ProductDB.seller_id == UserDB.id)
-    if category: query = query.filter(ProductDB.category.ilike(f"%{category}%"))
-    if neighborhood: query = query.filter(ProductDB.neighborhood.ilike(f"%{neighborhood}%"))
-    if search: query = query.filter((ProductDB.product_name.ilike(f"%{search}%")) | (ProductDB.neighborhood.ilike(f"%{search}%")))
+@app.get("/api/v1/products")
+def get_products(sort: str = "newest", category: str = "", search: str = "", neighborhood: str = "", db: Session = Depends(get_db)):
+    query = db.query(Product, User).join(User)
     
+    if category:
+        query = query.filter(Product.category.ilike(f"%{category}%"))
+    if neighborhood:
+        query = query.filter(Product.neighborhood.ilike(f"%{neighborhood}%"))
+    if search:
+        query = query.filter(Product.product_name.ilike(f"%{search}%") | Product.neighborhood.ilike(f"%{search}%"))
+
     if sort == "price_asc":
-        query = query.order_by(ProductDB.base_price_ghs.asc())
+        query = query.order_by(Product.base_price_ghs.asc())
     elif sort == "price_desc":
-        query = query.order_by(ProductDB.base_price_ghs.desc())
+        query = query.order_by(Product.base_price_ghs.desc())
     else:
-        query = query.order_by(ProductDB.created_at.desc())
-
+        query = query.order_by(Product.created_at.desc())
+        
     results = query.all()
-    return [ProductResponse(**p.__dict__, seller_verified=u.is_verified, seller_member_since=u.created_at.strftime("%B %Y")) for p, u in results]
-
-# NEW: Fetch unique neighborhoods to build the filter dropdown
-@app.get("/api/v1/locations", response_model=List[str])
-def list_locations(db: Session = Depends(get_db)):
-    locations = db.query(ProductDB.neighborhood).distinct().all()
-    return [loc[0] for loc in locations if loc[0]]
-
-@app.get("/api/v1/my-products", response_model=List[ProductResponse])
-def list_my_products(token: str = Query(...), db: Session = Depends(get_db)):
-    user = get_current_user_from_token(token, db)
-    if not user: raise HTTPException(status_code=401, detail="Must be logged in")
     
-    results = db.query(ProductDB, UserDB).join(UserDB, ProductDB.seller_id == UserDB.id).filter(ProductDB.seller_id == user.id).order_by(ProductDB.created_at.desc()).all()
-    return [ProductResponse(**p.__dict__, seller_verified=u.is_verified, seller_member_since=u.created_at.strftime("%B %Y")) for p, u in results]
+    out = []
+    for prod, user in results:
+        out.append({
+            "id": prod.id,
+            "product_name": prod.product_name,
+            "category": prod.category,
+            "unit": prod.unit,
+            "base_price_ghs": prod.base_price_ghs,
+            "neighborhood": prod.neighborhood,
+            "description": prod.description,
+            "image_data": prod.image_data,
+            "seller_name": user.full_name,
+            "seller_verified": user.is_verified,
+            "seller_member_since": str(user.created_at.year) if user.created_at else "2026",
+            "phone_number": user.phone_number
+        })
+    return out
 
-@app.delete("/api/v1/products/{product_id}")
-def delete_product(product_id: int, token: str = Query(...), db: Session = Depends(get_db)):
-    user = get_current_user_from_token(token, db)
-    if not user: raise HTTPException(status_code=401, detail="Must be logged in")
-    
-    product = db.query(ProductDB).filter(ProductDB.id == product_id, ProductDB.seller_id == user.id).first()
-    if not product: raise HTTPException(status_code=404, detail="Ad not found")
-    
-    db.delete(product)
+@app.get("/api/v1/my-products")
+def get_my_products(token: str, db: Session = Depends(get_db)):
+    user = get_current_user(token, db)
+    return db.query(Product).filter(Product.farmer_id == user.id).order_by(Product.created_at.desc()).all()
+
+@app.delete("/api/v1/products/{prod_id}")
+def delete_product(prod_id: int, token: str, db: Session = Depends(get_db)):
+    user = get_current_user(token, db)
+    prod = db.query(Product).filter(Product.id == prod_id, Product.farmer_id == user.id).first()
+    if not prod: raise HTTPException(status_code=404)
+    db.delete(prod)
     db.commit()
-    return {"detail": "Ad deleted successfully"}
+    return {"msg": "Deleted"}
+
+@app.get("/api/v1/locations")
+def get_locations(db: Session = Depends(get_db)):
+    locs = db.query(Product.neighborhood).distinct().all()
+    return [l[0] for l in locs if l[0]]
 
 @app.post("/api/v1/admin/verify")
-def verify_seller(req: VerifyRequest, token: str = Query(...), db: Session = Depends(get_db)):
-    user = get_current_user_from_token(token, db)
-    if not user: raise HTTPException(401, "Not logged in")
+def verify_seller(req: AdminVerify, token: str, db: Session = Depends(get_db)):
+    admin = get_current_user(token, db)
+    if admin.email != "enochdani9@gmail.com":
+        raise HTTPException(status_code=403, detail="Not authorized")
     
-    target_user = db.query(UserDB).filter(UserDB.email == req.email).first()
-    if not target_user: raise HTTPException(404, "Farmer not found in database.")
-    
-    target_user.is_verified = True
+    target = db.query(User).filter(User.email == req.email).first()
+    if not target:
+        raise HTTPException(status_code=404, detail="Farmer not found")
+        
+    target.is_verified = True
     db.commit()
-    return {"detail": f"{target_user.full_name} is now a Verified Seller!"}
+    return {"detail": f"{target.full_name} is now a Verified Seller!"}
