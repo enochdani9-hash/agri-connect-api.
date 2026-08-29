@@ -23,36 +23,69 @@
         .animate-marquee { animation: marquee 25s linear infinite; }
         .mic-pulse { animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+        
+        /* Sunlight Field High-Contrast Mode */
+        body.sunlight-mode { background-color: #f8fafc !important; color: #020617 !important; }
+        body.sunlight-mode .glass-card { background: #ffffff !important; border: 2px solid #0f172a !important; color: #020617 !important; }
+        body.sunlight-mode header, body.sunlight-mode footer { background-color: #ffffff !important; border-color: #cbd5e1 !important; }
+        body.sunlight-mode h1, body.sunlight-mode h2, body.sunlight-mode h3, body.sunlight-mode h4, body.sunlight-mode .text-white { color: #020617 !important; }
+        body.sunlight-mode p, body.sunlight-mode span.text-slate-400, body.sunlight-mode span.text-slate-300 { color: #334155 !important; }
     </style>
 </head>
-<body class="bg-[#020617] text-slate-100 font-sans min-h-screen selection:bg-emerald-500 selection:text-white overflow-x-hidden flex flex-col">
+<body id="app-body" class="bg-[#020617] text-slate-100 font-sans min-h-screen selection:bg-emerald-500 selection:text-white overflow-x-hidden flex flex-col transition-colors duration-300">
 
     <div class="fixed top-[-20%] left-[-10%] w-[50%] h-[50%] bg-emerald-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
     <div class="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
 
     <div id="toast-container" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 pointer-events-none"></div>
 
-    <!-- BULK ORDER MODAL (NEW) -->
+    <!-- BULK ORDER & DELIVERY ESTIMATOR MODAL -->
     <div id="order-modal" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
-        <div class="glass-card w-full max-w-md p-8 rounded-[2rem] shadow-2xl border border-emerald-500/30 relative">
+        <div class="glass-card w-full max-w-md p-8 rounded-[2rem] shadow-2xl border border-emerald-500/30 relative max-h-[90vh] overflow-y-auto">
             <button onclick="closeOrderModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
-            <h3 class="text-2xl font-black text-white mb-2">Smart Bulk Order</h3>
-            <p class="text-xs text-slate-400 mb-6">Calculate your total and send a professional offer directly to the farmer.</p>
+            <h3 class="text-2xl font-black text-white mb-2">Smart Purchase Order</h3>
+            <p class="text-xs text-slate-400 mb-6">Calculate pricing and estimated delivery straight to your location.</p>
             
-            <div class="bg-[#0f172a] p-4 rounded-xl mb-6 border border-slate-700">
+            <div class="bg-[#0f172a] p-4 rounded-xl mb-4 border border-slate-700">
                 <p class="text-sm font-bold text-emerald-400 mb-1" id="order-product-name">Product Name</p>
-                <p class="text-xl font-black text-white">GH₵<span id="order-base-price">0</span> <span class="text-xs text-slate-400 font-medium">/ <span id="order-unit">unit</span></span></p>
+                <div class="flex justify-between items-baseline">
+                    <p class="text-xl font-black text-white">GH₵<span id="order-base-price">0</span> <span class="text-xs text-slate-400 font-medium">/ <span id="order-unit">unit</span></span></p>
+                    <span class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-1 rounded">Seller in <span id="order-seller-loc">Accra</span></span>
+                </div>
             </div>
 
             <div class="space-y-4">
                 <div>
-                    <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">How many do you need?</label>
-                    <input type="number" id="order-quantity" value="1" min="1" oninput="calculateOrderTotal()" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-lg text-white font-black outline-none focus:border-emerald-500 transition-colors">
+                    <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">Quantity Needed</label>
+                    <input type="number" id="order-quantity" value="1" min="1" oninput="calculateOrderTotal()" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-3 text-lg text-white font-black outline-none focus:border-emerald-500 transition-colors">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">Delivery Destination (Accra)</label>
+                    <select id="order-destination" onchange="calculateOrderTotal()" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer">
+                        <option value="Self Pickup">Self Pickup (GH₵0)</option>
+                        <option value="Madina">Madina / Adenta (Est. GH₵25)</option>
+                        <option value="East Legon">East Legon / Airport (Est. GH₵35)</option>
+                        <option value="Spintex">Spintex / Tema (Est. GH₵45)</option>
+                        <option value="Achimota">Achimota / Lapaz (Est. GH₵30)</option>
+                        <option value="Kasoa">Kasoa / Weija (Est. GH₵60)</option>
+                        <option value="Central Accra">Osu / Dansoman / Central (Est. GH₵35)</option>
+                    </select>
                 </div>
                 
-                <div class="flex justify-between items-end pt-4 border-t border-white/10">
-                    <span class="text-sm text-slate-400 font-bold">Total Estimate:</span>
-                    <span class="text-3xl font-black text-white tracking-tight">GH₵<span id="order-total-price">0</span></span>
+                <div class="space-y-1.5 pt-4 border-t border-white/10">
+                    <div class="flex justify-between text-xs text-slate-400">
+                        <span>Produce Subtotal:</span>
+                        <span>GH₵<span id="order-subtotal">0</span></span>
+                    </div>
+                    <div class="flex justify-between text-xs text-slate-400">
+                        <span>Est. Dispatch Fare:</span>
+                        <span>GH₵<span id="order-dispatch-fee">0</span></span>
+                    </div>
+                    <div class="flex justify-between items-end pt-2 border-t border-white/5">
+                        <span class="text-sm font-bold text-white">Estimated Total:</span>
+                        <span class="text-2xl font-black text-emerald-400 tracking-tight">GH₵<span id="order-total-price">0</span></span>
+                    </div>
                 </div>
                 
                 <button id="send-whatsapp-btn" class="w-full mt-4 bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-4 rounded-xl text-sm transition-all shadow-lg shadow-[#25D366]/20 flex items-center justify-center gap-2">
@@ -73,9 +106,13 @@
                     <p class="text-[9px] font-black text-emerald-500 uppercase tracking-widest">Accra Direct</p>
                 </div>
             </div>
-            <div class="flex gap-4 items-center">
+            <div class="flex gap-3 items-center">
+                <!-- SUNLIGHT FIELD MODE TOGGLE BUTTON -->
+                <button onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 text-xs text-amber-400 transition-colors" title="Toggle High-Contrast Sunlight Mode">
+                    ☀️
+                </button>
                 <button id="nav-login-btn" onclick="navigate('auth')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 hidden transition-colors">Sign In</button>
-                <div id="nav-user-profile" class="hidden items-center gap-4 bg-white/5 px-4 py-1.5 rounded-full border border-white/10">
+                <div id="nav-user-profile" class="hidden items-center gap-3 bg-white/5 px-4 py-1.5 rounded-full border border-white/10">
                     <span id="nav-user-name" class="text-xs font-bold text-emerald-400 flex items-center gap-1 hidden md:flex"></span>
                     <button onclick="navigate('dashboard')" class="text-xs font-black text-white hover:text-emerald-300 transition-colors">My Dashboard</button>
                     <div class="w-px h-3 bg-white/20"></div>
@@ -118,7 +155,6 @@
                         <input type="password" name="password_trap" style="display:none;" aria-hidden="true">
                         <input type="search" id="market_finder" role="presentation" autocomplete="new-password" placeholder="Search 'Live Broilers' or 'Madina'..." class="w-full bg-[#020617]/50 border border-slate-700/80 rounded-2xl pl-12 pr-12 py-4 text-sm text-white focus:border-emerald-500 focus:bg-[#020617] outline-none transition-all shadow-inner relative z-0">
                         
-                        <!-- VOICE SEARCH BUTTON -->
                         <button id="voice-search-btn" onclick="startVoiceSearch()" class="absolute right-4 text-slate-400 hover:text-emerald-400 transition-colors p-1 rounded-full" title="Search by Voice">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
                         </button>
@@ -198,7 +234,6 @@
                     </button>
                 </div>
 
-                <!-- FARM PROFILE QR CODE -->
                 <div class="flex flex-col items-center z-10 shrink-0 mt-6 md:mt-0 bg-white p-3 rounded-2xl shadow-xl">
                     <img id="profile-qr" src="" alt="Farm QR Code" class="w-24 h-24 rounded-lg">
                     <p class="text-[9px] font-black text-slate-800 uppercase mt-2 tracking-wider">Scan to Share</p>
@@ -445,11 +480,12 @@
         let currentCategoryState = "";
         let currentSearchState = "";
 
-        // SMART BULK ORDER STATE VARIABLES
+        // SMART BULK ORDER STATE
         let currentOrderPhone = "";
         let currentOrderName = "";
         let currentOrderBasePrice = 0;
         let currentOrderUnit = "";
+        let currentOrderSellerLoc = "";
 
         function showToast(msg, type='success') {
             const c = document.getElementById('toast-container');
@@ -483,9 +519,37 @@
             navigate('home');
         });
 
-        // ==========================================
-        // NEW FEATURE 1: VOICE TO TEXT SEARCH ENGINE
-        // ==========================================
+        // 1. SUNLIGHT MODE TOGGLE
+        function toggleSunlightMode() {
+            const body = document.getElementById('app-body');
+            body.classList.toggle('sunlight-mode');
+            if (body.classList.contains('sunlight-mode')) {
+                showToast("☀️ Sunlight Field Mode Enabled");
+            } else {
+                showToast("🌙 Dark Mode Restored");
+            }
+        }
+
+        // 2. LISTEN TO AD (TEXT-TO-SPEECH AUDIO READER)
+        function listenToAd(name, price, unit, loc, desc) {
+            if (!('speechSynthesis' in window)) {
+                showToast("Audio reading is not supported on this browser.", "error");
+                return;
+            }
+            window.speechSynthesis.cancel(); // Stop any previous speech
+            
+            const cleanDesc = desc ? desc : "No additional description provided.";
+            const textToRead = `${name}. Price is ${price} Ghana Cedis per ${unit}. Located in ${loc}. Description: ${cleanDesc}`;
+            
+            const utterance = new SpeechSynthesisUtterance(textToRead);
+            utterance.rate = 0.95;
+            utterance.pitch = 1.0;
+            
+            showToast("🔊 Reading listing aloud...");
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // 3. VOICE SEARCH
         function startVoiceSearch() {
             const btn = document.getElementById('voice-search-btn');
             const searchBox = document.getElementById('market_finder');
@@ -498,7 +562,7 @@
             const recognition = new webkitSpeechRecognition();
             recognition.continuous = false;
             recognition.interimResults = false;
-            recognition.lang = 'en-GH'; // Ghanaian English Accent Support
+            recognition.lang = 'en-GH';
 
             recognition.onstart = function() {
                 btn.classList.add('mic-pulse');
@@ -510,10 +574,10 @@
                 const transcript = event.results[0][0].transcript;
                 searchBox.value = transcript;
                 showToast(`Search heard: "${transcript}"`);
-                executeSearch(); // Auto-search after hearing
+                executeSearch();
             };
 
-            recognition.onerror = function(event) {
+            recognition.onerror = function() {
                 showToast("Voice search error. Please try again.", "error");
             };
 
@@ -526,18 +590,14 @@
             recognition.start();
         }
 
-        // ==========================================
-        // NEW FEATURE 2: BULK ORDER CALCULATOR MODAL
-        // ==========================================
-        function openOrderModal(phone, name, priceStr, unit) {
-            // Check if user is logged in
+        // 4. BULK ORDER & DELIVERY CALCULATOR
+        function openOrderModal(phone, name, priceStr, unit, sellerLoc) {
             if (!agriToken) {
                 showToast("Please sign in to contact the seller", "error");
                 navigate('auth');
                 return;
             }
 
-            // Extract the math number even if price is "100-150 negotiable"
             let matches = priceStr.toString().match(/\d+(\.\d+)?/g);
             let avgPrice = 0;
             if (matches && matches.length > 0) {
@@ -548,11 +608,14 @@
             currentOrderName = name;
             currentOrderBasePrice = avgPrice;
             currentOrderUnit = unit;
+            currentOrderSellerLoc = sellerLoc || "Accra";
 
             document.getElementById('order-product-name').innerText = name;
             document.getElementById('order-base-price').innerText = avgPrice.toFixed(2);
             document.getElementById('order-unit').innerText = unit;
+            document.getElementById('order-seller-loc').innerText = currentOrderSellerLoc;
             document.getElementById('order-quantity').value = 1;
+            document.getElementById('order-destination').value = "Self Pickup";
             
             calculateOrderTotal();
             
@@ -568,27 +631,44 @@
         }
 
         function calculateOrderTotal() {
-            let qty = document.getElementById('order-quantity').value;
+            let qty = parseInt(document.getElementById('order-quantity').value) || 1;
             if (qty < 1) qty = 1;
-            let total = (currentOrderBasePrice * qty).toFixed(2);
-            document.getElementById('order-total-price').innerText = total;
+            
+            let subtotal = currentOrderBasePrice * qty;
+            document.getElementById('order-subtotal').innerText = subtotal.toFixed(2);
+
+            let destination = document.getElementById('order-destination').value;
+            let dispatchFee = 0;
+
+            if (destination === "Madina") dispatchFee = 25;
+            else if (destination === "East Legon") dispatchFee = 35;
+            else if (destination === "Spintex") dispatchFee = 45;
+            else if (destination === "Achimota") dispatchFee = 30;
+            else if (destination === "Kasoa") dispatchFee = 60;
+            else if (destination === "Central Accra") dispatchFee = 35;
+
+            document.getElementById('order-dispatch-fee').innerText = dispatchFee.toFixed(2);
+            let grandTotal = subtotal + dispatchFee;
+            document.getElementById('order-total-price').innerText = grandTotal.toFixed(2);
         }
 
         function executeBulkWhatsApp() {
             let qty = document.getElementById('order-quantity').value;
-            let total = document.getElementById('order-total-price').innerText;
+            let destination = document.getElementById('order-destination').value;
+            let subtotal = document.getElementById('order-subtotal').innerText;
+            let dispatchFee = document.getElementById('order-dispatch-fee').innerText;
+            let grandTotal = document.getElementById('order-total-price').innerText;
             
             let cleanPhone = currentOrderPhone.replace(/\D/g, '');
             if(cleanPhone.startsWith('0')) cleanPhone = '233' + cleanPhone.substring(1);
             
-            const msg = encodeURIComponent(`*NEW BULK INQUIRY via AgriConnect*\n\nHello! I am interested in ordering:\n📦 *Product:* ${currentOrderName}\n🔢 *Quantity:* ${qty} ${currentOrderUnit}\n💰 *Estimated Total:* GH₵${total}\n\nPlease let me know if you can fulfill this and if delivery is available.`);
+            const msg = encodeURIComponent(`*NEW PURCHASE ORDER via AgriConnect*\n\nHello! I am ordering:\n📦 *Item:* ${currentOrderName}\n🔢 *Quantity:* ${qty} ${currentOrderUnit}\n💰 *Produce Subtotal:* GH₵${subtotal}\n📍 *Delivery Location:* ${destination} (Est. Fare: GH₵${dispatchFee})\n🏆 *Grand Total:* GH₵${grandTotal}\n\nPlease confirm availability and payment options.`);
             
             window.open(`https://wa.me/${cleanPhone}?text=${msg}`, '_blank');
             closeOrderModal();
         }
 
-
-        // THE WHATSAPP FLYER GENERATOR ENGINE
+        // 5. WHATSAPP FLYER GENERATOR
         function generateWhatsAppFlyer(name, price, unit, imageBase64, phone) {
             showToast("Designing your flyer... 🎨");
             
@@ -638,9 +718,7 @@
             showToast("Flyer Downloaded! 📱 Share it on your Status!");
         }
 
-        // ==========================================
-        // NEW FEATURE 3: FARM PROFILE QR CODE ENGINE
-        // ==========================================
+        // 6. FARM PROFILE & QR CODE
         function openSellerProfile(sellerName, phone, isVerified, memberSince) {
             document.getElementById('profile-name').innerText = sellerName;
             document.getElementById('profile-joined').innerText = memberSince || "2026";
@@ -656,7 +734,6 @@
                 window.open(`https://wa.me/${cleanPhone}?text=Hello! I am viewing your Farm Profile on AgriConnect and I'm interested in your products.`, '_blank');
             };
 
-            // Generate Dynamic QR Code URL for the farmer
             const profileUrl = window.location.origin + "?farmer=" + encodeURIComponent(sellerName);
             document.getElementById('profile-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(profileUrl)}&bgcolor=ffffff`;
 
@@ -879,8 +956,8 @@
                     : '';
 
                 let descriptionText = item.description ? `<p class="text-xs text-slate-400 mb-4 line-clamp-2">${item.description}</p>` : '';
+                let escapedDesc = item.description ? item.description.replace(/'/g, "\\'").replace(/"/g, '&quot;') : '';
 
-                // CHANGED: The "Chat" button now opens the Bulk Order Modal instead of just WhatsApp!
                 gridElement.innerHTML += `
                     <div class="glass-card hover:-translate-y-1 rounded-[2rem] flex flex-col justify-between transition-all duration-300 overflow-hidden shadow-xl hover:shadow-emerald-500/10 hover:border-emerald-500/30 group">
                         ${imageBlock}
@@ -888,7 +965,12 @@
                             <div>
                                 <div class="flex justify-between items-start mb-4">
                                     <span class="bg-white/5 text-slate-300 border border-white/10 text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-lg">${item.category}</span>
-                                    <span class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-1 rounded-md">📍 ${item.neighborhood}</span>
+                                    <div class="flex items-center gap-2">
+                                        <button onclick="listenToAd('${item.product_name.replace(/'/g, "\\'")}', '${item.base_price_ghs}', '${item.unit}', '${item.neighborhood}', '${escapedDesc}')" class="w-7 h-7 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 rounded-lg flex items-center justify-center text-xs transition-colors" title="Listen to Ad">
+                                            🔊
+                                        </button>
+                                        <span class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-1 rounded-md">📍 ${item.neighborhood}</span>
+                                    </div>
                                 </div>
                                 <h3 class="text-xl font-black text-white mb-2 leading-tight group-hover:text-emerald-400 transition-colors">${item.product_name}</h3>
                                 ${descriptionText}
@@ -907,8 +989,7 @@
                                     <span class="text-xs text-slate-400 ml-1 font-medium">/ ${item.unit}</span>
                                 </div>
                                 <div class="grid grid-cols-12 gap-2">
-                                    <!-- NOW CALLS openOrderModal -->
-                                    <button onclick="openOrderModal('${item.phone_number}', '${item.product_name.replace(/'/g, "\\'")}', '${item.base_price_ghs}', '${item.unit}')" class="col-span-8 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white font-black py-3 rounded-xl text-xs transition-all border border-[#25D366]/30 flex items-center justify-center gap-2">
+                                    <button onclick="openOrderModal('${item.phone_number}', '${item.product_name.replace(/'/g, "\\'")}', '${item.base_price_ghs}', '${item.unit}', '${item.neighborhood}')" class="col-span-8 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white font-black py-3 rounded-xl text-xs transition-all border border-[#25D366]/30 flex items-center justify-center gap-2">
                                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.015c-.198 0-.52.074-.792.347-.272.273-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
                                         Order
                                     </button>
