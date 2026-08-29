@@ -13,3 +13,4 @@ requests
 passlib
 httpx
 python-dotenv
+PyJWT
