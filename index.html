@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgriConnect | Next-Gen Agricultural Marketplace</title>
+    <title>AgriConnect Ghana | National Classifieds</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#10b981">
@@ -42,18 +42,18 @@
 
     <div id="toast-container" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 pointer-events-none"></div>
 
-    <!-- FEATURE #4: ACCRA AGRO-WEATHER & CLIMATE BANNER -->
+    <!-- NATIONWIDE AGRO-WEATHER & CLIMATE BANNER -->
     <div class="bg-gradient-to-r from-emerald-950 via-[#020617] to-teal-950 border-b border-emerald-500/20 px-4 py-1.5 text-[11px] flex justify-between items-center text-slate-300">
         <div class="max-w-7xl mx-auto w-full flex items-center justify-between">
             <span class="flex items-center gap-2">
-                <span class="text-amber-400">🌦️ Accra Weather:</span>
+                <span class="text-amber-400">🌦️ Ghana Agro-Weather:</span>
                 <span id="agro-weather-text">29°C | Humidity 78% • Optimal morning for leafy vegetable harvest</span>
             </span>
-            <span class="hidden md:inline text-emerald-400 font-bold text-[10px] uppercase tracking-wider">🌱 Zero Middlemen Guarantee</span>
+            <span class="hidden md:inline text-emerald-400 font-bold text-[10px] uppercase tracking-wider">🌱 Nationwide Direct Trade</span>
         </div>
     </div>
 
-    <!-- FEATURE #2, #5, #7, #8: ADVANCED SMART ORDER, HAGGLING & MOMO ESCROW MODAL -->
+    <!-- ADVANCED SMART ORDER, HAGGLING & MOMO ESCROW MODAL -->
     <div id="order-modal" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] shadow-2xl border border-emerald-500/30 relative max-h-[92vh] overflow-y-auto">
             <button onclick="closeOrderModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
@@ -67,19 +67,19 @@
             <div class="bg-[#0f172a] p-4 rounded-2xl mb-4 border border-slate-700/80">
                 <div class="flex justify-between items-start mb-1">
                     <p class="text-sm font-bold text-emerald-400 truncate" id="order-product-name">Product Name</p>
-                    <span class="text-[10px] text-slate-400">📍 <span id="order-seller-loc">Accra</span></span>
+                    <span class="text-[10px] text-slate-400">📍 <span id="order-seller-loc">Ghana</span></span>
                 </div>
                 <div class="flex justify-between items-baseline">
                     <p class="text-xl font-black text-white">GH₵<span id="order-base-price">0</span> <span class="text-xs text-slate-400 font-medium">/ <span id="order-unit">unit</span></span></p>
-                    <span id="eco-miles-badge" class="text-[10px] text-teal-300 font-bold bg-teal-500/10 px-2 py-0.5 rounded">🍃 14kg CO₂ Saved</span>
+                    <span id="eco-miles-badge" class="text-[10px] text-teal-300 font-bold bg-teal-500/10 px-2 py-0.5 rounded">🍃 Local Farm Saver</span>
                 </div>
             </div>
 
             <!-- TABS FOR MODES -->
             <div class="flex gap-2 p-1 bg-slate-900 rounded-xl mb-4 border border-slate-800 text-xs font-bold">
                 <button onclick="switchOrderTab('direct')" id="tab-direct" class="flex-1 py-2 rounded-lg bg-emerald-600 text-white transition-all">Direct Order</button>
-                <button onclick="switchOrderTab('haggle')" id="tab-haggle" class="flex-1 py-2 rounded-lg text-slate-400 hover:text-white transition-all">Haggle & Counter</button>
-                <button onclick="switchOrderTab('group')" id="tab-group" class="flex-1 py-2 rounded-lg text-slate-400 hover:text-white transition-all">Group Buy (Split)</button>
+                <button onclick="switchOrderTab('haggle')" id="tab-haggle" class="flex-1 py-2 rounded-lg text-slate-400 hover:text-white transition-all">Haggle</button>
+                <button onclick="switchOrderTab('group')" id="tab-group" class="flex-1 py-2 rounded-lg text-slate-400 hover:text-white transition-all">Group Split</button>
             </div>
 
             <div class="space-y-4">
@@ -109,16 +109,8 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Accra Delivery Dispatch</label>
-                    <select id="order-destination" onchange="calculateOrderTotal()" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer">
-                        <option value="Self Pickup">Self Pickup (GH₵0)</option>
-                        <option value="Madina">Madina / Adenta (Est. GH₵25)</option>
-                        <option value="East Legon">East Legon / Airport (Est. GH₵35)</option>
-                        <option value="Spintex">Spintex / Tema (Est. GH₵45)</option>
-                        <option value="Achimota">Achimota / Lapaz (Est. GH₵30)</option>
-                        <option value="Kasoa">Kasoa / Weija (Est. GH₵60)</option>
-                        <option value="Central Accra">Osu / Dansoman / Central (Est. GH₵35)</option>
-                    </select>
+                    <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Delivery Logistics</label>
+                    <input type="text" id="order-destination" placeholder="Enter your City/Town for delivery negotiation" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
                 </div>
                 
                 <div class="space-y-1 pt-3 border-t border-white/10 text-xs">
@@ -126,12 +118,8 @@
                         <span>Produce Subtotal:</span>
                         <span>GH₵<span id="order-subtotal">0</span></span>
                     </div>
-                    <div class="flex justify-between text-slate-400">
-                        <span>Est. Dispatch Fare:</span>
-                        <span>GH₵<span id="order-dispatch-fee">0</span></span>
-                    </div>
                     <div class="flex justify-between items-end pt-2 border-t border-white/5">
-                        <span class="text-sm font-bold text-white">Estimated Grand Total:</span>
+                        <span class="text-sm font-bold text-white">Estimated Deal Value:</span>
                         <span class="text-2xl font-black text-emerald-400 tracking-tight">GH₵<span id="order-total-price">0</span></span>
                     </div>
                 </div>
@@ -164,7 +152,7 @@
                 <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-xl flex items-center justify-center text-lg shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">🌾</div>
                 <div>
                     <h1 class="text-xl font-black tracking-tight text-white group-hover:text-emerald-400 transition-colors">AgriConnect</h1>
-                    <p class="text-[9px] font-black text-emerald-500 uppercase tracking-widest">Accra Direct</p>
+                    <p class="text-[9px] font-black text-emerald-500 uppercase tracking-widest">Ghana Direct</p>
                 </div>
             </div>
             <div class="flex gap-3 items-center">
@@ -183,15 +171,15 @@
         </div>
     </header>
 
-    <!-- REAL-TIME ACCRA MARKET INDEX TICKER -->
+    <!-- REAL-TIME NATIONWIDE MARKET INDEX TICKER -->
     <div class="bg-[#020617] border-b border-white/5 relative z-40 hidden md:block overflow-hidden shadow-inner">
         <div class="max-w-7xl mx-auto flex items-center pl-6">
             <div class="bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider px-4 py-2 rounded-r-lg z-10 shrink-0 flex items-center gap-2 shadow-lg shadow-emerald-500/20">
-                <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> LIVE MARKET AVG
+                <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> LIVE GHANA AVG
             </div>
             <div class="overflow-hidden flex-grow relative ml-4 mask-edges h-8 flex items-center">
                 <div class="flex gap-8 animate-marquee whitespace-nowrap" id="market-ticker">
-                    <span class="text-xs text-slate-400 font-medium">Gathering real-time Accra prices...</span>
+                    <span class="text-xs text-slate-400 font-medium">Gathering real-time nationwide prices...</span>
                 </div>
             </div>
         </div>
@@ -206,20 +194,51 @@
                 <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
                 <div class="text-6xl mb-6 floating-element inline-block">🚜</div>
                 <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 mb-6 relative z-10 tracking-tight">The Farmers Market,<br>Now Online.</h1>
-                <p class="text-slate-400 mb-10 max-w-lg mx-auto relative z-10 text-sm md:text-base leading-relaxed">Buy and sell fresh farm produce directly in Accra. Zero commissions, pure connections.</p>
+                <p class="text-slate-400 mb-10 max-w-lg mx-auto relative z-10 text-sm md:text-base leading-relaxed">Buy and sell fresh farm produce directly across Ghana. Zero commissions, pure connections.</p>
                 
-                <div class="max-w-3xl mx-auto relative z-10 flex flex-col sm:flex-row gap-3">
-                    <div class="relative w-full flex items-center">
-                        <span class="absolute left-4 text-slate-500 z-10">🔍</span>
-                        <input type="text" name="email_trap" style="display:none;" aria-hidden="true">
-                        <input type="password" name="password_trap" style="display:none;" aria-hidden="true">
-                        <input type="search" id="market_finder" role="presentation" autocomplete="new-password" placeholder="Search 'Live Broilers' or 'Madina'..." class="w-full bg-[#020617]/50 border border-slate-700/80 rounded-2xl pl-12 pr-12 py-4 text-sm text-white focus:border-emerald-500 focus:bg-[#020617] outline-none transition-all shadow-inner relative z-0">
+                <!-- NATIONWIDE REGION & SEARCH BAR -->
+                <div class="max-w-4xl mx-auto relative z-10">
+                    <div class="flex flex-col md:flex-row bg-[#020617]/50 rounded-3xl border border-slate-700/80 shadow-inner p-2 gap-2">
                         
-                        <button id="voice-search-btn" onclick="startVoiceSearch()" class="absolute right-4 text-slate-400 hover:text-emerald-400 transition-colors p-1 rounded-full" title="Search by Voice">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
-                        </button>
+                        <!-- REGION DROPDOWN -->
+                        <div class="relative w-full md:w-1/3 flex items-center bg-[#0f172a] rounded-2xl border border-slate-700/50">
+                            <span class="absolute left-4 text-emerald-500 z-10">🌍</span>
+                            <select id="home-region" class="w-full bg-transparent text-sm text-white font-bold pl-10 pr-4 py-4 outline-none cursor-pointer appearance-none">
+                                <option value="All Regions">All Regions</option>
+                                <option value="Ahafo">Ahafo Region</option>
+                                <option value="Ashanti">Ashanti Region</option>
+                                <option value="Bono">Bono Region</option>
+                                <option value="Bono East">Bono East Region</option>
+                                <option value="Central">Central Region</option>
+                                <option value="Eastern">Eastern Region</option>
+                                <option value="Greater Accra">Greater Accra Region</option>
+                                <option value="North East">North East Region</option>
+                                <option value="Northern">Northern Region</option>
+                                <option value="Oti">Oti Region</option>
+                                <option value="Savannah">Savannah Region</option>
+                                <option value="Upper East">Upper East Region</option>
+                                <option value="Upper West">Upper West Region</option>
+                                <option value="Volta">Volta Region</option>
+                                <option value="Western">Western Region</option>
+                                <option value="Western North">Western North Region</option>
+                            </select>
+                        </div>
+
+                        <!-- SEARCH INPUT -->
+                        <div class="relative w-full md:w-2/3 flex items-center">
+                            <span class="absolute left-4 text-slate-500 z-10">🔍</span>
+                            <input type="text" name="email_trap" style="display:none;" aria-hidden="true">
+                            <input type="password" name="password_trap" style="display:none;" aria-hidden="true">
+                            <input type="search" id="market_finder" role="presentation" autocomplete="new-password" placeholder="Search 'Live Broilers' or 'Tomatoes'..." class="w-full bg-transparent pl-10 pr-12 py-4 text-sm text-white focus:outline-none transition-all relative z-0">
+                            
+                            <!-- VOICE SEARCH -->
+                            <button id="voice-search-btn" onclick="startVoiceSearch()" class="absolute right-4 text-slate-400 hover:text-emerald-400 transition-colors p-1 rounded-full" title="Search by Voice">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+                            </button>
+                        </div>
+                        
+                        <button onclick="executeSearch()" class="bg-emerald-600 text-white font-black px-8 py-4 rounded-2xl hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-500/20 transition-all shrink-0">Search</button>
                     </div>
-                    <button onclick="executeSearch()" class="bg-emerald-600 text-white font-black px-10 py-4 rounded-2xl hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-500/20 transition-all shrink-0">Search</button>
                 </div>
             </div>
 
@@ -313,9 +332,9 @@
         <div id="view-about" class="fade-in hidden max-w-3xl mx-auto mt-6">
             <div class="glass-card p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
-                <h2 class="text-4xl font-black text-white mb-6 tracking-tight">About AgriConnect</h2>
+                <h2 class="text-4xl font-black text-white mb-6 tracking-tight">About AgriConnect Ghana</h2>
                 <div class="space-y-6 text-slate-300 leading-relaxed text-base">
-                    <p>AgriConnect was built with a simple but powerful mission: <strong class="text-emerald-400">to bridge the gap between hardworking farmers and eager buyers in Accra.</strong></p>
+                    <p>AgriConnect was built with a simple but powerful mission: <strong class="text-emerald-400">to bridge the gap between hardworking farmers and eager buyers across all 16 regions of Ghana.</strong></p>
                     <p>For too long, the agricultural supply chain has been slowed down by middlemen, driving up costs for consumers and cutting into the profits of local farmers. We believe that technology can solve this.</p>
                     <p>By providing a completely free, zero-commission digital marketplace, AgriConnect empowers poultry farmers, vegetable growers, and livestock rearers to showcase their fresh produce directly to the community.</p>
                 </div>
@@ -362,10 +381,28 @@
             <div class="flex flex-col md:flex-row md:items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 backdrop-blur-sm gap-4">
                 <h2 class="text-2xl font-black text-white tracking-tight" id="market-title">Latest Ads</h2>
                 
-                <div class="flex gap-2 flex-wrap">
-                    <select id="filter-location" onchange="executeFilters()" class="bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer shadow-inner">
-                        <option value="">All Locations</option>
+                <div class="flex gap-2 flex-wrap items-center">
+                    <!-- NATIONWIDE MARKETPLACE REGION FILTER -->
+                    <select id="market-region-filter" onchange="executeFilters()" class="bg-[#0f172a] border border-slate-600 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer shadow-inner font-bold">
+                        <option value="All Regions">All Regions</option>
+                        <option value="Ahafo">Ahafo Region</option>
+                        <option value="Ashanti">Ashanti Region</option>
+                        <option value="Bono">Bono Region</option>
+                        <option value="Bono East">Bono East Region</option>
+                        <option value="Central">Central Region</option>
+                        <option value="Eastern">Eastern Region</option>
+                        <option value="Greater Accra">Greater Accra Region</option>
+                        <option value="North East">North East Region</option>
+                        <option value="Northern">Northern Region</option>
+                        <option value="Oti">Oti Region</option>
+                        <option value="Savannah">Savannah Region</option>
+                        <option value="Upper East">Upper East Region</option>
+                        <option value="Upper West">Upper West Region</option>
+                        <option value="Volta">Volta Region</option>
+                        <option value="Western">Western Region</option>
+                        <option value="Western North">Western North Region</option>
                     </select>
+
                     <select id="filter-sort" onchange="executeFilters()" class="bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer shadow-inner">
                         <option value="newest">Newest First</option>
                         <option value="price_asc">Price: Low to High</option>
@@ -439,7 +476,7 @@
                     </div>
                 </div>
 
-                <!-- FEATURE #3: RECORD 15-SECOND FARMER AUDIO STORY -->
+                <!-- 15-SECOND FARMER AUDIO STORY -->
                 <div class="p-4 bg-slate-900/60 rounded-2xl border border-slate-800 flex items-center justify-between">
                     <div>
                         <span class="text-xs font-bold text-white block">🎙️ 15-Second Farm Voice Story</span>
@@ -476,9 +513,31 @@
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-sm">GH₵</span>
                             <input type="text" id="post-price" placeholder="Price (e.g. 100 - 150)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl pl-12 pr-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
                         </div>
-                        <div class="relative">
-                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">📍</span>
-                            <input type="text" id="post-neighborhood" placeholder="Location (e.g. Madina)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl pl-10 pr-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
+                        
+                        <!-- SMART NATIONWIDE LOCATION SELECTOR -->
+                        <div class="flex gap-2">
+                            <select id="post-region" class="w-2/5 bg-[#0f172a] border border-slate-700 rounded-xl px-3 py-4 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer font-bold">
+                                <option value="Ahafo">Ahafo</option>
+                                <option value="Ashanti">Ashanti</option>
+                                <option value="Bono">Bono</option>
+                                <option value="Bono East">Bono East</option>
+                                <option value="Central">Central</option>
+                                <option value="Eastern">Eastern</option>
+                                <option value="Greater Accra" selected>Greater Accra</option>
+                                <option value="North East">North East</option>
+                                <option value="Northern">Northern</option>
+                                <option value="Oti">Oti</option>
+                                <option value="Savannah">Savannah</option>
+                                <option value="Upper East">Upper East</option>
+                                <option value="Upper West">Upper West</option>
+                                <option value="Volta">Volta</option>
+                                <option value="Western">Western</option>
+                                <option value="Western North">Western North</option>
+                            </select>
+                            <div class="relative w-3/5">
+                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">📍</span>
+                                <input type="text" id="post-town" placeholder="Town (e.g. Madina)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl pl-8 pr-3 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -527,7 +586,7 @@
                 <span class="text-emerald-500 text-2xl">🌾</span>
                 <div>
                     <span class="font-black text-white tracking-tight text-lg block leading-none">AgriConnect</span>
-                    <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Accra Direct</span>
+                    <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Ghana Direct</span>
                 </div>
             </div>
             <div class="flex flex-wrap justify-center gap-6 text-sm font-bold text-slate-400">
@@ -556,6 +615,9 @@
         
         let currentCategoryState = "";
         let currentSearchState = "";
+        
+        // NEW NATIONWIDE REGION STATE
+        let currentRegionState = "All Regions";
 
         // SMART DEAL ROOM STATE
         let currentOrderPhone = "";
@@ -578,7 +640,6 @@
         }
 
         window.addEventListener('DOMContentLoaded', async () => {
-            loadLocations(); 
             rotateAgronomyTips();
             
             fetch(`${API_URL}/api/v1/products?sort=newest`)
@@ -611,7 +672,7 @@
             }
         }
 
-        // FEATURE #1: TOGGLE SOS SPOILAGE CLEARANCE (LOCAL MEMORY OVERLAY)
+        // TOGGLE SOS SPOILAGE CLEARANCE
         function toggleSOSClearance(id) {
             if (sosListingIds.includes(id)) {
                 sosListingIds = sosListingIds.filter(item => item !== id);
@@ -627,7 +688,7 @@
             }
         }
 
-        // FEATURE #3: 15-SECOND VOICE NOTE SIMULATION
+        // 15-SECOND VOICE NOTE SIMULATION
         let isRecording = false;
         function toggleVoiceRecording() {
             const btn = document.getElementById('record-voice-btn');
@@ -647,7 +708,7 @@
             }
         }
 
-        // LISTEN TO AD (TEXT-TO-SPEECH AUDIO READER)
+        // LISTEN TO AD
         function listenToAd(name, price, unit, loc, desc) {
             if (!('speechSynthesis' in window)) {
                 showToast("Audio reading is not supported on this browser.", "error");
@@ -687,12 +748,12 @@
             };
             recognition.onend = function() {
                 btn.classList.remove('mic-pulse', 'text-emerald-500');
-                searchBox.placeholder = "Search 'Live Broilers' or 'Madina'...";
+                searchBox.placeholder = "Search 'Live Broilers' or 'Tomatoes'...";
             };
             recognition.start();
         }
 
-        // FEATURE #2, #5, #7: SMART DEAL ROOM (HAGGLING + GROUP BUY + OFFLINE SMS)
+        // SMART DEAL ROOM (HAGGLING + GROUP BUY + OFFLINE SMS)
         function openOrderModal(phone, name, priceStr, unit, sellerLoc, prodId) {
             if (!agriToken) {
                 showToast("Please sign in to contact the seller", "error");
@@ -706,22 +767,21 @@
             if (matches && matches.length > 0) {
                 avgPrice = matches.length > 1 ? (parseFloat(matches[0]) + parseFloat(matches[1])) / 2 : parseFloat(matches[0]);
             }
-            if (isSos) avgPrice = avgPrice * 0.7; // 30% SOS discount
+            if (isSos) avgPrice = avgPrice * 0.7; 
 
             currentOrderPhone = phone;
             currentOrderName = name;
             currentOrderBasePrice = avgPrice;
             currentOrderUnit = unit;
-            currentOrderSellerLoc = sellerLoc || "Accra";
+            currentOrderSellerLoc = sellerLoc || "Ghana";
 
             document.getElementById('order-product-name').innerText = name;
             document.getElementById('order-base-price').innerText = avgPrice.toFixed(2);
             document.getElementById('order-unit').innerText = unit;
             document.getElementById('order-seller-loc').innerText = currentOrderSellerLoc;
             document.getElementById('order-quantity').value = 1;
-            document.getElementById('order-destination').value = "Self Pickup";
+            document.getElementById('order-destination').value = "";
 
-            // Configure Haggle Slider
             const slider = document.getElementById('haggle-slider');
             slider.min = Math.floor(avgPrice * 0.5);
             slider.max = Math.ceil(avgPrice * 1.2);
@@ -791,27 +851,15 @@
             let subtotal = effectiveUnitPrice * qty;
             document.getElementById('order-subtotal').innerText = subtotal.toFixed(2);
 
-            let destination = document.getElementById('order-destination').value;
-            let dispatchFee = 0;
-            if (destination === "Madina") dispatchFee = 25;
-            else if (destination === "East Legon") dispatchFee = 35;
-            else if (destination === "Spintex") dispatchFee = 45;
-            else if (destination === "Achimota") dispatchFee = 30;
-            else if (destination === "Kasoa") dispatchFee = 60;
-            else if (destination === "Central Accra") dispatchFee = 35;
+            document.getElementById('order-total-price').innerText = subtotal.toFixed(2);
 
-            document.getElementById('order-dispatch-fee').innerText = dispatchFee.toFixed(2);
-            let grandTotal = subtotal + dispatchFee;
-            document.getElementById('order-total-price').innerText = grandTotal.toFixed(2);
-
-            // Group Split calculation
             let splitCount = parseInt(document.getElementById('group-split-count').value) || 2;
-            document.getElementById('group-each-price').innerText = (grandTotal / splitCount).toFixed(2);
+            document.getElementById('group-each-price').innerText = (subtotal / splitCount).toFixed(2);
         }
 
         function executeDealWhatsApp() {
             let qty = document.getElementById('order-quantity').value;
-            let destination = document.getElementById('order-destination').value;
+            let destination = document.getElementById('order-destination').value || "To be discussed";
             let grandTotal = document.getElementById('order-total-price').innerText;
             let cleanPhone = currentOrderPhone.replace(/\D/g, '');
             if(cleanPhone.startsWith('0')) cleanPhone = '233' + cleanPhone.substring(1);
@@ -832,10 +880,9 @@
             closeOrderModal();
         }
 
-        // FEATURE #7: OFFLINE SMS SHORTCODE FALLBACK
         function executeOfflineSMS() {
             let qty = document.getElementById('order-quantity').value;
-            let destination = document.getElementById('order-destination').value;
+            let destination = document.getElementById('order-destination').value || "TBD";
             let grandTotal = document.getElementById('order-total-price').innerText;
             let smsBody = `AGRI-ORDER: ${qty}x ${currentOrderName} to ${destination}. Total: GHc${grandTotal}. Pls confirm.`;
             let cleanPhone = currentOrderPhone.replace(/\D/g, '');
@@ -881,7 +928,7 @@
             ctx.strokeStyle = '#1e293b'; ctx.lineWidth = 4; ctx.stroke();
             ctx.fillStyle = 'white'; ctx.font = 'bold 60px sans-serif'; ctx.fillText(`📞 WhatsApp / Call:`, 140, 1685);
             ctx.fillStyle = '#10b981'; ctx.font = 'bold 70px sans-serif'; ctx.fillText(phone, 140, 1755);
-            ctx.fillStyle = '#475569'; ctx.font = 'bold 40px sans-serif'; ctx.textAlign = 'center'; ctx.fillText("Verified Farmer Market • AgriConnect Accra", 540, 1880);
+            ctx.fillStyle = '#475569'; ctx.font = 'bold 40px sans-serif'; ctx.textAlign = 'center'; ctx.fillText("Verified Farmer Market • AgriConnect Ghana", 540, 1880);
         }
 
         function downloadCanvas(canvas, name) {
@@ -1062,7 +1109,7 @@
         }
 
         function shareAd(name, price, unit) {
-            const text = `Check out this fresh deal on AgriConnect: ${name} for GH₵${price} / ${unit}! Find this and more directly from Accra farmers at ${window.location.origin}`;
+            const text = `Check out this fresh deal on AgriConnect: ${name} for GH₵${price} / ${unit}! Find this and more directly from Ghana farmers at ${window.location.origin}`;
             if (navigator.share) {
                 navigator.share({ title: 'AgriConnect Deal', text: text, url: window.location.href }).catch(console.error);
             } else {
@@ -1086,31 +1133,35 @@
             } catch (err) { showToast(err.message, "error"); }
         }
 
-        async function loadLocations() {
-            const staticLocations = ["Achimota", "Adenta", "Airport Residential", "Ashaiman", "Cantonments", "Dansoman", "Dzorwulu", "East Legon", "Kasoa", "Kwabenya", "Labadi", "Lapaz", "Madina", "Nima", "Osu", "Roman Ridge", "Spintex", "Tema", "Tesano", "Teshie"];
-            const locSelect = document.getElementById('filter-location');
-            staticLocations.forEach(loc => {
-                locSelect.innerHTML += `<option value="${loc}">${loc}</option>`;
-            });
-        }
-
+        // ==========================================
+        // NATIONWIDE FILTERS & SEARCH EXECUTION
+        // ==========================================
         function executeSearch() { 
+            currentRegionState = document.getElementById('home-region').value;
             currentSearchState = document.getElementById('market_finder').value;
             currentCategoryState = ''; 
+            
+            // Sync marketplace dropdown to match homepage
+            document.getElementById('market-region-filter').value = currentRegionState;
             navigate('marketplace'); 
         }
         
         function executeCategory(cat) { 
+            currentRegionState = document.getElementById('home-region').value;
             currentCategoryState = cat; 
             currentSearchState = ''; 
+            
+            // Sync marketplace dropdown to match homepage
+            document.getElementById('market-region-filter').value = currentRegionState;
             navigate('marketplace'); 
         }
 
         function executeFilters() {
+            currentRegionState = document.getElementById('market-region-filter').value;
             loadMarketplace();
         }
 
-        // FEATURE #6: INTERACTIVE MULTI-PHOTO SWIPER / 360 ROTATOR
+        // INTERACTIVE MULTI-PHOTO SWIPER
         function cycleImage(el, imageArray, dir) {
             event.stopPropagation();
             let curIdx = parseInt(el.getAttribute('data-idx') || '0');
@@ -1118,7 +1169,7 @@
             el.setAttribute('data-idx', curIdx);
             el.style.backgroundImage = `url('${imageArray[curIdx]}')`;
             const badge = el.querySelector('.photo-counter-badge');
-            if (badge) badge.innerText = `${curIdx + 1}/${imageArray.length}`;
+            if (badge) badge.innerText = `${curIdx + 1}/${imageArray.length} 🔄`;
         }
 
         function renderProductGrid(products, gridElement) {
@@ -1162,7 +1213,7 @@
                                         <button onclick="listenToAd('${item.product_name.replace(/'/g, "\\'")}', '${item.base_price_ghs}', '${item.unit}', '${item.neighborhood}', '${escapedDesc}')" class="w-7 h-7 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 rounded-lg flex items-center justify-center text-xs transition-colors" title="Listen to Voice Ad">
                                             🔊
                                         </button>
-                                        <span class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-1 rounded-md">📍 ${item.neighborhood}</span>
+                                        <span class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-1 rounded-md max-w-[120px] truncate" title="${item.neighborhood}">📍 ${item.neighborhood}</span>
                                     </div>
                                 </div>
                                 <h3 class="text-xl font-black text-white mb-2 leading-tight group-hover:text-emerald-400 transition-colors">${item.product_name}</h3>
@@ -1204,12 +1255,11 @@
         async function loadMarketplace() {
             document.getElementById('market-title').innerText = currentCategoryState ? `${currentCategoryState} Ads` : (currentSearchState ? `Search Results` : "Latest Ads");
             const sortVal = document.getElementById('filter-sort').value;
-            const locVal = document.getElementById('filter-location').value;
+            // No longer filtering neighborhood via backend, we will filter Region on frontend to keep it perfectly accurate!
 
             let url = `${API_URL}/api/v1/products?sort=${sortVal}`;
             if (currentCategoryState) url += `&category=${currentCategoryState}`;
             if (currentSearchState) url += `&search=${currentSearchState}`;
-            if (locVal) url += `&neighborhood=${locVal}`;
 
             try {
                 const res = await fetch(url);
@@ -1217,10 +1267,18 @@
                 const grid = document.getElementById('product-grid');
                 grid.innerHTML = '';
                 allLoadedProducts = products;
-                if(products.length > 0) buildMarketTicker(products);
+                
+                // FRONTEND NATIONWIDE REGION FILTER
+                let filteredProducts = products;
+                if (currentRegionState !== "All Regions") {
+                    filteredProducts = products.filter(p => p.neighborhood && p.neighborhood.includes(currentRegionState));
+                }
 
-                if (products.length === 0) return grid.innerHTML = `<div class="col-span-full glass-card py-16 rounded-3xl text-center"><p class="text-slate-400 text-sm">No ads found matching these filters.</p></div>`;
-                renderProductGrid(products, grid);
+                if(filteredProducts.length > 0) buildMarketTicker(filteredProducts);
+
+                if (filteredProducts.length === 0) return grid.innerHTML = `<div class="col-span-full glass-card py-16 rounded-3xl text-center"><p class="text-slate-400 text-sm">No ads found in ${currentRegionState} matching these filters.</p></div>`;
+                
+                renderProductGrid(filteredProducts, grid);
             } catch (err) {}
         }
 
@@ -1279,7 +1337,7 @@
             } catch (err) { showToast(err.message, "error"); }
         }
 
-        // FEATURE #9: AI FRESHNESS & QUALITY VISION GRADER SCAN
+        // AI VISION SCANNER
         function handleImageUpload(event) {
             const files = event.target.files;
             if (!files.length) return;
@@ -1309,8 +1367,6 @@
                         
                         uploadedImages.push(compressedImageData);
                         gallery.insertAdjacentHTML('beforeend', `<img src="${compressedImageData}" class="h-full w-auto object-cover rounded-xl border border-white/10 shrink-0 shadow-lg">`);
-                        
-                        // Show AI Quality Grader
                         document.getElementById('ai-scan-result').classList.remove('hidden');
                     }
                 }
@@ -1324,10 +1380,14 @@
             const description = document.getElementById('post-description').value.trim();
             const category = document.getElementById('post-category').value;
             const unit = document.getElementById('post-unit').value.trim();
-            const neighborhood = document.getElementById('post-neighborhood').value.trim();
             const base_price_ghs = document.getElementById('post-price').value.trim();
             
-            if (!product_name || !unit || !neighborhood || !base_price_ghs) return showToast("Fill all required fields", "error");
+            // COMBINE TOWN AND REGION FOR NATIONWIDE DATABASE
+            const regionSelect = document.getElementById('post-region').value;
+            const townInput = document.getElementById('post-town').value.trim();
+            const neighborhood = townInput ? `${townInput}, ${regionSelect}` : regionSelect;
+            
+            if (!product_name || !unit || !townInput || !base_price_ghs) return showToast("Fill all required fields", "error");
 
             const finalImageData = uploadedImages.length > 0 ? JSON.stringify(uploadedImages) : null;
 
@@ -1343,7 +1403,7 @@
                 if(!res.ok) throw new Error("Failed to post");
                 
                 showToast("Ad Published Successfully!");
-                ['post-name', 'post-description', 'post-price', 'post-unit', 'post-neighborhood'].forEach(id => document.getElementById(id).value = '');
+                ['post-name', 'post-description', 'post-price', 'post-unit', 'post-town'].forEach(id => document.getElementById(id).value = '');
                 
                 const preview = document.getElementById('image-preview');
                 preview.innerHTML = `
