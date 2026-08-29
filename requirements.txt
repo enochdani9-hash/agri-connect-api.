@@ -11,3 +11,4 @@ email-validator
 psycopg2-binary
 requests
 passlib
+httpx
