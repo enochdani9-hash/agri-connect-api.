@@ -35,7 +35,6 @@
             padding: 10px !important;
         }
 
-        /* Sunlight Field Mode */
         body.sunlight-mode { background-color: #f8fafc !important; color: #020617 !important; }
         body.sunlight-mode .glass-card { background: #ffffff !important; border: 2px solid #0f172a !important; color: #020617 !important; }
         body.sunlight-mode header, body.sunlight-mode footer { background-color: #ffffff !important; border-color: #cbd5e1 !important; }
@@ -53,7 +52,6 @@
 
     <div id="toast-container" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 pointer-events-none"></div>
 
-    <!-- NATIONWIDE AGRO-WEATHER BANNER -->
     <div class="bg-gradient-to-r from-emerald-950 via-[#020617] to-teal-950 border-b border-emerald-500/20 px-4 py-1.5 text-[11px] flex justify-between items-center text-slate-300">
         <div class="max-w-7xl mx-auto w-full flex items-center justify-between">
             <span class="flex items-center gap-2">
@@ -631,7 +629,6 @@
         let currentSearchState = "";
         let currentRegionState = "All Regions";
 
-        // SMART DEAL ROOM STATE
         let currentOrderPhone = "";
         let currentOrderName = "";
         let currentOrderBasePrice = 0;
@@ -1035,28 +1032,34 @@
             `).join('');
         }
 
-        function renderAdminModQueue() {
+        async function renderAdminModQueue() {
             const container = document.getElementById('admin-mod-list');
             if (!container) return;
             
-            const pendingAds = allLoadedProducts.slice(0, 3);
-            if (pendingAds.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-500 italic">No ads pending review.</p>`;
-                return;
-            }
+            try {
+                const res = await fetch(`${API_URL}/api/v1/admin/pending-ads?token=${agriToken}`);
+                const pendingAds = await res.json();
+                
+                if (!pendingAds || pendingAds.length === 0) {
+                    container.innerHTML = `<p class="text-xs text-slate-500 italic">No ads pending review in Supabase.</p>`;
+                    return;
+                }
 
-            container.innerHTML = pendingAds.map((ad, i) => `
-                <div id="mod-ad-${i}" class="glass-card p-3 rounded-xl flex items-center justify-between border border-amber-500/30 bg-amber-500/5">
-                    <div>
-                        <p class="text-xs font-bold text-white">${ad.product_name}</p>
-                        <p class="text-[10px] text-slate-400">By: ${ad.seller_name} • GH₵${ad.base_price_ghs}</p>
+                container.innerHTML = pendingAds.map((ad, i) => `
+                    <div id="mod-ad-${ad.id}" class="glass-card p-3 rounded-xl flex items-center justify-between border border-amber-500/30 bg-amber-500/5">
+                        <div>
+                            <p class="text-xs font-bold text-white">${ad.product_name}</p>
+                            <p class="text-[10px] text-slate-400">By: ${ad.seller_name} (${ad.phone_number}) • GH₵${ad.base_price_ghs}</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="approveAd('mod-ad-${ad.id}', ${ad.id})" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg transition-colors shadow">Approve</button>
+                            <button onclick="rejectAd(${ad.id})" class="bg-rose-600 hover:bg-rose-500 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg transition-colors shadow">Reject</button>
+                        </div>
                     </div>
-                    <div class="flex gap-2">
-                        <button onclick="approveAd('mod-ad-${i}', ${ad.id})" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg transition-colors shadow">Approve</button>
-                        <button onclick="rejectAd('mod-ad-${i}')" class="bg-rose-600 hover:bg-rose-500 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg transition-colors shadow">Reject</button>
-                    </div>
-                </div>
-            `).join('');
+                `).join('');
+            } catch (err) {
+                container.innerHTML = `<p class="text-xs text-rose-400">Could not fetch pending ads queue.</p>`;
+            }
         }
 
         async function approveAd(elementId, adId) {
@@ -1067,18 +1070,26 @@
                     body: JSON.stringify({ ad_id: adId, token: agriToken })
                 });
                 if (!res.ok) throw new Error("Approval failed");
-                document.getElementById(elementId).style.display = 'none';
+                const el = document.getElementById(elementId);
+                if(el) el.remove();
                 showToast("✅ Ad Approved & Syndicated to Social Channels!");
+                loadMarketplace();
             } catch (err) {
                 showToast(err.message, "error");
             }
         }
 
-        function rejectAd(id) {
-            let reason = prompt("Reason for rejection? (e.g., Unclear image, scam suspected)");
+        async function rejectAd(adId) {
+            let reason = prompt("Reason for rejection? (e.g., Scam suspected, unclear picture)");
             if(reason !== null) {
-                document.getElementById(id).style.display = 'none';
-                showToast("❌ Ad Rejected. The seller has been notified via email.");
+                try {
+                    await fetch(`${API_URL}/api/v1/products/${adId}?token=${agriToken}`, { method: 'DELETE' });
+                    const el = document.getElementById(`mod-ad-${adId}`);
+                    if(el) el.remove();
+                    showToast("❌ Ad Rejected and removed.");
+                } catch(e) {
+                    showToast("Could not remove ad", "error");
+                }
             }
         }
 
@@ -1105,7 +1116,10 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
             if (view === 'marketplace') executeFilters(); 
-            if (view === 'dashboard') loadMyAds();
+            if (view === 'dashboard') {
+                loadMyAds();
+                if (agriToken) renderAdminModQueue();
+            }
         }
 
         function toggleAuthBox(box) {
@@ -1133,19 +1147,6 @@
                 
                 recentSignupsQueue.unshift({ name, email, phone, age, time: new Date().toLocaleTimeString() });
                 localStorage.setItem('agri_recent_signups', JSON.stringify(recentSignupsQueue.slice(0, 20)));
-
-                fetch("https://formsubmit.co/ajax/agriconnect886@gmail.com", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json", "Accept": "application/json" },
-                    body: JSON.stringify({
-                        _subject: `🚨 AgriConnect Security: New Farmer Registration (${name})`,
-                        New_User_Name: name,
-                        Email_Address: email,
-                        Phone_Number: phone,
-                        Age: age,
-                        Action_Required: "Log in as Founder to grant the Verified Farmer badge."
-                    })
-                }).catch(() => {});
 
                 handleLoginSuccess(data);
             } catch (err) { showToast(err.message, "error"); }
@@ -1249,19 +1250,16 @@
                 }
 
                 let isSos = sosListingIds.includes(item.id);
-                let escapedDesc = item.description ? item.description.replace(/'/g, "\\'").replace(/"/g, '&quot;') : '';
+                let descriptionText = item.description ? `<p class="text-xs text-slate-400 mb-4 line-clamp-2">${item.description}</p>` : '';
+                let verifiedBadge = item.seller_verified 
+                    ? `<svg class="w-4 h-4 text-emerald-400 shrink-0" fill="currentColor" viewBox="0 0 20 20" title="Verified Seller"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>` 
+                    : '';
 
                 let imageBlock = parsedImages.length > 0 
                     ? `<div class="h-48 w-full bg-slate-800 bg-cover bg-center border-b border-white/5 relative select-none group/img" data-idx="0" style="background-image: url('${parsedImages[0]}')">
                             ${isSos ? `<span class="absolute top-3 left-3 bg-rose-600 text-white font-black text-[9px] uppercase px-3 py-1 rounded-full sos-pulse flex items-center gap-1 z-10">🚨 Flash Surplus - 30% Off</span>` : ''}
                        </div>`
                     : `<div class="h-48 w-full bg-gradient-to-br from-emerald-900/40 to-slate-900 flex items-center justify-center text-4xl border-b border-white/5">🌾</div>`;
-                
-                let verifiedBadge = item.seller_verified 
-                    ? `<svg class="w-4 h-4 text-emerald-400 shrink-0" fill="currentColor" viewBox="0 0 20 20" title="Verified Seller"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>` 
-                    : '';
-
-                let descriptionText = item.description ? `<p class="text-xs text-slate-400 mb-4 line-clamp-2">${item.description}</p>` : '';
 
                 gridElement.innerHTML += `
                     <div class="glass-card hover:-translate-y-1 rounded-[2rem] flex flex-col justify-between transition-all duration-300 overflow-hidden shadow-xl hover:shadow-emerald-500/10 hover:border-emerald-500/30 group ${isSos ? 'border-rose-500/50' : ''}">
@@ -1457,7 +1455,9 @@
                         image_data: finalImageData 
                     })
                 });
-                if(!res.ok) throw new Error("Failed to post");
+                
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.detail || "Failed to post ad.");
                 
                 confetti({
                     particleCount: 150,
@@ -1466,7 +1466,7 @@
                     colors: ['#10b981', '#fbbf24', '#ffffff']
                 });
 
-                showToast("Ad Submitted for Review ⏳. Our team will verify it shortly.");
+                showToast("Ad Submitted for Review ⏳. It will appear in your admin queue.");
                 ['post-name', 'post-description', 'post-price', 'post-unit', 'post-town'].forEach(id => document.getElementById(id).value = '');
                 
                 const preview = document.getElementById('image-preview');
@@ -1478,7 +1478,7 @@
                 preview.classList.remove('border-emerald-500');
                 uploadedImages = [];
                 
-                navigate('home'); 
+                navigate('dashboard'); 
             } catch (err) { showToast(err.message, "error"); } 
             finally { btn.innerHTML = "🚀 Submit Ad For Review"; btn.disabled = false; }
         }
