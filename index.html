@@ -10,8 +10,6 @@
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2814/2814468.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- NEW FEATURE: Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
@@ -31,7 +29,6 @@
         .sos-pulse { animation: sosGlow 1.5s infinite alternate; }
         @keyframes sosGlow { from { box-shadow: 0 0 15px rgba(244, 63, 94, 0.3); border-color: rgba(244, 63, 94, 0.5); } to { box-shadow: 0 0 30px rgba(244, 63, 94, 0.8); border-color: rgba(244, 63, 94, 1); } }
 
-        /* PREVIOUS FIX: FORCE ALL DROPDOWN MENUS TO RENDER CRISP AND VISIBLE ON ALL BROWSERS */
         select option {
             background-color: #0f172a !important;
             color: #ffffff !important;
@@ -45,6 +42,8 @@
         body.sunlight-mode h1, body.sunlight-mode h2, body.sunlight-mode h3, body.sunlight-mode h4, body.sunlight-mode .text-white { color: #020617 !important; }
         body.sunlight-mode p, body.sunlight-mode span.text-slate-400, body.sunlight-mode span.text-slate-300 { color: #334155 !important; }
         body.sunlight-mode select option { background-color: #ffffff !important; color: #020617 !important; }
+        
+        .pulse-dot { animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite; }
     </style>
 </head>
 <body id="app-body" class="bg-[#020617] text-slate-100 font-sans min-h-screen selection:bg-emerald-500 selection:text-white overflow-x-hidden flex flex-col transition-colors duration-300">
@@ -136,7 +135,6 @@
                     </div>
                 </div>
 
-                <!-- MOMO ESCROW TRADE SHIELD -->
                 <div class="p-3 bg-slate-900/90 rounded-xl border border-white/5 flex items-center gap-3">
                     <span class="text-lg">🛡️</span>
                     <div class="text-[10px] text-slate-400 leading-tight">
@@ -212,7 +210,6 @@
                 <div class="max-w-4xl mx-auto relative z-10">
                     <div class="flex flex-col md:flex-row bg-[#020617]/50 rounded-3xl border border-slate-700/80 shadow-inner p-2 gap-2">
                         
-                        <!-- ALL 16 REGIONS VISIBLE IN DROPDOWN -->
                         <div class="relative w-full md:w-1/3 flex items-center bg-[#0f172a] rounded-2xl border border-slate-700/50">
                             <span class="absolute left-4 text-emerald-500 z-10">🌍</span>
                             <select id="home-region" class="w-full bg-transparent text-sm text-white font-bold pl-10 pr-4 py-4 outline-none cursor-pointer appearance-none rounded-2xl">
@@ -236,14 +233,12 @@
                             </select>
                         </div>
 
-                        <!-- SEARCH INPUT -->
                         <div class="relative w-full md:w-2/3 flex items-center">
                             <span class="absolute left-4 text-slate-500 z-10">🔍</span>
                             <input type="text" name="email_trap" style="display:none;" aria-hidden="true">
                             <input type="password" name="password_trap" style="display:none;" aria-hidden="true">
                             <input type="search" id="market_finder" role="presentation" autocomplete="new-password" placeholder="Search 'Live Broilers' or 'Tomatoes'..." class="w-full bg-transparent pl-10 pr-12 py-4 text-sm text-white focus:outline-none transition-all relative z-0">
                             
-                            <!-- VOICE SEARCH -->
                             <button id="voice-search-btn" onclick="startVoiceSearch()" class="absolute right-4 text-slate-400 hover:text-emerald-400 transition-colors p-1 rounded-full" title="Search by Voice">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
                             </button>
@@ -309,9 +304,8 @@
                     <div class="flex flex-col md:flex-row md:items-center gap-3 mb-2">
                         <h2 class="text-3xl font-black text-white tracking-tight" id="profile-name">Farmer Name</h2>
                         
-                        <!-- NEW FEATURE: LIVE ONLINE DOT -->
                         <div class="flex items-center gap-1.5 bg-emerald-500/10 px-2 py-1 rounded-full border border-emerald-500/30">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 pulse-dot"></span>
                             <span class="text-[10px] font-bold text-emerald-400">Online Now</span>
                         </div>
 
@@ -327,11 +321,10 @@
                         <span class="text-xs text-slate-500 ml-2 font-bold">(4.8 Trust Rating)</span>
                     </div>
                     
-                    <div class="flex gap-2 justify-center md:justify-start">
+                    <div class="flex gap-2 justify-center md:justify-start flex-wrap">
                         <button id="profile-contact-btn" class="bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white font-black px-8 py-3 rounded-xl text-sm transition-all border border-[#25D366]/30 flex items-center gap-2 shadow-lg">
                             Contact Farmer
                         </button>
-                        <!-- NEW FEATURE: REPORT SCAM BUTTON -->
                         <button onclick="showToast('🚨 User reported to AgriConnect safety team for review.', 'error')" class="bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white font-black px-4 py-3 rounded-xl text-sm transition-all border border-rose-500/30 flex items-center gap-2 shadow-lg">
                             🚩 Report Scam
                         </button>
@@ -520,7 +513,6 @@
                             <input type="text" id="post-price" placeholder="Price (e.g. 100 - 150)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl pl-12 pr-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
                         </div>
                         
-                        <!-- SMART NATIONWIDE LOCATION SELECTOR (ALL 16 REGIONS) -->
                         <div class="flex gap-2">
                             <select id="post-region" class="w-1/2 bg-[#0f172a] border border-slate-700 rounded-xl px-2 py-4 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer font-bold">
                                 <option value="Ahafo">Ahafo</option>
@@ -548,7 +540,6 @@
                     </div>
                 </div>
                 <div class="pt-4 border-t border-white/5">
-                    <!-- CHANGED: Jiji-Style "Submit for Review" -->
                     <button id="submit-ad-btn" onclick="submitAd()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-4 rounded-xl text-sm transition-all shadow-lg hover:-translate-y-0.5">🚀 Submit Ad For Review</button>
                     <p class="text-[10px] text-center text-slate-500 mt-3 font-medium">Your registered phone number will automatically be attached to this ad.</p>
                 </div>
@@ -598,7 +589,7 @@
                     </div>
                 </div>
 
-                <!-- NEW FEATURE: AD MODERATION QUEUE -->
+                <!-- AD MODERATION QUEUE -->
                 <div class="mt-8 border-t border-white/10 pt-6">
                     <h4 class="text-xs font-black uppercase tracking-wider text-slate-400 mb-2">Ad Moderation Queue (Pending Review)</h4>
                     <div id="admin-mod-list" class="space-y-2"></div>
@@ -645,6 +636,7 @@
         let currentSearchState = "";
         let currentRegionState = "All Regions";
 
+        // SMART DEAL ROOM STATE
         let currentOrderPhone = "";
         let currentOrderName = "";
         let currentOrderBasePrice = 0;
@@ -693,6 +685,21 @@
                 showToast("☀️ Sunlight Field Mode Enabled");
             } else {
                 showToast("🌙 Dark Mode Restored");
+            }
+        }
+
+        function toggleSOSClearance(id) {
+            if (sosListingIds.includes(id)) {
+                sosListingIds = sosListingIds.filter(item => item !== id);
+                showToast("SOS Flash Sale Deactivated");
+            } else {
+                sosListingIds.push(id);
+                showToast("🚨 SOS Spoilage Flash Sale Activated! 30% Off Badge Applied!");
+            }
+            localStorage.setItem('agri_sos_ids', JSON.stringify(sosListingIds));
+            loadMyAds();
+            if(!document.getElementById('view-marketplace').classList.contains('hidden')) {
+                loadMarketplace();
             }
         }
 
@@ -821,7 +828,6 @@
 
             let subtotal = effectiveUnitPrice * qty;
             document.getElementById('order-subtotal').innerText = subtotal.toFixed(2);
-
             document.getElementById('order-total-price').innerText = subtotal.toFixed(2);
 
             let splitCount = parseInt(document.getElementById('group-split-count').value) || 2;
@@ -847,6 +853,16 @@
                 msgText = `*NEW PURCHASE ORDER via AgriConnect*\n\nHello! I am ordering:\n📦 *Item:* ${currentOrderName}\n🔢 *Quantity:* ${qty} ${currentOrderUnit}\n📍 *Delivery:* ${destination}\n💰 *Grand Total:* GH₵${grandTotal}\n\nPlease confirm availability and payment details.`;
             }
 
+            fetch(`${API_URL}/api/v1/notify-farmer`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    phone: currentOrderPhone,
+                    item: currentOrderName,
+                    offer: grandTotal
+                })
+            }).catch(err => console.log("SMS notification skipped", err));
+
             window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(msgText)}`, '_blank');
             closeOrderModal();
         }
@@ -859,6 +875,53 @@
             let cleanPhone = currentOrderPhone.replace(/\D/g, '');
             window.open(`sms:${cleanPhone}?body=${encodeURIComponent(smsBody)}`, '_self');
             closeOrderModal();
+        }
+
+        function generateWhatsAppFlyer(name, price, unit, imageBase64, phone) {
+            showToast("Designing your flyer... 🎨");
+            const canvas = document.createElement('canvas');
+            canvas.width = 1080; canvas.height = 1920; 
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#020617'; ctx.fillRect(0, 0, 1080, 1920);
+
+            const img = new Image();
+            if (!imageBase64 || imageBase64 === '') {
+                drawFlyerText(ctx, canvas, name, price, unit, phone);
+                downloadCanvas(canvas, name);
+                return;
+            }
+
+            img.src = imageBase64;
+            img.onload = () => {
+                ctx.drawImage(img, 0, 0, 1080, 1080);
+                const gradient = ctx.createLinearGradient(0, 800, 0, 1080);
+                gradient.addColorStop(0, 'rgba(2, 6, 23, 0)');
+                gradient.addColorStop(1, '#020617');
+                ctx.fillStyle = gradient; ctx.fillRect(0, 800, 1080, 280);
+                drawFlyerText(ctx, canvas, name, price, unit, phone);
+                downloadCanvas(canvas, name);
+            }
+        }
+
+        function drawFlyerText(ctx, canvas, name, price, unit, phone) {
+            ctx.fillStyle = '#10b981'; ctx.font = 'bold 80px sans-serif'; ctx.fillText("FOR SALE", 80, 1200);
+            ctx.fillStyle = 'white'; ctx.font = 'bold 110px sans-serif';
+            let displayName = name.length > 25 ? name.substring(0, 25) + '...' : name;
+            ctx.fillText(displayName, 80, 1330, 920);
+            ctx.fillStyle = '#34d399'; ctx.font = 'bold 130px sans-serif'; ctx.fillText(`GH₵${price}`, 80, 1500);
+            ctx.fillStyle = '#94a3b8'; ctx.font = 'bold 60px sans-serif'; ctx.fillText(` / ${unit}`, ctx.measureText(`GH₵${price}`).width + 100, 1500);
+            ctx.fillStyle = '#0f172a'; ctx.roundRect(80, 1600, 920, 180, 40); ctx.fill();
+            ctx.strokeStyle = '#1e293b'; ctx.lineWidth = 4; ctx.stroke();
+            ctx.fillStyle = 'white'; ctx.font = 'bold 60px sans-serif'; ctx.fillText(`📞 WhatsApp / Call:`, 140, 1685);
+            ctx.fillStyle = '#10b981'; ctx.font = 'bold 70px sans-serif'; ctx.fillText(phone, 140, 1755);
+            ctx.fillStyle = '#475569'; ctx.font = 'bold 40px sans-serif'; ctx.textAlign = 'center'; ctx.fillText("Verified Farmer Market • AgriConnect Ghana", 540, 1880);
+        }
+
+        function downloadCanvas(canvas, name) {
+            const link = document.createElement('a');
+            link.download = `AgriConnect_${name.replace(/ /g, '_')}_Flyer.jpg`;
+            link.href = canvas.toDataURL('image/jpeg', 0.9); link.click();
+            showToast("Flyer Downloaded! 📱 Share it on your Status!");
         }
 
         function openSellerProfile(sellerName, phone, isVerified, memberSince) {
@@ -981,7 +1044,6 @@
             const container = document.getElementById('admin-mod-list');
             if (!container) return;
             
-            // Simulating a queue by taking the first 3 ads from the loaded products
             const pendingAds = allLoadedProducts.slice(0, 3);
             if (pendingAds.length === 0) {
                 container.innerHTML = `<p class="text-xs text-slate-500 italic">No ads pending review.</p>`;
@@ -1122,7 +1184,6 @@
             }
         }
 
-        // NEW FEATURE: SHARE TO X (TWITTER)
         function shareToX(name, price) {
             const url = `https://twitter.com/intent/tweet?text=Check out this fresh deal on AgriConnect Ghana: ${name} for GH₵${price}! Direct from the farm. 🌾🚜&url=${window.location.href}`;
             window.open(url, '_blank');
@@ -1224,12 +1285,15 @@
                                     <span class="text-xs text-slate-400 ml-1 font-medium">/ ${item.unit}</span>
                                 </div>
                                 <div class="grid grid-cols-12 gap-2">
-                                    <button onclick="openOrderModal('${item.phone_number}', '${item.product_name.replace(/'/g, "\\'")}', '${item.base_price_ghs}', '${item.unit}', '${item.neighborhood}', ${item.id})" class="col-span-8 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white font-black py-3 rounded-xl text-xs transition-all border border-[#25D366]/30 flex items-center justify-center gap-2">
-                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.015c-.198 0-.52.074-.792.347-.272.273-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+                                    <button onclick="openOrderModal('${item.phone_number}', '${item.product_name.replace(/'/g, "\\'")}', '${item.base_price_ghs}', '${item.unit}', '${item.neighborhood}', ${item.id})" class="col-span-6 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white font-black py-3 rounded-xl text-xs transition-all border border-[#25D366]/30 flex items-center justify-center gap-1.5 truncate">
+                                        <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.015c-.198 0-.52.074-.792.347-.272.273-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
                                         Deal Room
                                     </button>
                                     
-                                    <!-- NEW FEATURE: SHARE TO X (TWITTER) -->
+                                    <button onclick="requireAuthToCall('${item.phone_number}')" class="col-span-2 bg-blue-500/10 text-blue-400 hover:bg-blue-600 hover:text-white font-black py-3 rounded-xl transition-all border border-blue-500/30 flex items-center justify-center" title="Call Seller">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                                    </button>
+
                                     <button onclick="shareToX('${item.product_name.replace(/'/g, "\\'")}', '${item.base_price_ghs}')" class="col-span-2 bg-blue-400/20 text-blue-400 font-black py-2.5 rounded-xl text-xs transition-all border border-blue-400/30 flex items-center justify-center" title="Share to X">
                                         𝕏
                                     </button>
@@ -1304,6 +1368,9 @@
                             <div class="flex items-center gap-2 w-full md:w-auto justify-end flex-wrap">
                                 <button onclick="toggleSOSClearance(${item.id})" class="text-xs font-black px-3.5 py-2 rounded-xl border transition-all ${isSos ? 'bg-rose-600 text-white border-rose-500' : 'bg-rose-500/10 text-rose-400 border-rose-500/30 hover:bg-rose-500 hover:text-white'}">
                                     🚨 ${isSos ? 'SOS Active' : 'Flash SOS'}
+                                </button>
+                                <button onclick="generateWhatsAppFlyer('${item.product_name.replace(/'/g, "\\'")}', '${item.base_price_ghs}', '${item.unit}', '${parsedImages[0] || ''}', '${item.phone_number}')" class="bg-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white text-xs font-black px-3.5 py-2 rounded-xl transition-all border border-blue-500/30 flex items-center gap-1 shadow-sm whitespace-nowrap">
+                                    📱 Get Flyer
                                 </button>
                                 <button onclick="deleteAd(${item.id})" class="w-9 h-9 flex items-center justify-center bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white rounded-xl transition-all border border-rose-500/20 shadow-sm shrink-0" title="Delete Ad">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
@@ -1387,7 +1454,6 @@
                 });
                 if(!res.ok) throw new Error("Failed to post");
                 
-                // NEW FEATURE: CONFETTI CELEBRATION
                 confetti({
                     particleCount: 150,
                     spread: 70,
@@ -1395,9 +1461,7 @@
                     colors: ['#10b981', '#fbbf24', '#ffffff']
                 });
 
-                // NEW FEATURE: JIJI-STYLE MODERATION TOAST
                 showToast("Ad Submitted for Review ⏳. Our team will verify it shortly.");
-                
                 ['post-name', 'post-description', 'post-price', 'post-unit', 'post-town'].forEach(id => document.getElementById(id).value = '');
                 
                 const preview = document.getElementById('image-preview');
