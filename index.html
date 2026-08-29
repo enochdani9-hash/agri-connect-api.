@@ -86,7 +86,6 @@
                 </div>
             </div>
 
-            <!-- TABS FOR MODES -->
             <div class="flex gap-2 p-1 bg-slate-900 rounded-xl mb-4 border border-slate-800 text-xs font-bold">
                 <button onclick="switchOrderTab('direct')" id="tab-direct" class="flex-1 py-2 rounded-lg bg-emerald-600 text-white transition-all">Direct Order</button>
                 <button onclick="switchOrderTab('haggle')" id="tab-haggle" class="flex-1 py-2 rounded-lg text-slate-400 hover:text-white transition-all">Haggle</button>
@@ -99,7 +98,6 @@
                     <input type="number" id="order-quantity" value="1" min="1" oninput="calculateOrderTotal()" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-2.5 text-base text-white font-black outline-none focus:border-emerald-500">
                 </div>
 
-                <!-- HAGGLE SLIDER PANEL -->
                 <div id="panel-haggle" class="hidden p-4 rounded-xl bg-emerald-950/20 border border-emerald-500/30 space-y-2">
                     <div class="flex justify-between items-center text-xs">
                         <span class="font-bold text-slate-300">Your Proposed Unit Price:</span>
@@ -112,7 +110,6 @@
                     </div>
                 </div>
 
-                <!-- GROUP BUY PANEL -->
                 <div id="panel-group" class="hidden p-4 rounded-xl bg-teal-950/20 border border-teal-500/30 space-y-2">
                     <label class="block text-xs font-bold text-slate-300">Split Between How Many People?</label>
                     <input type="number" id="group-split-count" value="4" min="2" max="20" oninput="calculateOrderTotal()" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white font-bold outline-none">
@@ -206,7 +203,6 @@
                 <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 mb-6 relative z-10 tracking-tight">The Farmers Market,<br>Now Online.</h1>
                 <p class="text-slate-400 mb-10 max-w-lg mx-auto relative z-10 text-sm md:text-base leading-relaxed">Buy and sell fresh farm produce directly across Ghana. Zero commissions, pure connections.</p>
                 
-                <!-- NATIONWIDE REGION & SEARCH BAR -->
                 <div class="max-w-4xl mx-auto relative z-10">
                     <div class="flex flex-col md:flex-row bg-[#020617]/50 rounded-3xl border border-slate-700/80 shadow-inner p-2 gap-2">
                         
@@ -249,7 +245,6 @@
                 </div>
             </div>
 
-            <!-- RESTORED PERFECT CATEGORY GRID -->
             <div>
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-2xl font-black text-white tracking-tight">Browse Categories</h3>
@@ -1057,16 +1052,26 @@
                         <p class="text-[10px] text-slate-400">By: ${ad.seller_name} • GH₵${ad.base_price_ghs}</p>
                     </div>
                     <div class="flex gap-2">
-                        <button onclick="approveAd('mod-ad-${i}')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg transition-colors shadow">Approve</button>
+                        <button onclick="approveAd('mod-ad-${i}', ${ad.id})" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg transition-colors shadow">Approve</button>
                         <button onclick="rejectAd('mod-ad-${i}')" class="bg-rose-600 hover:bg-rose-500 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg transition-colors shadow">Reject</button>
                     </div>
                 </div>
             `).join('');
         }
 
-        function approveAd(id) {
-            document.getElementById(id).style.display = 'none';
-            showToast("✅ Ad Approved! It is now live on the marketplace.");
+        async function approveAd(elementId, adId) {
+            try {
+                const res = await fetch(`${API_URL}/api/v1/admin/approve-ad`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ad_id: adId, token: agriToken })
+                });
+                if (!res.ok) throw new Error("Approval failed");
+                document.getElementById(elementId).style.display = 'none';
+                showToast("✅ Ad Approved & Syndicated to Social Channels!");
+            } catch (err) {
+                showToast(err.message, "error");
+            }
         }
 
         function rejectAd(id) {
