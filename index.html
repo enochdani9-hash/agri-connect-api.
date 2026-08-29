@@ -27,12 +27,20 @@
         .sos-pulse { animation: sosGlow 1.5s infinite alternate; }
         @keyframes sosGlow { from { box-shadow: 0 0 15px rgba(244, 63, 94, 0.3); border-color: rgba(244, 63, 94, 0.5); } to { box-shadow: 0 0 30px rgba(244, 63, 94, 0.8); border-color: rgba(244, 63, 94, 1); } }
 
+        /* FIX: FORCE ALL DROPDOWN MENUS TO RENDER CRISP AND VISIBLE ON ALL BROWSERS */
+        select option {
+            background-color: #0f172a !important;
+            color: #ffffff !important;
+            padding: 10px !important;
+        }
+
         /* Sunlight Field Mode */
         body.sunlight-mode { background-color: #f8fafc !important; color: #020617 !important; }
         body.sunlight-mode .glass-card { background: #ffffff !important; border: 2px solid #0f172a !important; color: #020617 !important; }
         body.sunlight-mode header, body.sunlight-mode footer { background-color: #ffffff !important; border-color: #cbd5e1 !important; }
         body.sunlight-mode h1, body.sunlight-mode h2, body.sunlight-mode h3, body.sunlight-mode h4, body.sunlight-mode .text-white { color: #020617 !important; }
         body.sunlight-mode p, body.sunlight-mode span.text-slate-400, body.sunlight-mode span.text-slate-300 { color: #334155 !important; }
+        body.sunlight-mode select option { background-color: #ffffff !important; color: #020617 !important; }
     </style>
 </head>
 <body id="app-body" class="bg-[#020617] text-slate-100 font-sans min-h-screen selection:bg-emerald-500 selection:text-white overflow-x-hidden flex flex-col transition-colors duration-300">
@@ -42,18 +50,18 @@
 
     <div id="toast-container" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 pointer-events-none"></div>
 
-    <!-- NATIONWIDE AGRO-WEATHER & CLIMATE BANNER -->
+    <!-- NATIONWIDE AGRO-WEATHER BANNER -->
     <div class="bg-gradient-to-r from-emerald-950 via-[#020617] to-teal-950 border-b border-emerald-500/20 px-4 py-1.5 text-[11px] flex justify-between items-center text-slate-300">
         <div class="max-w-7xl mx-auto w-full flex items-center justify-between">
             <span class="flex items-center gap-2">
                 <span class="text-amber-400">🌦️ Ghana Agro-Weather:</span>
-                <span id="agro-weather-text">29°C | Humidity 78% • Optimal morning for leafy vegetable harvest</span>
+                <span id="agro-weather-text">29°C | Humidity 78% • Optimal conditions for nationwide trade</span>
             </span>
             <span class="hidden md:inline text-emerald-400 font-bold text-[10px] uppercase tracking-wider">🌱 Nationwide Direct Trade</span>
         </div>
     </div>
 
-    <!-- ADVANCED SMART ORDER, HAGGLING & MOMO ESCROW MODAL -->
+    <!-- SMART DEAL ROOM MODAL -->
     <div id="order-modal" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] shadow-2xl border border-emerald-500/30 relative max-h-[92vh] overflow-y-auto">
             <button onclick="closeOrderModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
@@ -75,7 +83,6 @@
                 </div>
             </div>
 
-            <!-- TABS FOR MODES -->
             <div class="flex gap-2 p-1 bg-slate-900 rounded-xl mb-4 border border-slate-800 text-xs font-bold">
                 <button onclick="switchOrderTab('direct')" id="tab-direct" class="flex-1 py-2 rounded-lg bg-emerald-600 text-white transition-all">Direct Order</button>
                 <button onclick="switchOrderTab('haggle')" id="tab-haggle" class="flex-1 py-2 rounded-lg text-slate-400 hover:text-white transition-all">Haggle</button>
@@ -88,7 +95,6 @@
                     <input type="number" id="order-quantity" value="1" min="1" oninput="calculateOrderTotal()" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-2.5 text-base text-white font-black outline-none focus:border-emerald-500">
                 </div>
 
-                <!-- HAGGLE SLIDER PANEL -->
                 <div id="panel-haggle" class="hidden p-4 rounded-xl bg-emerald-950/20 border border-emerald-500/30 space-y-2">
                     <div class="flex justify-between items-center text-xs">
                         <span class="font-bold text-slate-300">Your Proposed Unit Price:</span>
@@ -96,12 +102,11 @@
                     </div>
                     <input type="range" id="haggle-slider" min="50" max="150" value="100" oninput="updateHaggleMeter()" class="w-full accent-emerald-500 cursor-pointer">
                     <div class="flex justify-between items-center text-[10px]">
-                        <span id="haggle-feedback" class="font-bold text-amber-400">Fair Wholesale Offer (85% of asking)</span>
+                        <span id="haggle-feedback" class="font-bold text-amber-400">Fair Wholesale Offer</span>
                         <span class="text-slate-500">Auto-calculated</span>
                     </div>
                 </div>
 
-                <!-- GROUP BUY PANEL -->
                 <div id="panel-group" class="hidden p-4 rounded-xl bg-teal-950/20 border border-teal-500/30 space-y-2">
                     <label class="block text-xs font-bold text-slate-300">Split Between How Many People?</label>
                     <input type="number" id="group-split-count" value="4" min="2" max="20" oninput="calculateOrderTotal()" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white font-bold outline-none">
@@ -110,7 +115,7 @@
 
                 <div>
                     <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Delivery Logistics</label>
-                    <input type="text" id="order-destination" placeholder="Enter your City/Town for delivery negotiation" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
+                    <input type="text" id="order-destination" placeholder="Enter your City/Town for delivery" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
                 </div>
                 
                 <div class="space-y-1 pt-3 border-t border-white/10 text-xs">
@@ -124,12 +129,11 @@
                     </div>
                 </div>
 
-                <!-- MOMO ESCROW TRADE SHIELD -->
                 <div class="p-3 bg-slate-900/90 rounded-xl border border-white/5 flex items-center gap-3">
                     <span class="text-lg">🛡️</span>
                     <div class="text-[10px] text-slate-400 leading-tight">
                         <strong class="text-slate-200 block">MoMo Safe-Trade Protection</strong>
-                        Never release mobile money until you verify crop freshness or bird health in person.
+                        Inspect produce and confirm quality before releasing mobile money.
                     </div>
                 </div>
                 
@@ -200,11 +204,11 @@
                 <div class="max-w-4xl mx-auto relative z-10">
                     <div class="flex flex-col md:flex-row bg-[#020617]/50 rounded-3xl border border-slate-700/80 shadow-inner p-2 gap-2">
                         
-                        <!-- REGION DROPDOWN -->
+                        <!-- ALL 16 REGIONS VISIBLE IN DROPDOWN -->
                         <div class="relative w-full md:w-1/3 flex items-center bg-[#0f172a] rounded-2xl border border-slate-700/50">
                             <span class="absolute left-4 text-emerald-500 z-10">🌍</span>
-                            <select id="home-region" class="w-full bg-transparent text-sm text-white font-bold pl-10 pr-4 py-4 outline-none cursor-pointer appearance-none">
-                                <option value="All Regions">All Regions</option>
+                            <select id="home-region" class="w-full bg-[#0f172a] text-sm text-white font-bold pl-10 pr-4 py-4 outline-none cursor-pointer rounded-2xl">
+                                <option value="All Regions">All Regions (Ghana)</option>
                                 <option value="Ahafo">Ahafo Region</option>
                                 <option value="Ashanti">Ashanti Region</option>
                                 <option value="Bono">Bono Region</option>
@@ -231,7 +235,6 @@
                             <input type="password" name="password_trap" style="display:none;" aria-hidden="true">
                             <input type="search" id="market_finder" role="presentation" autocomplete="new-password" placeholder="Search 'Live Broilers' or 'Tomatoes'..." class="w-full bg-transparent pl-10 pr-12 py-4 text-sm text-white focus:outline-none transition-all relative z-0">
                             
-                            <!-- VOICE SEARCH -->
                             <button id="voice-search-btn" onclick="startVoiceSearch()" class="absolute right-4 text-slate-400 hover:text-emerald-400 transition-colors p-1 rounded-full" title="Search by Voice">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
                             </button>
@@ -336,7 +339,6 @@
                 <div class="space-y-6 text-slate-300 leading-relaxed text-base">
                     <p>AgriConnect was built with a simple but powerful mission: <strong class="text-emerald-400">to bridge the gap between hardworking farmers and eager buyers across all 16 regions of Ghana.</strong></p>
                     <p>For too long, the agricultural supply chain has been slowed down by middlemen, driving up costs for consumers and cutting into the profits of local farmers. We believe that technology can solve this.</p>
-                    <p>By providing a completely free, zero-commission digital marketplace, AgriConnect empowers poultry farmers, vegetable growers, and livestock rearers to showcase their fresh produce directly to the community.</p>
                 </div>
             </div>
         </div>
@@ -384,7 +386,7 @@
                 <div class="flex gap-2 flex-wrap items-center">
                     <!-- NATIONWIDE MARKETPLACE REGION FILTER -->
                     <select id="market-region-filter" onchange="executeFilters()" class="bg-[#0f172a] border border-slate-600 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer shadow-inner font-bold">
-                        <option value="All Regions">All Regions</option>
+                        <option value="All Regions">All Regions (Ghana)</option>
                         <option value="Ahafo">Ahafo Region</option>
                         <option value="Ashanti">Ashanti Region</option>
                         <option value="Bono">Bono Region</option>
@@ -451,7 +453,7 @@
             </div>
         </div>
 
-        <!-- POST AD DASHBOARD (WITH AI VISION GRADER & 15S VOICE STORY) -->
+        <!-- POST AD DASHBOARD -->
         <div id="view-post" class="fade-in hidden max-w-2xl mx-auto mt-6">
             <div class="flex items-center gap-3 mb-6">
                 <div class="w-10 h-10 bg-emerald-500/20 rounded-xl flex items-center justify-center text-emerald-400 border border-emerald-500/30">📢</div>
@@ -469,14 +471,12 @@
                     </div>
                     <input type="file" id="post-image" accept="image/*" multiple class="hidden" onchange="handleImageUpload(event)">
                     
-                    <!-- AI QUALITY SCANNER BADGE -->
                     <div id="ai-scan-result" class="hidden mt-2 p-2.5 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-xs flex items-center justify-between">
                         <span class="flex items-center gap-2"><span>✨</span> <strong>AI Vision Grader:</strong> High Clarity & Natural Color Balance</span>
                         <span class="font-black text-emerald-400 uppercase text-[10px] bg-emerald-500/20 px-2 py-0.5 rounded">Grade A+</span>
                     </div>
                 </div>
 
-                <!-- 15-SECOND FARMER AUDIO STORY -->
                 <div class="p-4 bg-slate-900/60 rounded-2xl border border-slate-800 flex items-center justify-between">
                     <div>
                         <span class="text-xs font-bold text-white block">🎙️ 15-Second Farm Voice Story</span>
@@ -514,9 +514,9 @@
                             <input type="text" id="post-price" placeholder="Price (e.g. 100 - 150)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl pl-12 pr-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
                         </div>
                         
-                        <!-- SMART NATIONWIDE LOCATION SELECTOR -->
+                        <!-- SMART NATIONWIDE LOCATION SELECTOR (ALL 16 REGIONS) -->
                         <div class="flex gap-2">
-                            <select id="post-region" class="w-2/5 bg-[#0f172a] border border-slate-700 rounded-xl px-3 py-4 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer font-bold">
+                            <select id="post-region" class="w-1/2 bg-[#0f172a] border border-slate-700 rounded-xl px-2 py-4 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer font-bold">
                                 <option value="Ahafo">Ahafo</option>
                                 <option value="Ashanti">Ashanti</option>
                                 <option value="Bono">Bono</option>
@@ -534,9 +534,9 @@
                                 <option value="Western">Western</option>
                                 <option value="Western North">Western North</option>
                             </select>
-                            <div class="relative w-3/5">
-                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">📍</span>
-                                <input type="text" id="post-town" placeholder="Town (e.g. Madina)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl pl-8 pr-3 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
+                            <div class="relative w-1/2">
+                                <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs">📍</span>
+                                <input type="text" id="post-town" placeholder="Town/City" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl pl-7 pr-2 py-4 text-xs text-white outline-none focus:border-emerald-500 transition-colors">
                             </div>
                         </div>
                     </div>
@@ -568,12 +568,28 @@
             
             <div id="my-ads-list" class="grid grid-cols-1 gap-4"></div>
 
+            <!-- FOUNDER ADMIN TOOLS: WITH PENDING VERIFICATION & REAL-TIME ALERTS -->
             <div id="admin-panel" class="hidden mt-12 glass-card p-6 rounded-2xl border border-emerald-500/30">
-                <h3 class="text-lg font-black text-emerald-400 mb-2">🛡️ Founder Admin Tools</h3>
-                <p class="text-xs text-slate-400 mb-5">Grant the "Verified Seller" badge to trusted farmers on your platform.</p>
-                <div class="flex gap-2">
-                    <input type="email" id="verify-email-input" placeholder="Farmer's Email Address" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
-                    <button onclick="verifySeller()" class="bg-emerald-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-emerald-500 shrink-0 transition-colors">Verify</button>
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-black text-emerald-400">🛡️ Founder Admin Security & Verification Hub</h3>
+                        <p class="text-xs text-slate-400">Review new user registrations and grant Verified Badges.</p>
+                    </div>
+                    <span class="text-xs font-bold bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full border border-emerald-500/30">Founder Mode</span>
+                </div>
+                
+                <!-- RECENT SIGNUPS QUEUE -->
+                <div class="mb-6">
+                    <h4 class="text-xs font-black uppercase tracking-wider text-slate-400 mb-2">Recent User Registrations</h4>
+                    <div id="admin-signups-list" class="space-y-2"></div>
+                </div>
+
+                <div class="pt-4 border-t border-white/10">
+                    <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">Manual Verification</label>
+                    <div class="flex gap-2">
+                        <input type="email" id="verify-email-input" placeholder="Enter Farmer's Email Address" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
+                        <button onclick="verifySeller()" class="bg-emerald-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-emerald-500 shrink-0 transition-colors">Verify</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -595,7 +611,7 @@
                 <button onclick="navigate('support')" class="hover:text-emerald-400 transition-colors">Contact Support</button>
             </div>
             <p class="text-xs text-slate-600 font-medium text-center md:text-right">
-                © 2026 AgriConnect.<br> Empowering Ghana's Farmers.
+                © 2026 AgriConnect Ghana.<br> Empowering Local Farmers Nationwide.
             </p>
         </div>
     </footer>
@@ -615,8 +631,6 @@
         
         let currentCategoryState = "";
         let currentSearchState = "";
-        
-        // NEW NATIONWIDE REGION STATE
         let currentRegionState = "All Regions";
 
         // SMART DEAL ROOM STATE
@@ -627,8 +641,8 @@
         let currentOrderSellerLoc = "";
         let currentOrderTabState = "direct";
 
-        // LOCAL SOS FLASH OVERRIDES
         let sosListingIds = JSON.parse(localStorage.getItem('agri_sos_ids') || '[]');
+        let recentSignupsQueue = JSON.parse(localStorage.getItem('agri_recent_signups') || '[]');
 
         function showToast(msg, type='success') {
             const c = document.getElementById('toast-container');
@@ -661,7 +675,6 @@
             navigate('home');
         });
 
-        // SUNLIGHT MODE
         function toggleSunlightMode() {
             const body = document.getElementById('app-body');
             body.classList.toggle('sunlight-mode');
@@ -672,7 +685,6 @@
             }
         }
 
-        // TOGGLE SOS SPOILAGE CLEARANCE
         function toggleSOSClearance(id) {
             if (sosListingIds.includes(id)) {
                 sosListingIds = sosListingIds.filter(item => item !== id);
@@ -688,7 +700,6 @@
             }
         }
 
-        // 15-SECOND VOICE NOTE SIMULATION
         let isRecording = false;
         function toggleVoiceRecording() {
             const btn = document.getElementById('record-voice-btn');
@@ -708,7 +719,6 @@
             }
         }
 
-        // LISTEN TO AD
         function listenToAd(name, price, unit, loc, desc) {
             if (!('speechSynthesis' in window)) {
                 showToast("Audio reading is not supported on this browser.", "error");
@@ -723,7 +733,6 @@
             window.speechSynthesis.speak(utterance);
         }
 
-        // VOICE SEARCH
         function startVoiceSearch() {
             const btn = document.getElementById('voice-search-btn');
             const searchBox = document.getElementById('market_finder');
@@ -753,7 +762,6 @@
             recognition.start();
         }
 
-        // SMART DEAL ROOM (HAGGLING + GROUP BUY + OFFLINE SMS)
         function openOrderModal(phone, name, priceStr, unit, sellerLoc, prodId) {
             if (!agriToken) {
                 showToast("Please sign in to contact the seller", "error");
@@ -767,7 +775,7 @@
             if (matches && matches.length > 0) {
                 avgPrice = matches.length > 1 ? (parseFloat(matches[0]) + parseFloat(matches[1])) / 2 : parseFloat(matches[0]);
             }
-            if (isSos) avgPrice = avgPrice * 0.7; 
+            if (isSos) avgPrice = avgPrice * 0.7;
 
             currentOrderPhone = phone;
             currentOrderName = name;
@@ -850,7 +858,6 @@
 
             let subtotal = effectiveUnitPrice * qty;
             document.getElementById('order-subtotal').innerText = subtotal.toFixed(2);
-
             document.getElementById('order-total-price').innerText = subtotal.toFixed(2);
 
             let splitCount = parseInt(document.getElementById('group-split-count').value) || 2;
@@ -890,7 +897,6 @@
             closeOrderModal();
         }
 
-        // WHATSAPP FLYER GENERATOR
         function generateWhatsAppFlyer(name, price, unit, imageBase64, phone) {
             showToast("Designing your flyer... 🎨");
             const canvas = document.createElement('canvas');
@@ -938,7 +944,6 @@
             showToast("Flyer Downloaded! 📱 Share it on your Status!");
         }
 
-        // FARM PROFILE & QR CODE
         function openSellerProfile(sellerName, phone, isVerified, memberSince) {
             document.getElementById('profile-name').innerText = sellerName;
             document.getElementById('profile-joined').innerText = memberSince || "2026";
@@ -1029,7 +1034,43 @@
 
             if (email === "enochdani9@gmail.com") {
                 document.getElementById('admin-panel').classList.remove('hidden');
+                renderAdminSignupsList();
             }
+        }
+
+        function renderAdminSignupsList() {
+            const container = document.getElementById('admin-signups-list');
+            if (!container) return;
+            if (recentSignupsQueue.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 italic">No new pending registrations.</p>`;
+                return;
+            }
+
+            container.innerHTML = recentSignupsQueue.map((u, i) => `
+                <div class="glass-card p-3 rounded-xl flex items-center justify-between border border-white/5">
+                    <div>
+                        <p class="text-xs font-bold text-white">${u.name} <span class="text-slate-400 font-normal">(${u.email})</span></p>
+                        <p class="text-[10px] text-slate-500">📞 ${u.phone} • Age: ${u.age} • Registered: ${u.time}</p>
+                    </div>
+                    <button onclick="quickVerifyUser('${u.email}', ${i})" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-colors shadow">
+                        ✅ Verify
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        async function quickVerifyUser(targetEmail, index) {
+            try {
+                const res = await fetch(`${API_URL}/api/v1/admin/verify?token=${agriToken}`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: targetEmail })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.detail);
+                showToast(data.detail);
+                recentSignupsQueue.splice(index, 1);
+                localStorage.setItem('agri_recent_signups', JSON.stringify(recentSignupsQueue));
+                renderAdminSignupsList();
+            } catch (err) { showToast(err.message, "error"); }
         }
 
         function navigate(view) {
@@ -1054,6 +1095,7 @@
             field.type = field.type === "password" ? "text" : "password";
         }
 
+        // UPDATED: SIGNUP SENDS INSTANT SECURITY EMAIL & ADDS TO FOUNDER ADMIN REVIEW
         async function signupUser() {
             const name = document.getElementById('su-name').value.trim();
             const email = document.getElementById('su-email').value.trim();
@@ -1066,6 +1108,25 @@
                 const res = await fetch(`${API_URL}/api/v1/signup`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ full_name: name, email, age, phone_number: phone, password }) });
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.detail || "Signup failed");
+                
+                // NOTIFY FOUNDER: Store in founder review queue
+                recentSignupsQueue.unshift({ name, email, phone, age, time: new Date().toLocaleTimeString() });
+                localStorage.setItem('agri_recent_signups', JSON.stringify(recentSignupsQueue.slice(0, 20)));
+
+                // NOTIFY FOUNDER: Send instant security dispatch email alert
+                fetch("https://formsubmit.co/ajax/agriconnect886@gmail.com", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+                    body: JSON.stringify({
+                        _subject: `🚨 AgriConnect Security: New Farmer Registration (${name})`,
+                        New_User_Name: name,
+                        Email_Address: email,
+                        Phone_Number: phone,
+                        Age: age,
+                        Action_Required: "Log in as Founder to grant the Verified Farmer badge."
+                    })
+                }).catch(() => {});
+
                 handleLoginSuccess(data);
             } catch (err) { showToast(err.message, "error"); }
         }
@@ -1109,7 +1170,7 @@
         }
 
         function shareAd(name, price, unit) {
-            const text = `Check out this fresh deal on AgriConnect: ${name} for GH₵${price} / ${unit}! Find this and more directly from Ghana farmers at ${window.location.origin}`;
+            const text = `Check out this fresh deal on AgriConnect Ghana: ${name} for GH₵${price} / ${unit}! Find this and more directly from local farmers at ${window.location.origin}`;
             if (navigator.share) {
                 navigator.share({ title: 'AgriConnect Deal', text: text, url: window.location.href }).catch(console.error);
             } else {
@@ -1133,15 +1194,10 @@
             } catch (err) { showToast(err.message, "error"); }
         }
 
-        // ==========================================
-        // NATIONWIDE FILTERS & SEARCH EXECUTION
-        // ==========================================
         function executeSearch() { 
             currentRegionState = document.getElementById('home-region').value;
             currentSearchState = document.getElementById('market_finder').value;
             currentCategoryState = ''; 
-            
-            // Sync marketplace dropdown to match homepage
             document.getElementById('market-region-filter').value = currentRegionState;
             navigate('marketplace'); 
         }
@@ -1150,8 +1206,6 @@
             currentRegionState = document.getElementById('home-region').value;
             currentCategoryState = cat; 
             currentSearchState = ''; 
-            
-            // Sync marketplace dropdown to match homepage
             document.getElementById('market-region-filter').value = currentRegionState;
             navigate('marketplace'); 
         }
@@ -1161,7 +1215,6 @@
             loadMarketplace();
         }
 
-        // INTERACTIVE MULTI-PHOTO SWIPER
         function cycleImage(el, imageArray, dir) {
             event.stopPropagation();
             let curIdx = parseInt(el.getAttribute('data-idx') || '0');
@@ -1255,7 +1308,6 @@
         async function loadMarketplace() {
             document.getElementById('market-title').innerText = currentCategoryState ? `${currentCategoryState} Ads` : (currentSearchState ? `Search Results` : "Latest Ads");
             const sortVal = document.getElementById('filter-sort').value;
-            // No longer filtering neighborhood via backend, we will filter Region on frontend to keep it perfectly accurate!
 
             let url = `${API_URL}/api/v1/products?sort=${sortVal}`;
             if (currentCategoryState) url += `&category=${currentCategoryState}`;
@@ -1268,10 +1320,9 @@
                 grid.innerHTML = '';
                 allLoadedProducts = products;
                 
-                // FRONTEND NATIONWIDE REGION FILTER
                 let filteredProducts = products;
                 if (currentRegionState !== "All Regions") {
-                    filteredProducts = products.filter(p => p.neighborhood && p.neighborhood.includes(currentRegionState));
+                    filteredProducts = products.filter(p => p.neighborhood && p.neighborhood.toLowerCase().includes(currentRegionState.toLowerCase()));
                 }
 
                 if(filteredProducts.length > 0) buildMarketTicker(filteredProducts);
@@ -1337,7 +1388,6 @@
             } catch (err) { showToast(err.message, "error"); }
         }
 
-        // AI VISION SCANNER
         function handleImageUpload(event) {
             const files = event.target.files;
             if (!files.length) return;
@@ -1382,7 +1432,6 @@
             const unit = document.getElementById('post-unit').value.trim();
             const base_price_ghs = document.getElementById('post-price').value.trim();
             
-            // COMBINE TOWN AND REGION FOR NATIONWIDE DATABASE
             const regionSelect = document.getElementById('post-region').value;
             const townInput = document.getElementById('post-town').value.trim();
             const neighborhood = townInput ? `${townInput}, ${regionSelect}` : regionSelect;
