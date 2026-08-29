@@ -93,13 +93,11 @@
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-2xl font-black text-white tracking-tight">Browse Categories</h3>
                 </div>
-                <!-- UPDATED GRID: Now 8 Columns to fit Fishes -->
                 <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-5">
                     <div onclick="executeCategory('Poultry')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
                         <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('poultry.jfif.jfif');"></div>
                         <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Live Poultry</p>
                     </div>
-                    <!-- LOCAL CHICKS IMAGE (.jfif) -->
                     <div onclick="executeCategory('Chicks')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
                         <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('chicks.jfif');"></div>
                         <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Day-Old Chicks</p>
@@ -116,7 +114,6 @@
                         <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Marketvegetables.jpg/500px-Marketvegetables.jpg');"></div>
                         <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Vegetables</p>
                     </div>
-                    <!-- LOCAL FISHES IMAGE (.jfif) -->
                     <div onclick="executeCategory('Fishes')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 text-center transition-all group flex flex-col items-center">
                         <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('fishes.jfif');"></div>
                         <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Fishes</p>
@@ -186,7 +183,7 @@
             </div>
         </div>
 
-        <!-- FULLY RESTORED SUPPORT SECTION -->
+        <!-- SUPPORT SECTION -->
         <div id="view-support" class="fade-in hidden max-w-2xl mx-auto mt-10">
             <div class="glass-card p-10 rounded-[2.5rem] shadow-2xl text-center relative overflow-hidden">
                 <div class="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 border border-emerald-500/30 shadow-lg shadow-emerald-500/10">🎧</div>
@@ -336,7 +333,7 @@
             </div>
         </div>
 
-        <!-- MY DASHBOARD -->
+        <!-- MY DASHBOARD (WITH NEW FLYER GENERATOR BUTTONS) -->
         <div id="view-dashboard" class="fade-in hidden max-w-4xl mx-auto mt-6 space-y-6">
             <div class="glass-card p-5 rounded-2xl border-l-4 border-emerald-500 flex flex-col md:flex-row items-center gap-4 shadow-lg shadow-emerald-900/10">
                 <div class="w-12 h-12 bg-emerald-500/20 rounded-full flex items-center justify-center text-xl shrink-0">🌱</div>
@@ -349,12 +346,12 @@
             <div class="flex items-center justify-between mb-2 glass-card p-6 rounded-2xl">
                 <div>
                     <h2 class="text-2xl font-black text-white tracking-tight">Manage My Ads</h2>
-                    <p class="text-xs text-slate-400 mt-1">Delete items that are sold out.</p>
+                    <p class="text-xs text-slate-400 mt-1">Generate WhatsApp Flyers or delete sold items.</p>
                 </div>
                 <button onclick="navigate('post')" class="text-xs bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl shadow-lg hover:bg-emerald-500 transition-colors">+ New Ad</button>
             </div>
             
-            <div id="my-ads-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            <div id="my-ads-list" class="grid grid-cols-1 gap-4"></div>
 
             <div id="admin-panel" class="hidden mt-12 glass-card p-6 rounded-2xl border border-emerald-500/30">
                 <h3 class="text-lg font-black text-emerald-400 mb-2">🛡️ Founder Admin Tools</h3>
@@ -435,6 +432,97 @@
             } else { document.getElementById('nav-login-btn').classList.remove('hidden'); }
             navigate('home');
         });
+
+        // THE NEW WHATSAPP FLYER GENERATOR ENGINE
+        function generateWhatsAppFlyer(name, price, unit, imageBase64, phone) {
+            showToast("Designing your flyer... 🎨");
+            
+            const canvas = document.createElement('canvas');
+            // Standard WhatsApp Status Dimensions
+            canvas.width = 1080; 
+            canvas.height = 1920; 
+            const ctx = canvas.getContext('2d');
+
+            // Draw Background
+            ctx.fillStyle = '#020617'; 
+            ctx.fillRect(0, 0, 1080, 1920);
+
+            // Draw Product Image
+            const img = new Image();
+            // If they didn't upload an image, just draw a green box
+            if (!imageBase64 || imageBase64 === '') {
+                drawFlyerText(ctx, canvas, name, price, unit, phone);
+                downloadCanvas(canvas, name);
+                return;
+            }
+
+            img.src = imageBase64;
+            img.onload = () => {
+                // Draw image on top half
+                ctx.drawImage(img, 0, 0, 1080, 1080);
+                
+                // Draw a sleek gradient fade from image to background
+                const gradient = ctx.createLinearGradient(0, 800, 0, 1080);
+                gradient.addColorStop(0, 'rgba(2, 6, 23, 0)');
+                gradient.addColorStop(1, '#020617');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 800, 1080, 280);
+
+                drawFlyerText(ctx, canvas, name, price, unit, phone);
+                downloadCanvas(canvas, name);
+            }
+        }
+
+        function drawFlyerText(ctx, canvas, name, price, unit, phone) {
+            // Draw Headline
+            ctx.fillStyle = '#10b981'; // Emerald 500
+            ctx.font = 'bold 80px sans-serif';
+            ctx.fillText("FOR SALE", 80, 1200);
+
+            ctx.fillStyle = 'white'; 
+            ctx.font = 'bold 110px sans-serif';
+            // Wrap text if too long
+            const maxTextWidth = 920;
+            let displayName = name.length > 25 ? name.substring(0, 25) + '...' : name;
+            ctx.fillText(displayName, 80, 1330, maxTextWidth);
+
+            // Draw Price
+            ctx.fillStyle = '#34d399'; // Emerald 400
+            ctx.font = 'bold 130px sans-serif';
+            ctx.fillText(`GH₵${price}`, 80, 1500);
+            
+            ctx.fillStyle = '#94a3b8'; // Slate 400
+            ctx.font = 'bold 60px sans-serif';
+            ctx.fillText(` / ${unit}`, ctx.measureText(`GH₵${price}`).width + 100, 1500);
+
+            // Draw Contact Info box
+            ctx.fillStyle = '#0f172a'; // Slate 900
+            ctx.roundRect(80, 1600, 920, 180, 40);
+            ctx.fill();
+            ctx.strokeStyle = '#1e293b'; ctx.lineWidth = 4;
+            ctx.stroke();
+
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 60px sans-serif';
+            ctx.fillText(`📞 WhatsApp / Call:`, 140, 1685);
+            ctx.fillStyle = '#10b981';
+            ctx.font = 'bold 70px sans-serif';
+            ctx.fillText(phone, 140, 1755);
+
+            // AgriConnect Branding
+            ctx.fillStyle = '#475569'; // Slate 600
+            ctx.font = 'bold 40px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText("Verified Farmer Market • AgriConnect Accra", 540, 1880);
+        }
+
+        function downloadCanvas(canvas, name) {
+            const link = document.createElement('a');
+            link.download = `AgriConnect_${name.replace(/ /g, '_')}_Flyer.jpg`;
+            link.href = canvas.toDataURL('image/jpeg', 0.9);
+            link.click();
+            showToast("Flyer Downloaded! 📱 Share it on your Status!");
+        }
 
         function openSellerProfile(sellerName, phone, isVerified, memberSince) {
             document.getElementById('profile-name').innerText = sellerName;
@@ -736,33 +824,6 @@
             });
         }
 
-        async function loadMarketplace() {
-            document.getElementById('market-title').innerText = currentCategoryState ? `${currentCategoryState} Ads` : (currentSearchState ? `Search Results` : "Latest Ads");
-            
-            const sortVal = document.getElementById('filter-sort').value;
-            const locVal = document.getElementById('filter-location').value;
-
-            let url = `${API_URL}/api/v1/products?sort=${sortVal}`;
-            if (currentCategoryState) url += `&category=${currentCategoryState}`;
-            if (currentSearchState) url += `&search=${currentSearchState}`;
-            if (locVal) url += `&neighborhood=${locVal}`;
-
-            try {
-                const res = await fetch(url);
-                const products = await res.json();
-                const grid = document.getElementById('product-grid');
-                grid.innerHTML = '';
-                
-                allLoadedProducts = products;
-                if(products.length > 0) buildMarketTicker(products);
-
-                if (products.length === 0) return grid.innerHTML = `<div class="col-span-full glass-card py-16 rounded-3xl text-center"><p class="text-slate-400 text-sm">No ads found matching these filters.</p></div>`;
-                
-                renderProductGrid(products, grid);
-                
-            } catch (err) {}
-        }
-
         async function loadMyAds() {
             try {
                 const res = await fetch(`${API_URL}/api/v1/my-products?token=${agriToken}`);
@@ -780,18 +841,24 @@
                         catch(e) { parsedImages = [item.image_data]; }
                     }
 
+                    // ADDED: The Generate Flyer Button
                     list.innerHTML += `
-                        <div class="glass-card p-4 rounded-2xl flex justify-between items-center group hover:border-white/10 transition-colors">
-                            <div class="flex items-center gap-4">
-                                ${parsedImages.length > 0 ? `<img src="${parsedImages[0]}" class="w-14 h-14 rounded-xl object-cover shadow-md">` : `<div class="w-14 h-14 bg-white/5 rounded-xl flex items-center justify-center border border-white/5">🌾</div>`}
+                        <div class="glass-card p-4 rounded-2xl flex flex-col md:flex-row justify-between items-center group hover:border-white/10 transition-colors gap-4">
+                            <div class="flex items-center gap-4 w-full md:w-auto">
+                                ${parsedImages.length > 0 ? `<img src="${parsedImages[0]}" class="w-14 h-14 rounded-xl object-cover shadow-md shrink-0">` : `<div class="w-14 h-14 bg-white/5 rounded-xl flex items-center justify-center border border-white/5 shrink-0">🌾</div>`}
                                 <div>
-                                    <h3 class="font-black text-white text-sm">${item.product_name}</h3>
+                                    <h3 class="font-black text-white text-sm line-clamp-1">${item.product_name}</h3>
                                     <p class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 inline-block px-2 py-0.5 rounded mt-1">GH₵${item.base_price_ghs} / ${item.unit}</p>
                                 </div>
                             </div>
-                            <button onclick="deleteAd(${item.id})" class="w-10 h-10 flex items-center justify-center bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white rounded-xl transition-all border border-rose-500/20 shadow-sm" title="Delete Ad">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                            </button>
+                            <div class="flex items-center gap-2 w-full md:w-auto justify-end">
+                                <button onclick="generateWhatsAppFlyer('${item.product_name.replace(/'/g, "\\'")}', '${item.base_price_ghs}', '${item.unit}', '${parsedImages[0] || ''}', '${item.phone_number}')" class="bg-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white text-xs font-black px-4 py-2 rounded-xl transition-all border border-blue-500/30 flex items-center gap-1 shadow-sm whitespace-nowrap">
+                                    📱 Get Flyer
+                                </button>
+                                <button onclick="deleteAd(${item.id})" class="w-10 h-10 flex items-center justify-center bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white rounded-xl transition-all border border-rose-500/20 shadow-sm shrink-0" title="Delete Ad">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                </button>
+                            </div>
                         </div>
                     `;
                 });
