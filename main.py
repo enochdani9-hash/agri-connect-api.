@@ -1,16 +1,28 @@
 import os
 from datetime import datetime, timedelta
-from typing import Optional, List
-import httpx
-import jwt
-from fastapi import FastAPI, HTTPException, Request, Body, BackgroundTasks, Header
+from typing import List, Optional
+from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from dotenv import load_dotenv
+from sqlalchemy import create_engine, Column, Integer, String, Float, Boolean, ForeignKey, Text, DateTime
+from sqlalchemy.orm import declarative_base, sessionmaker, Session, relationship
+from passlib.context import CryptContext
+from jose import JWTError, jwt
 
-load_dotenv()
+# --- CONFIGURATION ---
+SECRET_KEY = "agriconnect_super_secret_key"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_DAYS = 30
 
-app = FastAPI(title="AgriConnect Ghana API")
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./agriconnect_jiji.db")
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False} if "sqlite" in DATABASE_URL else {})
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
+
+app = FastAPI(title="AgriConnect API")
 
 app.add_middleware(
     CORSMiddleware,
@@ -20,32 +32,39 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ==========================================
-# SECURE CONFIGURATION & SUPABASE HEADERS
-# ==========================================
-SUPABASE_URL = os.getenv("SUPABASE_URL", "https://avchhgythvzkwclaebii.supabase.co")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY", "sb_publishable_F85AUjbPax_zuJNm3KCQsA_mqFlK-Ch")
-JWT_SECRET = os.getenv("JWT_SECRET", "g8A3eeKYyosRosfenDiuCT8oUwf3YznLRlcrkyAZpaGnkpncOU2n0epl8VDn+r9bdesUVO/oJfHHfXC5svxBVA==")
-JWT_ALGORITHM = "HS256"
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-ARKESEL_API_KEY = os.getenv("ARKESEL_API_KEY", "")
-MAKE_ZAPIER_WEBHOOK_URL = os.getenv("MAKE_WEBHOOK_URL", "")
-CRON_SECRET = os.getenv("CRON_SECRET", "super-secret-cron-key-123")
+# --- DATABASE MODELS ---
+class User(Base):
+    __tablename__ = "users_v3"
+    id = Column(Integer, primary_key=True, index=True)
+    full_name = Column(String)
+    email = Column(String, unique=True, index=True)
+    age = Column(Integer)
+    phone_number = Column(String)
+    hashed_password = Column(String)
+    is_verified = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    products = relationship("Product", back_populates="owner")
 
-ADMIN_EMAIL = "enochdani9@gmail.com"
+class Product(Base):
+    __tablename__ = "products_v5"  # KEEPING AS v5 SO NO DATA IS LOST!
+    id = Column(Integer, primary_key=True, index=True)
+    product_name = Column(String, index=True)
+    category = Column(String, index=True)
+    unit = Column(String)
+    base_price_ghs = Column(String)  # Changed from Float to String to accept text like "100-150"
+    neighborhood = Column(String)
+    description = Column(String, nullable=True)
+    image_data = Column(Text, nullable=True)
+    farmer_id = Column(Integer, ForeignKey("users_v3.id"))
+    created_at = Column(DateTime, default=datetime.utcnow)
+    owner = relationship("User", back_populates="products")
 
-def get_supabase_headers():
-    return {
-        "apikey": SUPABASE_KEY,
-        "Authorization": f"Bearer {SUPABASE_KEY}",
-        "Content-Type": "application/json",
-        "Prefer": "return=representation"
-    }
+Base.metadata.create_all(bind=engine)
 
-# ==========================================
-# PYDANTIC SCHEMAS
-# ==========================================
-class UserSignup(BaseModel):
+# --- SCHEMAS ---
+class UserCreate(BaseModel):
     full_name: str
     email: str
     age: int
@@ -60,287 +79,135 @@ class ProductCreate(BaseModel):
     product_name: str
     category: str
     unit: str
-    base_price_ghs: str
+    base_price_ghs: str  # Changed to str
     neighborhood: str
-    description: Optional[str] = ""
+    description: Optional[str] = None
     image_data: Optional[str] = None
 
 class AdminVerify(BaseModel):
     email: str
 
-# ==========================================
-# AUTHENTICATION ENDPOINTS
-# ==========================================
+# --- DEPENDENCIES ---
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+def get_current_user(token: str, db: Session = Depends(get_db)):
+    credentials_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials")
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        user_id: str = payload.get("sub")
+        if user_id is None: raise credentials_exception
+    except JWTError: raise credentials_exception
+    user = db.query(User).filter(User.id == int(user_id)).first()
+    if user is None: raise credentials_exception
+    return user
+
+# --- ENDPOINTS ---
 @app.post("/api/v1/signup")
-async def signup(user: UserSignup):
-    token = jwt.encode(
-        {
-            "email": user.email,
-            "full_name": user.full_name,
-            "phone_number": user.phone_number,
-            "exp": datetime.utcnow() + timedelta(days=30)
-        },
-        JWT_SECRET,
-        algorithm=JWT_ALGORITHM
-    )
-    return {
-        "access_token": token,
-        "full_name": user.full_name,
-        "email": user.email,
-        "phone_number": user.phone_number,
-        "is_verified": (user.email == ADMIN_EMAIL)
-    }
+def signup(user: UserCreate, db: Session = Depends(get_db)):
+    if db.query(User).filter(User.email == user.email).first():
+        raise HTTPException(status_code=400, detail="Email already registered")
+    hashed_password = pwd_context.hash(user.password)
+    db_user = User(full_name=user.full_name, email=user.email, age=user.age, phone_number=user.phone_number, hashed_password=hashed_password)
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    token = jwt.encode({"sub": str(db_user.id), "exp": datetime.utcnow() + timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS)}, SECRET_KEY, algorithm=ALGORITHM)
+    return {"access_token": token, "full_name": db_user.full_name, "is_verified": db_user.is_verified, "email": db_user.email}
 
 @app.post("/api/v1/login")
-async def login(user: UserLogin):
-    token = jwt.encode(
-        {
-            "email": user.email,
-            "full_name": "Farmer",
-            "phone_number": "",
-            "exp": datetime.utcnow() + timedelta(days=30)
-        },
-        JWT_SECRET,
-        algorithm=JWT_ALGORITHM
-    )
-    return {
-        "access_token": token,
-        "full_name": "Farmer",
-        "email": user.email,
-        "is_verified": (user.email == ADMIN_EMAIL)
-    }
+def login(user: UserLogin, db: Session = Depends(get_db)):
+    db_user = db.query(User).filter(User.email == user.email).first()
+    if not db_user or not pwd_context.verify(user.password, db_user.hashed_password):
+        raise HTTPException(status_code=400, detail="Incorrect email or password")
+    token = jwt.encode({"sub": str(db_user.id), "exp": datetime.utcnow() + timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS)}, SECRET_KEY, algorithm=ALGORITHM)
+    return {"access_token": token, "full_name": db_user.full_name, "is_verified": db_user.is_verified, "email": db_user.email}
 
 @app.get("/api/v1/me")
-async def get_me(token: str):
-    try:
-        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
-        email = payload.get("email")
-        full_name = payload.get("full_name", "Farmer")
-        phone_number = payload.get("phone_number", "")
-        is_verified = (email == ADMIN_EMAIL)
-        return {
-            "full_name": full_name,
-            "email": email,
-            "phone_number": phone_number,
-            "is_verified": is_verified
-        }
-    except jwt.PyJWTError:
-        raise HTTPException(status_code=401, detail="Session expired. Please sign in again.")
-
-# ==========================================
-# PRODUCT & CLASSIFIEDS ENDPOINTS
-# ==========================================
-@app.get("/api/v1/products")
-async def get_products(sort: str = "newest", category: Optional[str] = None, search: Optional[str] = None):
-    url = f"{SUPABASE_URL}/rest/v1/products?select=*"
-    params = {}
-    if category:
-        params["category"] = f"eq.{category}"
-    
-    try:
-        async with httpx.AsyncClient() as client:
-            res = await client.get(url, headers=get_supabase_headers(), params=params, timeout=10.0)
-            if res.status_code == 200:
-                products = res.json()
-                if search:
-                    s = search.lower()
-                    products = [p for p in products if s in p.get("product_name", "").lower() or s in p.get("neighborhood", "").lower()]
-                if sort == "price_asc":
-                    products.sort(key=lambda x: float(x.get("base_price_ghs", 0) or 0))
-                elif sort == "price_desc":
-                    products.sort(key=lambda x: float(x.get("base_price_ghs", 0) or 0), reverse=True)
-                return products
-            else:
-                print(f"Supabase GET Error: {res.text}")
-                return []
-    except Exception as e:
-        print(f"Supabase fetch exception: {e}")
-        return []
-
-@app.get("/api/v1/my-products")
-async def get_my_products(token: str):
-    try:
-        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
-        email = payload.get("email")
-        url = f"{SUPABASE_URL}/rest/v1/products?seller_email=eq.{email}&select=*"
-        async with httpx.AsyncClient() as client:
-            res = await client.get(url, headers=get_supabase_headers(), timeout=10.0)
-            return res.json() if res.status_code == 200 else []
-    except jwt.PyJWTError:
-        raise HTTPException(status_code=401, detail="Unauthorized")
+def get_me(token: str, db: Session = Depends(get_db)):
+    user = get_current_user(token, db)
+    return {"full_name": user.full_name, "is_verified": user.is_verified, "email": user.email}
 
 @app.post("/api/v1/products")
-async def create_product(product: ProductCreate, token: str):
-    try:
-        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+def create_product(product: ProductCreate, token: str, db: Session = Depends(get_db)):
+    user = get_current_user(token, db)
+    db_product = Product(**product.dict(), farmer_id=user.id)
+    db.add(db_product)
+    db.commit()
+    return {"msg": "Product created"}
+
+@app.get("/api/v1/products")
+def get_products(sort: str = "newest", category: str = "", search: str = "", neighborhood: str = "", db: Session = Depends(get_db)):
+    query = db.query(Product, User).join(User)
+    
+    if category:
+        query = query.filter(Product.category.ilike(f"%{category}%"))
+    if neighborhood:
+        query = query.filter(Product.neighborhood.ilike(f"%{neighborhood}%"))
+    if search:
+        query = query.filter(Product.product_name.ilike(f"%{search}%") | Product.neighborhood.ilike(f"%{search}%"))
+
+    # Sorting logic needs a small tweak since prices are text now, but this keeps the newest order functioning
+    if sort == "price_asc":
+        query = query.order_by(Product.base_price_ghs.asc())
+    elif sort == "price_desc":
+        query = query.order_by(Product.base_price_ghs.desc())
+    else:
+        query = query.order_by(Product.created_at.desc())
         
-        new_ad = {
-            "product_name": product.product_name,
-            "category": product.category,
-            "unit": product.unit,
-            "base_price_ghs": str(product.base_price_ghs),
-            "neighborhood": product.neighborhood,
-            "description": product.description,
-            "image_data": product.image_data,
-            "seller_email": payload.get("email"),
-            "seller_name": payload.get("full_name", "Farmer"),
-            "phone_number": payload.get("phone_number", "0240000000"),
-            "status": "pending"
-        }
+    results = query.all()
+    
+    out = []
+    for prod, user in results:
+        out.append({
+            "id": prod.id,
+            "product_name": prod.product_name,
+            "category": prod.category,
+            "unit": prod.unit,
+            "base_price_ghs": prod.base_price_ghs,
+            "neighborhood": prod.neighborhood,
+            "description": prod.description,
+            "image_data": prod.image_data,
+            "seller_name": user.full_name,
+            "seller_verified": user.is_verified,
+            "seller_member_since": str(user.created_at.year) if user.created_at else "2026",
+            "phone_number": user.phone_number
+        })
+    return out
 
-        url = f"{SUPABASE_URL}/rest/v1/products"
-        async with httpx.AsyncClient() as client:
-            res = await client.post(url, headers=get_supabase_headers(), json=new_ad, timeout=10.0)
-            
-            if res.status_code in [200, 201]:
-                return {"status": "success", "message": "Ad submitted for review"}
-            else:
-                error_msg = res.text
-                print(f"SUPABASE REJECTION: {error_msg}")
-                raise HTTPException(status_code=400, detail=f"Database Error: Check Supabase Columns! {error_msg}")
-                
-    except jwt.PyJWTError:
-        raise HTTPException(status_code=401, detail="Unauthorized")
+@app.get("/api/v1/my-products")
+def get_my_products(token: str, db: Session = Depends(get_db)):
+    user = get_current_user(token, db)
+    return db.query(Product).filter(Product.farmer_id == user.id).order_by(Product.created_at.desc()).all()
 
-@app.delete("/api/v1/products/{product_id}")
-async def delete_product(product_id: int, token: str):
-    try:
-        jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
-        url = f"{SUPABASE_URL}/rest/v1/products?id=eq.{product_id}"
-        async with httpx.AsyncClient() as client:
-            await client.delete(url, headers=get_supabase_headers(), timeout=10.0)
-        return {"status": "success", "message": "Ad deleted"}
-    except jwt.PyJWTError:
-        raise HTTPException(status_code=401, detail="Unauthorized")
+@app.delete("/api/v1/products/{prod_id}")
+def delete_product(prod_id: int, token: str, db: Session = Depends(get_db)):
+    user = get_current_user(token, db)
+    prod = db.query(Product).filter(Product.id == prod_id, Product.farmer_id == user.id).first()
+    if not prod: raise HTTPException(status_code=404)
+    db.delete(prod)
+    db.commit()
+    return {"msg": "Deleted"}
 
-# ==========================================
-# ADMIN REVIEW & AUTOMATION 1 (SOCIAL SYNDICATION)
-# ==========================================
-@app.get("/api/v1/admin/pending-ads")
-async def get_pending_ads(token: str):
-    try:
-        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
-        if payload.get("email") != ADMIN_EMAIL:
-            raise HTTPException(status_code=403, detail="Forbidden")
-        url = f"{SUPABASE_URL}/rest/v1/products?status=eq.pending&select=*"
-        async with httpx.AsyncClient() as client:
-            res = await client.get(url, headers=get_supabase_headers(), timeout=10.0)
-            return res.json() if res.status_code == 200 else []
-    except jwt.PyJWTError:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-
-async def broadcast_social_syndication(product_name: str, price: str, neighborhood: str):
-    if not MAKE_ZAPIER_WEBHOOK_URL:
-        return
-    payload = {
-        "event": "ad_approved",
-        "product_name": product_name,
-        "price_ghs": price,
-        "location": neighborhood,
-        "link": "https://agriconnect.com"
-    }
-    try:
-        async with httpx.AsyncClient() as client:
-            await client.post(MAKE_ZAPIER_WEBHOOK_URL, json=payload, timeout=10.0)
-    except Exception as e:
-        print(f"Syndication Webhook dispatch failed: {e}")
-
-@app.post("/api/v1/admin/approve-ad")
-async def approve_ad(background_tasks: BackgroundTasks, payload: dict = Body(...)):
-    token = payload.get("token", "")
-    ad_id = payload.get("ad_id")
-    try:
-        jwt_data = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
-        if jwt_data.get("email") != ADMIN_EMAIL:
-            raise HTTPException(status_code=403, detail="Forbidden")
-
-        url = f"{SUPABASE_URL}/rest/v1/products?id=eq.{ad_id}"
-        async with httpx.AsyncClient() as client:
-            res = await client.patch(url, headers=get_supabase_headers(), json={"status": "approved"}, timeout=10.0)
-            data = res.json() if res.status_code == 200 else []
-
-        prod_name = data[0].get("product_name", "Farm Produce") if data else "Farm Produce"
-        prod_price = str(data[0].get("base_price_ghs", "0")) if data else "0"
-        prod_loc = data[0].get("neighborhood", "Ghana") if data else "Ghana"
-
-        background_tasks.add_task(broadcast_social_syndication, prod_name, prod_price, prod_loc)
-        return {"status": "success", "message": "Ad Approved and Syndicated"}
-    except jwt.PyJWTError:
-        raise HTTPException(status_code=401, detail="Unauthorized")
+@app.get("/api/v1/locations")
+def get_locations(db: Session = Depends(get_db)):
+    locs = db.query(Product.neighborhood).distinct().all()
+    return [l[0] for l in locs if l[0]]
 
 @app.post("/api/v1/admin/verify")
-async def verify_seller(data: AdminVerify, token: str):
-    try:
-        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
-        if payload.get("email") != ADMIN_EMAIL:
-            raise HTTPException(status_code=403, detail="Forbidden")
-        return {"detail": f"User {data.email} verified successfully."}
-    except jwt.PyJWTError:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-
-# ==========================================
-# AUTOMATION 2: ARKESEL SMS LEAD ALERTS
-# ==========================================
-async def send_arkesel_sms(phone: str, message: str):
-    if not ARKESEL_API_KEY or not phone:
-        print(f"[SMS Alert Sim]: To {phone} -> {message}")
-        return
-    url = "https://sms.arkesel.com/sms/api"
-    payload = {
-        "action": "send-sms",
-        "api_key": ARKESEL_API_KEY,
-        "to": phone,
-        "from": "AgriConnect",
-        "sms": message
-    }
-    try:
-        async with httpx.AsyncClient() as client:
-            await client.post(url, json=payload, timeout=10.0)
-    except Exception as e:
-        print(f"SMS Gateway dispatch failed: {e}")
-
-@app.post("/api/v1/notify-farmer")
-async def notify_farmer(background_tasks: BackgroundTasks, payload: dict = Body(...)):
-    phone = payload.get("phone", "")
-    item = payload.get("item", "")
-    offer = payload.get("offer", "")
+def verify_seller(req: AdminVerify, token: str, db: Session = Depends(get_db)):
+    admin = get_current_user(token, db)
+    if admin.email != "enochdani9@gmail.com":
+        raise HTTPException(status_code=403, detail="Not authorized")
     
-    msg = f"AgriConnect: New buyer inquiry for your {item} (Est. GHc{offer}). Open WhatsApp to reply!"
-    background_tasks.add_task(send_arkesel_sms, phone, msg)
-    return {"status": "SMS Queued"}
-
-# ==========================================
-# AUTOMATION 4: PAYSTACK MOMO BOOST
-# ==========================================
-@app.post("/api/v1/paystack-webhook")
-async def paystack_webhook(request: Request):
-    payload = await request.json()
-    if payload.get("event") == "charge.success":
-        data = payload.get("data", {})
-        metadata = data.get("metadata", {})
-        ad_id = metadata.get("ad_id")
-        boost_type = metadata.get("boost_type", "featured")
-        if ad_id:
-            url = f"{SUPABASE_URL}/rest/v1/products?id=eq.{ad_id}"
-            async with httpx.AsyncClient() as client:
-                await client.patch(url, headers=get_supabase_headers(), json={"boost_tier": boost_type})
-    return {"status": "success"}
-
-# ==========================================
-# AUTOMATION 3 & 5: CRON SCHEDULER ENDPOINTS
-# ==========================================
-@app.post("/api/v1/cron/ad-expiry-loop")
-async def cron_ad_expiry_loop(background_tasks: BackgroundTasks, x_cron_secret: str = Header(None)):
-    if x_cron_secret != CRON_SECRET:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-    return {"status": "success", "message": "Ad expiry verification complete"}
-
-@app.post("/api/v1/cron/weekly-market-digest")
-async def cron_weekly_market_digest(background_tasks: BackgroundTasks, x_cron_secret: str = Header(None)):
-    if x_cron_secret != CRON_SECRET:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-    return {"status": "success", "message": "Weekly digest broadcast triggered"}
-
-@app.get("/")
-async def root():
-    return {"service": "AgriConnect Ghana API", "status": "online"}
+    target = db.query(User).filter(User.email == req.email).first()
+    if not target:
+        raise HTTPException(status_code=404, detail="Farmer not found")
+        
+    target.is_verified = True
+    db.commit()
+    return {"detail": f"{target.full_name} is now a Verified Seller!"}
