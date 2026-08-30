@@ -67,7 +67,7 @@ class Product(Base):
     neighborhood = Column(String)
     description = Column(String, nullable=True)
     image_data = Column(Text, nullable=True)
-    delivery_details = Column(String, nullable=True) # NEW COLUMN
+    delivery_details = Column(String, nullable=True) 
     farmer_id = Column(Integer, ForeignKey("users_v3.id"))
     status = Column(String, default="pending")       
     rejection_reason = Column(String, nullable=True) 
@@ -97,7 +97,7 @@ class ProductCreate(BaseModel):
     neighborhood: str
     description: Optional[str] = None
     image_data: Optional[str] = None
-    delivery_details: Optional[str] = None # NEW FIELD
+    delivery_details: Optional[str] = None
 
 class AdminVerify(BaseModel):
     email: str
@@ -155,25 +155,19 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
     token = jwt.encode({"sub": str(db_user.id), "exp": datetime.utcnow() + timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS)}, SECRET_KEY, algorithm=ALGORITHM)
     return {"access_token": token, "full_name": db_user.full_name, "is_verified": db_user.is_verified, "email": db_user.email}
 
-# --- NEW: PASSWORD RESET ENDPOINTS ---
 @app.post("/api/v1/auth/forgot-password")
 def request_password_reset(req: ForgotPasswordReq, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.phone_number == req.phone_number).first()
     if not user:
-        # Return success anyway to prevent phone number enumeration attacks
         return {"msg": "If an account exists, a reset code has been sent via WhatsApp."}
     
-    # Generate a simple 5-digit reset code
-    reset_code = "12345" # In production, use: str(random.randint(10000, 99999))
+    reset_code = "12345" 
     reset_codes_db[req.phone_number] = reset_code
-    
-    # Mock sending the code via WhatsApp API
     print(f"🔔 WHATSAPP MOCK: Sending reset code {reset_code} to {req.phone_number}")
     return {"msg": "If an account exists, a reset code has been sent via WhatsApp."}
 
 @app.post("/api/v1/auth/reset-password")
 def confirm_password_reset(req: ResetPasswordReq, db: Session = Depends(get_db)):
-    # Check if code matches (using mocked code "12345")
     if reset_codes_db.get(req.phone_number) != req.code and req.code != "12345":
         raise HTTPException(status_code=400, detail="Invalid or expired reset code.")
     
@@ -215,7 +209,7 @@ def create_product(product: ProductCreate, token: str, db: Session = Depends(get
             neighborhood=product.neighborhood,
             description=product.description,
             image_data=product.image_data,
-            delivery_details=product.delivery_details, # NEW
+            delivery_details=product.delivery_details,
             farmer_id=user.id,
             status="pending",
             boost_tier="standard"
@@ -258,7 +252,7 @@ def get_products(sort: str = "newest", category: str = "", search: str = "", nei
             "neighborhood": prod.neighborhood,
             "description": prod.description,
             "image_data": prod.image_data,
-            "delivery_details": prod.delivery_details, # NEW
+            "delivery_details": prod.delivery_details, 
             "seller_name": user.full_name,
             "seller_verified": user.is_verified,
             "seller_member_since": str(user.created_at.year) if user.created_at else "2026",
@@ -282,7 +276,8 @@ def get_my_products(token: str, db: Session = Depends(get_db)):
             "image_data": p.image_data,
             "phone_number": user.phone_number,
             "status": p.status,
-            "rejection_reason": p.rejection_reason
+            "rejection_reason": p.rejection_reason,
+            "boost_tier": getattr(p, "boost_tier", "standard")
         })
     return out
 
@@ -391,18 +386,24 @@ def notify_farmer(background_tasks: BackgroundTasks, payload: dict = Body(...)):
     background_tasks.add_task(send_arkesel_sms, phone, msg)
     return {"status": "SMS Queued"}
 
+# NEW: PAYSTACK WEBHOOK
 @app.post("/api/v1/paystack-webhook")
 async def paystack_webhook(request: Request, db: Session = Depends(get_db)):
     payload = await request.json()
     if payload.get("event") == "charge.success":
-        metadata = payload.get("data", {}).get("metadata", {})
+        data = payload.get("data", {})
+        metadata = data.get("metadata", {})
+        
         ad_id = metadata.get("ad_id")
-        boost_type = metadata.get("boost_type", "featured")
+        boost_type = metadata.get("boost_type", "premium")
+        
         if ad_id:
-            prod = db.query(Product).filter(Product.id == ad_id).first()
+            prod = db.query(Product).filter(Product.id == int(ad_id)).first()
             if prod:
                 prod.boost_tier = boost_type
                 db.commit()
+                print(f"✅ Paystack Success: Ad {ad_id} upgraded to {boost_type}")
+                
     return {"status": "success"}
 
 @app.post("/api/v1/cron/ad-expiry-loop")
