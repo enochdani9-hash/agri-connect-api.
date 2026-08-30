@@ -116,6 +116,9 @@ class ResetPasswordReq(BaseModel):
     code: str
     new_password: str
 
+class GoogleAuthRequest(BaseModel):
+    credential: str
+
 # --- DEPENDENCIES ---
 def get_db():
     db = SessionLocal()
@@ -155,6 +158,52 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Incorrect email or password")
     token = jwt.encode({"sub": str(db_user.id), "exp": datetime.utcnow() + timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS)}, SECRET_KEY, algorithm=ALGORITHM)
     return {"access_token": token, "full_name": db_user.full_name, "is_verified": db_user.is_verified, "email": db_user.email}
+
+@app.post("/api/v1/auth/google")
+async def google_auth(req: GoogleAuthRequest, db: Session = Depends(get_db)):
+    try:
+        async with httpx.AsyncClient() as client:
+            res = await client.get(f"https://oauth2.googleapis.com/tokeninfo?id_token={req.credential}")
+            if res.status_code != 200:
+                raise HTTPException(status_code=400, detail="Invalid Google token")
+            google_data = res.json()
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Google authentication failed: {str(e)}")
+
+    email = google_data.get("email")
+    full_name = google_data.get("name", "Farmer")
+
+    if not email:
+        raise HTTPException(status_code=400, detail="Google account has no verified email")
+
+    db_user = db.query(User).filter(User.email == email).first()
+
+    if not db_user:
+        random_pwd = os.urandom(16).hex()
+        db_user = User(
+            full_name=full_name,
+            email=email,
+            age=25, 
+            phone_number="0000000000", 
+            hashed_password=pwd_context.hash(random_pwd),
+            is_verified=False
+        )
+        db.add(db_user)
+        db.commit()
+        db.refresh(db_user)
+
+    token = jwt.encode(
+        {"sub": str(db_user.id), "exp": datetime.utcnow() + timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS)},
+        SECRET_KEY,
+        algorithm=ALGORITHM
+    )
+
+    return {
+        "access_token": token,
+        "full_name": db_user.full_name,
+        "is_verified": db_user.is_verified,
+        "email": db_user.email
+    }
 
 @app.post("/api/v1/auth/forgot-password")
 def request_password_reset(req: ForgotPasswordReq, db: Session = Depends(get_db)):
