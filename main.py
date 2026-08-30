@@ -139,7 +139,18 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
 @app.get("/api/v1/me")
 def get_me(token: str, db: Session = Depends(get_db)):
     user = get_current_user(token, db)
-    return {"full_name": user.full_name, "is_verified": user.is_verified, "email": user.email}
+    
+    # Calculate days left in the 30-day trial
+    days_since_creation = (datetime.utcnow() - user.created_at).days if user.created_at else 0
+    trial_days_left = max(0, 30 - days_since_creation)
+    
+    return {
+        "full_name": user.full_name, 
+        "is_verified": user.is_verified, 
+        "email": user.email,
+        "phone_number": user.phone_number,
+        "trial_days_left": trial_days_left
+    }
 
 @app.post("/api/v1/products")
 def create_product(product: ProductCreate, token: str, db: Session = Depends(get_db)):
@@ -162,7 +173,7 @@ def create_product(product: ProductCreate, token: str, db: Session = Depends(get
         return {"msg": "Product created"}
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=500, detail=f"Database sync failed. Have you added 'status' and 'boost_tier' to products_v5 in Supabase? Error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Database sync failed. Error: {str(e)}")
 
 @app.get("/api/v1/products")
 def get_products(sort: str = "newest", category: str = "", search: str = "", neighborhood: str = "", db: Session = Depends(get_db)):
@@ -241,7 +252,6 @@ def get_pending_ads(token: str, db: Session = Depends(get_db)):
     admin = get_current_user(token, db)
     if admin.email != ADMIN_EMAIL: raise HTTPException(status_code=403, detail="Not authorized")
     
-    # Gracefully handle if the status column doesn't exist yet
     try:
         query = db.query(Product, User).join(User).filter(Product.status == "pending").all()
     except:
@@ -279,7 +289,6 @@ def approve_ad(background_tasks: BackgroundTasks, payload: dict = Body(...), db:
     prod.status = "approved"
     db.commit()
     
-    # Trigger Make.com Automation
     background_tasks.add_task(broadcast_social_syndication, prod.product_name, prod.base_price_ghs, prod.neighborhood)
     return {"status": "success", "message": "Ad Approved and Syndicated"}
 
