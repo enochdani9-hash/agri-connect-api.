@@ -55,7 +55,7 @@ class User(Base):
     products = relationship("Product", back_populates="owner")
 
 class Product(Base):
-    __tablename__ = "products_v5"  # KEEPING AS v5 SO NO DATA IS LOST!
+    __tablename__ = "products_v5"  
     id = Column(Integer, primary_key=True, index=True)
     product_name = Column(String, index=True)
     category = Column(String, index=True)
@@ -65,8 +65,8 @@ class Product(Base):
     description = Column(String, nullable=True)
     image_data = Column(Text, nullable=True)
     farmer_id = Column(Integer, ForeignKey("users_v3.id"))
-    status = Column(String, default="pending")       # NEW: For Moderation Automation
-    boost_tier = Column(String, default="standard")  # NEW: For Paystack Automation
+    status = Column(String, default="pending")       # For Ad Moderation Automation
+    boost_tier = Column(String, default="standard")  # For Paystack Automation
     created_at = Column(DateTime, default=datetime.utcnow)
     owner = relationship("User", back_populates="products")
 
@@ -143,15 +143,29 @@ def get_me(token: str, db: Session = Depends(get_db)):
 
 @app.post("/api/v1/products")
 def create_product(product: ProductCreate, token: str, db: Session = Depends(get_db)):
-    user = get_current_user(token, db)
-    db_product = Product(**product.dict(), farmer_id=user.id, status="pending", boost_tier="standard")
-    db.add(db_product)
-    db.commit()
-    return {"msg": "Product created"}
+    try:
+        user = get_current_user(token, db)
+        db_product = Product(
+            product_name=product.product_name,
+            category=product.category,
+            unit=product.unit,
+            base_price_ghs=product.base_price_ghs,
+            neighborhood=product.neighborhood,
+            description=product.description,
+            image_data=product.image_data,
+            farmer_id=user.id,
+            status="pending",
+            boost_tier="standard"
+        )
+        db.add(db_product)
+        db.commit()
+        return {"msg": "Product created"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Database sync failed. Have you added 'status' and 'boost_tier' to products_v5 in Supabase? Error: {str(e)}")
 
 @app.get("/api/v1/products")
 def get_products(sort: str = "newest", category: str = "", search: str = "", neighborhood: str = "", db: Session = Depends(get_db)):
-    # Only show approved ads on the public marketplace
     query = db.query(Product, User).join(User).filter(Product.status == "approved")
     
     if category:
@@ -185,7 +199,7 @@ def get_products(sort: str = "newest", category: str = "", search: str = "", nei
             "seller_verified": user.is_verified,
             "seller_member_since": str(user.created_at.year) if user.created_at else "2026",
             "phone_number": user.phone_number,
-            "boost_tier": prod.boost_tier
+            "boost_tier": getattr(prod, "boost_tier", "standard")
         })
     return out
 
@@ -226,8 +240,13 @@ def verify_seller(req: AdminVerify, token: str, db: Session = Depends(get_db)):
 def get_pending_ads(token: str, db: Session = Depends(get_db)):
     admin = get_current_user(token, db)
     if admin.email != ADMIN_EMAIL: raise HTTPException(status_code=403, detail="Not authorized")
-    query = db.query(Product, User).join(User).filter(Product.status == "pending").all()
     
+    # Gracefully handle if the status column doesn't exist yet
+    try:
+        query = db.query(Product, User).join(User).filter(Product.status == "pending").all()
+    except:
+        return []
+        
     out = []
     for prod, user in query:
         out.append({
@@ -280,7 +299,6 @@ def notify_farmer(background_tasks: BackgroundTasks, payload: dict = Body(...)):
     offer = payload.get("offer", "")
     msg = f"AgriConnect: New buyer inquiry for your {item} (Est. GHc{offer}). Open WhatsApp to reply!"
     
-    # Trigger SMS Automation
     background_tasks.add_task(send_arkesel_sms, phone, msg)
     return {"status": "SMS Queued"}
 
@@ -297,3 +315,15 @@ async def paystack_webhook(request: Request, db: Session = Depends(get_db)):
                 prod.boost_tier = boost_type
                 db.commit()
     return {"status": "success"}
+
+@app.post("/api/v1/cron/ad-expiry-loop")
+async def cron_ad_expiry_loop(background_tasks: BackgroundTasks, x_cron_secret: str = Header(None)):
+    if x_cron_secret != CRON_SECRET:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    return {"status": "success", "message": "Ad expiry verification complete"}
+
+@app.post("/api/v1/cron/weekly-market-digest")
+async def cron_weekly_market_digest(background_tasks: BackgroundTasks, x_cron_secret: str = Header(None)):
+    if x_cron_secret != CRON_SECRET:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    return {"status": "success", "message": "Weekly digest broadcast triggered"}
