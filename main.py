@@ -35,13 +35,15 @@ app.add_middleware(
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# --- AUTOMATION SECRETS ---
+# --- AUTOMATION & PAYMENT SECRETS ---
 ARKESEL_API_KEY = os.getenv("ARKESEL_API_KEY", "")
 MAKE_ZAPIER_WEBHOOK_URL = os.getenv("MAKE_WEBHOOK_URL", "")
 CRON_SECRET = os.getenv("CRON_SECRET", "super-secret-cron-key-123")
+# The key is now safely hidden and will be pulled from Render's Environment Variables
+PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY", "")
 ADMIN_EMAIL = "enochdani9@gmail.com"
 
-# In-memory store for password reset codes (Use Redis/DB in production)
+# In-memory store for password reset codes
 reset_codes_db = {}
 
 # --- DATABASE MODELS ---
@@ -386,7 +388,7 @@ def notify_farmer(background_tasks: BackgroundTasks, payload: dict = Body(...)):
     background_tasks.add_task(send_arkesel_sms, phone, msg)
     return {"status": "SMS Queued"}
 
-# NEW: PAYSTACK WEBHOOK
+# --- PAYSTACK WEBHOOK ---
 @app.post("/api/v1/paystack-webhook")
 async def paystack_webhook(request: Request, db: Session = Depends(get_db)):
     payload = await request.json()
