@@ -66,7 +66,7 @@ class Product(Base):
     image_data = Column(Text, nullable=True)
     farmer_id = Column(Integer, ForeignKey("users_v3.id"))
     status = Column(String, default="pending")       
-    rejection_reason = Column(String, nullable=True) # Added for feedback
+    rejection_reason = Column(String, nullable=True) 
     boost_tier = Column(String, default="standard")  
     created_at = Column(DateTime, default=datetime.utcnow)
     owner = relationship("User", back_populates="products")
@@ -340,6 +340,12 @@ def notify_farmer(background_tasks: BackgroundTasks, payload: dict = Body(...)):
     
     background_tasks.add_task(send_arkesel_sms, phone, msg)
     return {"status": "SMS Queued"}
+
+# Checkout Mock Endpoint for Pricing Tiers
+@app.post("/api/v1/checkout/init")
+def init_checkout(payload: dict = Body(...), db: Session = Depends(get_db)):
+    # Mocking a payment gateway integration (Paystack MoMo)
+    return {"status": "success", "message": "Payment gateway integration pending."}
 
 @app.post("/api/v1/paystack-webhook")
 async def paystack_webhook(request: Request, db: Session = Depends(get_db)):
