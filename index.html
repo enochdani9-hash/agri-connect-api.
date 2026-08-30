@@ -12,6 +12,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <style>
         ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -51,7 +52,6 @@
 
     <div id="toast-container" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 pointer-events-none"></div>
 
-    <!-- AGRO-WEATHER BANNER -->
     <div class="bg-gradient-to-r from-emerald-950 via-[#020617] to-teal-950 border-b border-emerald-500/20 px-4 py-1.5 text-[11px] flex justify-between items-center text-slate-300">
         <div class="max-w-7xl mx-auto w-full flex items-center justify-between">
             <span class="flex items-center gap-2">
@@ -321,7 +321,6 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Standard Tier -->
                 <div class="glass-card p-8 rounded-[2rem] flex flex-col border border-white/5">
                     <h3 class="text-xl font-bold text-slate-300 mb-2">Standard</h3>
                     <div class="mb-6"><span class="text-4xl font-black text-white">GH₵ 0</span><span class="text-slate-500 text-sm font-medium"> / forever</span></div>
@@ -334,7 +333,6 @@
                     <button onclick="navigate('post')" class="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-3.5 rounded-xl transition-colors border border-white/10">Post Free Ad</button>
                 </div>
 
-                <!-- QuickSell Boost Tier -->
                 <div class="glass-card p-8 rounded-[2rem] flex flex-col border-2 border-emerald-500 relative transform md:-translate-y-4 shadow-2xl shadow-emerald-900/20">
                     <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-emerald-500 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full">Most Popular</span>
                     <h3 class="text-xl font-bold text-emerald-400 mb-2">QuickSell Boost</h3>
@@ -348,7 +346,6 @@
                     <button onclick="handlePricingBoostClick()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl transition-colors shadow-lg">Boost an Ad (MoMo)</button>
                 </div>
 
-                <!-- AgriPro Monthly -->
                 <div class="glass-card p-8 rounded-[2rem] flex flex-col border border-amber-500/30">
                     <h3 class="text-xl font-bold text-amber-400 mb-2">AgriPro Monthly</h3>
                     <div class="mb-6"><span class="text-4xl font-black text-white">GH₵ 70</span><span class="text-slate-500 text-sm font-medium"> / month</span></div>
@@ -578,7 +575,7 @@
             </div>
         </div>
 
-        <!-- 9. AUTH VIEW -->
+        <!-- 9. AUTH VIEW WITH GOOGLE SIGN IN -->
         <div id="view-auth" class="fade-in hidden max-w-sm mx-auto mt-10">
             <div class="glass-card p-8 rounded-[2rem] shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
@@ -596,6 +593,14 @@
                         </div>
                         <button onclick="loginUser()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-4 rounded-xl text-sm transition-all shadow-lg hover:shadow-emerald-500/25">Sign In</button>
                     </div>
+
+                    <div class="my-4 flex items-center justify-between">
+                        <hr class="w-full border-slate-700">
+                        <span class="px-3 text-[10px] text-slate-500 font-bold uppercase">OR</span>
+                        <hr class="w-full border-slate-700">
+                    </div>
+                    <div id="google-signin-btn-login" class="flex justify-center w-full mb-4"></div>
+
                     <p class="text-xs text-slate-400 text-center mt-6">Don't have an account? <button onclick="toggleAuthBox('signup')" class="text-emerald-400 font-bold hover:text-emerald-300">Sign Up</button></p>
                 </div>
 
@@ -614,6 +619,14 @@
                         </div>
                         <button onclick="signupUser()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-4 rounded-xl text-sm transition-all shadow-lg">Create Account</button>
                     </div>
+
+                    <div class="my-4 flex items-center justify-between">
+                        <hr class="w-full border-slate-700">
+                        <span class="px-3 text-[10px] text-slate-500 font-bold uppercase">OR</span>
+                        <hr class="w-full border-slate-700">
+                    </div>
+                    <div id="google-signin-btn-signup" class="flex justify-center w-full mb-4"></div>
+
                     <p class="text-xs text-slate-400 text-center mt-6">Already have an account? <button onclick="toggleAuthBox('login')" class="text-emerald-400 font-bold hover:text-emerald-300">Sign In</button></p>
                 </div>
 
@@ -815,7 +828,8 @@
         }
 
         const API_URL = "https://agri-connect-api-3.onrender.com";
-        const PAYSTACK_PUBLIC_KEY = "pk_live_330a243539cdc3bf38ba0808ae8156d620ad03ed"; 
+        const PAYSTACK_PUBLIC_KEY = "pk_live_330a243539cdc3bf38ba0808ae8156d620ad03ed";
+        const GOOGLE_CLIENT_ID = "235464348393-sovqvjql532r4f480ngva5287rupkjma.apps.googleusercontent.com"; 
 
         let agriToken = localStorage.getItem("agri_token") || "";
         let pendingAction = null;
@@ -839,50 +853,12 @@
         let recentSignupsQueue = JSON.parse(localStorage.getItem('agri_recent_signups') || '[]');
 
         const libraryArticles = {
-            'soil': {
-                icon: '🌱',
-                title: 'Soil Texture & Structure',
-                content: `<p>Soil texture is determined by the relative proportions of sand, silt, and clay. In Ghana, managing these components is crucial for surviving the dry season.</p>
-                          <p><strong class="text-emerald-400">Sandy soils</strong> drain quickly but lose nutrients rapidly. They require constant organic matter additions (like compost or poultry manure) to retain moisture.</p>
-                          <p><strong class="text-emerald-400">Clay soils</strong> hold water tightly but can become waterlogged during heavy rains. Proper tilling and adding coarse organic material helps aerate clay-heavy land.</p>
-                          <p><strong>Actionable Tip:</strong> Before planting your next batch of tomatoes or peppers, conduct a simple "ribbon test" by rolling moist soil in your hand. If it breaks easily, add more organic compost to improve water retention.</p>`
-            },
-            'broiler': {
-                icon: '🌡️',
-                title: 'Broiler Heat Management',
-                content: `<p>Heat stress is one of the leading causes of high mortality rates for poultry farmers in Sub-Saharan Africa. Broilers, especially after 4 weeks of age, generate massive body heat but cannot sweat.</p>
-                          <p><strong class="text-emerald-400">Housing Orientation:</strong> Always build poultry houses on an East-West axis so the direct morning and evening sun does not hit the birds.</p>
-                          <p><strong class="text-emerald-400">Dietary Adjustments:</strong> Add Vitamin C and electrolytes to their drinking water during peak afternoon heat (12 PM - 3 PM). Remove feed during these hours, as digestion generates internal heat.</p>
-                          <p><strong>Actionable Tip:</strong> Paint your poultry house roof white to reflect solar radiation, significantly dropping the internal temperature.</p>`
-            },
-            'rotation': {
-                icon: '🔄',
-                title: 'Crop Rotation Science',
-                content: `<p>Planting the exact same crop in the exact same field year after year depletes specific nutrients and allows pests to establish permanent breeding grounds in your soil.</p>
-                          <p><strong class="text-emerald-400">The Golden Rule:</strong> Never follow a crop with another crop from the same botanical family. For example, do not plant peppers immediately after tomatoes (both are Nightshades).</p>
-                          <p><strong class="text-emerald-400">Nitrogen Fixation:</strong> Always include a legume (like cowpeas or groundnuts) in your rotation cycle. Legumes pull nitrogen from the air and fix it into the soil, acting as free, natural fertilizer for your next crop of maize or cassava.</p>`
-            },
-            'chemistry': {
-                icon: '🧪',
-                title: 'Soil Chemistry Fundamentals',
-                content: `<p>Understanding the chemical makeup of your soil is the difference between an average yield and a highly profitable commercial harvest.</p>
-                          <p><strong class="text-emerald-400">The Big Three (NPK):</strong> Nitrogen (N) drives green leafy growth. Phosphorus (P) is essential for strong root development and flowering. Potassium (K) helps with overall plant health and disease resistance.</p>
-                          <p><strong class="text-emerald-400">pH Levels:</strong> Most vegetables thrive in slightly acidic soil (pH 6.0 - 6.8). If your soil is too acidic, important nutrients become "locked" and unavailable to the plant roots, even if you apply expensive fertilizers.</p>`
-            },
-            'startup': {
-                icon: '💼',
-                title: 'Farm Start-up Strategy',
-                content: `<p>Transitioning from backyard farming to a profitable commercial operation requires strict financial discipline and supply chain mapping.</p>
-                          <p><strong class="text-emerald-400">The 60/40 Rule for Poultry:</strong> When budgeting for a broiler farm, assume that 60% to 70% of your total capital will go entirely to feed. Do not spend all your money on expensive housing and day-old chicks without securing feed capital.</p>
-                          <p><strong class="text-emerald-400">Market First:</strong> Never plant a seed or buy a chick without knowing exactly who will buy it. Use platforms like AgriConnect to pre-sell your stock or gauge local demand before investing.</p>`
-            },
-            'lighting': {
-                icon: '💡',
-                title: 'Artificial Lighting for Crops',
-                content: `<p>Indoor farming and greenhouse automation are the future of high-yield agriculture, especially for high-value crops and seedlings.</p>
-                          <p><strong class="text-emerald-400">The Light Spectrum:</strong> Plants do not use all light equally. Blue light (400-500nm) promotes dense, bushy vegetative growth, making it perfect for seedlings and leafy greens. Red light (600-700nm) triggers flowering and fruiting.</p>
-                          <p><strong class="text-emerald-400">Photoperiods:</strong> By artificially extending the "daylight" hours in a greenhouse using LED grow lights, farmers can drastically accelerate growth cycles and achieve multiple harvests per year regardless of the natural season.</p>`
-            }
+            'soil': { icon: '🌱', title: 'Soil Texture & Structure', content: `<p>Soil texture is determined by the relative proportions of sand, silt, and clay. In Ghana, managing these components is crucial for surviving the dry season.</p><p><strong class="text-emerald-400">Sandy soils</strong> drain quickly but lose nutrients rapidly. They require constant organic matter additions (like compost or poultry manure) to retain moisture.</p><p><strong class="text-emerald-400">Clay soils</strong> hold water tightly but can become waterlogged during heavy rains. Proper tilling and adding coarse organic material helps aerate clay-heavy land.</p><p><strong>Actionable Tip:</strong> Before planting your next batch of tomatoes or peppers, conduct a simple "ribbon test" by rolling moist soil in your hand. If it breaks easily, add more organic compost to improve water retention.</p>` },
+            'broiler': { icon: '🌡️', title: 'Broiler Heat Management', content: `<p>Heat stress is one of the leading causes of high mortality rates for poultry farmers in Sub-Saharan Africa. Broilers, especially after 4 weeks of age, generate massive body heat but cannot sweat.</p><p><strong class="text-emerald-400">Housing Orientation:</strong> Always build poultry houses on an East-West axis so the direct morning and evening sun does not hit the birds.</p><p><strong class="text-emerald-400">Dietary Adjustments:</strong> Add Vitamin C and electrolytes to their drinking water during peak afternoon heat (12 PM - 3 PM). Remove feed during these hours, as digestion generates internal heat.</p><p><strong>Actionable Tip:</strong> Paint your poultry house roof white to reflect solar radiation, significantly dropping the internal temperature.</p>` },
+            'rotation': { icon: '🔄', title: 'Crop Rotation Science', content: `<p>Planting the exact same crop in the exact same field year after year depletes specific nutrients and allows pests to establish permanent breeding grounds in your soil.</p><p><strong class="text-emerald-400">The Golden Rule:</strong> Never follow a crop with another crop from the same botanical family. For example, do not plant peppers immediately after tomatoes (both are Nightshades).</p><p><strong class="text-emerald-400">Nitrogen Fixation:</strong> Always include a legume (like cowpeas or groundnuts) in your rotation cycle. Legumes pull nitrogen from the air and fix it into the soil, acting as free, natural fertilizer for your next crop of maize or cassava.</p>` },
+            'chemistry': { icon: '🧪', title: 'Soil Chemistry Fundamentals', content: `<p>Understanding the chemical makeup of your soil is the difference between an average yield and a highly profitable commercial harvest.</p><p><strong class="text-emerald-400">The Big Three (NPK):</strong> Nitrogen (N) drives green leafy growth. Phosphorus (P) is essential for strong root development and flowering. Potassium (K) helps with overall plant health and disease resistance.</p><p><strong class="text-emerald-400">pH Levels:</strong> Most vegetables thrive in slightly acidic soil (pH 6.0 - 6.8). If your soil is too acidic, important nutrients become "locked" and unavailable to the plant roots, even if you apply expensive fertilizers.</p>` },
+            'startup': { icon: '💼', title: 'Farm Start-up Strategy', content: `<p>Transitioning from backyard farming to a profitable commercial operation requires strict financial discipline and supply chain mapping.</p><p><strong class="text-emerald-400">The 60/40 Rule for Poultry:</strong> When budgeting for a broiler farm, assume that 60% to 70% of your total capital will go entirely to feed. Do not spend all your money on expensive housing and day-old chicks without securing feed capital.</p><p><strong class="text-emerald-400">Market First:</strong> Never plant a seed or buy a chick without knowing exactly who will buy it. Use platforms like AgriConnect to pre-sell your stock or gauge local demand before investing.</p>` },
+            'lighting': { icon: '💡', title: 'Artificial Lighting for Crops', content: `<p>Indoor farming and greenhouse automation are the future of high-yield agriculture, especially for high-value crops and seedlings.</p><p><strong class="text-emerald-400">The Light Spectrum:</strong> Plants do not use all light equally. Blue light (400-500nm) promotes dense, bushy vegetative growth, making it perfect for seedlings and leafy greens. Red light (600-700nm) triggers flowering and fruiting.</p><p><strong class="text-emerald-400">Photoperiods:</strong> By artificially extending the "daylight" hours in a greenhouse using LED grow lights, farmers can drastically accelerate growth cycles and achieve multiple harvests per year regardless of the natural season.</p>` }
         };
 
         function showToast(msg, type='success') {
@@ -896,6 +872,7 @@
 
         window.addEventListener('DOMContentLoaded', async () => {
             rotateAgronomyTips();
+            initGoogleAuth();
             
             fetch(`${API_URL}/api/v1/products?sort=newest`)
                 .then(res => res.json())
@@ -916,7 +893,43 @@
             navigate('home');
         });
 
-        // VIRAL AUTO-FLYER GENERATOR (HTML5 CANVAS)
+        // GOOGLE SIGN IN LOGIC
+        function initGoogleAuth() {
+            if (typeof google === 'undefined') {
+                setTimeout(initGoogleAuth, 300);
+                return;
+            }
+
+            google.accounts.id.initialize({
+                client_id: GOOGLE_CLIENT_ID,
+                callback: handleGoogleSignInResponse
+            });
+
+            if (document.getElementById('google-signin-btn-login')) {
+                google.accounts.id.renderButton(document.getElementById('google-signin-btn-login'), { theme: "filled_blue", size: "large", shape: "pill", width: "300" });
+            }
+            if (document.getElementById('google-signin-btn-signup')) {
+                google.accounts.id.renderButton(document.getElementById('google-signin-btn-signup'), { theme: "filled_blue", size: "large", shape: "pill", width: "300" });
+            }
+        }
+
+        async function handleGoogleSignInResponse(response) {
+            try {
+                const res = await fetch(`${API_URL}/api/v1/auth/google`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ credential: response.credential })
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.detail || "Google login failed");
+
+                handleLoginSuccess(data);
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        }
+
         function generateWhatsAppFlyer(name, price, unit, imageSrc, phone) {
             const modal = document.getElementById('flyer-modal');
             modal.classList.remove('hidden');
@@ -1070,10 +1083,7 @@
                 amount: 70 * 100, 
                 currency: 'GHS',
                 ref: 'AGRI_PRO_' + Math.floor((Math.random() * 1000000000) + 1),
-                metadata: {
-                    boost_type: 'pro',
-                    email: currentUserEmail
-                },
+                metadata: { boost_type: 'pro', email: currentUserEmail },
                 callback: function(response){
                     showToast("Payment Successful! Welcome to AgriPro 🏆");
                     confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
@@ -1098,10 +1108,7 @@
                 amount: amountGHS * 100, 
                 currency: 'GHS',
                 ref: 'AGRI_' + Math.floor((Math.random() * 1000000000) + 1),
-                metadata: {
-                    ad_id: adId,
-                    boost_type: boostType
-                },
+                metadata: { ad_id: adId, boost_type: boostType },
                 callback: function(response){
                     showToast("Payment Successful! Your ad is now boosted. 🚀");
                     confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
@@ -1524,10 +1531,11 @@
 
         function navigate(view) {
             ['view-home', 'view-marketplace', 'view-auth', 'view-post', 'view-dashboard', 'view-about', 'view-support', 'view-profile', 'view-pricing', 'view-library', 'view-faq'].forEach(v => {
-                const element = document.getElementById(v);
+                const element = document.getElementById(`view-${v}`);
                 if (element) element.classList.add('hidden');
             });
-            document.getElementById(`view-${view}`).classList.remove('hidden');
+            const targetView = document.getElementById(`view-${view}`);
+            if (targetView) targetView.classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
             if (view === 'marketplace') executeFilters(); 
