@@ -11,6 +11,7 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
 
     <style>
         ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -307,7 +308,7 @@
                         <li class="flex gap-3"><span class="text-emerald-400">✓</span> Highlighted card border</li>
                         <li class="flex gap-3"><span class="text-emerald-400">✓</span> 1x Telegram/WhatsApp broadcast</li>
                     </ul>
-                    <button onclick="mockCheckout()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl transition-colors shadow-lg">Boost an Ad (MoMo)</button>
+                    <button onclick="navigate('dashboard')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl transition-colors shadow-lg">Boost an Ad (MoMo)</button>
                 </div>
 
                 <div class="glass-card p-8 rounded-[2rem] flex flex-col border border-amber-500/30">
@@ -319,7 +320,7 @@
                         <li class="flex gap-3"><span class="text-amber-500">✓</span> Instant SMS lead alerts</li>
                         <li class="flex gap-3"><span class="text-amber-500">✓</span> Auto-renewing listings</li>
                     </ul>
-                    <button onclick="mockCheckout()" class="w-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 font-bold py-3.5 rounded-xl transition-colors border border-amber-500/30">Upgrade to Pro</button>
+                    <button onclick="showToast('AgriPro Subscriptions are coming next week! Stick to single boosts for now.')" class="w-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 font-bold py-3.5 rounded-xl transition-colors border border-amber-500/30">Upgrade to Pro</button>
                 </div>
             </div>
         </div>
@@ -614,7 +615,7 @@
             <div class="flex items-center justify-between mb-2 glass-card p-6 rounded-2xl">
                 <div>
                     <h2 class="text-2xl font-black text-white tracking-tight">Manage My Ads</h2>
-                    <p class="text-xs text-slate-400 mt-1">Generate WhatsApp Flyers or delete sold items.</p>
+                    <p class="text-xs text-slate-400 mt-1">Boost visibility, generate WhatsApp Flyers, or delete sold items.</p>
                 </div>
                 <button onclick="navigate('post')" class="text-xs bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl shadow-lg hover:bg-emerald-500 transition-colors">+ New Ad</button>
             </div>
@@ -684,6 +685,7 @@
         let pendingAction = null;
         let uploadedImages = []; 
         let allLoadedProducts = []; 
+        let currentUserEmail = ""; 
         
         let currentCategoryState = "";
         let currentSearchState = "";
@@ -730,8 +732,32 @@
             navigate('home');
         });
 
-        function mockCheckout() {
-            showToast("⏳ Mobile Money (MoMo) integration via Paystack is currently pending activation.", "error");
+        function boostAd(adId, amountGHS, boostType) {
+            if (!currentUserEmail) {
+                showToast("Please log in first", "error");
+                return navigate('auth');
+            }
+
+            let handler = PaystackPop.setup({
+                key: 'pk_live_330a243539cdc3bf38ba0808ae8156d620ad03ed', 
+                email: currentUserEmail,
+                amount: amountGHS * 100, 
+                currency: 'GHS',
+                ref: 'AGRI_' + Math.floor((Math.random() * 1000000000) + 1),
+                metadata: {
+                    ad_id: adId,
+                    boost_type: boostType
+                },
+                callback: function(response){
+                    showToast("Payment Successful! Your ad is now boosted. 🚀");
+                    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                    setTimeout(() => { loadMyAds(); loadMarketplace(); }, 2500);
+                },
+                onClose: function(){
+                    showToast("Transaction cancelled.", "error");
+                }
+            });
+            handler.openIframe();
         }
 
         function toggleSunlightMode() {
@@ -1014,6 +1040,7 @@
         }
 
         function setupUserProfile(fullName, isVerified, email, trialDaysLeft = 30) {
+            currentUserEmail = email; 
             const nameEl = document.getElementById('nav-user-name');
             const verifiedIcon = isVerified ? `<svg class="w-4 h-4 text-emerald-400 inline" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>` : '';
             nameEl.innerHTML = `Hi, ${fullName.split(' ')[0]} ${verifiedIcon}`;
@@ -1175,7 +1202,6 @@
             field.type = field.type === "password" ? "text" : "password";
         }
 
-        // NEW FEATURE: REQUEST WHATSAPP PASSWORD RESET
         async function requestPasswordReset() {
             const phone = document.getElementById('fp-phone').value.trim();
             if (!phone) return showToast("Please enter your registered phone number.", "error");
@@ -1186,7 +1212,6 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ phone_number: phone })
                 });
-                const data = await res.json();
                 showToast("WhatsApp sent! (Simulated code: 12345)");
                 
                 document.getElementById('fp-step-1').classList.add('hidden');
@@ -1196,7 +1221,6 @@
             }
         }
 
-        // NEW FEATURE: CONFIRM PASSWORD RESET
         async function confirmPasswordReset() {
             const phone = document.getElementById('fp-phone').value.trim();
             const code = document.getElementById('fp-code').value.trim();
@@ -1366,7 +1390,6 @@
 
                 let descriptionText = item.description ? `<p class="text-xs text-slate-400 mb-2 line-clamp-2">${item.description}</p>` : '';
                 
-                // NEW FEATURE: DISPLAY DELIVERY DETAILS
                 let deliveryText = item.delivery_details ? `<p class="text-[10px] text-amber-200/80 mb-4 bg-amber-500/10 inline-block px-2 py-1 rounded border border-amber-500/20 w-fit">🚚 ${item.delivery_details}</p>` : '<div class="mb-4"></div>';
 
                 gridElement.innerHTML += `
@@ -1477,6 +1500,10 @@
                         ? `<button onclick="generateWhatsAppFlyer('${item.product_name.replace(/'/g, "\\'")}', '${item.base_price_ghs}', '${item.unit}', '${parsedImages[0] || ''}', '${item.phone_number}')" class="bg-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white text-xs font-black px-3.5 py-2 rounded-xl transition-all border border-blue-500/30 flex items-center gap-1 shadow-sm whitespace-nowrap">📱 Get Flyer</button>`
                         : '';
 
+                    let boostBtn = (item.boost_tier === 'standard' && item.status === 'approved') 
+                        ? `<button onclick="boostAd(${item.id}, 15, 'premium')" class="bg-amber-500/20 text-amber-400 hover:bg-amber-500 hover:text-white text-xs font-black px-3.5 py-2 rounded-xl transition-all border border-amber-500/30 flex items-center gap-1 shadow-sm whitespace-nowrap">⭐ Boost</button>`
+                        : '';
+
                     list.innerHTML += `
                         <div class="glass-card p-4 rounded-2xl flex flex-col md:flex-row justify-between items-center group hover:border-white/10 transition-colors gap-4">
                             <div class="flex items-center gap-4 w-full md:w-auto">
@@ -1494,6 +1521,7 @@
                                     🚨 ${isSos ? 'SOS Active' : 'Flash SOS'}
                                 </button>
                                 ${flyerBtn}
+                                ${boostBtn}
                                 <button onclick="deleteAd(${item.id})" class="w-9 h-9 flex items-center justify-center bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white rounded-xl transition-all border border-rose-500/20 shadow-sm shrink-0" title="Delete Ad">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                 </button>
@@ -1557,7 +1585,6 @@
             const unit = document.getElementById('post-unit').value.trim();
             const base_price_ghs = document.getElementById('post-price').value.trim();
             
-            // NEW: Grabbing delivery details
             const delivery_details = document.getElementById('post-delivery').value.trim();
             
             const regionSelect = document.getElementById('post-region').value;
