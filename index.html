@@ -11,6 +11,7 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- PAYSTACK INLINE POPUP SCRIPT -->
     <script src="https://js.paystack.co/v1/inline.js"></script>
 
     <style>
@@ -51,6 +52,7 @@
 
     <div id="toast-container" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 pointer-events-none"></div>
 
+    <!-- NATIONWIDE AGRO-WEATHER BANNER -->
     <div class="bg-gradient-to-r from-emerald-950 via-[#020617] to-teal-950 border-b border-emerald-500/20 px-4 py-1.5 text-[11px] flex justify-between items-center text-slate-300">
         <div class="max-w-7xl mx-auto w-full flex items-center justify-between">
             <span class="flex items-center gap-2">
@@ -61,6 +63,7 @@
         </div>
     </div>
 
+    <!-- SMART DEAL ROOM MODAL -->
     <div id="order-modal" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] shadow-2xl border border-emerald-500/30 relative max-h-[92vh] overflow-y-auto">
             <button onclick="closeOrderModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
@@ -151,6 +154,7 @@
         </div>
     </div>
 
+    <!-- HEADER -->
     <header class="bg-[#020617]/70 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-50 transition-all">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
@@ -162,7 +166,6 @@
             </div>
             <div class="flex gap-3 items-center">
                 <button onclick="navigate('pricing')" class="text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors hidden md:block border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg">⭐ Boost Ads</button>
-                
                 <button onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 text-xs text-slate-300 transition-colors" title="Toggle High-Contrast Sunlight Mode">☀️</button>
                 <button id="nav-login-btn" onclick="navigate('auth')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 hidden transition-colors">Sign In</button>
                 <div id="nav-user-profile" class="hidden items-center gap-3 bg-white/5 px-4 py-1.5 rounded-full border border-white/10">
@@ -176,6 +179,7 @@
         </div>
     </header>
 
+    <!-- REAL-TIME MARKET TICKER -->
     <div class="bg-[#020617] border-b border-white/5 relative z-40 hidden md:block overflow-hidden shadow-inner">
         <div class="max-w-7xl mx-auto flex items-center pl-6">
             <div class="bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider px-4 py-2 rounded-r-lg z-10 shrink-0 flex items-center gap-2 shadow-lg shadow-emerald-500/20">
@@ -189,6 +193,7 @@
         </div>
     </div>
 
+    <!-- MAIN CONTENT -->
     <main class="max-w-7xl mx-auto px-6 py-8 relative z-10 flex-grow w-full">
         
         <div id="view-home" class="fade-in space-y-16">
@@ -279,6 +284,7 @@
             </div>
         </div>
 
+        <!-- PRICING TIERS VIEW (CONNECTED TO LIVE PAYSTACK) -->
         <div id="view-pricing" class="fade-in hidden max-w-5xl mx-auto mt-10 space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">Boost Your Sales</h2>
@@ -286,6 +292,7 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Standard Tier -->
                 <div class="glass-card p-8 rounded-[2rem] flex flex-col border border-white/5">
                     <h3 class="text-xl font-bold text-slate-300 mb-2">Standard</h3>
                     <div class="mb-6"><span class="text-4xl font-black text-white">GH₵ 0</span><span class="text-slate-500 text-sm font-medium"> / forever</span></div>
@@ -298,6 +305,7 @@
                     <button onclick="navigate('post')" class="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-3.5 rounded-xl transition-colors border border-white/10">Post Free Ad</button>
                 </div>
 
+                <!-- QuickSell Boost Tier -->
                 <div class="glass-card p-8 rounded-[2rem] flex flex-col border-2 border-emerald-500 relative transform md:-translate-y-4 shadow-2xl shadow-emerald-900/20">
                     <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-emerald-500 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full">Most Popular</span>
                     <h3 class="text-xl font-bold text-emerald-400 mb-2">QuickSell Boost</h3>
@@ -308,9 +316,10 @@
                         <li class="flex gap-3"><span class="text-emerald-400">✓</span> Highlighted card border</li>
                         <li class="flex gap-3"><span class="text-emerald-400">✓</span> 1x Telegram/WhatsApp broadcast</li>
                     </ul>
-                    <button onclick="navigate('dashboard')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl transition-colors shadow-lg">Boost an Ad (MoMo)</button>
+                    <button onclick="handlePricingBoostClick()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl transition-colors shadow-lg">Boost an Ad (MoMo)</button>
                 </div>
 
+                <!-- AgriPro Monthly -->
                 <div class="glass-card p-8 rounded-[2rem] flex flex-col border border-amber-500/30">
                     <h3 class="text-xl font-bold text-amber-400 mb-2">AgriPro Monthly</h3>
                     <div class="mb-6"><span class="text-4xl font-black text-white">GH₵ 70</span><span class="text-slate-500 text-sm font-medium"> / month</span></div>
@@ -320,7 +329,7 @@
                         <li class="flex gap-3"><span class="text-amber-500">✓</span> Instant SMS lead alerts</li>
                         <li class="flex gap-3"><span class="text-amber-500">✓</span> Auto-renewing listings</li>
                     </ul>
-                    <button onclick="showToast('AgriPro Subscriptions are coming next week! Stick to single boosts for now.')" class="w-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 font-bold py-3.5 rounded-xl transition-colors border border-amber-500/30">Upgrade to Pro</button>
+                    <button onclick="payAgriProSubscription()" class="w-full bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-[#020617] font-black py-3.5 rounded-xl transition-all border border-amber-500/40 shadow-lg">Upgrade to Pro (MoMo)</button>
                 </div>
             </div>
         </div>
@@ -681,11 +690,14 @@
         }
 
         const API_URL = "https://agri-connect-api-3.onrender.com";
+        const PAYSTACK_PUBLIC_KEY = "pk_live_330a243539cdc3bf38ba0808ae8156d620ad03ed"; // Your live public key
+
         let agriToken = localStorage.getItem("agri_token") || "";
         let pendingAction = null;
         let uploadedImages = []; 
         let allLoadedProducts = []; 
         let currentUserEmail = ""; 
+        let myLoadedAds = [];
         
         let currentCategoryState = "";
         let currentSearchState = "";
@@ -732,6 +744,70 @@
             navigate('home');
         });
 
+        // 1. HANDLE PRICING PAGE BOOST (GH₵ 15)
+        async function handlePricingBoostClick() {
+            if (!agriToken) {
+                showToast("Please sign in first to boost an ad", "error");
+                return navigate('auth');
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/api/v1/my-products?token=${agriToken}`);
+                const ads = await res.json();
+                const approvedAds = ads.filter(a => a.status === 'approved');
+
+                if (!approvedAds || approvedAds.length === 0) {
+                    showToast("You don't have any approved ads yet. Post an ad first!", "error");
+                    return navigate('post');
+                }
+
+                if (approvedAds.length === 1) {
+                    // Automatically boost their only ad
+                    boostAd(approvedAds[0].id, 15, 'premium');
+                } else {
+                    // Let them choose which ad to boost
+                    let adOptions = approvedAds.map((a, i) => `${i + 1}. ${a.product_name}`).join("\n");
+                    let choice = prompt(`Select which ad to boost for GH₵ 15 (Enter number):\n\n${adOptions}`);
+                    let idx = parseInt(choice) - 1;
+                    if (idx >= 0 && idx < approvedAds.length) {
+                        boostAd(approvedAds[idx].id, 15, 'premium');
+                    }
+                }
+            } catch (e) {
+                showToast("Could not load your ads", "error");
+            }
+        }
+
+        // 2. HANDLE AGRIPRO SUBSCRIPTION (GH₵ 70)
+        function payAgriProSubscription() {
+            if (!agriToken || !currentUserEmail) {
+                showToast("Please sign in first to upgrade to AgriPro", "error");
+                return navigate('auth');
+            }
+
+            let handler = PaystackPop.setup({
+                key: PAYSTACK_PUBLIC_KEY,
+                email: currentUserEmail,
+                amount: 70 * 100, // GH₵ 70 in pesewas
+                currency: 'GHS',
+                ref: 'AGRI_PRO_' + Math.floor((Math.random() * 1000000000) + 1),
+                metadata: {
+                    boost_type: 'pro',
+                    email: currentUserEmail
+                },
+                callback: function(response){
+                    showToast("Payment Successful! Welcome to AgriPro 🏆");
+                    confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
+                    setTimeout(() => { loadMyAds(); loadMarketplace(); navigate('dashboard'); }, 2500);
+                },
+                onClose: function(){
+                    showToast("Transaction cancelled.", "error");
+                }
+            });
+            handler.openIframe();
+        }
+
+        // 3. CORE PAYSTACK MOMO BOOSTER
         function boostAd(adId, amountGHS, boostType) {
             if (!currentUserEmail) {
                 showToast("Please log in first", "error");
@@ -739,9 +815,9 @@
             }
 
             let handler = PaystackPop.setup({
-                key: 'pk_live_330a243539cdc3bf38ba0808ae8156d620ad03ed', 
+                key: PAYSTACK_PUBLIC_KEY, 
                 email: currentUserEmail,
-                amount: amountGHS * 100, 
+                amount: amountGHS * 100, // GH₵ 15 in pesewas
                 currency: 'GHS',
                 ref: 'AGRI_' + Math.floor((Math.random() * 1000000000) + 1),
                 metadata: {
@@ -1389,7 +1465,6 @@
                     : '';
 
                 let descriptionText = item.description ? `<p class="text-xs text-slate-400 mb-2 line-clamp-2">${item.description}</p>` : '';
-                
                 let deliveryText = item.delivery_details ? `<p class="text-[10px] text-amber-200/80 mb-4 bg-amber-500/10 inline-block px-2 py-1 rounded border border-amber-500/20 w-fit">🚚 ${item.delivery_details}</p>` : '<div class="mb-4"></div>';
 
                 gridElement.innerHTML += `
@@ -1501,8 +1576,8 @@
                         : '';
 
                     let boostBtn = (item.boost_tier === 'standard' && item.status === 'approved') 
-                        ? `<button onclick="boostAd(${item.id}, 15, 'premium')" class="bg-amber-500/20 text-amber-400 hover:bg-amber-500 hover:text-white text-xs font-black px-3.5 py-2 rounded-xl transition-all border border-amber-500/30 flex items-center gap-1 shadow-sm whitespace-nowrap">⭐ Boost</button>`
-                        : '';
+                        ? `<button onclick="boostAd(${item.id}, 15, 'premium')" class="bg-amber-500/20 text-amber-400 hover:bg-amber-500 hover:text-white text-xs font-black px-3.5 py-2 rounded-xl transition-all border border-amber-500/30 flex items-center gap-1 shadow-sm whitespace-nowrap">⭐ Boost (GH₵15)</button>`
+                        : (item.boost_tier === 'premium' ? `<span class="text-xs text-amber-400 font-black px-2 py-1 bg-amber-500/10 rounded-lg border border-amber-500/20">⭐ Boosted</span>` : '');
 
                     list.innerHTML += `
                         <div class="glass-card p-4 rounded-2xl flex flex-col md:flex-row justify-between items-center group hover:border-white/10 transition-colors gap-4">
@@ -1584,7 +1659,6 @@
             const category = document.getElementById('post-category').value;
             const unit = document.getElementById('post-unit').value.trim();
             const base_price_ghs = document.getElementById('post-price').value.trim();
-            
             const delivery_details = document.getElementById('post-delivery').value.trim();
             
             const regionSelect = document.getElementById('post-region').value;
