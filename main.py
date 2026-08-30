@@ -66,7 +66,7 @@ class Product(Base):
     image_data = Column(Text, nullable=True)
     farmer_id = Column(Integer, ForeignKey("users_v3.id"))
     status = Column(String, default="pending")       
-    rejection_reason = Column(String, nullable=True) # NEW: Saves the admin's rejection reason
+    rejection_reason = Column(String, nullable=True) # Added for feedback
     boost_tier = Column(String, default="standard")  
     created_at = Column(DateTime, default=datetime.utcnow)
     owner = relationship("User", back_populates="products")
@@ -96,6 +96,11 @@ class ProductCreate(BaseModel):
 
 class AdminVerify(BaseModel):
     email: str
+
+class RejectPayload(BaseModel):
+    token: str
+    ad_id: int
+    reason: str
 
 # --- DEPENDENCIES ---
 def get_db():
@@ -142,7 +147,6 @@ def get_me(token: str, db: Session = Depends(get_db)):
     user = get_current_user(token, db)
     days_since_creation = (datetime.utcnow() - user.created_at).days if user.created_at else 0
     trial_days_left = max(0, 30 - days_since_creation)
-    
     return {
         "full_name": user.full_name, 
         "is_verified": user.is_verified, 
@@ -216,12 +220,10 @@ def get_products(sort: str = "newest", category: str = "", search: str = "", nei
 @app.get("/api/v1/my-products")
 def get_my_products(token: str, db: Session = Depends(get_db)):
     user = get_current_user(token, db)
-    
-    # NEW: Now explicitly returns the status and rejection reason for the dashboard
-    products = db.query(Product).filter(Product.farmer_id == user.id).order_by(Product.created_at.desc()).all()
+    prods = db.query(Product).filter(Product.farmer_id == user.id).order_by(Product.created_at.desc()).all()
     
     out = []
-    for p in products:
+    for p in prods:
         out.append({
             "id": p.id,
             "product_name": p.product_name,
@@ -229,8 +231,8 @@ def get_my_products(token: str, db: Session = Depends(get_db)):
             "unit": p.unit,
             "image_data": p.image_data,
             "phone_number": user.phone_number,
-            "status": getattr(p, "status", "pending"),
-            "rejection_reason": getattr(p, "rejection_reason", "")
+            "status": p.status,
+            "rejection_reason": p.rejection_reason
         })
     return out
 
@@ -307,24 +309,18 @@ def approve_ad(background_tasks: BackgroundTasks, payload: dict = Body(...), db:
     background_tasks.add_task(broadcast_social_syndication, prod.product_name, prod.base_price_ghs, prod.neighborhood)
     return {"status": "success", "message": "Ad Approved and Syndicated"}
 
-# NEW: Safe Rejection Endpoint (Does not delete the ad)
 @app.post("/api/v1/admin/reject-ad")
-def reject_ad(payload: dict = Body(...), db: Session = Depends(get_db)):
-    token = payload.get("token", "")
-    ad_id = payload.get("ad_id")
-    reason = payload.get("reason", "Does not meet community guidelines.")
-    admin = get_current_user(token, db)
-    
+def reject_ad(payload: RejectPayload, db: Session = Depends(get_db)):
+    admin = get_current_user(payload.token, db)
     if admin.email != ADMIN_EMAIL: raise HTTPException(status_code=403, detail="Not authorized")
     
-    prod = db.query(Product).filter(Product.id == ad_id).first()
+    prod = db.query(Product).filter(Product.id == payload.ad_id).first()
     if not prod: raise HTTPException(status_code=404, detail="Ad not found")
     
     prod.status = "rejected"
-    prod.rejection_reason = reason
+    prod.rejection_reason = payload.reason
     db.commit()
-    
-    return {"status": "success", "message": "Ad successfully marked as rejected."}
+    return {"status": "success"}
 
 async def send_arkesel_sms(phone: str, message: str):
     if not ARKESEL_API_KEY or not phone: return
