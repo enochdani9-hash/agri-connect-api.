@@ -65,8 +65,9 @@ class Product(Base):
     description = Column(String, nullable=True)
     image_data = Column(Text, nullable=True)
     farmer_id = Column(Integer, ForeignKey("users_v3.id"))
-    status = Column(String, default="pending")       # For Ad Moderation Automation
-    boost_tier = Column(String, default="standard")  # For Paystack Automation
+    status = Column(String, default="pending")       
+    rejection_reason = Column(String, nullable=True) # NEW: Saves the admin's rejection reason
+    boost_tier = Column(String, default="standard")  
     created_at = Column(DateTime, default=datetime.utcnow)
     owner = relationship("User", back_populates="products")
 
@@ -139,8 +140,6 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
 @app.get("/api/v1/me")
 def get_me(token: str, db: Session = Depends(get_db)):
     user = get_current_user(token, db)
-    
-    # Calculate days left in the 30-day trial
     days_since_creation = (datetime.utcnow() - user.created_at).days if user.created_at else 0
     trial_days_left = max(0, 30 - days_since_creation)
     
@@ -217,7 +216,23 @@ def get_products(sort: str = "newest", category: str = "", search: str = "", nei
 @app.get("/api/v1/my-products")
 def get_my_products(token: str, db: Session = Depends(get_db)):
     user = get_current_user(token, db)
-    return db.query(Product).filter(Product.farmer_id == user.id).order_by(Product.created_at.desc()).all()
+    
+    # NEW: Now explicitly returns the status and rejection reason for the dashboard
+    products = db.query(Product).filter(Product.farmer_id == user.id).order_by(Product.created_at.desc()).all()
+    
+    out = []
+    for p in products:
+        out.append({
+            "id": p.id,
+            "product_name": p.product_name,
+            "base_price_ghs": p.base_price_ghs,
+            "unit": p.unit,
+            "image_data": p.image_data,
+            "phone_number": user.phone_number,
+            "status": getattr(p, "status", "pending"),
+            "rejection_reason": getattr(p, "rejection_reason", "")
+        })
+    return out
 
 @app.delete("/api/v1/products/{prod_id}")
 def delete_product(prod_id: int, token: str, db: Session = Depends(get_db)):
@@ -291,6 +306,25 @@ def approve_ad(background_tasks: BackgroundTasks, payload: dict = Body(...), db:
     
     background_tasks.add_task(broadcast_social_syndication, prod.product_name, prod.base_price_ghs, prod.neighborhood)
     return {"status": "success", "message": "Ad Approved and Syndicated"}
+
+# NEW: Safe Rejection Endpoint (Does not delete the ad)
+@app.post("/api/v1/admin/reject-ad")
+def reject_ad(payload: dict = Body(...), db: Session = Depends(get_db)):
+    token = payload.get("token", "")
+    ad_id = payload.get("ad_id")
+    reason = payload.get("reason", "Does not meet community guidelines.")
+    admin = get_current_user(token, db)
+    
+    if admin.email != ADMIN_EMAIL: raise HTTPException(status_code=403, detail="Not authorized")
+    
+    prod = db.query(Product).filter(Product.id == ad_id).first()
+    if not prod: raise HTTPException(status_code=404, detail="Ad not found")
+    
+    prod.status = "rejected"
+    prod.rejection_reason = reason
+    db.commit()
+    
+    return {"status": "success", "message": "Ad successfully marked as rejected."}
 
 async def send_arkesel_sms(phone: str, message: str):
     if not ARKESEL_API_KEY or not phone: return
