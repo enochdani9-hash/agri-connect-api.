@@ -184,6 +184,7 @@ def confirm_password_reset(req: ResetPasswordReq, db: Session = Depends(get_db))
         
     return {"status": "success", "msg": "Password updated successfully. You can now log in."}
 
+
 @app.get("/api/v1/me")
 def get_me(token: str, db: Session = Depends(get_db)):
     user = get_current_user(token, db)
@@ -386,7 +387,6 @@ def notify_farmer(background_tasks: BackgroundTasks, payload: dict = Body(...)):
     background_tasks.add_task(send_arkesel_sms, phone, msg)
     return {"status": "SMS Queued"}
 
-# --- PAYSTACK WEBHOOK (HANDLES BOTH GH₵15 ADS & GH₵70 PRO MEMBERSHIP) ---
 @app.post("/api/v1/paystack-webhook")
 async def paystack_webhook(request: Request, db: Session = Depends(get_db)):
     payload = await request.json()
