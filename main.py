@@ -1,10 +1,11 @@
 import os
 from datetime import datetime, timedelta
 from typing import List, Optional
-from fastapi import FastAPI, Depends, HTTPException, status
+import httpx
+from fastapi import FastAPI, Depends, HTTPException, status, BackgroundTasks, Header, Request, Body
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from sqlalchemy import create_engine, Column, Integer, String, Float, Boolean, ForeignKey, Text, DateTime
+from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey, Text, DateTime
 from sqlalchemy.orm import declarative_base, sessionmaker, Session, relationship
 from passlib.context import CryptContext
 from jose import JWTError, jwt
@@ -34,6 +35,12 @@ app.add_middleware(
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+# --- AUTOMATION SECRETS ---
+ARKESEL_API_KEY = os.getenv("ARKESEL_API_KEY", "")
+MAKE_ZAPIER_WEBHOOK_URL = os.getenv("MAKE_WEBHOOK_URL", "")
+CRON_SECRET = os.getenv("CRON_SECRET", "super-secret-cron-key-123")
+ADMIN_EMAIL = "enochdani9@gmail.com"
+
 # --- DATABASE MODELS ---
 class User(Base):
     __tablename__ = "users_v3"
@@ -53,11 +60,13 @@ class Product(Base):
     product_name = Column(String, index=True)
     category = Column(String, index=True)
     unit = Column(String)
-    base_price_ghs = Column(String)  # Changed from Float to String to accept text like "100-150"
+    base_price_ghs = Column(String)  
     neighborhood = Column(String)
     description = Column(String, nullable=True)
     image_data = Column(Text, nullable=True)
     farmer_id = Column(Integer, ForeignKey("users_v3.id"))
+    status = Column(String, default="pending")       # NEW: For Moderation Automation
+    boost_tier = Column(String, default="standard")  # NEW: For Paystack Automation
     created_at = Column(DateTime, default=datetime.utcnow)
     owner = relationship("User", back_populates="products")
 
@@ -79,7 +88,7 @@ class ProductCreate(BaseModel):
     product_name: str
     category: str
     unit: str
-    base_price_ghs: str  # Changed to str
+    base_price_ghs: str  
     neighborhood: str
     description: Optional[str] = None
     image_data: Optional[str] = None
@@ -106,7 +115,7 @@ def get_current_user(token: str, db: Session = Depends(get_db)):
     if user is None: raise credentials_exception
     return user
 
-# --- ENDPOINTS ---
+# --- CORE ENDPOINTS ---
 @app.post("/api/v1/signup")
 def signup(user: UserCreate, db: Session = Depends(get_db)):
     if db.query(User).filter(User.email == user.email).first():
@@ -135,14 +144,15 @@ def get_me(token: str, db: Session = Depends(get_db)):
 @app.post("/api/v1/products")
 def create_product(product: ProductCreate, token: str, db: Session = Depends(get_db)):
     user = get_current_user(token, db)
-    db_product = Product(**product.dict(), farmer_id=user.id)
+    db_product = Product(**product.dict(), farmer_id=user.id, status="pending", boost_tier="standard")
     db.add(db_product)
     db.commit()
     return {"msg": "Product created"}
 
 @app.get("/api/v1/products")
 def get_products(sort: str = "newest", category: str = "", search: str = "", neighborhood: str = "", db: Session = Depends(get_db)):
-    query = db.query(Product, User).join(User)
+    # Only show approved ads on the public marketplace
+    query = db.query(Product, User).join(User).filter(Product.status == "approved")
     
     if category:
         query = query.filter(Product.category.ilike(f"%{category}%"))
@@ -151,7 +161,6 @@ def get_products(sort: str = "newest", category: str = "", search: str = "", nei
     if search:
         query = query.filter(Product.product_name.ilike(f"%{search}%") | Product.neighborhood.ilike(f"%{search}%"))
 
-    # Sorting logic needs a small tweak since prices are text now, but this keeps the newest order functioning
     if sort == "price_asc":
         query = query.order_by(Product.base_price_ghs.asc())
     elif sort == "price_desc":
@@ -175,7 +184,8 @@ def get_products(sort: str = "newest", category: str = "", search: str = "", nei
             "seller_name": user.full_name,
             "seller_verified": user.is_verified,
             "seller_member_since": str(user.created_at.year) if user.created_at else "2026",
-            "phone_number": user.phone_number
+            "phone_number": user.phone_number,
+            "boost_tier": prod.boost_tier
         })
     return out
 
@@ -198,16 +208,92 @@ def get_locations(db: Session = Depends(get_db)):
     locs = db.query(Product.neighborhood).distinct().all()
     return [l[0] for l in locs if l[0]]
 
+# ==========================================
+# ADMIN & AUTOMATIONS
+# ==========================================
 @app.post("/api/v1/admin/verify")
 def verify_seller(req: AdminVerify, token: str, db: Session = Depends(get_db)):
     admin = get_current_user(token, db)
-    if admin.email != "enochdani9@gmail.com":
+    if admin.email != ADMIN_EMAIL:
         raise HTTPException(status_code=403, detail="Not authorized")
-    
     target = db.query(User).filter(User.email == req.email).first()
-    if not target:
-        raise HTTPException(status_code=404, detail="Farmer not found")
-        
+    if not target: raise HTTPException(status_code=404, detail="Farmer not found")
     target.is_verified = True
     db.commit()
     return {"detail": f"{target.full_name} is now a Verified Seller!"}
+
+@app.get("/api/v1/admin/pending-ads")
+def get_pending_ads(token: str, db: Session = Depends(get_db)):
+    admin = get_current_user(token, db)
+    if admin.email != ADMIN_EMAIL: raise HTTPException(status_code=403, detail="Not authorized")
+    query = db.query(Product, User).join(User).filter(Product.status == "pending").all()
+    
+    out = []
+    for prod, user in query:
+        out.append({
+            "id": prod.id,
+            "product_name": prod.product_name,
+            "seller_name": user.full_name,
+            "phone_number": user.phone_number,
+            "base_price_ghs": prod.base_price_ghs
+        })
+    return out
+
+async def broadcast_social_syndication(product_name: str, price: str, neighborhood: str):
+    if not MAKE_ZAPIER_WEBHOOK_URL: return
+    payload = {"event": "ad_approved", "product_name": product_name, "price_ghs": price, "location": neighborhood}
+    try:
+        async with httpx.AsyncClient() as client:
+            await client.post(MAKE_ZAPIER_WEBHOOK_URL, json=payload, timeout=10.0)
+    except Exception as e: print(f"Syndication Webhook dispatch failed: {e}")
+
+@app.post("/api/v1/admin/approve-ad")
+def approve_ad(background_tasks: BackgroundTasks, payload: dict = Body(...), db: Session = Depends(get_db)):
+    token = payload.get("token", "")
+    ad_id = payload.get("ad_id")
+    admin = get_current_user(token, db)
+    if admin.email != ADMIN_EMAIL: raise HTTPException(status_code=403, detail="Not authorized")
+    
+    prod = db.query(Product).filter(Product.id == ad_id).first()
+    if not prod: raise HTTPException(status_code=404, detail="Ad not found")
+    
+    prod.status = "approved"
+    db.commit()
+    
+    # Trigger Make.com Automation
+    background_tasks.add_task(broadcast_social_syndication, prod.product_name, prod.base_price_ghs, prod.neighborhood)
+    return {"status": "success", "message": "Ad Approved and Syndicated"}
+
+async def send_arkesel_sms(phone: str, message: str):
+    if not ARKESEL_API_KEY or not phone: return
+    url = "https://sms.arkesel.com/sms/api"
+    payload = {"action": "send-sms", "api_key": ARKESEL_API_KEY, "to": phone, "from": "AgriConnect", "sms": message}
+    try:
+        async with httpx.AsyncClient() as client:
+            await client.post(url, json=payload, timeout=10.0)
+    except Exception as e: print(f"SMS Gateway dispatch failed: {e}")
+
+@app.post("/api/v1/notify-farmer")
+def notify_farmer(background_tasks: BackgroundTasks, payload: dict = Body(...)):
+    phone = payload.get("phone", "")
+    item = payload.get("item", "")
+    offer = payload.get("offer", "")
+    msg = f"AgriConnect: New buyer inquiry for your {item} (Est. GHc{offer}). Open WhatsApp to reply!"
+    
+    # Trigger SMS Automation
+    background_tasks.add_task(send_arkesel_sms, phone, msg)
+    return {"status": "SMS Queued"}
+
+@app.post("/api/v1/paystack-webhook")
+async def paystack_webhook(request: Request, db: Session = Depends(get_db)):
+    payload = await request.json()
+    if payload.get("event") == "charge.success":
+        metadata = payload.get("data", {}).get("metadata", {})
+        ad_id = metadata.get("ad_id")
+        boost_type = metadata.get("boost_type", "featured")
+        if ad_id:
+            prod = db.query(Product).filter(Product.id == ad_id).first()
+            if prod:
+                prod.boost_tier = boost_type
+                db.commit()
+    return {"status": "success"}
