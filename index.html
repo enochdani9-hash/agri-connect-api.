@@ -11,7 +11,6 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <!-- PAYSTACK INLINE POPUP SCRIPT -->
     <script src="https://js.paystack.co/v1/inline.js"></script>
 
     <style>
@@ -52,7 +51,6 @@
 
     <div id="toast-container" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 pointer-events-none"></div>
 
-    <!-- NATIONWIDE AGRO-WEATHER BANNER -->
     <div class="bg-gradient-to-r from-emerald-950 via-[#020617] to-teal-950 border-b border-emerald-500/20 px-4 py-1.5 text-[11px] flex justify-between items-center text-slate-300">
         <div class="max-w-7xl mx-auto w-full flex items-center justify-between">
             <span class="flex items-center gap-2">
@@ -63,7 +61,6 @@
         </div>
     </div>
 
-    <!-- SMART DEAL ROOM MODAL -->
     <div id="order-modal" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] shadow-2xl border border-emerald-500/30 relative max-h-[92vh] overflow-y-auto">
             <button onclick="closeOrderModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
@@ -154,7 +151,6 @@
         </div>
     </div>
 
-    <!-- HEADER -->
     <header class="bg-[#020617]/70 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-50 transition-all">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
@@ -165,7 +161,10 @@
                 </div>
             </div>
             <div class="flex gap-3 items-center">
+                <!-- NEW QUICK LINKS -->
+                <button onclick="navigate('library')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 transition-colors hidden md:block">Agri-Library</button>
                 <button onclick="navigate('pricing')" class="text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors hidden md:block border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg">⭐ Boost Ads</button>
+                
                 <button onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 text-xs text-slate-300 transition-colors" title="Toggle High-Contrast Sunlight Mode">☀️</button>
                 <button id="nav-login-btn" onclick="navigate('auth')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 hidden transition-colors">Sign In</button>
                 <div id="nav-user-profile" class="hidden items-center gap-3 bg-white/5 px-4 py-1.5 rounded-full border border-white/10">
@@ -179,7 +178,6 @@
         </div>
     </header>
 
-    <!-- REAL-TIME MARKET TICKER -->
     <div class="bg-[#020617] border-b border-white/5 relative z-40 hidden md:block overflow-hidden shadow-inner">
         <div class="max-w-7xl mx-auto flex items-center pl-6">
             <div class="bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider px-4 py-2 rounded-r-lg z-10 shrink-0 flex items-center gap-2 shadow-lg shadow-emerald-500/20">
@@ -193,7 +191,6 @@
         </div>
     </div>
 
-    <!-- MAIN CONTENT -->
     <main class="max-w-7xl mx-auto px-6 py-8 relative z-10 flex-grow w-full">
         
         <div id="view-home" class="fade-in space-y-16">
@@ -284,7 +281,6 @@
             </div>
         </div>
 
-        <!-- PRICING TIERS VIEW (CONNECTED TO LIVE PAYSTACK) -->
         <div id="view-pricing" class="fade-in hidden max-w-5xl mx-auto mt-10 space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">Boost Your Sales</h2>
@@ -659,6 +655,100 @@
                 </div>
             </div>
         </div>
+        
+        <!-- NEW FEATURE: AGRI-LIBRARY VIEW -->
+        <div id="view-library" class="fade-in hidden max-w-6xl mx-auto mt-6 space-y-8">
+            <div class="text-center space-y-4 mb-10">
+                <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">AgriConnect Knowledge Hub</h2>
+                <p class="text-slate-400 text-sm max-w-2xl mx-auto">Master core agronomy principles, farm start-up strategies, and modern agricultural science directly from your dashboard.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="glass-card p-6 rounded-[2rem] border border-emerald-500/20 hover:border-emerald-500/50 transition-all hover:-translate-y-1 group">
+                    <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-2xl mb-4 border border-emerald-500/20 group-hover:bg-emerald-500/20">🌱</div>
+                    <h3 class="text-lg font-black text-white mb-2 group-hover:text-emerald-400 transition-colors">Soil Texture & Structure</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-4">Learn how soil composition directly affects water retention, root penetration, and dry-season vegetable yields.</p>
+                    <button class="text-xs font-bold text-emerald-400 hover:text-emerald-300">Read Article →</button>
+                </div>
+
+                <div class="glass-card p-6 rounded-[2rem] border border-emerald-500/20 hover:border-emerald-500/50 transition-all hover:-translate-y-1 group">
+                    <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-2xl mb-4 border border-emerald-500/20 group-hover:bg-emerald-500/20">🌡️</div>
+                    <h3 class="text-lg font-black text-white mb-2 group-hover:text-emerald-400 transition-colors">Broiler Heat Stress Management</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-4">Discover practical housing, ventilation, and dietary techniques to minimize mortality rates during peak Ghanaian temperatures.</p>
+                    <button class="text-xs font-bold text-emerald-400 hover:text-emerald-300">Read Article →</button>
+                </div>
+
+                <div class="glass-card p-6 rounded-[2rem] border border-emerald-500/20 hover:border-emerald-500/50 transition-all hover:-translate-y-1 group">
+                    <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-2xl mb-4 border border-emerald-500/20 group-hover:bg-emerald-500/20">🔄</div>
+                    <h3 class="text-lg font-black text-white mb-2 group-hover:text-emerald-400 transition-colors">Crop Rotation Science</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-4">Understand the biochemical benefits of rotating legumes with leafy greens to naturally break pest life cycles and fix nitrogen.</p>
+                    <button class="text-xs font-bold text-emerald-400 hover:text-emerald-300">Read Article →</button>
+                </div>
+
+                <div class="glass-card p-6 rounded-[2rem] border border-emerald-500/20 hover:border-emerald-500/50 transition-all hover:-translate-y-1 group">
+                    <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-2xl mb-4 border border-emerald-500/20 group-hover:bg-emerald-500/20">🧪</div>
+                    <h3 class="text-lg font-black text-white mb-2 group-hover:text-emerald-400 transition-colors">Soil Chemistry Fundamentals</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-4">A practical guide to pH levels, macronutrients, and analyzing soil reports for commercial indoor and outdoor cultivation.</p>
+                    <button class="text-xs font-bold text-emerald-400 hover:text-emerald-300">Read Article →</button>
+                </div>
+
+                <div class="glass-card p-6 rounded-[2rem] border border-emerald-500/20 hover:border-emerald-500/50 transition-all hover:-translate-y-1 group">
+                    <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-2xl mb-4 border border-emerald-500/20 group-hover:bg-emerald-500/20">💼</div>
+                    <h3 class="text-lg font-black text-white mb-2 group-hover:text-emerald-400 transition-colors">Farm Start-up Strategy</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-4">Step-by-step methodologies for forecasting expenses, mapping supply chains, and managing initial capital for poultry and vegetable farms.</p>
+                    <button class="text-xs font-bold text-emerald-400 hover:text-emerald-300">Read Article →</button>
+                </div>
+
+                <div class="glass-card p-6 rounded-[2rem] border border-emerald-500/20 hover:border-emerald-500/50 transition-all hover:-translate-y-1 group">
+                    <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-2xl mb-4 border border-emerald-500/20 group-hover:bg-emerald-500/20">💡</div>
+                    <h3 class="text-lg font-black text-white mb-2 group-hover:text-emerald-400 transition-colors">Artificial Lighting for Crops</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-4">Explore advanced techniques for indoor crop cultivation using tailored light spectrums to maximize yield and growth speed.</p>
+                    <button class="text-xs font-bold text-emerald-400 hover:text-emerald-300">Read Article →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW FEATURE: FAQ VIEW -->
+        <div id="view-faq" class="fade-in hidden max-w-4xl mx-auto mt-6 space-y-8">
+            <div class="text-center space-y-4 mb-10">
+                <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">Frequently Asked Questions</h2>
+                <p class="text-slate-400 text-sm max-w-xl mx-auto">Everything you need to know about buying securely, boosting your sales, and using AgriConnect Ghana.</p>
+            </div>
+
+            <div class="space-y-4">
+                <h3 class="text-emerald-400 font-black uppercase tracking-wider text-xs mb-4">📦 Selling & Posting</h3>
+                
+                <div class="glass-card rounded-2xl p-6 border border-white/5">
+                    <h4 class="text-white font-bold text-base mb-2">Is it free to sell on AgriConnect?</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed">Yes! You can post up to 3 standard listings completely free of charge. Your ads will remain active for 30 days. We only charge for optional visibility boosts and our AgriPro monthly subscription.</p>
+                </div>
+                
+                <div class="glass-card rounded-2xl p-6 border border-white/5">
+                    <h4 class="text-white font-bold text-base mb-2">How long does ad review take?</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed">Our administration team typically reviews new ad submissions within a few hours to ensure platform quality and safety. Once approved, it will be visible on the marketplace.</p>
+                </div>
+
+                <h3 class="text-emerald-400 font-black uppercase tracking-wider text-xs mb-4 mt-8">🛡️ Trust & Safety</h3>
+
+                <div class="glass-card rounded-2xl p-6 border border-white/5">
+                    <h4 class="text-white font-bold text-base mb-2">How do I buy safely?</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed">Always inspect the farm produce before finalizing payment. We highly recommend utilizing the MoMo Safe-Trade Protection protocol—meet the farmer, confirm the product quality matches the listing, and then release your Mobile Money payment.</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 border border-white/5">
+                    <h4 class="text-white font-bold text-base mb-2">What does the "Verified Seller" badge mean?</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed">Farmers with a Verified Seller badge have completed our manual background check process. This helps build trust within the community, though standard marketplace precautions should always be taken.</p>
+                </div>
+
+                <h3 class="text-emerald-400 font-black uppercase tracking-wider text-xs mb-4 mt-8">💳 Pricing & Boosts</h3>
+
+                <div class="glass-card rounded-2xl p-6 border border-white/5">
+                    <h4 class="text-white font-bold text-base mb-2">What is a QuickSell Boost?</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed">For GH₵ 15, your listing is pinned to the top of its category for 7 days, receives a highlighted premium badge, and gets syndicated directly to our partner WhatsApp and Telegram trading groups.</p>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <footer class="mt-auto border-t border-white/10 bg-[#020617]/80 backdrop-blur-lg relative z-20">
@@ -672,7 +762,9 @@
             </div>
             <div class="flex flex-wrap justify-center gap-6 text-sm font-bold text-slate-400">
                 <button onclick="navigate('pricing')" class="hover:text-emerald-400 transition-colors">Pricing</button>
-                <button onclick="navigate('home')" class="hover:text-emerald-400 transition-colors">Home</button>
+                <!-- NEW LINKS -->
+                <button onclick="navigate('library')" class="hover:text-emerald-400 transition-colors">Agri-Library</button>
+                <button onclick="navigate('faq')" class="hover:text-emerald-400 transition-colors">FAQs</button>
                 <button onclick="navigate('about')" class="hover:text-emerald-400 transition-colors">About Us</button>
                 <button onclick="navigate('support')" class="hover:text-emerald-400 transition-colors">Contact Support</button>
             </div>
@@ -744,7 +836,6 @@
             navigate('home');
         });
 
-        // 1. HANDLE PRICING PAGE BOOST (GH₵ 15)
         async function handlePricingBoostClick() {
             if (!agriToken) {
                 showToast("Please sign in first to boost an ad", "error");
@@ -762,10 +853,8 @@
                 }
 
                 if (approvedAds.length === 1) {
-                    // Automatically boost their only ad
                     boostAd(approvedAds[0].id, 15, 'premium');
                 } else {
-                    // Let them choose which ad to boost
                     let adOptions = approvedAds.map((a, i) => `${i + 1}. ${a.product_name}`).join("\n");
                     let choice = prompt(`Select which ad to boost for GH₵ 15 (Enter number):\n\n${adOptions}`);
                     let idx = parseInt(choice) - 1;
@@ -778,7 +867,6 @@
             }
         }
 
-        // 2. HANDLE AGRIPRO SUBSCRIPTION (GH₵ 70)
         function payAgriProSubscription() {
             if (!agriToken || !currentUserEmail) {
                 showToast("Please sign in first to upgrade to AgriPro", "error");
@@ -788,7 +876,7 @@
             let handler = PaystackPop.setup({
                 key: PAYSTACK_PUBLIC_KEY,
                 email: currentUserEmail,
-                amount: 70 * 100, // GH₵ 70 in pesewas
+                amount: 70 * 100, 
                 currency: 'GHS',
                 ref: 'AGRI_PRO_' + Math.floor((Math.random() * 1000000000) + 1),
                 metadata: {
@@ -807,7 +895,6 @@
             handler.openIframe();
         }
 
-        // 3. CORE PAYSTACK MOMO BOOSTER
         function boostAd(adId, amountGHS, boostType) {
             if (!currentUserEmail) {
                 showToast("Please log in first", "error");
@@ -817,7 +904,7 @@
             let handler = PaystackPop.setup({
                 key: PAYSTACK_PUBLIC_KEY, 
                 email: currentUserEmail,
-                amount: amountGHS * 100, // GH₵ 15 in pesewas
+                amount: amountGHS * 100, 
                 currency: 'GHS',
                 ref: 'AGRI_' + Math.floor((Math.random() * 1000000000) + 1),
                 metadata: {
@@ -1245,7 +1332,8 @@
         }
 
         function navigate(view) {
-            ['view-home', 'view-marketplace', 'view-auth', 'view-post', 'view-dashboard', 'view-about', 'view-support', 'view-profile', 'view-pricing'].forEach(v => {
+            // NEW: Added library and faq to navigation handling
+            ['view-home', 'view-marketplace', 'view-auth', 'view-post', 'view-dashboard', 'view-about', 'view-support', 'view-profile', 'view-pricing', 'view-library', 'view-faq'].forEach(v => {
                 const element = document.getElementById(v);
                 if (element) element.classList.add('hidden');
             });
@@ -1659,6 +1747,7 @@
             const category = document.getElementById('post-category').value;
             const unit = document.getElementById('post-unit').value.trim();
             const base_price_ghs = document.getElementById('post-price').value.trim();
+            
             const delivery_details = document.getElementById('post-delivery').value.trim();
             
             const regionSelect = document.getElementById('post-region').value;
