@@ -158,9 +158,7 @@
                 </div>
             </div>
             <div class="flex gap-3 items-center">
-                <button onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 text-xs text-amber-400 transition-colors" title="Toggle High-Contrast Sunlight Mode">
-                    ☀️
-                </button>
+                <button onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 text-xs text-amber-400 transition-colors" title="Toggle High-Contrast Sunlight Mode">☀️</button>
                 <button id="nav-login-btn" onclick="navigate('auth')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 hidden transition-colors">Sign In</button>
                 <div id="nav-user-profile" class="hidden items-center gap-3 bg-white/5 px-4 py-1.5 rounded-full border border-white/10">
                     <span id="nav-user-name" class="text-xs font-bold text-emerald-400 flex items-center gap-1 hidden md:flex"></span>
@@ -227,7 +225,6 @@
                             <input type="text" name="email_trap" style="display:none;" aria-hidden="true">
                             <input type="password" name="password_trap" style="display:none;" aria-hidden="true">
                             <input type="search" id="market_finder" role="presentation" autocomplete="new-password" placeholder="Search 'Live Broilers' or 'Tomatoes'..." class="w-full bg-transparent pl-10 pr-12 py-4 text-sm text-white focus:outline-none transition-all relative z-0">
-                            
                             <button id="voice-search-btn" onclick="startVoiceSearch()" class="absolute right-4 text-slate-400 hover:text-emerald-400 transition-colors p-1 rounded-full" title="Search by Voice">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
                             </button>
@@ -335,6 +332,7 @@
                 <div class="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 border border-emerald-500/30 shadow-lg shadow-emerald-500/10">🎧</div>
                 <h2 class="text-3xl font-black text-white mb-4 tracking-tight">Customer Support</h2>
                 <p class="text-slate-400 mb-10 max-w-md mx-auto text-sm">Need help with your account, have a question about a listing, or want to report an issue? Our team is always here for you.</p>
+                
                 <div class="space-y-4 max-w-sm mx-auto relative z-10 mt-8">
                     <a href="tel:0245641480" class="flex items-center justify-center gap-4 w-full bg-[#020617]/80 border border-slate-700 rounded-2xl px-6 py-5 text-white hover:border-emerald-500 transition-all shadow-lg group">
                         <span class="text-2xl group-hover:scale-110 transition-transform">📞</span>
@@ -343,6 +341,7 @@
                             <span class="font-black tracking-wide text-lg">024 564 1480</span>
                         </div>
                     </a>
+                    
                     <a href="https://wa.me/233245641480" target="_blank" class="flex items-center justify-center gap-4 w-full bg-[#25D366]/10 border border-[#25D366]/30 rounded-2xl px-6 py-5 text-[#25D366] hover:bg-[#25D366] hover:text-white transition-all shadow-lg group">
                         <span class="text-2xl group-hover:scale-110 transition-transform">💬</span>
                         <div class="text-left">
@@ -350,6 +349,19 @@
                             <span class="font-black tracking-wide text-lg">WhatsApp</span>
                         </div>
                     </a>
+
+                    <!-- NEW: FULL EMAIL SUPPORT FORM -->
+                    <form action="https://formsubmit.co/agriconnect886@gmail.com" method="POST" class="bg-[#020617]/80 border border-slate-700 rounded-2xl p-6 text-left shadow-lg mt-6">
+                        <h4 class="text-white font-bold mb-4 flex items-center gap-2"><span class="text-emerald-400">✉️</span> Send us an Email</h4>
+                        <input type="hidden" name="_subject" value="New Support Request from AgriConnect">
+                        <input type="hidden" name="_captcha" value="false">
+                        <div class="space-y-3">
+                            <input type="text" name="Name" placeholder="Your Name" required class="w-full bg-[#0f172a] border border-slate-600 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500">
+                            <input type="email" name="Email" placeholder="Your Email Address" required class="w-full bg-[#0f172a] border border-slate-600 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500">
+                            <textarea name="Message" placeholder="How can we help you?" rows="4" required class="w-full bg-[#0f172a] border border-slate-600 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500"></textarea>
+                            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl transition-colors text-sm">Send Email Request</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -360,7 +372,22 @@
                 <div class="flex gap-2 flex-wrap items-center">
                     <select id="market-region-filter" onchange="executeFilters()" class="bg-[#0f172a] border border-slate-600 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer shadow-inner font-bold">
                         <option value="All Regions">All Regions (Ghana)</option>
+                        <option value="Ahafo">Ahafo Region</option>
+                        <option value="Ashanti">Ashanti Region</option>
+                        <option value="Bono">Bono Region</option>
+                        <option value="Bono East">Bono East Region</option>
+                        <option value="Central">Central Region</option>
+                        <option value="Eastern">Eastern Region</option>
                         <option value="Greater Accra">Greater Accra Region</option>
+                        <option value="North East">North East Region</option>
+                        <option value="Northern">Northern Region</option>
+                        <option value="Oti">Oti Region</option>
+                        <option value="Savannah">Savannah Region</option>
+                        <option value="Upper East">Upper East Region</option>
+                        <option value="Upper West">Upper West Region</option>
+                        <option value="Volta">Volta Region</option>
+                        <option value="Western">Western Region</option>
+                        <option value="Western North">Western North Region</option>
                     </select>
                     <select id="filter-sort" onchange="executeFilters()" class="bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer shadow-inner">
                         <option value="newest">Newest First</option>
@@ -458,7 +485,20 @@
                             <select id="post-region" class="w-1/2 bg-[#0f172a] border border-slate-700 rounded-xl px-2 py-4 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer font-bold">
                                 <option value="Ahafo">Ahafo</option>
                                 <option value="Ashanti">Ashanti</option>
+                                <option value="Bono">Bono</option>
+                                <option value="Bono East">Bono East</option>
+                                <option value="Central">Central</option>
+                                <option value="Eastern">Eastern</option>
                                 <option value="Greater Accra" selected>Greater Accra</option>
+                                <option value="North East">North East</option>
+                                <option value="Northern">Northern</option>
+                                <option value="Oti">Oti</option>
+                                <option value="Savannah">Savannah</option>
+                                <option value="Upper East">Upper East</option>
+                                <option value="Upper West">Upper West</option>
+                                <option value="Volta">Volta</option>
+                                <option value="Western">Western</option>
+                                <option value="Western North">Western North</option>
                             </select>
                             <div class="relative w-1/2">
                                 <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs">📍</span>
@@ -475,6 +515,18 @@
         </div>
 
         <div id="view-dashboard" class="fade-in hidden max-w-4xl mx-auto mt-6 space-y-6">
+            
+            <div id="trial-banner" class="hidden bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 p-5 rounded-2xl flex-col md:flex-row items-center justify-between gap-4 shadow-lg shadow-amber-900/10">
+                <div>
+                    <h4 class="text-sm font-black text-amber-400 flex items-center gap-2">⭐ AgriPro Premium Trial Active</h4>
+                    <p class="text-xs text-slate-300 mt-1.5 leading-relaxed">Enjoy unrestricted top-tier listings, automated social syndication, and premium visibility for your first 30 days. <br><span class="font-bold text-slate-400">After your trial, standard listings remain 100% free forever.</span></p>
+                </div>
+                <div class="text-center bg-[#020617]/80 px-5 py-3 rounded-xl border border-amber-500/20 shrink-0 min-w-[100px]">
+                    <span class="block text-2xl font-black text-amber-400" id="trial-days-count">30</span>
+                    <span class="text-[9px] uppercase tracking-wider text-slate-400 font-bold">Days Left</span>
+                </div>
+            </div>
+
             <div class="glass-card p-5 rounded-2xl border-l-4 border-emerald-500 flex flex-col md:flex-row items-center gap-4 shadow-lg shadow-emerald-900/10">
                 <div class="w-12 h-12 bg-emerald-500/20 rounded-full flex items-center justify-center text-xl shrink-0">🌱</div>
                 <div>
@@ -594,7 +646,7 @@
                     const res = await fetch(`${API_URL}/api/v1/me?token=${agriToken}`);
                     if (res.ok) {
                         const data = await res.json();
-                        setupUserProfile(data.full_name, data.is_verified, data.email);
+                        setupUserProfile(data.full_name, data.is_verified, data.email, data.trial_days_left);
                     } else { logout(); }
                 } catch(e) { logout(); }
             } else { document.getElementById('nav-login-btn').classList.remove('hidden'); }
@@ -776,15 +828,10 @@
                 msgText = `*NEW PURCHASE ORDER via AgriConnect*\n\nHello! I am ordering:\n📦 *Item:* ${currentOrderName}\n🔢 *Quantity:* ${qty} ${currentOrderUnit}\n📍 *Delivery:* ${destination}\n💰 *Grand Total:* GH₵${grandTotal}\n\nPlease confirm availability and payment details.`;
             }
 
-            // AUTOMATION TRIGGER: Notify Farmer via SMS immediately
             fetch(`${API_URL}/api/v1/notify-farmer`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    phone: currentOrderPhone,
-                    item: currentOrderName,
-                    offer: grandTotal
-                })
+                body: JSON.stringify({ phone: currentOrderPhone, item: currentOrderName, offer: grandTotal })
             }).catch(err => console.log("SMS notification skipped", err));
 
             window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(msgText)}`, '_blank');
@@ -881,13 +928,25 @@
             if(tipEl) tipEl.innerText = randomTip;
         }
 
-        function setupUserProfile(fullName, isVerified, email) {
+        function setupUserProfile(fullName, isVerified, email, trialDaysLeft = 30) {
             const nameEl = document.getElementById('nav-user-name');
             const verifiedIcon = isVerified ? `<svg class="w-4 h-4 text-emerald-400 inline" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>` : '';
             nameEl.innerHTML = `Hi, ${fullName.split(' ')[0]} ${verifiedIcon}`;
             document.getElementById('nav-login-btn').classList.add('hidden');
             document.getElementById('nav-user-profile').classList.remove('hidden');
             document.getElementById('nav-user-profile').classList.add('flex');
+
+            const trialBanner = document.getElementById('trial-banner');
+            if (trialBanner) {
+                if (trialDaysLeft > 0) {
+                    document.getElementById('trial-days-count').innerText = trialDaysLeft;
+                    trialBanner.classList.remove('hidden');
+                    trialBanner.classList.add('flex');
+                } else {
+                    trialBanner.classList.add('hidden');
+                    trialBanner.classList.remove('flex');
+                }
+            }
 
             if (email === "enochdani9@gmail.com") {
                 document.getElementById('admin-panel').classList.remove('hidden');
@@ -1054,7 +1113,7 @@
             agriToken = data.access_token;
             localStorage.setItem("agri_token", agriToken);
             showToast("Welcome back!");
-            setupUserProfile(data.full_name, data.is_verified, data.email);
+            setupUserProfile(data.full_name, data.is_verified, data.email, data.trial_days_left);
 
             if (pendingAction === 'post') { pendingAction = null; navigate('post'); } 
             else { navigate('dashboard'); }
@@ -1137,7 +1196,6 @@
                 let isSos = sosListingIds.includes(item.id);
                 let escapedDesc = item.description ? item.description.replace(/'/g, "\\'").replace(/"/g, '&quot;') : '';
 
-                // NEW: Show a premium badge if the boost tier is "premium" or "category_highlight"
                 let premiumBadge = (item.boost_tier && item.boost_tier !== "standard") 
                     ? `<span class="absolute top-3 right-3 bg-amber-500 text-white font-black text-[9px] uppercase px-3 py-1 rounded-full shadow-lg z-10">⭐ Premium</span>` 
                     : '';
@@ -1345,7 +1403,12 @@
                         image_data: finalImageData 
                     })
                 });
-                if(!res.ok) throw new Error("Failed to post");
+                
+                if(!res.ok) {
+                    let errText = "Failed to post ad.";
+                    try { const errData = await res.json(); errText = errData.detail || errText; } catch(e) {}
+                    throw new Error(errText);
+                }
                 
                 confetti({
                     particleCount: 150,
@@ -1367,7 +1430,7 @@
                 preview.classList.remove('border-emerald-500');
                 uploadedImages = [];
                 
-                navigate('home'); 
+                navigate('dashboard'); 
             } catch (err) { showToast(err.message, "error"); } 
             finally { btn.innerHTML = "🚀 Submit Ad For Review"; btn.disabled = false; }
         }
