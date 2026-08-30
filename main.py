@@ -39,7 +39,6 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 ARKESEL_API_KEY = os.getenv("ARKESEL_API_KEY", "")
 MAKE_ZAPIER_WEBHOOK_URL = os.getenv("MAKE_WEBHOOK_URL", "")
 CRON_SECRET = os.getenv("CRON_SECRET", "super-secret-cron-key-123")
-# The key is now safely hidden and will be pulled from Render's Environment Variables
 PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY", "")
 ADMIN_EMAIL = "enochdani9@gmail.com"
 
@@ -184,7 +183,6 @@ def confirm_password_reset(req: ResetPasswordReq, db: Session = Depends(get_db))
         del reset_codes_db[req.phone_number]
         
     return {"status": "success", "msg": "Password updated successfully. You can now log in."}
-
 
 @app.get("/api/v1/me")
 def get_me(token: str, db: Session = Depends(get_db)):
@@ -388,13 +386,14 @@ def notify_farmer(background_tasks: BackgroundTasks, payload: dict = Body(...)):
     background_tasks.add_task(send_arkesel_sms, phone, msg)
     return {"status": "SMS Queued"}
 
-# --- PAYSTACK WEBHOOK ---
+# --- PAYSTACK WEBHOOK (HANDLES BOTH GH₵15 ADS & GH₵70 PRO MEMBERSHIP) ---
 @app.post("/api/v1/paystack-webhook")
 async def paystack_webhook(request: Request, db: Session = Depends(get_db)):
     payload = await request.json()
     if payload.get("event") == "charge.success":
         data = payload.get("data", {})
         metadata = data.get("metadata", {})
+        customer_email = data.get("customer", {}).get("email") or metadata.get("email")
         
         ad_id = metadata.get("ad_id")
         boost_type = metadata.get("boost_type", "premium")
@@ -404,7 +403,14 @@ async def paystack_webhook(request: Request, db: Session = Depends(get_db)):
             if prod:
                 prod.boost_tier = boost_type
                 db.commit()
-                print(f"✅ Paystack Success: Ad {ad_id} upgraded to {boost_type}")
+                print(f"✅ Paystack: Ad {ad_id} boosted to {boost_type}")
+        elif boost_type == "pro" and customer_email:
+            user = db.query(User).filter(User.email == customer_email).first()
+            if user:
+                for p in user.products:
+                    p.boost_tier = "premium"
+                db.commit()
+                print(f"✅ Paystack: Upgraded all listings for {customer_email} to AgriPro")
                 
     return {"status": "success"}
 
