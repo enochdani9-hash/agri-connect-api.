@@ -135,12 +135,17 @@
                     </div>
                 </div>
                 
+                <!-- UPGRADED DEAL ROOM BUTTONS -->
                 <div class="grid grid-cols-2 gap-2 pt-2">
                     <button id="send-whatsapp-btn" class="bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-3 rounded-xl text-xs transition-all shadow-lg flex items-center justify-center gap-1.5 truncate">
                         💬 WhatsApp Deal
                     </button>
-                    <button id="send-sms-btn" onclick="executeOfflineSMS()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-black py-3 rounded-xl text-xs transition-all border border-slate-700 flex items-center justify-center gap-1.5 truncate" title="Offline SMS Fallback">
-                        📱 Send Offline SMS
+                    <!-- NEW: CALL FARMER BUTTON -->
+                    <button id="call-farmer-btn" onclick="executeCallFarmer()" class="bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white font-black py-3 rounded-xl text-xs transition-all border border-blue-500/30 flex items-center justify-center gap-1.5 truncate">
+                        📞 Call Farmer
+                    </button>
+                    <button id="send-sms-btn" onclick="executeOfflineSMS()" class="col-span-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-black py-3 rounded-xl text-xs transition-all border border-slate-700 flex items-center justify-center gap-1.5 truncate" title="Offline SMS Fallback">
+                        📱 Send Offline SMS Fallback
                     </button>
                 </div>
             </div>
@@ -158,7 +163,10 @@
                 </div>
             </div>
             <div class="flex gap-3 items-center">
-                <button onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 text-xs text-amber-400 transition-colors" title="Toggle High-Contrast Sunlight Mode">☀️</button>
+                <!-- NEW: PRICING LINK -->
+                <button onclick="navigate('pricing')" class="text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors hidden md:block border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg">⭐ Boost Ads</button>
+                
+                <button onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 text-xs text-slate-300 transition-colors" title="Toggle High-Contrast Sunlight Mode">☀️</button>
                 <button id="nav-login-btn" onclick="navigate('auth')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 hidden transition-colors">Sign In</button>
                 <div id="nav-user-profile" class="hidden items-center gap-3 bg-white/5 px-4 py-1.5 rounded-full border border-white/10">
                     <span id="nav-user-name" class="text-xs font-bold text-emerald-400 flex items-center gap-1 hidden md:flex"></span>
@@ -272,6 +280,56 @@
                         <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('machinery.jfif.jfif');"></div>
                         <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Machinery</p>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW: PRICING TIERS VIEW -->
+        <div id="view-pricing" class="fade-in hidden max-w-5xl mx-auto mt-10 space-y-8">
+            <div class="text-center space-y-4 mb-10">
+                <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">Boost Your Sales</h2>
+                <p class="text-slate-400 text-sm max-w-lg mx-auto">Standard listings are free forever. Boost your visibility and sell faster with our premium features powered by Mobile Money.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Standard Tier -->
+                <div class="glass-card p-8 rounded-[2rem] flex flex-col border border-white/5">
+                    <h3 class="text-xl font-bold text-slate-300 mb-2">Standard</h3>
+                    <div class="mb-6"><span class="text-4xl font-black text-white">GH₵ 0</span><span class="text-slate-500 text-sm font-medium"> / forever</span></div>
+                    <ul class="space-y-4 mb-8 flex-grow text-sm text-slate-400">
+                        <li class="flex gap-3"><span class="text-emerald-500">✓</span> Up to 3 active listings</li>
+                        <li class="flex gap-3"><span class="text-emerald-500">✓</span> Standard search placement</li>
+                        <li class="flex gap-3"><span class="text-emerald-500">✓</span> Direct WhatsApp Deal Room</li>
+                        <li class="flex gap-3"><span class="text-emerald-500">✓</span> Auto-expires in 30 days</li>
+                    </ul>
+                    <button onclick="navigate('post')" class="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-3.5 rounded-xl transition-colors border border-white/10">Post Free Ad</button>
+                </div>
+
+                <!-- QuickSell Boost Tier -->
+                <div class="glass-card p-8 rounded-[2rem] flex flex-col border-2 border-emerald-500 relative transform md:-translate-y-4 shadow-2xl shadow-emerald-900/20">
+                    <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-emerald-500 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full">Most Popular</span>
+                    <h3 class="text-xl font-bold text-emerald-400 mb-2">QuickSell Boost</h3>
+                    <div class="mb-6"><span class="text-4xl font-black text-white">GH₵ 15</span><span class="text-slate-500 text-sm font-medium"> / ad (7 Days)</span></div>
+                    <ul class="space-y-4 mb-8 flex-grow text-sm text-slate-300">
+                        <li class="flex gap-3"><span class="text-emerald-400">✓</span> Pinned to top of category</li>
+                        <li class="flex gap-3"><span class="text-emerald-400">✓</span> "⭐ Premium" ad badge</li>
+                        <li class="flex gap-3"><span class="text-emerald-400">✓</span> Highlighted card border</li>
+                        <li class="flex gap-3"><span class="text-emerald-400">✓</span> 1x Telegram/WhatsApp broadcast</li>
+                    </ul>
+                    <button onclick="mockCheckout()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl transition-colors shadow-lg">Boost an Ad (MoMo)</button>
+                </div>
+
+                <!-- AgriPro Monthly -->
+                <div class="glass-card p-8 rounded-[2rem] flex flex-col border border-amber-500/30">
+                    <h3 class="text-xl font-bold text-amber-400 mb-2">AgriPro Monthly</h3>
+                    <div class="mb-6"><span class="text-4xl font-black text-white">GH₵ 70</span><span class="text-slate-500 text-sm font-medium"> / month</span></div>
+                    <ul class="space-y-4 mb-8 flex-grow text-sm text-slate-400">
+                        <li class="flex gap-3"><span class="text-amber-500">✓</span> Unlimited active listings</li>
+                        <li class="flex gap-3"><span class="text-amber-500">✓</span> "Verified Commercial Farm" badge</li>
+                        <li class="flex gap-3"><span class="text-amber-500">✓</span> Instant SMS lead alerts</li>
+                        <li class="flex gap-3"><span class="text-amber-500">✓</span> Auto-renewing listings</li>
+                    </ul>
+                    <button onclick="mockCheckout()" class="w-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 font-bold py-3.5 rounded-xl transition-colors border border-amber-500/30">Upgrade to Pro</button>
                 </div>
             </div>
         </div>
@@ -584,6 +642,8 @@
                 </div>
             </div>
             <div class="flex flex-wrap justify-center gap-6 text-sm font-bold text-slate-400">
+                <!-- NEW: PRICING LINK IN FOOTER -->
+                <button onclick="navigate('pricing')" class="hover:text-emerald-400 transition-colors">Pricing</button>
                 <button onclick="navigate('home')" class="hover:text-emerald-400 transition-colors">Home</button>
                 <button onclick="navigate('about')" class="hover:text-emerald-400 transition-colors">About Us</button>
                 <button onclick="navigate('support')" class="hover:text-emerald-400 transition-colors">Contact Support</button>
@@ -651,6 +711,11 @@
             } else { document.getElementById('nav-login-btn').classList.remove('hidden'); }
             navigate('home');
         });
+
+        // NEW FEATURE: MOCK CHECKOUT FOR PRICING PAGE
+        function mockCheckout() {
+            showToast("⏳ Mobile Money (MoMo) integration via Paystack is currently pending activation.", "error");
+        }
 
         function toggleSunlightMode() {
             const body = document.getElementById('app-body');
@@ -745,8 +810,6 @@
             
             document.getElementById('order-modal').classList.remove('hidden');
             document.getElementById('order-modal').classList.add('flex');
-            
-            document.getElementById('send-whatsapp-btn').onclick = () => executeDealWhatsApp();
         }
 
         function closeOrderModal() {
@@ -834,6 +897,13 @@
             }).catch(err => console.log("SMS notification skipped", err));
 
             window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(msgText)}`, '_blank');
+            closeOrderModal();
+        }
+
+        // NEW: CALL FARMER FROM DEAL ROOM
+        function executeCallFarmer() {
+            let cleanPhone = currentOrderPhone.replace(/\D/g, '');
+            window.open(`tel:${cleanPhone}`, '_self');
             closeOrderModal();
         }
 
@@ -1056,7 +1126,8 @@
         }
 
         function navigate(view) {
-            ['view-home', 'view-marketplace', 'view-auth', 'view-post', 'view-dashboard', 'view-about', 'view-support', 'view-profile'].forEach(v => {
+            // NEW: Added view-pricing to navigation array
+            ['view-home', 'view-marketplace', 'view-auth', 'view-post', 'view-dashboard', 'view-about', 'view-support', 'view-profile', 'view-pricing'].forEach(v => {
                 const element = document.getElementById(v);
                 if (element) element.classList.add('hidden');
             });
