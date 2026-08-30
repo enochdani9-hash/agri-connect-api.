@@ -62,7 +62,6 @@
         </div>
     </div>
 
-    <!-- VIRAL FEATURE: AUTO-FLYER GENERATOR MODAL -->
     <div id="flyer-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-6 rounded-[2.5rem] shadow-2xl border border-emerald-500/50 relative flex flex-col items-center">
             <button onclick="closeFlyerModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl font-bold bg-slate-800 rounded-full w-8 h-8 flex items-center justify-center">✕</button>
@@ -79,7 +78,6 @@
         </div>
     </div>
 
-    <!-- ARTICLE READING MODAL -->
     <div id="article-modal" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-2xl p-8 rounded-[2.5rem] shadow-2xl border border-emerald-500/30 relative max-h-[92vh] overflow-y-auto text-left">
             <button onclick="closeArticleModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl bg-slate-800 rounded-full w-8 h-8 flex items-center justify-center">✕</button>
@@ -89,7 +87,6 @@
         </div>
     </div>
 
-    <!-- SMART DEAL ROOM MODAL -->
     <div id="order-modal" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] shadow-2xl border border-emerald-500/30 relative max-h-[92vh] overflow-y-auto">
             <button onclick="closeOrderModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
@@ -180,7 +177,6 @@
         </div>
     </div>
 
-    <!-- HEADER -->
     <header class="bg-[#020617]/70 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-50 transition-all">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
@@ -207,7 +203,6 @@
         </div>
     </header>
 
-    <!-- REAL-TIME MARKET TICKER -->
     <div class="bg-[#020617] border-b border-white/5 relative z-40 hidden md:block overflow-hidden shadow-inner">
         <div class="max-w-7xl mx-auto flex items-center pl-6">
             <div class="bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider px-4 py-2 rounded-r-lg z-10 shrink-0 flex items-center gap-2 shadow-lg shadow-emerald-500/20">
@@ -221,10 +216,8 @@
         </div>
     </div>
 
-    <!-- MAIN CONTENT AREA -->
     <main class="max-w-7xl mx-auto px-6 py-8 relative z-10 flex-grow w-full">
         
-        <!-- 1. HOME VIEW -->
         <div id="view-home" class="fade-in space-y-16">
             <div class="text-center py-20 px-4 glass-card rounded-[2.5rem] shadow-2xl relative overflow-hidden border-t border-white/10">
                 <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
@@ -313,7 +306,6 @@
             </div>
         </div>
 
-        <!-- 2. PRICING VIEW -->
         <div id="view-pricing" class="fade-in hidden max-w-5xl mx-auto mt-10 space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">Boost Your Sales</h2>
@@ -360,7 +352,6 @@
             </div>
         </div>
 
-        <!-- 3. LIBRARY VIEW -->
         <div id="view-library" class="fade-in hidden max-w-6xl mx-auto mt-6 space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">AgriConnect Knowledge Hub</h2>
@@ -412,7 +403,6 @@
             </div>
         </div>
 
-        <!-- 4. FAQ VIEW -->
         <div id="view-faq" class="fade-in hidden max-w-4xl mx-auto mt-6 space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">Frequently Asked Questions</h2>
@@ -448,7 +438,6 @@
             </div>
         </div>
 
-        <!-- 5. ABOUT VIEW -->
         <div id="view-about" class="fade-in hidden max-w-3xl mx-auto mt-6">
             <div class="glass-card p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
@@ -460,7 +449,6 @@
             </div>
         </div>
 
-        <!-- 6. SUPPORT VIEW -->
         <div id="view-support" class="fade-in hidden max-w-2xl mx-auto mt-10">
             <div class="glass-card p-10 rounded-[2.5rem] shadow-2xl text-center relative overflow-hidden">
                 <div class="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 border border-emerald-500/30 shadow-lg shadow-emerald-500/10">🎧</div>
@@ -499,7 +487,6 @@
             </div>
         </div>
 
-        <!-- 7. MARKETPLACE VIEW -->
         <div id="view-marketplace" class="fade-in hidden space-y-6">
             <div class="flex flex-col md:flex-row md:items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 backdrop-blur-sm gap-4">
                 <h2 class="text-2xl font-black text-white tracking-tight" id="market-title">Latest Ads</h2>
@@ -534,7 +521,6 @@
             <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
         </div>
 
-        <!-- 8. PROFILE VIEW -->
         <div id="view-profile" class="fade-in hidden space-y-8">
             <div class="glass-card p-8 rounded-[2.5rem] relative overflow-hidden flex flex-col md:flex-row items-center gap-8 shadow-2xl">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
@@ -575,7 +561,6 @@
             </div>
         </div>
 
-        <!-- 9. AUTH VIEW WITH GOOGLE SIGN IN -->
         <div id="view-auth" class="fade-in hidden max-w-sm mx-auto mt-10">
             <div class="glass-card p-8 rounded-[2rem] shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
@@ -653,7 +638,6 @@
             </div>
         </div>
 
-        <!-- 10. POST AD VIEW -->
         <div id="view-post" class="fade-in hidden max-w-2xl mx-auto mt-6">
             <div class="flex items-center gap-3 mb-6">
                 <div class="w-10 h-10 bg-emerald-500/20 rounded-xl flex items-center justify-center text-emerald-400 border border-emerald-500/30">📢</div>
@@ -736,7 +720,6 @@
             </div>
         </div>
 
-        <!-- 11. DASHBOARD VIEW -->
         <div id="view-dashboard" class="fade-in hidden max-w-4xl mx-auto mt-6 space-y-6">
             
             <div id="trial-banner" class="hidden bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 p-5 rounded-2xl flex-col md:flex-row items-center justify-between gap-4 shadow-lg shadow-amber-900/10">
@@ -828,7 +811,7 @@
         }
 
         const API_URL = "https://agri-connect-api-3.onrender.com";
-        const PAYSTACK_PUBLIC_KEY = "pk_live_330a243539cdc3bf38ba0808ae8156d620ad03ed";
+        const PAYSTACK_PUBLIC_KEY = "pk_live_330a243539cdc3bf38ba0808ae8156d620ad03ed"; 
         const GOOGLE_CLIENT_ID = "235464348393-sovqvjql532r4f480ngva5287rupkjma.apps.googleusercontent.com"; 
 
         let agriToken = localStorage.getItem("agri_token") || "";
@@ -1530,7 +1513,8 @@
         }
 
         function navigate(view) {
-            ['view-home', 'view-marketplace', 'view-auth', 'view-post', 'view-dashboard', 'view-about', 'view-support', 'view-profile', 'view-pricing', 'view-library', 'view-faq'].forEach(v => {
+            // FIX: Uses correct exact IDs to cleanly hide all views
+            ['home', 'marketplace', 'auth', 'post', 'dashboard', 'about', 'support', 'profile', 'pricing', 'library', 'faq'].forEach(v => {
                 const element = document.getElementById(`view-${v}`);
                 if (element) element.classList.add('hidden');
             });
