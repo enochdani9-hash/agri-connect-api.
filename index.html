@@ -180,6 +180,7 @@
         </div>
     </div>
 
+    <!-- HEADER -->
     <header class="bg-[#020617]/70 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-50 transition-all">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
@@ -330,6 +331,7 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Standard Tier -->
                 <div class="glass-card p-8 rounded-[2rem] flex flex-col border border-white/5">
                     <h3 class="text-xl font-bold text-slate-300 mb-2">Standard</h3>
                     <div class="mb-6"><span class="text-4xl font-black text-white">GH₵ 0</span><span class="text-slate-500 text-sm font-medium"> / forever</span></div>
@@ -342,6 +344,7 @@
                     <button onclick="navigate('post')" class="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-3.5 rounded-xl transition-colors border border-white/10">Post Free Ad</button>
                 </div>
 
+                <!-- QuickSell Boost Tier -->
                 <div class="glass-card p-8 rounded-[2rem] flex flex-col border-2 border-emerald-500 relative transform md:-translate-y-4 shadow-2xl shadow-emerald-900/20">
                     <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-emerald-500 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full">Most Popular</span>
                     <h3 class="text-xl font-bold text-emerald-400 mb-2">QuickSell Boost</h3>
@@ -355,6 +358,7 @@
                     <button onclick="handlePricingBoostClick()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl transition-colors shadow-lg">Boost an Ad (MoMo)</button>
                 </div>
 
+                <!-- AgriPro Monthly -->
                 <div class="glass-card p-8 rounded-[2rem] flex flex-col border border-amber-500/30">
                     <h3 class="text-xl font-bold text-amber-400 mb-2">AgriPro Monthly</h3>
                     <div class="mb-6"><span class="text-4xl font-black text-white">GH₵ 70</span><span class="text-slate-500 text-sm font-medium"> / month</span></div>
@@ -845,7 +849,6 @@
         let uploadedImages = []; 
         let allLoadedProducts = []; 
         let currentUserEmail = ""; 
-        let myLoadedAds = [];
         
         let currentCategoryState = "";
         let currentSearchState = "";
@@ -1406,7 +1409,18 @@
 
         function autoWriteDescription() {
             const cat = document.getElementById('post-category').value;
-            const name = document.getElementById('post-name').value || "my farm produce";
+            const name = document.getElementById('post-name').value;
+            
+            if (!name) {
+                showToast("Please enter a Headline first!", "error");
+                return;
+            }
+
+            if (cat === 'Poultry' && (name.toLowerCase().includes('tractor') || name.toLowerCase().includes('machine'))) {
+                showToast("Please change the category to Machinery first!", "error");
+                return;
+            }
+
             const templates = {
                 'Poultry': `Healthy, well-fed ${name} raised in a clean, spacious environment. Vaccinations are fully up to date. Excellent weight and ready for immediate sale. Contact for bulk pricing or delivery arrangements.`,
                 'Chicks': `High-quality, active day-old ${name}. Sourced from disease-free parent stock. Perfect for expanding your poultry operation. Minimum order quantities apply.`,
@@ -1531,7 +1545,9 @@
                 if(el) el.remove();
                 showToast("✅ Ad Approved & Syndicated to Social Channels!");
                 loadMarketplace();
-            } catch (err) { showToast(err.message, "error"); }
+            } catch (err) {
+                showToast(err.message, "error");
+            }
         }
 
         async function rejectAd(adId) {
@@ -1546,7 +1562,9 @@
                     const el = document.getElementById(`mod-ad-${adId}`);
                     if(el) el.remove();
                     showToast("❌ Ad Rejected. Seller can see the reason in their dashboard.");
-                } catch(e) { showToast(e.message, "error"); }
+                } catch(e) {
+                    showToast(e.message, "error");
+                }
             }
         }
 
