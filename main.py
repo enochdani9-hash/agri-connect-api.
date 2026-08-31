@@ -311,6 +311,14 @@ def get_products(sort: str = "newest", category: str = "", search: str = "", nei
         })
     return out
 
+# --- NEW: LIGHTWEIGHT ENDPOINT FOR NOTIFICATION POLLING ---
+@app.get("/api/v1/latest-ad")
+def get_latest_ad(db: Session = Depends(get_db)):
+    prod = db.query(Product).filter(Product.status == "approved").order_by(Product.created_at.desc()).first()
+    if prod:
+        return {"id": prod.id, "product_name": prod.product_name, "neighborhood": prod.neighborhood, "base_price_ghs": prod.base_price_ghs}
+    return None
+
 @app.get("/api/v1/my-products")
 def get_my_products(token: str, db: Session = Depends(get_db)):
     user = get_current_user(token, db)
