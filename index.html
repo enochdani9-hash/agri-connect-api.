@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgriConnect Ghana | National Classifieds</title>
+    <title>AgromartDirect | National Classifieds</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#10b981">
@@ -186,12 +186,12 @@
             <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
                 <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-xl flex items-center justify-center text-lg shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">🌾</div>
                 <div>
-                    <h1 class="text-xl font-black tracking-tight text-white group-hover:text-emerald-400 transition-colors">AgriConnect</h1>
+                    <h1 class="text-xl font-black tracking-tight text-white group-hover:text-emerald-400 transition-colors">AgromartDirect</h1>
                     <p class="text-[9px] font-black text-emerald-500 uppercase tracking-widest">Ghana Direct</p>
                 </div>
             </div>
             <div class="flex gap-3 items-center">
-                <button onclick="navigate('library')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 transition-colors hidden md:block">Agri-Library</button>
+                <button onclick="navigate('library')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 transition-colors hidden md:block">Agromart Library</button>
                 <button onclick="navigate('pricing')" class="text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors hidden md:block border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg">⭐ Boost Ads</button>
                 
                 <button onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 text-xs text-slate-300 transition-colors" title="Toggle High-Contrast Sunlight Mode">☀️</button>
@@ -331,7 +331,6 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Standard Tier -->
                 <div class="glass-card p-8 rounded-[2rem] flex flex-col border border-white/5">
                     <h3 class="text-xl font-bold text-slate-300 mb-2">Standard</h3>
                     <div class="mb-6"><span class="text-4xl font-black text-white">GH₵ 0</span><span class="text-slate-500 text-sm font-medium"> / forever</span></div>
@@ -344,7 +343,6 @@
                     <button onclick="navigate('post')" class="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-3.5 rounded-xl transition-colors border border-white/10">Post Free Ad</button>
                 </div>
 
-                <!-- QuickSell Boost Tier -->
                 <div class="glass-card p-8 rounded-[2rem] flex flex-col border-2 border-emerald-500 relative transform md:-translate-y-4 shadow-2xl shadow-emerald-900/20">
                     <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-emerald-500 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full">Most Popular</span>
                     <h3 class="text-xl font-bold text-emerald-400 mb-2">QuickSell Boost</h3>
@@ -358,9 +356,8 @@
                     <button onclick="handlePricingBoostClick()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl transition-colors shadow-lg">Boost an Ad (MoMo)</button>
                 </div>
 
-                <!-- AgriPro Monthly -->
                 <div class="glass-card p-8 rounded-[2rem] flex flex-col border border-amber-500/30">
-                    <h3 class="text-xl font-bold text-amber-400 mb-2">AgriPro Monthly</h3>
+                    <h3 class="text-xl font-bold text-amber-400 mb-2">Agromart Pro</h3>
                     <div class="mb-6"><span class="text-4xl font-black text-white">GH₵ 70</span><span class="text-slate-500 text-sm font-medium"> / month</span></div>
                     <ul class="space-y-4 mb-8 flex-grow text-sm text-slate-400">
                         <li class="flex gap-3"><span class="text-amber-500">✓</span> Unlimited active listings</li>
@@ -376,7 +373,7 @@
         <!-- 3. LIBRARY VIEW -->
         <div id="view-library" class="fade-in hidden max-w-6xl mx-auto mt-6 space-y-8">
             <div class="text-center space-y-4 mb-10">
-                <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">AgriConnect Knowledge Hub</h2>
+                <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">AgromartDirect Knowledge Hub</h2>
                 <p class="text-slate-400 text-sm max-w-2xl mx-auto">Master core agronomy principles, farm start-up strategies, and modern agricultural science directly from your dashboard.</p>
             </div>
 
@@ -429,14 +426,14 @@
         <div id="view-faq" class="fade-in hidden max-w-4xl mx-auto mt-6 space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">Frequently Asked Questions</h2>
-                <p class="text-slate-400 text-sm max-w-xl mx-auto">Everything you need to know about buying securely, boosting your sales, and using AgriConnect Ghana.</p>
+                <p class="text-slate-400 text-sm max-w-xl mx-auto">Everything you need to know about buying securely, boosting your sales, and using AgromartDirect.</p>
             </div>
 
             <div class="space-y-4">
                 <h3 class="text-emerald-400 font-black uppercase tracking-wider text-xs mb-4">📦 Selling & Posting</h3>
                 <div class="glass-card rounded-2xl p-6 border border-white/5">
-                    <h4 class="text-white font-bold text-base mb-2">Is it free to sell on AgriConnect?</h4>
-                    <p class="text-slate-400 text-sm leading-relaxed">Yes! You can post up to 3 standard listings completely free of charge. Your ads will remain active for 30 days. We only charge for optional visibility boosts and our AgriPro monthly subscription.</p>
+                    <h4 class="text-white font-bold text-base mb-2">Is it free to sell on AgromartDirect?</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed">Yes! You can post up to 3 standard listings completely free of charge. Your ads will remain active for 30 days. We only charge for optional visibility boosts and our Agromart Pro monthly subscription.</p>
                 </div>
                 <div class="glass-card rounded-2xl p-6 border border-white/5">
                     <h4 class="text-white font-bold text-base mb-2">How long does ad review take?</h4>
@@ -465,9 +462,9 @@
         <div id="view-about" class="fade-in hidden max-w-3xl mx-auto mt-6">
             <div class="glass-card p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
-                <h2 class="text-4xl font-black text-white mb-6 tracking-tight">About AgriConnect Ghana</h2>
+                <h2 class="text-4xl font-black text-white mb-6 tracking-tight">About AgromartDirect Ghana</h2>
                 <div class="space-y-6 text-slate-300 leading-relaxed text-base">
-                    <p>AgriConnect was built with a simple but powerful mission: <strong class="text-emerald-400">to bridge the gap between hardworking farmers and eager buyers across all 16 regions of Ghana.</strong></p>
+                    <p>AgromartDirect was built with a simple but powerful mission: <strong class="text-emerald-400">to bridge the gap between hardworking farmers and eager buyers across all 16 regions of Ghana.</strong></p>
                     <p>For too long, the agricultural supply chain has been slowed down by middlemen, driving up costs for consumers and cutting into the profits of local farmers. We believe that technology can solve this.</p>
                 </div>
             </div>
@@ -499,7 +496,7 @@
 
                     <form action="https://formsubmit.co/agriconnect886@gmail.com" method="POST" class="bg-[#020617]/80 border border-slate-700 rounded-2xl p-6 text-left shadow-lg mt-6">
                         <h4 class="text-white font-bold mb-4 flex items-center gap-2"><span class="text-emerald-400">✉️</span> Send us an Email</h4>
-                        <input type="hidden" name="_subject" value="New Support Request from AgriConnect">
+                        <input type="hidden" name="_subject" value="New Support Request from AgromartDirect">
                         <input type="hidden" name="_captcha" value="false">
                         <div class="space-y-3">
                             <input type="text" name="Name" placeholder="Your Name" required class="w-full bg-[#0f172a] border border-slate-600 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500">
@@ -571,7 +568,7 @@
                     </div>
                     <div class="flex gap-2 justify-center md:justify-start flex-wrap">
                         <button id="profile-contact-btn" class="bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white font-black px-8 py-3 rounded-xl text-sm transition-all border border-[#25D366]/30 flex items-center gap-2 shadow-lg">Contact Farmer</button>
-                        <button onclick="showToast('🚨 User reported to AgriConnect safety team for review.', 'error')" class="bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white font-black px-4 py-3 rounded-xl text-sm transition-all border border-rose-500/30 flex items-center gap-2 shadow-lg">🚩 Report Scam</button>
+                        <button onclick="showToast('🚨 User reported to AgromartDirect safety team for review.', 'error')" class="bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white font-black px-4 py-3 rounded-xl text-sm transition-all border border-rose-500/30 flex items-center gap-2 shadow-lg">🚩 Report Scam</button>
                     </div>
                 </div>
                 <div class="flex flex-col items-center z-10 shrink-0 mt-6 md:mt-0 bg-white p-3 rounded-2xl shadow-xl">
@@ -754,7 +751,7 @@
             
             <div id="trial-banner" class="hidden bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 p-5 rounded-2xl flex-col md:flex-row items-center justify-between gap-4 shadow-lg shadow-amber-900/10">
                 <div>
-                    <h4 class="text-sm font-black text-amber-400 flex items-center gap-2">⭐ AgriPro Premium Trial Active</h4>
+                    <h4 class="text-sm font-black text-amber-400 flex items-center gap-2">⭐ Agromart Pro Premium Trial Active</h4>
                     <p class="text-xs text-slate-300 mt-1.5 leading-relaxed">Enjoy unrestricted top-tier listings, automated social syndication, and premium visibility for your first 30 days. <br><span class="font-bold text-slate-400">After your trial, standard listings remain 100% free forever.</span></p>
                 </div>
                 <div class="text-center bg-[#020617]/80 px-5 py-3 rounded-xl border border-amber-500/20 shrink-0 min-w-[100px]">
@@ -816,19 +813,19 @@
             <div class="flex items-center gap-2">
                 <span class="text-emerald-500 text-2xl">🌾</span>
                 <div>
-                    <span class="font-black text-white tracking-tight text-lg block leading-none">AgriConnect</span>
+                    <span class="font-black text-white tracking-tight text-lg block leading-none">AgromartDirect</span>
                     <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Ghana Direct</span>
                 </div>
             </div>
             <div class="flex flex-wrap justify-center gap-6 text-sm font-bold text-slate-400">
                 <button onclick="navigate('pricing')" class="hover:text-emerald-400 transition-colors">Pricing</button>
-                <button onclick="navigate('library')" class="hover:text-emerald-400 transition-colors">Agri-Library</button>
+                <button onclick="navigate('library')" class="hover:text-emerald-400 transition-colors">Agromart Library</button>
                 <button onclick="navigate('faq')" class="hover:text-emerald-400 transition-colors">FAQs</button>
                 <button onclick="navigate('about')" class="hover:text-emerald-400 transition-colors">About Us</button>
                 <button onclick="navigate('support')" class="hover:text-emerald-400 transition-colors">Contact Support</button>
             </div>
             <p class="text-xs text-slate-600 font-medium text-center md:text-right">
-                © 2026 AgriConnect Ghana.<br> Empowering Local Farmers Nationwide.
+                © 2026 AgromartDirect Ghana.<br> Empowering Local Farmers Nationwide.
             </p>
         </div>
     </footer>
@@ -849,6 +846,7 @@
         let uploadedImages = []; 
         let allLoadedProducts = []; 
         let currentUserEmail = ""; 
+        let myLoadedAds = [];
         
         let currentCategoryState = "";
         let currentSearchState = "";
@@ -870,7 +868,7 @@
             'broiler': { icon: '🌡️', title: 'Broiler Heat Management', content: `<p>Heat stress is one of the leading causes of high mortality rates for poultry farmers in Sub-Saharan Africa. Broilers, especially after 4 weeks of age, generate massive body heat but cannot sweat.</p><p><strong class="text-emerald-400">Housing Orientation:</strong> Always build poultry houses on an East-West axis so the direct morning and evening sun does not hit the birds.</p><p><strong class="text-emerald-400">Dietary Adjustments:</strong> Add Vitamin C and electrolytes to their drinking water during peak afternoon heat (12 PM - 3 PM). Remove feed during these hours, as digestion generates internal heat.</p><p><strong>Actionable Tip:</strong> Paint your poultry house roof white to reflect solar radiation, significantly dropping the internal temperature.</p>` },
             'rotation': { icon: '🔄', title: 'Crop Rotation Science', content: `<p>Planting the exact same crop in the exact same field year after year depletes specific nutrients and allows pests to establish permanent breeding grounds in your soil.</p><p><strong class="text-emerald-400">The Golden Rule:</strong> Never follow a crop with another crop from the same botanical family. For example, do not plant peppers immediately after tomatoes (both are Nightshades).</p><p><strong class="text-emerald-400">Nitrogen Fixation:</strong> Always include a legume (like cowpeas or groundnuts) in your rotation cycle. Legumes pull nitrogen from the air and fix it into the soil, acting as free, natural fertilizer for your next crop of maize or cassava.</p>` },
             'chemistry': { icon: '🧪', title: 'Soil Chemistry Fundamentals', content: `<p>Understanding the chemical makeup of your soil is the difference between an average yield and a highly profitable commercial harvest.</p><p><strong class="text-emerald-400">The Big Three (NPK):</strong> Nitrogen (N) drives green leafy growth. Phosphorus (P) is essential for strong root development and flowering. Potassium (K) helps with overall plant health and disease resistance.</p><p><strong class="text-emerald-400">pH Levels:</strong> Most vegetables thrive in slightly acidic soil (pH 6.0 - 6.8). If your soil is too acidic, important nutrients become "locked" and unavailable to the plant roots, even if you apply expensive fertilizers.</p>` },
-            'startup': { icon: '💼', title: 'Farm Start-up Strategy', content: `<p>Transitioning from backyard farming to a profitable commercial operation requires strict financial discipline and supply chain mapping.</p><p><strong class="text-emerald-400">The 60/40 Rule for Poultry:</strong> When budgeting for a broiler farm, assume that 60% to 70% of your total capital will go entirely to feed. Do not spend all your money on expensive housing and day-old chicks without securing feed capital.</p><p><strong class="text-emerald-400">Market First:</strong> Never plant a seed or buy a chick without knowing exactly who will buy it. Use platforms like AgriConnect to pre-sell your stock or gauge local demand before investing.</p>` },
+            'startup': { icon: '💼', title: 'Farm Start-up Strategy', content: `<p>Transitioning from backyard farming to a profitable commercial operation requires strict financial discipline and supply chain mapping.</p><p><strong class="text-emerald-400">The 60/40 Rule for Poultry:</strong> When budgeting for a broiler farm, assume that 60% to 70% of your total capital will go entirely to feed. Do not spend all your money on expensive housing and day-old chicks without securing feed capital.</p><p><strong class="text-emerald-400">Market First:</strong> Never plant a seed or buy a chick without knowing exactly who will buy it. Use platforms like AgromartDirect to pre-sell your stock or gauge local demand before investing.</p>` },
             'lighting': { icon: '💡', title: 'Artificial Lighting for Crops', content: `<p>Indoor farming and greenhouse automation are the future of high-yield agriculture, especially for high-value crops and seedlings.</p><p><strong class="text-emerald-400">The Light Spectrum:</strong> Plants do not use all light equally. Blue light (400-500nm) promotes dense, bushy vegetative growth, making it perfect for seedlings and leafy greens. Red light (600-700nm) triggers flowering and fruiting.</p><p><strong class="text-emerald-400">Photoperiods:</strong> By artificially extending the "daylight" hours in a greenhouse using LED grow lights, farmers can drastically accelerate growth cycles and achieve multiple harvests per year regardless of the natural season.</p>` }
         };
 
@@ -902,7 +900,7 @@
                     showToast(`🔥 New Market Alert: ${ad.product_name} in ${ad.neighborhood} (GH₵${ad.base_price_ghs})`);
                     
                     if ("Notification" in window && Notification.permission === "granted") {
-                        const notification = new Notification("AgriConnect: Fresh Stock!", {
+                        const notification = new Notification("AgromartDirect: Fresh Stock!", {
                             body: `A farmer just posted ${ad.product_name} for GH₵${ad.base_price_ghs} in ${ad.neighborhood}. Tap to view!`,
                             icon: "https://cdn-icons-png.flaticon.com/512/2814/2814468.png"
                         });
@@ -1008,7 +1006,7 @@
             ctx.fillStyle = '#ffffff';
             ctx.font = 'bold 65px sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText('🌾 AgriConnect Ghana', 540, 105);
+            ctx.fillText('🌾 AgromartDirect Ghana', 540, 105);
 
             const img = new Image();
             img.crossOrigin = "Anonymous";
@@ -1038,7 +1036,7 @@
             if(imageSrc && imageSrc.startsWith('http')) {
                 img.src = imageSrc;
             } else {
-                img.src = 'https://ui-avatars.com/api/?name=Agri+Connect&background=020617&color=10b981&size=400';
+                img.src = 'https://ui-avatars.com/api/?name=Agromart+Direct&background=020617&color=10b981&size=400';
             }
         }
 
@@ -1064,7 +1062,7 @@
             ctx.fillRect(0, 960, 1080, 120);
             ctx.fillStyle = '#cbd5e1';
             ctx.font = '35px sans-serif';
-            ctx.fillText('Securely traded via AgriConnect. Buy Direct. Zero Middlemen.', 540, 1035);
+            ctx.fillText('Securely traded via AgromartDirect. Buy Direct. Zero Middlemen.', 540, 1035);
         }
 
         function closeFlyerModal() {
@@ -1075,7 +1073,7 @@
         function downloadFlyer() {
             const canvas = document.getElementById('flyer-canvas');
             const link = document.createElement('a');
-            link.download = 'AgriConnect-Promo-Flyer.png';
+            link.download = 'AgromartDirect-Promo-Flyer.png';
             link.href = canvas.toDataURL('image/png');
             link.click();
             showToast("Flyer Downloaded! 📲 Share it on WhatsApp now.");
@@ -1127,7 +1125,7 @@
 
         function payAgriProSubscription() {
             if (!agriToken || !currentUserEmail) {
-                showToast("Please sign in first to upgrade to AgriPro", "error");
+                showToast("Please sign in first to upgrade to Agromart Pro", "error");
                 return navigate('auth');
             }
             let handler = PaystackPop.setup({
@@ -1135,7 +1133,7 @@
                 ref: 'AGRI_PRO_' + Math.floor((Math.random() * 1000000000) + 1),
                 metadata: { boost_type: 'pro', email: currentUserEmail },
                 callback: function(response){
-                    showToast("Payment Successful! Welcome to AgriPro 🏆");
+                    showToast("Payment Successful! Welcome to Agromart Pro 🏆");
                     confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
                     setTimeout(() => { loadMyAds(); loadMarketplace(); navigate('dashboard'); }, 2500);
                 },
@@ -1321,13 +1319,13 @@
             let msgText = "";
             if (currentOrderTabState === 'haggle') {
                 let offerPrice = document.getElementById('haggle-val-display').innerText;
-                msgText = `*PROPOSED WHOLESALE COUNTER-OFFER via AgriConnect*\n\nHello! I would like to make a counter-offer for:\n📦 *Item:* ${currentOrderName}\n🔢 *Quantity:* ${qty} ${currentOrderUnit}\n💡 *My Proposed Unit Price:* GH₵${offerPrice} / ${currentOrderUnit}\n📍 *Destination:* ${destination}\n💰 *Total Proposed Deal:* GH₵${grandTotal}\n\nPlease let me know if this offer works for you!`;
+                msgText = `*PROPOSED WHOLESALE COUNTER-OFFER via AgromartDirect*\n\nHello! I would like to make a counter-offer for:\n📦 *Item:* ${currentOrderName}\n🔢 *Quantity:* ${qty} ${currentOrderUnit}\n💡 *My Proposed Unit Price:* GH₵${offerPrice} / ${currentOrderUnit}\n📍 *Destination:* ${destination}\n💰 *Total Proposed Deal:* GH₵${grandTotal}\n\nPlease let me know if this offer works for you!`;
             } else if (currentOrderTabState === 'group') {
                 let splits = document.getElementById('group-split-count').value;
                 let perPerson = document.getElementById('group-each-price').innerText;
-                msgText = `*GROUP CO-OP PURCHASE via AgriConnect*\n\nHello! We have organized a group buy for:\n📦 *Item:* ${currentOrderName}\n🔢 *Bulk Quantity:* ${qty} ${currentOrderUnit}\n👥 *Co-op Split:* ${splits} Buyers (GH₵${perPerson} per buyer)\n🏆 *Total Combined Value:* GH₵${grandTotal}\n📍 *Delivery:* ${destination}\n\nPlease confirm availability for our group.`;
+                msgText = `*GROUP CO-OP PURCHASE via AgromartDirect*\n\nHello! We have organized a group buy for:\n📦 *Item:* ${currentOrderName}\n🔢 *Bulk Quantity:* ${qty} ${currentOrderUnit}\n👥 *Co-op Split:* ${splits} Buyers (GH₵${perPerson} per buyer)\n🏆 *Total Combined Value:* GH₵${grandTotal}\n📍 *Delivery:* ${destination}\n\nPlease confirm availability for our group.`;
             } else {
-                msgText = `*NEW PURCHASE ORDER via AgriConnect*\n\nHello! I am ordering:\n📦 *Item:* ${currentOrderName}\n🔢 *Quantity:* ${qty} ${currentOrderUnit}\n📍 *Delivery:* ${destination}\n💰 *Grand Total:* GH₵${grandTotal}\n\nPlease confirm availability and payment details.`;
+                msgText = `*NEW PURCHASE ORDER via AgromartDirect*\n\nHello! I am ordering:\n📦 *Item:* ${currentOrderName}\n🔢 *Quantity:* ${qty} ${currentOrderUnit}\n📍 *Delivery:* ${destination}\n💰 *Grand Total:* GH₵${grandTotal}\n\nPlease confirm availability and payment details.`;
             }
 
             fetch(`${API_URL}/api/v1/notify-farmer`, {
@@ -1349,7 +1347,7 @@
             let qty = document.getElementById('order-quantity').value;
             let destination = document.getElementById('order-destination').value || "TBD";
             let grandTotal = document.getElementById('order-total-price').innerText;
-            let smsBody = `AGRI-ORDER: ${qty}x ${currentOrderName} to ${destination}. Total: GHc${grandTotal}. Pls confirm.`;
+            let smsBody = `AGRO-ORDER: ${qty}x ${currentOrderName} to ${destination}. Total: GHc${grandTotal}. Pls confirm.`;
             let cleanPhone = currentOrderPhone.replace(/\D/g, '');
             window.open(`sms:${cleanPhone}?body=${encodeURIComponent(smsBody)}`, '_self');
             closeOrderModal();
@@ -1367,7 +1365,7 @@
             contactBtn.onclick = () => {
                 let cleanPhone = phone.replace(/\D/g, '');
                 if(cleanPhone.startsWith('0')) cleanPhone = '233' + cleanPhone.substring(1);
-                window.open(`https://wa.me/${cleanPhone}?text=Hello! I am viewing your Farm Profile on AgriConnect and I'm interested in your products.`, '_blank');
+                window.open(`https://wa.me/${cleanPhone}?text=Hello! I am viewing your Farm Profile on AgromartDirect and I'm interested in your products.`, '_blank');
             };
 
             const profileUrl = window.location.origin + "?farmer=" + encodeURIComponent(sellerName);
@@ -1725,14 +1723,14 @@
         }
 
         function shareToX(name, price) {
-            const url = `https://twitter.com/intent/tweet?text=Check out this fresh deal on AgriConnect Ghana: ${name} for GH₵${price}! Direct from the farm. 🌾🚜&url=${window.location.href}`;
+            const url = `https://twitter.com/intent/tweet?text=Check out this fresh deal on AgromartDirect Ghana: ${name} for GH₵${price}! Direct from the farm. 🌾🚜&url=${window.location.href}`;
             window.open(url, '_blank');
         }
 
         function shareAd(name, price, unit) {
-            const text = `Check out this fresh deal on AgriConnect Ghana: ${name} for GH₵${price} / ${unit}! Find this and more directly from local farmers at ${window.location.origin}`;
+            const text = `Check out this fresh deal on AgromartDirect Ghana: ${name} for GH₵${price} / ${unit}! Find this and more directly from local farmers at ${window.location.origin}`;
             if (navigator.share) {
-                navigator.share({ title: 'AgriConnect Deal', text: text, url: window.location.href }).catch(console.error);
+                navigator.share({ title: 'AgromartDirect Deal', text: text, url: window.location.href }).catch(console.error);
             } else {
                 navigator.clipboard.writeText(text);
                 showToast("Ad text copied to clipboard!");
@@ -1838,143 +1836,6 @@
                     </div>
                 `;
             });
-        }
-
-        async function loadMarketplace() {
-            document.getElementById('market-title').innerText = currentCategoryState ? `${currentCategoryState} Ads` : (currentSearchState ? `Search Results` : "Latest Ads");
-            const sortVal = document.getElementById('filter-sort').value;
-
-            let url = `${API_URL}/api/v1/products?sort=${sortVal}&t=${new Date().getTime()}`;
-            if (currentCategoryState) url += `&category=${currentCategoryState}`;
-            if (currentSearchState) url += `&search=${currentSearchState}`;
-
-            try {
-                const res = await fetch(url);
-                const products = await res.json();
-                const grid = document.getElementById('product-grid');
-                grid.innerHTML = '';
-                allLoadedProducts = products;
-                
-                let filteredProducts = products;
-                if (currentRegionState !== "All Regions") {
-                    filteredProducts = products.filter(p => p.neighborhood && p.neighborhood.toLowerCase().includes(currentRegionState.toLowerCase()));
-                }
-
-                if(filteredProducts.length > 0) buildMarketTicker(filteredProducts);
-
-                if (filteredProducts.length === 0) return grid.innerHTML = `<div class="col-span-full glass-card py-16 rounded-3xl text-center"><p class="text-slate-400 text-sm">No ads found in ${currentRegionState} matching these filters.</p></div>`;
-                
-                renderProductGrid(filteredProducts, grid);
-            } catch (err) {}
-        }
-
-        async function loadMyAds() {
-            try {
-                const res = await fetch(`${API_URL}/api/v1/my-products?token=${agriToken}&t=${new Date().getTime()}`);
-                if (!res.ok) throw new Error();
-                const products = await res.json();
-                const list = document.getElementById('my-ads-list');
-                list.innerHTML = '';
-                
-                if (products.length === 0) return list.innerHTML = `<div class="col-span-full glass-card p-12 rounded-[2rem] text-center border-dashed"><p class="text-slate-400 text-sm">You haven't posted any ads yet. Your inventory will appear here.</p></div>`;
-                
-                products.forEach(item => {
-                    let parsedImages = [];
-                    if (item.image_data) {
-                        try { parsedImages = JSON.parse(item.image_data); } 
-                        catch(e) { parsedImages = [item.image_data]; }
-                    }
-
-                    let isSos = sosListingIds.includes(item.id);
-                    
-                    let statusBadge = '';
-                    if (item.status === 'pending') {
-                        statusBadge = `<span class="bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] font-black px-2 py-0.5 rounded uppercase">⏳ Pending Review</span>`;
-                    } else if (item.status === 'rejected') {
-                        statusBadge = `<span class="bg-rose-500/20 text-rose-400 border border-rose-500/30 text-[10px] font-black px-2 py-0.5 rounded uppercase" title="${item.rejection_reason || 'Does not meet guidelines'}">❌ Rejected: ${item.rejection_reason || 'Fix and repost'}</span>`;
-                    } else {
-                        statusBadge = `<span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-black px-2 py-0.5 rounded uppercase">✅ Active</span>`;
-                    }
-
-                    let flyerBtn = item.status === 'approved' 
-                        ? `<button onclick="generateWhatsAppFlyer('${item.product_name.replace(/'/g, "\\'")}', '${item.base_price_ghs}', '${item.unit}', '${parsedImages[0] || ''}', '${item.phone_number}')" class="bg-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white text-xs font-black px-3.5 py-2 rounded-xl transition-all border border-blue-500/30 flex items-center gap-1 shadow-sm whitespace-nowrap">📱 Get Flyer</button>`
-                        : '';
-
-                    let boostBtn = (item.boost_tier === 'standard' && item.status === 'approved') 
-                        ? `<button onclick="boostAd(${item.id}, 15, 'premium')" class="bg-amber-500/20 text-amber-400 hover:bg-amber-500 hover:text-white text-xs font-black px-3.5 py-2 rounded-xl transition-all border border-amber-500/30 flex items-center gap-1 shadow-sm whitespace-nowrap">⭐ Boost (GH₵15)</button>`
-                        : (item.boost_tier === 'premium' ? `<span class="text-xs text-amber-400 font-black px-2 py-1 bg-amber-500/10 rounded-lg border border-amber-500/20">⭐ Boosted</span>` : '');
-
-                    list.innerHTML += `
-                        <div class="glass-card p-4 rounded-2xl flex flex-col md:flex-row justify-between items-center group hover:border-white/10 transition-colors gap-4 mb-3">
-                            <div class="flex items-center gap-4 w-full md:w-auto">
-                                ${parsedImages.length > 0 ? `<img src="${parsedImages[0]}" class="w-14 h-14 rounded-xl object-cover shadow-md shrink-0">` : `<div class="w-14 h-14 bg-white/5 rounded-xl flex items-center justify-center border border-white/5 shrink-0">🌾</div>`}
-                                <div>
-                                    <h3 class="font-black text-white text-sm line-clamp-1">${item.product_name}</h3>
-                                    <div class="flex items-center gap-2 mt-1 flex-wrap">
-                                        <p class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded">GH₵${item.base_price_ghs} / ${item.unit}</p>
-                                        ${statusBadge}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-2 w-full md:w-auto justify-end flex-wrap">
-                                <button onclick="toggleSOSClearance(${item.id})" class="text-xs font-black px-3.5 py-2 rounded-xl border transition-all ${isSos ? 'bg-rose-600 text-white border-rose-500' : 'bg-rose-500/10 text-rose-400 border-rose-500/30 hover:bg-rose-500 hover:text-white'}">
-                                    🚨 ${isSos ? 'SOS Active' : 'Flash SOS'}
-                                </button>
-                                ${flyerBtn}
-                                ${boostBtn}
-                                <button onclick="deleteAd(${item.id})" class="w-9 h-9 flex items-center justify-center bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white rounded-xl transition-all border border-rose-500/20 shadow-sm shrink-0" title="Delete Ad">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                });
-            } catch (err) { showToast("Could not load your ads", "error"); }
-        }
-
-        async function deleteAd(id) {
-            if(!confirm("Are you sure you want to delete this ad? This cannot be undone.")) return;
-            try {
-                const res = await fetch(`${API_URL}/api/v1/products/${id}?token=${agriToken}`, { method: 'DELETE' });
-                if (!res.ok) throw new Error("Could not delete");
-                showToast("Ad deleted successfully");
-                loadMyAds(); 
-            } catch (err) { showToast(err.message, "error"); }
-        }
-
-        function handleImageUpload(event) {
-            const files = event.target.files;
-            if (!files.length) return;
-            
-            const previewBox = document.getElementById('image-preview');
-            const uploadText = document.getElementById('upload-text');
-            if (uploadText) uploadText.style.display = 'none';
-            previewBox.classList.add('border-emerald-500');
-            
-            let gallery = document.getElementById('image-gallery');
-            if (!gallery) {
-                previewBox.innerHTML = '<div id="image-gallery" class="flex gap-3 p-3 overflow-x-auto w-full h-full items-center"></div>';
-                gallery = document.getElementById('image-gallery');
-            }
-
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = (e) => {
-                    const img = new Image(); img.src = e.target.result;
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        const MAX_WIDTH = 500; const scaleSize = MAX_WIDTH / img.width;
-                        canvas.width = MAX_WIDTH; canvas.height = img.height * scaleSize;
-                        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
-                        const compressedImageData = canvas.toDataURL('image/jpeg', 0.6); 
-                        
-                        uploadedImages.push(compressedImageData);
-                        gallery.insertAdjacentHTML('beforeend', `<img src="${compressedImageData}" class="h-full w-auto object-cover rounded-xl border border-white/10 shrink-0 shadow-lg">`);
-                    }
-                }
-            });
-            event.target.value = '';
         }
 
         async function submitAd() {
