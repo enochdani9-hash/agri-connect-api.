@@ -62,6 +62,7 @@
         </div>
     </div>
 
+    <!-- VIRAL FEATURE: AUTO-FLYER GENERATOR MODAL -->
     <div id="flyer-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-6 rounded-[2.5rem] shadow-2xl border border-emerald-500/50 relative flex flex-col items-center">
             <button onclick="closeFlyerModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl font-bold bg-slate-800 rounded-full w-8 h-8 flex items-center justify-center">✕</button>
@@ -78,6 +79,7 @@
         </div>
     </div>
 
+    <!-- ARTICLE READING MODAL -->
     <div id="article-modal" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-2xl p-8 rounded-[2.5rem] shadow-2xl border border-emerald-500/30 relative max-h-[92vh] overflow-y-auto text-left">
             <button onclick="closeArticleModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl bg-slate-800 rounded-full w-8 h-8 flex items-center justify-center">✕</button>
@@ -87,6 +89,7 @@
         </div>
     </div>
 
+    <!-- SMART DEAL ROOM MODAL -->
     <div id="order-modal" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] shadow-2xl border border-emerald-500/30 relative max-h-[92vh] overflow-y-auto">
             <button onclick="closeOrderModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
@@ -216,8 +219,10 @@
         </div>
     </div>
 
+    <!-- MAIN CONTENT AREA -->
     <main class="max-w-7xl mx-auto px-6 py-8 relative z-10 flex-grow w-full">
         
+        <!-- 1. HOME VIEW -->
         <div id="view-home" class="fade-in space-y-16">
             <div class="text-center py-20 px-4 glass-card rounded-[2.5rem] shadow-2xl relative overflow-hidden border-t border-white/10">
                 <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
@@ -306,6 +311,7 @@
             </div>
         </div>
 
+        <!-- 2. PRICING VIEW -->
         <div id="view-pricing" class="fade-in hidden max-w-5xl mx-auto mt-10 space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">Boost Your Sales</h2>
@@ -313,6 +319,7 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Standard Tier -->
                 <div class="glass-card p-8 rounded-[2rem] flex flex-col border border-white/5">
                     <h3 class="text-xl font-bold text-slate-300 mb-2">Standard</h3>
                     <div class="mb-6"><span class="text-4xl font-black text-white">GH₵ 0</span><span class="text-slate-500 text-sm font-medium"> / forever</span></div>
@@ -325,6 +332,7 @@
                     <button onclick="navigate('post')" class="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-3.5 rounded-xl transition-colors border border-white/10">Post Free Ad</button>
                 </div>
 
+                <!-- QuickSell Boost Tier -->
                 <div class="glass-card p-8 rounded-[2rem] flex flex-col border-2 border-emerald-500 relative transform md:-translate-y-4 shadow-2xl shadow-emerald-900/20">
                     <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-emerald-500 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full">Most Popular</span>
                     <h3 class="text-xl font-bold text-emerald-400 mb-2">QuickSell Boost</h3>
@@ -338,6 +346,7 @@
                     <button onclick="handlePricingBoostClick()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl transition-colors shadow-lg">Boost an Ad (MoMo)</button>
                 </div>
 
+                <!-- AgriPro Monthly -->
                 <div class="glass-card p-8 rounded-[2rem] flex flex-col border border-amber-500/30">
                     <h3 class="text-xl font-bold text-amber-400 mb-2">AgriPro Monthly</h3>
                     <div class="mb-6"><span class="text-4xl font-black text-white">GH₵ 70</span><span class="text-slate-500 text-sm font-medium"> / month</span></div>
@@ -352,6 +361,7 @@
             </div>
         </div>
 
+        <!-- 3. LIBRARY VIEW -->
         <div id="view-library" class="fade-in hidden max-w-6xl mx-auto mt-6 space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">AgriConnect Knowledge Hub</h2>
@@ -403,6 +413,7 @@
             </div>
         </div>
 
+        <!-- 4. FAQ VIEW -->
         <div id="view-faq" class="fade-in hidden max-w-4xl mx-auto mt-6 space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">Frequently Asked Questions</h2>
@@ -438,6 +449,7 @@
             </div>
         </div>
 
+        <!-- 5. ABOUT VIEW -->
         <div id="view-about" class="fade-in hidden max-w-3xl mx-auto mt-6">
             <div class="glass-card p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
@@ -449,6 +461,7 @@
             </div>
         </div>
 
+        <!-- 6. SUPPORT VIEW -->
         <div id="view-support" class="fade-in hidden max-w-2xl mx-auto mt-10">
             <div class="glass-card p-10 rounded-[2.5rem] shadow-2xl text-center relative overflow-hidden">
                 <div class="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 border border-emerald-500/30 shadow-lg shadow-emerald-500/10">🎧</div>
@@ -487,6 +500,7 @@
             </div>
         </div>
 
+        <!-- 7. MARKETPLACE VIEW -->
         <div id="view-marketplace" class="fade-in hidden space-y-6">
             <div class="flex flex-col md:flex-row md:items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 backdrop-blur-sm gap-4">
                 <h2 class="text-2xl font-black text-white tracking-tight" id="market-title">Latest Ads</h2>
@@ -521,6 +535,7 @@
             <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
         </div>
 
+        <!-- 8. PROFILE VIEW -->
         <div id="view-profile" class="fade-in hidden space-y-8">
             <div class="glass-card p-8 rounded-[2.5rem] relative overflow-hidden flex flex-col md:flex-row items-center gap-8 shadow-2xl">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
@@ -561,6 +576,7 @@
             </div>
         </div>
 
+        <!-- 9. AUTH VIEW WITH GOOGLE SIGN IN -->
         <div id="view-auth" class="fade-in hidden max-w-sm mx-auto mt-10">
             <div class="glass-card p-8 rounded-[2rem] shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
@@ -638,6 +654,7 @@
             </div>
         </div>
 
+        <!-- 10. POST AD VIEW -->
         <div id="view-post" class="fade-in hidden max-w-2xl mx-auto mt-6">
             <div class="flex items-center gap-3 mb-6">
                 <div class="w-10 h-10 bg-emerald-500/20 rounded-xl flex items-center justify-center text-emerald-400 border border-emerald-500/30">📢</div>
@@ -720,6 +737,7 @@
             </div>
         </div>
 
+        <!-- 11. DASHBOARD VIEW -->
         <div id="view-dashboard" class="fade-in hidden max-w-4xl mx-auto mt-6 space-y-6">
             
             <div id="trial-banner" class="hidden bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 p-5 rounded-2xl flex-col md:flex-row items-center justify-between gap-4 shadow-lg shadow-amber-900/10">
@@ -819,7 +837,6 @@
         let uploadedImages = []; 
         let allLoadedProducts = []; 
         let currentUserEmail = ""; 
-        let myLoadedAds = [];
         
         let currentCategoryState = "";
         let currentSearchState = "";
@@ -833,7 +850,6 @@
         let currentOrderTabState = "direct";
 
         let sosListingIds = JSON.parse(localStorage.getItem('agri_sos_ids') || '[]');
-        let recentSignupsQueue = JSON.parse(localStorage.getItem('agri_recent_signups') || '[]');
 
         const libraryArticles = {
             'soil': { icon: '🌱', title: 'Soil Texture & Structure', content: `<p>Soil texture is determined by the relative proportions of sand, silt, and clay. In Ghana, managing these components is crucial for surviving the dry season.</p><p><strong class="text-emerald-400">Sandy soils</strong> drain quickly but lose nutrients rapidly. They require constant organic matter additions (like compost or poultry manure) to retain moisture.</p><p><strong class="text-emerald-400">Clay soils</strong> hold water tightly but can become waterlogged during heavy rains. Proper tilling and adding coarse organic material helps aerate clay-heavy land.</p><p><strong>Actionable Tip:</strong> Before planting your next batch of tomatoes or peppers, conduct a simple "ribbon test" by rolling moist soil in your hand. If it breaks easily, add more organic compost to improve water retention.</p>` },
@@ -857,7 +873,7 @@
             rotateAgronomyTips();
             initGoogleAuth();
             
-            fetch(`${API_URL}/api/v1/products?sort=newest`)
+            fetch(`${API_URL}/api/v1/products?sort=newest&t=${new Date().getTime()}`)
                 .then(res => res.json())
                 .then(data => {
                     allLoadedProducts = data;
@@ -1066,7 +1082,10 @@
                 amount: 70 * 100, 
                 currency: 'GHS',
                 ref: 'AGRI_PRO_' + Math.floor((Math.random() * 1000000000) + 1),
-                metadata: { boost_type: 'pro', email: currentUserEmail },
+                metadata: {
+                    boost_type: 'pro',
+                    email: currentUserEmail
+                },
                 callback: function(response){
                     showToast("Payment Successful! Welcome to AgriPro 🏆");
                     confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
@@ -1091,7 +1110,10 @@
                 amount: amountGHS * 100, 
                 currency: 'GHS',
                 ref: 'AGRI_' + Math.floor((Math.random() * 1000000000) + 1),
-                metadata: { ad_id: adId, boost_type: boostType },
+                metadata: {
+                    ad_id: adId,
+                    boost_type: boostType
+                },
                 callback: function(response){
                     showToast("Payment Successful! Your ad is now boosted. 🚀");
                     confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
@@ -1411,25 +1433,35 @@
             }
         }
 
-        function renderAdminSignupsList() {
+        async function renderAdminSignupsList() {
             const container = document.getElementById('admin-signups-list');
             if (!container) return;
-            if (recentSignupsQueue.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-500 italic">No new pending registrations.</p>`;
-                return;
-            }
+            
+            try {
+                // Fetching from the new backend endpoint directly to ensure device sync
+                const res = await fetch(`${API_URL}/api/v1/admin/pending-users?token=${agriToken}&t=${new Date().getTime()}`);
+                if (!res.ok) throw new Error();
+                const pendingUsers = await res.json();
+                
+                if (!pendingUsers || pendingUsers.length === 0) {
+                    container.innerHTML = `<p class="text-xs text-slate-500 italic">No new pending registrations.</p>`;
+                    return;
+                }
 
-            container.innerHTML = recentSignupsQueue.map((u, i) => `
-                <div class="glass-card p-3 rounded-xl flex items-center justify-between border border-white/5">
-                    <div>
-                        <p class="text-xs font-bold text-white">${u.name} <span class="text-slate-400 font-normal">(${u.email})</span></p>
-                        <p class="text-[10px] text-slate-500">📞 ${u.phone} • Age: ${u.age} • Registered: ${u.time}</p>
+                container.innerHTML = pendingUsers.map((u, i) => `
+                    <div id="mod-user-${i}" class="glass-card p-3 rounded-xl flex items-center justify-between border border-white/5 mb-2">
+                        <div>
+                            <p class="text-xs font-bold text-white">${u.name} <span class="text-slate-400 font-normal">(${u.email})</span></p>
+                            <p class="text-[10px] text-slate-500">📞 ${u.phone} • Age: ${u.age} • Registered: ${u.time}</p>
+                        </div>
+                        <button onclick="quickVerifyUser('${u.email}', 'mod-user-${i}')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-colors shadow shrink-0">
+                            ✅ Verify
+                        </button>
                     </div>
-                    <button onclick="quickVerifyUser('${u.email}', ${i})" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-colors shadow">
-                        ✅ Verify
-                    </button>
-                </div>
-            `).join('');
+                `).join('');
+            } catch (err) {
+                container.innerHTML = `<p class="text-xs text-rose-400">Could not fetch user registrations.</p>`;
+            }
         }
 
         async function renderAdminModQueue() {
@@ -1437,7 +1469,7 @@
             if (!container) return;
             
             try {
-                const res = await fetch(`${API_URL}/api/v1/admin/pending-ads?token=${agriToken}`);
+                const res = await fetch(`${API_URL}/api/v1/admin/pending-ads?token=${agriToken}&t=${new Date().getTime()}`);
                 const pendingAds = await res.json();
                 
                 if (!pendingAds || pendingAds.length === 0) {
@@ -1446,7 +1478,7 @@
                 }
 
                 container.innerHTML = pendingAds.map((ad, i) => `
-                    <div id="mod-ad-${ad.id}" class="glass-card p-3 rounded-xl flex items-center justify-between border border-amber-500/30 bg-amber-500/5">
+                    <div id="mod-ad-${ad.id}" class="glass-card p-3 rounded-xl flex items-center justify-between border border-amber-500/30 bg-amber-500/5 mb-2">
                         <div>
                             <p class="text-xs font-bold text-white">${ad.product_name}</p>
                             <p class="text-[10px] text-slate-400">By: ${ad.seller_name} (${ad.phone_number}) • GH₵${ad.base_price_ghs}</p>
@@ -1498,7 +1530,13 @@
             }
         }
 
-        async function quickVerifyUser(targetEmail, index) {
+        async function verifySeller() {
+            const targetEmail = document.getElementById('verify-email-input').value.trim();
+            if(!targetEmail) return showToast("Enter an email address", "error");
+            quickVerifyUser(targetEmail, null);
+        }
+
+        async function quickVerifyUser(targetEmail, elementId) {
             try {
                 const res = await fetch(`${API_URL}/api/v1/admin/verify?token=${agriToken}`, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: targetEmail })
@@ -1506,14 +1544,18 @@
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.detail);
                 showToast(data.detail);
-                recentSignupsQueue.splice(index, 1);
-                localStorage.setItem('agri_recent_signups', JSON.stringify(recentSignupsQueue));
-                renderAdminSignupsList();
+                
+                if (elementId) {
+                    const el = document.getElementById(elementId);
+                    if(el) el.remove();
+                } else {
+                    document.getElementById('verify-email-input').value = "";
+                }
             } catch (err) { showToast(err.message, "error"); }
         }
 
         function navigate(view) {
-            // FIX: Uses correct exact IDs to cleanly hide all views
+            // FIX: This now cleanly finds exact matching IDs and hides them properly
             ['home', 'marketplace', 'auth', 'post', 'dashboard', 'about', 'support', 'profile', 'pricing', 'library', 'faq'].forEach(v => {
                 const element = document.getElementById(`view-${v}`);
                 if (element) element.classList.add('hidden');
@@ -1609,9 +1651,6 @@
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.detail || "Signup failed");
                 
-                recentSignupsQueue.unshift({ name, email, phone, age, time: new Date().toLocaleTimeString() });
-                localStorage.setItem('agri_recent_signups', JSON.stringify(recentSignupsQueue.slice(0, 20)));
-
                 handleLoginSuccess(data);
             } catch (err) { showToast(err.message, "error"); }
         }
@@ -1667,21 +1706,6 @@
                 navigator.clipboard.writeText(text);
                 showToast("Ad text copied to clipboard!");
             }
-        }
-
-        async function verifySeller() {
-            const targetEmail = document.getElementById('verify-email-input').value.trim();
-            if(!targetEmail) return showToast("Enter an email address", "error");
-
-            try {
-                const res = await fetch(`${API_URL}/api/v1/admin/verify?token=${agriToken}`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: targetEmail })
-                });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.detail);
-                showToast(data.detail);
-                document.getElementById('verify-email-input').value = "";
-            } catch (err) { showToast(err.message, "error"); }
         }
 
         function executeSearch() { 
@@ -1789,7 +1813,7 @@
             document.getElementById('market-title').innerText = currentCategoryState ? `${currentCategoryState} Ads` : (currentSearchState ? `Search Results` : "Latest Ads");
             const sortVal = document.getElementById('filter-sort').value;
 
-            let url = `${API_URL}/api/v1/products?sort=${sortVal}`;
+            let url = `${API_URL}/api/v1/products?sort=${sortVal}&t=${new Date().getTime()}`;
             if (currentCategoryState) url += `&category=${currentCategoryState}`;
             if (currentSearchState) url += `&search=${currentSearchState}`;
 
@@ -1815,7 +1839,7 @@
 
         async function loadMyAds() {
             try {
-                const res = await fetch(`${API_URL}/api/v1/my-products?token=${agriToken}`);
+                const res = await fetch(`${API_URL}/api/v1/my-products?token=${agriToken}&t=${new Date().getTime()}`);
                 if (!res.ok) throw new Error();
                 const products = await res.json();
                 const list = document.getElementById('my-ads-list');
