@@ -180,7 +180,6 @@
         </div>
     </div>
 
-    <!-- HEADER -->
     <header class="bg-[#020617]/70 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-50 transition-all">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
@@ -271,7 +270,7 @@
                 </div>
             </div>
 
-            <!-- NEW TRENDING SECTION -->
+            <!-- TRENDING SECTION -->
             <div class="mt-16">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-2xl font-black text-white tracking-tight flex items-center gap-2">🔥 Trending Nationwide</h3>
@@ -331,7 +330,6 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Standard Tier -->
                 <div class="glass-card p-8 rounded-[2rem] flex flex-col border border-white/5">
                     <h3 class="text-xl font-bold text-slate-300 mb-2">Standard</h3>
                     <div class="mb-6"><span class="text-4xl font-black text-white">GH₵ 0</span><span class="text-slate-500 text-sm font-medium"> / forever</span></div>
@@ -344,7 +342,6 @@
                     <button onclick="navigate('post')" class="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-3.5 rounded-xl transition-colors border border-white/10">Post Free Ad</button>
                 </div>
 
-                <!-- QuickSell Boost Tier -->
                 <div class="glass-card p-8 rounded-[2rem] flex flex-col border-2 border-emerald-500 relative transform md:-translate-y-4 shadow-2xl shadow-emerald-900/20">
                     <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-emerald-500 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full">Most Popular</span>
                     <h3 class="text-xl font-bold text-emerald-400 mb-2">QuickSell Boost</h3>
@@ -358,7 +355,6 @@
                     <button onclick="handlePricingBoostClick()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl transition-colors shadow-lg">Boost an Ad (MoMo)</button>
                 </div>
 
-                <!-- AgriPro Monthly -->
                 <div class="glass-card p-8 rounded-[2rem] flex flex-col border border-amber-500/30">
                     <h3 class="text-xl font-bold text-amber-400 mb-2">AgriPro Monthly</h3>
                     <div class="mb-6"><span class="text-4xl font-black text-white">GH₵ 70</span><span class="text-slate-500 text-sm font-medium"> / month</span></div>
@@ -841,7 +837,7 @@
         }
 
         const API_URL = "https://agri-connect-api-3.onrender.com";
-        const PAYSTACK_PUBLIC_KEY = "pk_live_330a243539cdc3bf38ba0808ae8156d620ad03ed";
+        const PAYSTACK_PUBLIC_KEY = "pk_live_330a243539cdc3bf38ba0808ae8156d620ad03ed"; 
         const GOOGLE_CLIENT_ID = "235464348393-sovqvjql532r4f480ngva5287rupkjma.apps.googleusercontent.com"; 
 
         let agriToken = localStorage.getItem("agri_token") || "";
@@ -864,7 +860,7 @@
 
         let sosListingIds = JSON.parse(localStorage.getItem('agri_sos_ids') || '[]');
         
-        let lastSeenAdId = 0; // NEW: For notification tracking
+        let lastSeenAdId = 0; 
 
         const libraryArticles = {
             'soil': { icon: '🌱', title: 'Soil Texture & Structure', content: `<p>Soil texture is determined by the relative proportions of sand, silt, and clay. In Ghana, managing these components is crucial for surviving the dry season.</p><p><strong class="text-emerald-400">Sandy soils</strong> drain quickly but lose nutrients rapidly. They require constant organic matter additions (like compost or poultry manure) to retain moisture.</p><p><strong class="text-emerald-400">Clay soils</strong> hold water tightly but can become waterlogged during heavy rains. Proper tilling and adding coarse organic material helps aerate clay-heavy land.</p><p><strong>Actionable Tip:</strong> Before planting your next batch of tomatoes or peppers, conduct a simple "ribbon test" by rolling moist soil in your hand. If it breaks easily, add more organic compost to improve water retention.</p>` },
@@ -884,7 +880,6 @@
             setTimeout(() => { t.style.opacity = '0'; setTimeout(()=>t.remove(),300) }, 3000);
         }
 
-        // NEW: DEVICE NOTIFICATION SYSTEM
         function initDeviceNotifications() {
             if ("Notification" in window) {
                 if (Notification.permission !== "granted" && Notification.permission !== "denied") {
@@ -908,10 +903,7 @@
                             body: `A farmer just posted ${ad.product_name} for GH₵${ad.base_price_ghs} in ${ad.neighborhood}. Tap to view!`,
                             icon: "https://cdn-icons-png.flaticon.com/512/2814/2814468.png"
                         });
-                        notification.onclick = () => {
-                            window.focus();
-                            navigate('marketplace');
-                        };
+                        notification.onclick = () => { window.focus(); navigate('marketplace'); };
                     }
                 } else if (ad && lastSeenAdId === 0) {
                     lastSeenAdId = ad.id;
@@ -923,8 +915,6 @@
             rotateAgronomyTips();
             initGoogleAuth();
             initDeviceNotifications();
-            
-            // Poll for notifications every 30 seconds
             setInterval(pollForNewAds, 30000);
             
             fetch(`${API_URL}/api/v1/products?sort=newest&t=${new Date().getTime()}`)
@@ -950,20 +940,17 @@
             navigate('home');
         });
 
-        // NEW: RENDER TRENDING SECTION ON HOME PAGE
         function buildTrendingSection(products) {
             const grid = document.getElementById('trending-grid');
             if (!grid) return;
             grid.innerHTML = '';
             
-            // Prioritize premium ads, fallback to newest
             let trendingAds = products.filter(p => p.boost_tier === 'premium');
             if (trendingAds.length < 3) {
                 const standardAds = products.filter(p => p.boost_tier !== 'premium');
                 trendingAds = trendingAds.concat(standardAds.slice(0, 3 - trendingAds.length));
             }
-            trendingAds = trendingAds.slice(0, 3); // Max 3 on home page
-
+            trendingAds = trendingAds.slice(0, 3);
             renderProductGrid(trendingAds, grid);
         }
 
@@ -989,18 +976,14 @@
         async function handleGoogleSignInResponse(response) {
             try {
                 const res = await fetch(`${API_URL}/api/v1/auth/google`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ credential: response.credential })
                 });
 
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.detail || "Google login failed");
-
                 handleLoginSuccess(data);
-            } catch (err) {
-                showToast(err.message, "error");
-            }
+            } catch (err) { showToast(err.message, "error"); }
         }
 
         function generateWhatsAppFlyer(name, price, unit, imageSrc, phone) {
@@ -1099,11 +1082,9 @@
         function openArticle(key) {
             const article = libraryArticles[key];
             if (!article) return;
-            
             document.getElementById('article-icon').innerText = article.icon;
             document.getElementById('article-title').innerText = article.title;
             document.getElementById('article-content').innerHTML = article.content;
-            
             document.getElementById('article-modal').classList.remove('hidden');
             document.getElementById('article-modal').classList.add('flex');
         }
@@ -1118,7 +1099,6 @@
                 showToast("Please sign in first to boost an ad", "error");
                 return navigate('auth');
             }
-
             try {
                 const res = await fetch(`${API_URL}/api/v1/my-products?token=${agriToken}`);
                 const ads = await res.json();
@@ -1139,9 +1119,7 @@
                         boostAd(approvedAds[idx].id, 15, 'premium');
                     }
                 }
-            } catch (e) {
-                showToast("Could not load your ads", "error");
-            }
+            } catch (e) { showToast("Could not load your ads", "error"); }
         }
 
         function payAgriProSubscription() {
@@ -1149,25 +1127,16 @@
                 showToast("Please sign in first to upgrade to AgriPro", "error");
                 return navigate('auth');
             }
-
             let handler = PaystackPop.setup({
-                key: PAYSTACK_PUBLIC_KEY,
-                email: currentUserEmail,
-                amount: 70 * 100, 
-                currency: 'GHS',
+                key: PAYSTACK_PUBLIC_KEY, email: currentUserEmail, amount: 70 * 100, currency: 'GHS',
                 ref: 'AGRI_PRO_' + Math.floor((Math.random() * 1000000000) + 1),
-                metadata: {
-                    boost_type: 'pro',
-                    email: currentUserEmail
-                },
+                metadata: { boost_type: 'pro', email: currentUserEmail },
                 callback: function(response){
                     showToast("Payment Successful! Welcome to AgriPro 🏆");
                     confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
                     setTimeout(() => { loadMyAds(); loadMarketplace(); navigate('dashboard'); }, 2500);
                 },
-                onClose: function(){
-                    showToast("Transaction cancelled.", "error");
-                }
+                onClose: function(){ showToast("Transaction cancelled.", "error"); }
             });
             handler.openIframe();
         }
@@ -1177,25 +1146,16 @@
                 showToast("Please log in first", "error");
                 return navigate('auth');
             }
-
             let handler = PaystackPop.setup({
-                key: PAYSTACK_PUBLIC_KEY, 
-                email: currentUserEmail,
-                amount: amountGHS * 100, 
-                currency: 'GHS',
+                key: PAYSTACK_PUBLIC_KEY, email: currentUserEmail, amount: amountGHS * 100, currency: 'GHS',
                 ref: 'AGRI_' + Math.floor((Math.random() * 1000000000) + 1),
-                metadata: {
-                    ad_id: adId,
-                    boost_type: boostType
-                },
+                metadata: { ad_id: adId, boost_type: boostType },
                 callback: function(response){
                     showToast("Payment Successful! Your ad is now boosted. 🚀");
                     confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
                     setTimeout(() => { loadMyAds(); loadMarketplace(); }, 2500);
                 },
-                onClose: function(){
-                    showToast("Transaction cancelled.", "error");
-                }
+                onClose: function(){ showToast("Transaction cancelled.", "error"); }
             });
             handler.openIframe();
         }
@@ -1203,11 +1163,8 @@
         function toggleSunlightMode() {
             const body = document.getElementById('app-body');
             body.classList.toggle('sunlight-mode');
-            if (body.classList.contains('sunlight-mode')) {
-                showToast("☀️ Sunlight Field Mode Enabled");
-            } else {
-                showToast("🌙 Dark Mode Restored");
-            }
+            if (body.classList.contains('sunlight-mode')) showToast("☀️ Sunlight Field Mode Enabled");
+            else showToast("🌙 Dark Mode Restored");
         }
 
         function toggleSOSClearance(id) {
@@ -1220,9 +1177,7 @@
             }
             localStorage.setItem('agri_sos_ids', JSON.stringify(sosListingIds));
             loadMyAds();
-            if(!document.getElementById('view-marketplace').classList.contains('hidden')) {
-                loadMarketplace();
-            }
+            if(!document.getElementById('view-marketplace').classList.contains('hidden')) loadMarketplace();
         }
 
         function startVoiceSearch() {
@@ -1257,8 +1212,7 @@
         function openOrderModal(phone, name, priceStr, unit, sellerLoc, prodId) {
             if (!agriToken) {
                 showToast("Please sign in to contact the seller", "error");
-                navigate('auth');
-                return;
+                return navigate('auth');
             }
 
             let isSos = sosListingIds.includes(prodId);
@@ -1374,8 +1328,7 @@
             }
 
             fetch(`${API_URL}/api/v1/notify-farmer`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ phone: currentOrderPhone, item: currentOrderName, offer: grandTotal })
             }).catch(err => console.log("SMS notification skipped", err));
 
@@ -1570,8 +1523,7 @@
         async function approveAd(elementId, adId) {
             try {
                 const res = await fetch(`${API_URL}/api/v1/admin/approve-ad`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ ad_id: adId, token: agriToken })
                 });
                 if (!res.ok) throw new Error("Approval failed");
@@ -1579,9 +1531,7 @@
                 if(el) el.remove();
                 showToast("✅ Ad Approved & Syndicated to Social Channels!");
                 loadMarketplace();
-            } catch (err) {
-                showToast(err.message, "error");
-            }
+            } catch (err) { showToast(err.message, "error"); }
         }
 
         async function rejectAd(adId) {
@@ -1589,17 +1539,14 @@
             if(reason !== null && reason.trim() !== "") {
                 try {
                     const res = await fetch(`${API_URL}/api/v1/admin/reject-ad`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ token: agriToken, ad_id: adId, reason: reason })
                     });
                     if(!res.ok) throw new Error("Failed to reject ad");
                     const el = document.getElementById(`mod-ad-${adId}`);
                     if(el) el.remove();
                     showToast("❌ Ad Rejected. Seller can see the reason in their dashboard.");
-                } catch(e) {
-                    showToast(e.message, "error");
-                }
+                } catch(e) { showToast(e.message, "error"); }
             }
         }
 
@@ -1668,17 +1615,14 @@
 
             try {
                 const res = await fetch(`${API_URL}/api/v1/auth/forgot-password`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ phone_number: phone })
                 });
                 showToast("WhatsApp sent! (Simulated code: 12345)");
                 
                 document.getElementById('fp-step-1').classList.add('hidden');
                 document.getElementById('fp-step-2').classList.remove('hidden');
-            } catch (err) {
-                showToast("Could not send WhatsApp code.", "error");
-            }
+            } catch (err) { showToast("Could not send WhatsApp code.", "error"); }
         }
 
         async function confirmPasswordReset() {
@@ -1690,8 +1634,7 @@
 
             try {
                 const res = await fetch(`${API_URL}/api/v1/auth/reset-password`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ phone_number: phone, code: code, new_password: newPassword })
                 });
                 const data = await res.json();
@@ -1705,9 +1648,7 @@
                 document.getElementById('fp-step-2').classList.add('hidden');
                 document.getElementById('fp-code').value = '';
                 document.getElementById('fp-new-password').value = '';
-            } catch (err) {
-                showToast(err.message, "error");
-            }
+            } catch (err) { showToast(err.message, "error"); }
         }
 
         async function signupUser() {
@@ -1879,6 +1820,143 @@
                     </div>
                 `;
             });
+        }
+
+        async function loadMarketplace() {
+            document.getElementById('market-title').innerText = currentCategoryState ? `${currentCategoryState} Ads` : (currentSearchState ? `Search Results` : "Latest Ads");
+            const sortVal = document.getElementById('filter-sort').value;
+
+            let url = `${API_URL}/api/v1/products?sort=${sortVal}&t=${new Date().getTime()}`;
+            if (currentCategoryState) url += `&category=${currentCategoryState}`;
+            if (currentSearchState) url += `&search=${currentSearchState}`;
+
+            try {
+                const res = await fetch(url);
+                const products = await res.json();
+                const grid = document.getElementById('product-grid');
+                grid.innerHTML = '';
+                allLoadedProducts = products;
+                
+                let filteredProducts = products;
+                if (currentRegionState !== "All Regions") {
+                    filteredProducts = products.filter(p => p.neighborhood && p.neighborhood.toLowerCase().includes(currentRegionState.toLowerCase()));
+                }
+
+                if(filteredProducts.length > 0) buildMarketTicker(filteredProducts);
+
+                if (filteredProducts.length === 0) return grid.innerHTML = `<div class="col-span-full glass-card py-16 rounded-3xl text-center"><p class="text-slate-400 text-sm">No ads found in ${currentRegionState} matching these filters.</p></div>`;
+                
+                renderProductGrid(filteredProducts, grid);
+            } catch (err) {}
+        }
+
+        async function loadMyAds() {
+            try {
+                const res = await fetch(`${API_URL}/api/v1/my-products?token=${agriToken}&t=${new Date().getTime()}`);
+                if (!res.ok) throw new Error();
+                const products = await res.json();
+                const list = document.getElementById('my-ads-list');
+                list.innerHTML = '';
+                
+                if (products.length === 0) return list.innerHTML = `<div class="col-span-full glass-card p-12 rounded-[2rem] text-center border-dashed"><p class="text-slate-400 text-sm">You haven't posted any ads yet. Your inventory will appear here.</p></div>`;
+                
+                products.forEach(item => {
+                    let parsedImages = [];
+                    if (item.image_data) {
+                        try { parsedImages = JSON.parse(item.image_data); } 
+                        catch(e) { parsedImages = [item.image_data]; }
+                    }
+
+                    let isSos = sosListingIds.includes(item.id);
+                    
+                    let statusBadge = '';
+                    if (item.status === 'pending') {
+                        statusBadge = `<span class="bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] font-black px-2 py-0.5 rounded uppercase">⏳ Pending Review</span>`;
+                    } else if (item.status === 'rejected') {
+                        statusBadge = `<span class="bg-rose-500/20 text-rose-400 border border-rose-500/30 text-[10px] font-black px-2 py-0.5 rounded uppercase" title="${item.rejection_reason || 'Does not meet guidelines'}">❌ Rejected: ${item.rejection_reason || 'Fix and repost'}</span>`;
+                    } else {
+                        statusBadge = `<span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-black px-2 py-0.5 rounded uppercase">✅ Active</span>`;
+                    }
+
+                    let flyerBtn = item.status === 'approved' 
+                        ? `<button onclick="generateWhatsAppFlyer('${item.product_name.replace(/'/g, "\\'")}', '${item.base_price_ghs}', '${item.unit}', '${parsedImages[0] || ''}', '${item.phone_number}')" class="bg-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white text-xs font-black px-3.5 py-2 rounded-xl transition-all border border-blue-500/30 flex items-center gap-1 shadow-sm whitespace-nowrap">📱 Get Flyer</button>`
+                        : '';
+
+                    let boostBtn = (item.boost_tier === 'standard' && item.status === 'approved') 
+                        ? `<button onclick="boostAd(${item.id}, 15, 'premium')" class="bg-amber-500/20 text-amber-400 hover:bg-amber-500 hover:text-white text-xs font-black px-3.5 py-2 rounded-xl transition-all border border-amber-500/30 flex items-center gap-1 shadow-sm whitespace-nowrap">⭐ Boost (GH₵15)</button>`
+                        : (item.boost_tier === 'premium' ? `<span class="text-xs text-amber-400 font-black px-2 py-1 bg-amber-500/10 rounded-lg border border-amber-500/20">⭐ Boosted</span>` : '');
+
+                    list.innerHTML += `
+                        <div class="glass-card p-4 rounded-2xl flex flex-col md:flex-row justify-between items-center group hover:border-white/10 transition-colors gap-4 mb-3">
+                            <div class="flex items-center gap-4 w-full md:w-auto">
+                                ${parsedImages.length > 0 ? `<img src="${parsedImages[0]}" class="w-14 h-14 rounded-xl object-cover shadow-md shrink-0">` : `<div class="w-14 h-14 bg-white/5 rounded-xl flex items-center justify-center border border-white/5 shrink-0">🌾</div>`}
+                                <div>
+                                    <h3 class="font-black text-white text-sm line-clamp-1">${item.product_name}</h3>
+                                    <div class="flex items-center gap-2 mt-1 flex-wrap">
+                                        <p class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded">GH₵${item.base_price_ghs} / ${item.unit}</p>
+                                        ${statusBadge}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 w-full md:w-auto justify-end flex-wrap">
+                                <button onclick="toggleSOSClearance(${item.id})" class="text-xs font-black px-3.5 py-2 rounded-xl border transition-all ${isSos ? 'bg-rose-600 text-white border-rose-500' : 'bg-rose-500/10 text-rose-400 border-rose-500/30 hover:bg-rose-500 hover:text-white'}">
+                                    🚨 ${isSos ? 'SOS Active' : 'Flash SOS'}
+                                </button>
+                                ${flyerBtn}
+                                ${boostBtn}
+                                <button onclick="deleteAd(${item.id})" class="w-9 h-9 flex items-center justify-center bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white rounded-xl transition-all border border-rose-500/20 shadow-sm shrink-0" title="Delete Ad">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (err) { showToast("Could not load your ads", "error"); }
+        }
+
+        async function deleteAd(id) {
+            if(!confirm("Are you sure you want to delete this ad? This cannot be undone.")) return;
+            try {
+                const res = await fetch(`${API_URL}/api/v1/products/${id}?token=${agriToken}`, { method: 'DELETE' });
+                if (!res.ok) throw new Error("Could not delete");
+                showToast("Ad deleted successfully");
+                loadMyAds(); 
+            } catch (err) { showToast(err.message, "error"); }
+        }
+
+        function handleImageUpload(event) {
+            const files = event.target.files;
+            if (!files.length) return;
+            
+            const previewBox = document.getElementById('image-preview');
+            const uploadText = document.getElementById('upload-text');
+            if (uploadText) uploadText.style.display = 'none';
+            previewBox.classList.add('border-emerald-500');
+            
+            let gallery = document.getElementById('image-gallery');
+            if (!gallery) {
+                previewBox.innerHTML = '<div id="image-gallery" class="flex gap-3 p-3 overflow-x-auto w-full h-full items-center"></div>';
+                gallery = document.getElementById('image-gallery');
+            }
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (e) => {
+                    const img = new Image(); img.src = e.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 500; const scaleSize = MAX_WIDTH / img.width;
+                        canvas.width = MAX_WIDTH; canvas.height = img.height * scaleSize;
+                        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+                        const compressedImageData = canvas.toDataURL('image/jpeg', 0.6); 
+                        
+                        uploadedImages.push(compressedImageData);
+                        gallery.insertAdjacentHTML('beforeend', `<img src="${compressedImageData}" class="h-full w-auto object-cover rounded-xl border border-white/10 shrink-0 shadow-lg">`);
+                    }
+                }
+            });
+            event.target.value = '';
         }
 
         async function submitAd() {
