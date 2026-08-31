@@ -23,7 +23,7 @@ engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False} i
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
-app = FastAPI(title="AgriConnect API")
+app = FastAPI(title="AgromartDirect API")
 
 app.add_middleware(
     CORSMiddleware,
@@ -311,7 +311,6 @@ def get_products(sort: str = "newest", category: str = "", search: str = "", nei
         })
     return out
 
-# --- NEW: LIGHTWEIGHT ENDPOINT FOR NOTIFICATION POLLING ---
 @app.get("/api/v1/latest-ad")
 def get_latest_ad(db: Session = Depends(get_db)):
     prod = db.query(Product).filter(Product.status == "approved").order_by(Product.created_at.desc()).first()
@@ -449,7 +448,7 @@ def reject_ad(payload: RejectPayload, db: Session = Depends(get_db)):
 async def send_arkesel_sms(phone: str, message: str):
     if not ARKESEL_API_KEY or not phone: return
     url = "https://sms.arkesel.com/sms/api"
-    payload = {"action": "send-sms", "api_key": ARKESEL_API_KEY, "to": phone, "from": "AgriConnect", "sms": message}
+    payload = {"action": "send-sms", "api_key": ARKESEL_API_KEY, "to": phone, "from": "AgromartDirect", "sms": message}
     try:
         async with httpx.AsyncClient() as client:
             await client.post(url, json=payload, timeout=10.0)
@@ -460,7 +459,7 @@ def notify_farmer(background_tasks: BackgroundTasks, payload: dict = Body(...)):
     phone = payload.get("phone", "")
     item = payload.get("item", "")
     offer = payload.get("offer", "")
-    msg = f"AgriConnect: New buyer inquiry for your {item} (Est. GHc{offer}). Open WhatsApp to reply!"
+    msg = f"AgromartDirect: New buyer inquiry for your {item} (Est. GHc{offer}). Open WhatsApp to reply!"
     
     background_tasks.add_task(send_arkesel_sms, phone, msg)
     return {"status": "SMS Queued"}
@@ -488,7 +487,7 @@ async def paystack_webhook(request: Request, db: Session = Depends(get_db)):
                 for p in user.products:
                     p.boost_tier = "premium"
                 db.commit()
-                print(f"✅ Paystack: Upgraded all listings for {customer_email} to AgriPro")
+                print(f"✅ Paystack: Upgraded all listings for {customer_email} to Agromart Pro")
                 
     return {"status": "success"}
 
