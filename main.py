@@ -348,6 +348,27 @@ def get_locations(db: Session = Depends(get_db)):
 # ==========================================
 # ADMIN & AUTOMATIONS
 # ==========================================
+@app.get("/api/v1/admin/pending-users")
+def get_pending_users(token: str, db: Session = Depends(get_db)):
+    admin = get_current_user(token, db)
+    if admin.email != ADMIN_EMAIL: raise HTTPException(status_code=403, detail="Not authorized")
+    
+    try:
+        users = db.query(User).filter(User.is_verified == False).order_by(User.created_at.desc()).limit(20).all()
+    except:
+        return []
+        
+    out = []
+    for u in users:
+        out.append({
+            "email": u.email,
+            "name": u.full_name,
+            "phone": u.phone_number,
+            "age": u.age,
+            "time": u.created_at.strftime("%Y-%m-%d %H:%M") if u.created_at else "Unknown"
+        })
+    return out
+
 @app.post("/api/v1/admin/verify")
 def verify_seller(req: AdminVerify, token: str, db: Session = Depends(get_db)):
     admin = get_current_user(token, db)
