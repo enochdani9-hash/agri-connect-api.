@@ -425,7 +425,7 @@
                     <div class="flex items-center justify-center md:justify-start gap-1 text-yellow-400 text-lg mb-6"><span>★</span><span>★</span><span>★</span><span>★</span><span class="opacity-50">★</span><span class="text-xs text-slate-500 ml-2 font-bold">(4.8 Trust Rating)</span></div>
                     <div class="flex gap-2 justify-center md:justify-start flex-wrap">
                         <button id="profile-contact-btn" class="bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white font-black px-8 py-3 rounded-xl text-sm transition-all border border-[#25D366]/30 shadow-lg">Contact Farmer</button>
-                        <button onclick="showToast('🚨 User reported to AgromartDirect safety team for review.', 'error')" class="bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white font-black px-4 py-3 rounded-xl text-sm transition-all border border-rose-500/30 shadow-lg">🚩 Report Scam</button>
+                        <button id="profile-report-btn" class="bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white font-black px-4 py-3 rounded-xl text-sm transition-all border border-rose-500/30 shadow-lg">🚩 Report Scam</button>
                     </div>
                 </div>
                 <div class="flex flex-col items-center z-10 shrink-0 mt-6 md:mt-0 bg-white p-3 rounded-2xl shadow-xl">
@@ -534,7 +534,7 @@
             <div class="glass-card p-8 rounded-[2.5rem] relative overflow-hidden flex flex-col md:flex-row items-center gap-8 shadow-2xl border border-emerald-500/20">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
                 
-                <!-- NEW INTERACTIVE AVATAR -->
+                <!-- INTERACTIVE AVATAR -->
                 <div class="relative w-24 h-24 shrink-0 z-10 group cursor-pointer" onclick="document.getElementById('profile-pic-upload').click()">
                     <div id="my-profile-avatar" class="w-full h-full bg-slate-800 rounded-full flex items-center justify-center text-4xl border-2 border-slate-700 shadow-xl overflow-hidden bg-cover bg-center">👨🏽‍🌾</div>
                     <div class="absolute inset-0 bg-black/60 rounded-full flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -612,6 +612,12 @@
                 <div class="pt-4 border-t border-white/10 mt-6">
                     <label class="block text-xs font-bold text-rose-400 mb-2 uppercase tracking-wider">Permanent Ban (Revoke Posting Access)</label>
                     <div class="flex gap-2"><input type="email" id="ban-email-input" placeholder="Enter Farmer's Email Address to Ban" class="w-full bg-[#020617]/80 border border-rose-900/50 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-rose-500 transition-colors"><button onclick="banSeller()" class="bg-rose-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-rose-500 shrink-0 transition-colors">Ban</button></div>
+                </div>
+
+                <!-- NEW: USER SCAM REPORTS -->
+                <div class="mt-8 border-t border-white/10 pt-6">
+                    <h4 class="text-xs font-black uppercase tracking-wider text-rose-400 mb-2">🚩 User & Scam Reports</h4>
+                    <div id="admin-reports-list" class="space-y-2 max-h-64 overflow-y-auto pr-2"></div>
                 </div>
 
                 <div class="mt-8 border-t border-white/10 pt-6">
@@ -907,9 +913,24 @@
             }
 
             document.getElementById('profile-contact-btn').onclick = () => window.open(`https://wa.me/${phone.replace(/\D/g, '')}`, '_blank');
+            document.getElementById('profile-report-btn').onclick = () => reportSeller(sellerName, phone);
+
             document.getElementById('profile-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(window.location.origin)}&bgcolor=ffffff`;
             const grid = document.getElementById('profile-grid'); grid.innerHTML = ''; const fp = allLoadedProducts.filter(p => p.seller_name === sellerName);
             if (fp.length === 0) grid.innerHTML = `<div class="col-span-full text-center py-10 text-slate-400 text-sm">No active listings available.</div>`; else renderProductGrid(fp, grid); navigate('profile');
+        }
+
+        async function reportSeller(sellerName, sellerPhone) {
+            let reason = prompt("Please briefly explain why you are reporting this seller (e.g. asked for money upfront, fake images):");
+            if (!reason) return;
+            try {
+                await fetch(`${API_URL}/api/v1/report`, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify({ seller_name: sellerName, seller_phone: sellerPhone, reason: reason }) 
+                });
+                showToast('🚨 Report successfully sent to AgromartDirect Safety Team.');
+            } catch (e) { showToast("Error reporting user", "error"); }
         }
 
         function buildMarketTicker(products) {
@@ -970,7 +991,7 @@
             
             if (data.email === "enochdani9@gmail.com") { 
                 document.getElementById('admin-panel').classList.remove('hidden'); 
-                renderAdminSignupsList(); renderAdminModQueue(); renderAdminAllAds(); renderAdminVerificationsList();
+                renderAdminSignupsList(); renderAdminModQueue(); renderAdminAllAds(); renderAdminVerificationsList(); renderAdminReports();
             }
         }
 
@@ -1052,6 +1073,17 @@
             } catch (e) { c.innerHTML = `<p class="text-xs text-rose-400">Error fetching all ads.</p>`; }
         }
 
+        async function renderAdminReports() {
+            const c = document.getElementById('admin-reports-list'); if (!c) return;
+            try {
+                const res = await fetch(`${API_URL}/api/v1/admin/reports?token=${agriToken}&t=${new Date().getTime()}`); const reports = await res.json();
+                if (!reports.length) return c.innerHTML = `<p class="text-xs text-slate-500">No scam reports submitted.</p>`;
+                c.innerHTML = reports.map((r) => {
+                    return `<div class="glass-card p-3 rounded-xl flex items-center justify-between border border-rose-500/30 bg-rose-500/10 mb-2"><div><p class="text-xs font-bold text-white">Reported: ${r.seller_name}</p><p class="text-[10px] text-rose-400">Reason: ${r.reason} • 📞 ${r.seller_phone}</p><p class="text-[9px] text-slate-500">${r.time}</p></div></div>`;
+                }).join('');
+            } catch (e) { c.innerHTML = `<p class="text-xs text-rose-400">Error fetching reports.</p>`; }
+        }
+
         async function adminDeleteAd(adId) {
             if(!confirm("FOUNDER OVERRIDE: Permanently delete this ad?")) return;
             try {
@@ -1113,7 +1145,7 @@
             ['home', 'marketplace', 'auth', 'post', 'dashboard', 'about', 'support', 'profile', 'pricing', 'library', 'faq'].forEach(v => document.getElementById(`view-${v}`)?.classList.add('hidden'));
             document.getElementById(`view-${view}`)?.classList.remove('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' });
             if (view === 'marketplace') executeFilters(); 
-            if (view === 'dashboard') { loadMyAds(); if (agriToken && currentUserEmail === "enochdani9@gmail.com") { renderAdminModQueue(); renderAdminAllAds(); renderAdminSignupsList(); renderAdminVerificationsList(); } }
+            if (view === 'dashboard') { loadMyAds(); if (agriToken && currentUserEmail === "enochdani9@gmail.com") { renderAdminModQueue(); renderAdminAllAds(); renderAdminSignupsList(); renderAdminVerificationsList(); renderAdminReports(); } }
         }
 
         function toggleAuthBox(box) {
