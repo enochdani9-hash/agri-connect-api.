@@ -534,7 +534,7 @@
             <div class="glass-card p-8 rounded-[2.5rem] relative overflow-hidden flex flex-col md:flex-row items-center gap-8 shadow-2xl border border-emerald-500/20">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
                 <div class="w-24 h-24 bg-slate-800 rounded-full flex items-center justify-center text-4xl border-2 border-slate-700 shadow-xl shrink-0 z-10">👨🏽‍🌾</div>
-                <div class="flex-grow text-center md:text-left z-10">
+                <div class="flex-grow text-center md:text-left z-10 w-full">
                     <div class="flex flex-col md:flex-row md:items-center gap-3 mb-2">
                         <h2 class="text-3xl font-black text-white tracking-tight" id="my-profile-name">Loading...</h2>
                         <span id="my-profile-badge" class="hidden bg-emerald-500/20 border border-emerald-500/50 text-emerald-400 text-xs font-black uppercase px-3 py-1 rounded-full items-center gap-1 mx-auto md:mx-0 w-fit">
@@ -547,6 +547,18 @@
                         <p>📞 Phone: <span id="my-profile-phone" class="text-white font-medium">...</span></p>
                         <p>📅 Member Since: <span id="my-profile-joined" class="text-white font-medium">...</span></p>
                     </div>
+                    
+                    <!-- NEW VERIFICATION APPLICATION BOX -->
+                    <div id="my-profile-unverified-box" class="hidden mt-4 bg-rose-500/10 border border-rose-500/30 p-4 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div class="text-center md:text-left">
+                            <p class="text-xs font-bold text-rose-400">Account Unverified</p>
+                            <p class="text-[10px] text-slate-400">Apply for a Verified Seller badge to build buyer trust on the platform.</p>
+                        </div>
+                        <button onclick="payForVerification()" class="bg-rose-500 hover:bg-rose-600 text-white text-[10px] font-black px-4 py-2.5 rounded-lg shadow-lg transition-colors shrink-0">
+                            Apply (GH₵ 5)
+                        </button>
+                    </div>
+
                 </div>
                 <button onclick="navigate('post')" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black px-6 py-3 rounded-xl text-sm transition-all shadow-lg hover:-translate-y-0.5 shrink-0 z-10">
                     + Post New Ad
@@ -554,37 +566,64 @@
             </div>
 
             <div id="trial-banner" class="hidden bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 p-5 rounded-2xl flex-col md:flex-row items-center justify-between gap-4 shadow-lg shadow-amber-900/10">
-                <div><h4 class="text-sm font-black text-amber-400 flex items-center gap-2">⭐ Agromart Pro Premium Trial Active</h4><p class="text-xs text-slate-300 mt-1.5 leading-relaxed">Enjoy unrestricted top-tier listings, automated social syndication, and premium visibility for your first 30 days. <br><span class="font-bold text-slate-400">After your trial, standard listings remain 100% free forever.</span></p></div>
-                <div class="text-center bg-[#020617]/80 px-5 py-3 rounded-xl border border-amber-500/20 shrink-0 min-w-[100px]"><span class="block text-2xl font-black text-amber-400" id="trial-days-count">30</span><span class="text-[9px] uppercase tracking-wider text-slate-400 font-bold">Days Left</span></div>
+                <div>
+                    <h4 class="text-sm font-black text-amber-400 flex items-center gap-2">⭐ Agromart Pro Premium Trial Active</h4>
+                    <p class="text-xs text-slate-300 mt-1.5 leading-relaxed">Enjoy unrestricted top-tier listings, automated social syndication, and premium visibility for your first 30 days. <br><span class="font-bold text-slate-400">After your trial, standard listings remain 100% free forever.</span></p>
+                </div>
+                <div class="text-center bg-[#020617]/80 px-5 py-3 rounded-xl border border-amber-500/20 shrink-0 min-w-[100px]">
+                    <span class="block text-2xl font-black text-amber-400" id="trial-days-count">30</span>
+                    <span class="text-[9px] uppercase tracking-wider text-slate-400 font-bold">Days Left</span>
+                </div>
             </div>
 
             <div class="glass-card p-5 rounded-2xl border-l-4 border-emerald-500 flex flex-col md:flex-row items-center gap-4 shadow-lg shadow-emerald-900/10">
                 <div class="w-12 h-12 bg-emerald-500/20 rounded-full flex items-center justify-center text-xl shrink-0">🌱</div>
-                <div><h4 class="text-sm font-black text-white mb-1">Today's Agronomy Insight</h4><p class="text-xs text-slate-300 leading-relaxed" id="agronomy-tip">Maintaining proper soil structure and organic matter drastically improves water retention for dry-season vegetable yields.</p></div>
+                <div>
+                    <h4 class="text-sm font-black text-white mb-1">Today's Agronomy Insight</h4>
+                    <p class="text-xs text-slate-300 leading-relaxed" id="agronomy-tip">Maintaining proper soil structure and organic matter drastically improves water retention for dry-season vegetable yields.</p>
+                </div>
             </div>
 
             <div class="flex items-center justify-between mb-2 glass-card p-6 rounded-2xl">
-                <div><h2 class="text-2xl font-black text-white tracking-tight">Manage My Ads</h2><p class="text-xs text-slate-400 mt-1">Boost visibility, generate WhatsApp Flyers, or delete sold items.</p></div>
+                <div>
+                    <h2 class="text-2xl font-black text-white tracking-tight">Manage My Ads</h2>
+                    <p class="text-xs text-slate-400 mt-1">Boost visibility, generate WhatsApp Flyers, or delete sold items.</p>
+                </div>
             </div>
             <div id="my-ads-list" class="grid grid-cols-1 gap-4"></div>
 
             <div id="admin-panel" class="hidden mt-12 glass-card p-6 rounded-2xl border border-emerald-500/30">
                 <div class="flex items-center justify-between mb-4">
-                    <div><h3 class="text-lg font-black text-emerald-400">🛡️ Founder Admin Security & Verification Hub</h3><p class="text-xs text-slate-400">Review new user registrations and grant Verified Badges.</p></div>
+                    <div>
+                        <h3 class="text-lg font-black text-emerald-400">🛡️ Founder Admin Security & Verification Hub</h3>
+                        <p class="text-xs text-slate-400">Review new user registrations and grant Verified Badges.</p>
+                    </div>
                     <span class="text-xs font-bold bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full border border-emerald-500/30">Founder Mode</span>
                 </div>
+                
+                <div class="mb-6 border-b border-white/10 pb-6">
+                    <h4 class="text-xs font-black uppercase tracking-wider text-amber-400 mb-2">⭐ Paid Verification Requests (GH₵ 5)</h4>
+                    <div id="admin-verifications-list" class="space-y-2"></div>
+                </div>
+
                 <div class="mb-6">
-                    <h4 class="text-xs font-black uppercase tracking-wider text-slate-400 mb-2">Recent User Registrations</h4>
-                    <div id="admin-signups-list" class="space-y-2"></div>
+                    <h4 class="text-xs font-black uppercase tracking-wider text-slate-400 mb-2">All Pending User Registrations</h4>
+                    <div id="admin-signups-list" class="space-y-2 max-h-64 overflow-y-auto pr-2"></div>
                 </div>
+
                 <div class="pt-4 border-t border-white/10">
-                    <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">Manual Verification</label>
-                    <div class="flex gap-2"><input type="email" id="verify-email-input" placeholder="Enter Farmer's Email Address" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 transition-colors"><button onclick="verifySeller()" class="bg-emerald-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-emerald-500 shrink-0 transition-colors">Verify</button></div>
+                    <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">Manual Verification (Override)</label>
+                    <div class="flex gap-2">
+                        <input type="email" id="verify-email-input" placeholder="Enter Farmer's Email Address" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
+                        <button onclick="verifySeller()" class="bg-emerald-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-emerald-500 shrink-0 transition-colors">Verify</button>
+                    </div>
                 </div>
+
                 <div class="mt-8 border-t border-white/10 pt-6">
                     <h4 class="text-xs font-black uppercase tracking-wider text-slate-400 mb-2">Ad Moderation Queue (Pending Review)</h4>
                     <div id="admin-mod-list" class="space-y-2"></div>
                 </div>
+
                 <div class="mt-8 border-t border-white/10 pt-6">
                     <h4 class="text-xs font-black uppercase tracking-wider text-slate-400 mb-2">Master Ad Directory (All Platform Ads)</h4>
                     <div id="admin-all-ads-list" class="space-y-2 max-h-96 overflow-y-auto pr-2"></div>
@@ -595,7 +634,13 @@
 
     <footer class="mt-auto border-t border-white/10 bg-[#020617]/80 backdrop-blur-lg relative z-20">
         <div class="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="flex items-center gap-2"><span class="text-emerald-500 text-2xl">🌾</span><div><span class="font-black text-white tracking-tight text-lg block leading-none">AgromartDirect</span><span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Ghana Direct</span></div></div>
+            <div class="flex items-center gap-2">
+                <span class="text-emerald-500 text-2xl">🌾</span>
+                <div>
+                    <span class="font-black text-white tracking-tight text-lg block leading-none">AgromartDirect</span>
+                    <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Ghana Direct</span>
+                </div>
+            </div>
             <div class="flex flex-wrap justify-center gap-6 text-sm font-bold text-slate-400">
                 <button onclick="navigate('pricing')" class="hover:text-emerald-400 transition-colors">Pricing</button>
                 <button onclick="navigate('library')" class="hover:text-emerald-400 transition-colors">Agromart Library</button>
@@ -603,7 +648,9 @@
                 <button onclick="navigate('about')" class="hover:text-emerald-400 transition-colors">About Us</button>
                 <button onclick="navigate('support')" class="hover:text-emerald-400 transition-colors">Contact Support</button>
             </div>
-            <p class="text-xs text-slate-600 font-medium text-center md:text-right">© 2026 AgromartDirect Ghana.<br> Empowering Local Farmers Nationwide.</p>
+            <p class="text-xs text-slate-600 font-medium text-center md:text-right">
+                © 2026 AgromartDirect Ghana.<br> Empowering Local Farmers Nationwide.
+            </p>
         </div>
     </footer>
 
@@ -771,6 +818,21 @@
             handler.openIframe();
         }
 
+        function payForVerification() {
+            if (!agriToken || !currentUserEmail) return navigate('auth');
+            let handler = PaystackPop.setup({
+                key: PAYSTACK_PUBLIC_KEY, email: currentUserEmail, amount: 5 * 100, currency: 'GHS', 
+                ref: 'AGRI_VERIFY_' + Math.floor((Math.random() * 1000000000) + 1), 
+                metadata: { boost_type: 'verification', email: currentUserEmail },
+                callback: function(response){ 
+                    showToast("Payment Successful! Your verification request has been sent to the admin."); 
+                    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); 
+                },
+                onClose: function(){ showToast("Cancelled.", "error"); }
+            });
+            handler.openIframe();
+        }
+
         function toggleSunlightMode() {
             const body = document.getElementById('app-body'); body.classList.toggle('sunlight-mode');
             if (body.classList.contains('sunlight-mode')) showToast("☀️ Sunlight Field Mode Enabled"); else showToast("🌙 Dark Mode Restored");
@@ -895,10 +957,19 @@
             document.getElementById('my-profile-email').innerText = data.email;
             document.getElementById('my-profile-phone').innerText = data.phone_number;
             document.getElementById('my-profile-joined').innerText = data.member_since || '2026';
-            if(data.is_verified) { document.getElementById('my-profile-badge').classList.remove('hidden'); document.getElementById('my-profile-badge').classList.add('flex'); }
-            else { document.getElementById('my-profile-badge').classList.add('hidden'); document.getElementById('my-profile-badge').classList.remove('flex'); }
             
-            if (data.email === "enochdani9@gmail.com") { document.getElementById('admin-panel').classList.remove('hidden'); renderAdminSignupsList(); renderAdminModQueue(); renderAdminAllAds(); }
+            if(data.is_verified) { 
+                document.getElementById('my-profile-badge').classList.remove('hidden'); document.getElementById('my-profile-badge').classList.add('flex'); 
+                document.getElementById('my-profile-unverified-box').classList.add('hidden'); document.getElementById('my-profile-unverified-box').classList.remove('flex');
+            } else { 
+                document.getElementById('my-profile-badge').classList.add('hidden'); document.getElementById('my-profile-badge').classList.remove('flex'); 
+                document.getElementById('my-profile-unverified-box').classList.remove('hidden'); document.getElementById('my-profile-unverified-box').classList.add('flex');
+            }
+            
+            if (data.email === "enochdani9@gmail.com") { 
+                document.getElementById('admin-panel').classList.remove('hidden'); 
+                renderAdminSignupsList(); renderAdminModQueue(); renderAdminAllAds(); renderAdminVerificationsList();
+            }
         }
 
         async function renderAdminSignupsList() {
@@ -908,6 +979,15 @@
                 if (!pendingUsers.length) return c.innerHTML = `<p class="text-xs text-slate-500">No new pending registrations.</p>`;
                 c.innerHTML = pendingUsers.map((u, i) => `<div id="mod-user-${i}" class="glass-card p-3 rounded-xl flex items-center justify-between border border-white/5 mb-2"><div><p class="text-xs font-bold text-white">${u.name} <span class="text-slate-400">(${u.email})</span></p><p class="text-[10px] text-slate-500">📞 ${u.phone} • Age: ${u.age}</p></div><button onclick="quickVerifyUser('${u.email}', 'mod-user-${i}')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow">✅ Verify</button></div>`).join('');
             } catch (e) { c.innerHTML = `<p class="text-xs text-rose-400">Error fetching users.</p>`; }
+        }
+
+        async function renderAdminVerificationsList() {
+            const c = document.getElementById('admin-verifications-list'); if (!c) return;
+            try {
+                const res = await fetch(`${API_URL}/api/v1/admin/verifications?token=${agriToken}&t=${new Date().getTime()}`); const reqs = await res.json();
+                if (!reqs.length) return c.innerHTML = `<p class="text-xs text-slate-500">No pending paid verifications.</p>`;
+                c.innerHTML = reqs.map((u, i) => `<div class="glass-card p-3 rounded-xl flex items-center justify-between border border-amber-500/30 bg-amber-500/10 mb-2"><div><p class="text-xs font-bold text-white">${u.name}</p><p class="text-[10px] text-amber-400">Paid GH₵ 5 • 📞 ${u.phone} • ${u.email}</p></div><button onclick="quickVerifyUser('${u.email}', null); setTimeout(renderAdminVerificationsList, 1000);" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow">✅ Approve</button></div>`).join('');
+            } catch (e) { c.innerHTML = `<p class="text-xs text-rose-400">Error fetching requests.</p>`; }
         }
 
         async function renderAdminModQueue() {
@@ -966,6 +1046,7 @@
                 const res = await fetch(`${API_URL}/api/v1/admin/verify?token=${agriToken}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: targetEmail }) });
                 const data = await res.json(); if (!res.ok) throw new Error(data.detail);
                 showToast(data.detail); document.getElementById(elId)?.remove();
+                renderAdminSignupsList(); renderAdminVerificationsList();
             } catch (err) { showToast(err.message, "error"); }
         }
 
@@ -973,7 +1054,7 @@
             ['home', 'marketplace', 'auth', 'post', 'dashboard', 'about', 'support', 'profile', 'pricing', 'library', 'faq'].forEach(v => document.getElementById(`view-${v}`)?.classList.add('hidden'));
             document.getElementById(`view-${view}`)?.classList.remove('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' });
             if (view === 'marketplace') executeFilters(); 
-            if (view === 'dashboard') { loadMyAds(); if (agriToken) { renderAdminModQueue(); renderAdminAllAds(); } }
+            if (view === 'dashboard') { loadMyAds(); if (agriToken && currentUserEmail === "enochdani9@gmail.com") { renderAdminModQueue(); renderAdminAllAds(); renderAdminSignupsList(); renderAdminVerificationsList(); } }
         }
 
         function toggleAuthBox(box) {
