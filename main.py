@@ -75,6 +75,12 @@ class Product(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     owner = relationship("User", back_populates="products")
 
+class VerificationPayment(Base):
+    __tablename__ = "verification_payments"
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True, index=True)
+    paid_at = Column(DateTime, default=datetime.utcnow)
+
 Base.metadata.create_all(bind=engine)
 
 # --- SCHEMAS ---
@@ -228,13 +234,26 @@ def get_pending_users(token: str, db: Session = Depends(get_db)):
     except: return []
     return [{"email": u.email, "name": u.full_name, "phone": u.phone_number, "age": u.age, "time": u.created_at.strftime("%Y-%m-%d %H:%M") if u.created_at else "Unknown"} for u in users]
 
+@app.get("/api/v1/admin/verifications")
+def get_paid_verifications(token: str, db: Session = Depends(get_db)):
+    admin = get_current_user(token, db)
+    if admin.email != ADMIN_EMAIL: raise HTTPException(status_code=403, detail="Not authorized")
+    try:
+        query = db.query(User).join(VerificationPayment, User.email == VerificationPayment.email).filter(User.is_verified == False).all()
+        return [{"email": u.email, "name": u.full_name, "phone": u.phone_number} for u in query]
+    except: return []
+
 @app.post("/api/v1/admin/verify")
 def verify_seller(req: AdminVerify, token: str, db: Session = Depends(get_db)):
     admin = get_current_user(token, db)
     if admin.email != ADMIN_EMAIL: raise HTTPException(status_code=403, detail="Not authorized")
     target = db.query(User).filter(User.email == req.email).first()
     if not target: raise HTTPException(status_code=404, detail="Farmer not found")
-    target.is_verified = True; db.commit()
+    
+    target.is_verified = True
+    vp = db.query(VerificationPayment).filter(VerificationPayment.email == req.email).first()
+    if vp: db.delete(vp)
+    db.commit()
     return {"detail": f"{target.full_name} is now a Verified Seller!"}
 
 @app.get("/api/v1/admin/pending-ads")
@@ -268,7 +287,7 @@ async def broadcast_social_syndication(product_name: str, price: str, neighborho
     payload = {"event": "ad_approved", "product_name": product_name, "price_ghs": price, "location": neighborhood}
     try:
         async with httpx.AsyncClient() as client: await client.post(MAKE_ZAPIER_WEBHOOK_URL, json=payload, timeout=10.0)
-    except Exception as e: print(f"Syndication Webhook dispatch failed: {e}")
+    except Exception as e: pass
 
 @app.post("/api/v1/admin/approve-ad")
 def approve_ad(background_tasks: BackgroundTasks, payload: dict = Body(...), db: Session = Depends(get_db)):
@@ -309,14 +328,23 @@ async def paystack_webhook(request: Request, db: Session = Depends(get_db)):
         data = payload.get("data", {}); metadata = data.get("metadata", {})
         customer_email = data.get("customer", {}).get("email") or metadata.get("email")
         ad_id = metadata.get("ad_id"); boost_type = metadata.get("boost_type", "premium")
+        
         if ad_id:
             prod = db.query(Product).filter(Product.id == int(ad_id)).first()
             if prod: prod.boost_tier = boost_type; db.commit()
+            
         elif boost_type == "pro" and customer_email:
             user = db.query(User).filter(User.email == customer_email).first()
             if user:
                 for p in user.products: p.boost_tier = "premium"
                 db.commit()
+                
+        elif boost_type == "verification" and customer_email:
+            existing = db.query(VerificationPayment).filter(VerificationPayment.email == customer_email).first()
+            if not existing:
+                vp = VerificationPayment(email=customer_email)
+                db.add(vp); db.commit()
+                
     return {"status": "success"}
 
 @app.post("/api/v1/cron/ad-expiry-loop")
