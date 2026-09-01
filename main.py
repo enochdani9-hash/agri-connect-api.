@@ -46,7 +46,7 @@ reset_codes_db = {}
 
 # --- DATABASE MODELS ---
 class User(Base):
-    __tablename__ = "users_v3"
+    __tablename__ = "users_v4"
     id = Column(Integer, primary_key=True, index=True)
     full_name = Column(String)
     email = Column(String, unique=True, index=True)
@@ -54,11 +54,12 @@ class User(Base):
     phone_number = Column(String)
     hashed_password = Column(String)
     is_verified = Column(Boolean, default=False)
+    profile_picture = Column(Text, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     products = relationship("Product", back_populates="owner")
 
 class Product(Base):
-    __tablename__ = "products_v5"  
+    __tablename__ = "products_v6"  
     id = Column(Integer, primary_key=True, index=True)
     product_name = Column(String, index=True)
     category = Column(String, index=True)
@@ -68,7 +69,7 @@ class Product(Base):
     description = Column(String, nullable=True)
     image_data = Column(Text, nullable=True)
     delivery_details = Column(String, nullable=True) 
-    farmer_id = Column(Integer, ForeignKey("users_v3.id"))
+    farmer_id = Column(Integer, ForeignKey("users_v4.id"))
     status = Column(String, default="pending")       
     rejection_reason = Column(String, nullable=True) 
     boost_tier = Column(String, default="standard")  
@@ -76,7 +77,7 @@ class Product(Base):
     owner = relationship("User", back_populates="products")
 
 class VerificationPayment(Base):
-    __tablename__ = "verification_payments"
+    __tablename__ = "verification_payments_v2"
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, index=True)
     paid_at = Column(DateTime, default=datetime.utcnow)
@@ -88,6 +89,8 @@ class UserCreate(BaseModel):
     full_name: str; email: str; age: int; phone_number: str; password: str
 class UserLogin(BaseModel):
     email: str; password: str
+class ProfilePicUpdate(BaseModel):
+    image_data: str
 class ProductCreate(BaseModel):
     product_name: str; category: str; unit: str; base_price_ghs: str; neighborhood: str
     description: Optional[str] = None; image_data: Optional[str] = None; delivery_details: Optional[str] = None
@@ -144,14 +147,21 @@ async def google_auth(req: GoogleAuthRequest, db: Session = Depends(get_db)):
             google_data = res.json()
     except Exception as e: raise HTTPException(status_code=400, detail=f"Google authentication failed: {str(e)}")
 
-    email = google_data.get("email"); full_name = google_data.get("name", "Farmer")
+    email = google_data.get("email"); full_name = google_data.get("name", "Farmer"); picture = google_data.get("picture")
     if not email: raise HTTPException(status_code=400, detail="Google account has no verified email")
     db_user = db.query(User).filter(User.email == email).first()
     if not db_user:
-        db_user = User(full_name=full_name, email=email, age=25, phone_number="0000000000", hashed_password=pwd_context.hash(os.urandom(16).hex()), is_verified=False)
+        db_user = User(full_name=full_name, email=email, age=25, phone_number="0000000000", hashed_password=pwd_context.hash(os.urandom(16).hex()), is_verified=False, profile_picture=picture)
         db.add(db_user); db.commit(); db.refresh(db_user)
     token = jwt.encode({"sub": str(db_user.id), "exp": datetime.utcnow() + timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS)}, SECRET_KEY, algorithm=ALGORITHM)
     return {"access_token": token, "full_name": db_user.full_name, "is_verified": db_user.is_verified, "email": db_user.email}
+
+@app.put("/api/v1/me/profile-picture")
+def update_profile_pic(payload: ProfilePicUpdate, token: str, db: Session = Depends(get_db)):
+    user = get_current_user(token, db)
+    user.profile_picture = payload.image_data
+    db.commit()
+    return {"status": "success"}
 
 @app.post("/api/v1/auth/forgot-password")
 def request_password_reset(req: ForgotPasswordReq, db: Session = Depends(get_db)):
@@ -178,6 +188,7 @@ def get_me(token: str, db: Session = Depends(get_db)):
         "email": user.email, 
         "phone_number": user.phone_number,
         "age": getattr(user, "age", 0),
+        "profile_picture": user.profile_picture,
         "member_since": str(user.created_at.year) if user.created_at else "2026",
         "trial_days_left": trial_days_left
     }
@@ -201,7 +212,7 @@ def get_products(sort: str = "newest", category: str = "", search: str = "", nei
     elif sort == "price_desc": query = query.order_by(Product.base_price_ghs.desc())
     else: query = query.order_by(Product.created_at.desc())
     results = query.all()
-    return [{"id": p.id, "product_name": p.product_name, "category": p.category, "unit": p.unit, "base_price_ghs": p.base_price_ghs, "neighborhood": p.neighborhood, "description": p.description, "image_data": p.image_data, "delivery_details": p.delivery_details, "seller_name": u.full_name, "seller_verified": u.is_verified, "seller_member_since": str(u.created_at.year) if u.created_at else "2026", "phone_number": u.phone_number, "boost_tier": getattr(p, "boost_tier", "standard")} for p, u in results]
+    return [{"id": p.id, "product_name": p.product_name, "category": p.category, "unit": p.unit, "base_price_ghs": p.base_price_ghs, "neighborhood": p.neighborhood, "description": p.description, "image_data": p.image_data, "delivery_details": p.delivery_details, "seller_name": u.full_name, "seller_profile_picture": u.profile_picture, "seller_verified": u.is_verified, "seller_member_since": str(u.created_at.year) if u.created_at else "2026", "phone_number": u.phone_number, "boost_tier": getattr(p, "boost_tier", "standard")} for p, u in results]
 
 @app.get("/api/v1/latest-ad")
 def get_latest_ad(db: Session = Depends(get_db)):
