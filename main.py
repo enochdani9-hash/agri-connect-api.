@@ -46,7 +46,7 @@ reset_codes_db = {}
 
 # --- DATABASE MODELS ---
 class User(Base):
-    __tablename__ = "users_v4"
+    __tablename__ = "users_v5"
     id = Column(Integer, primary_key=True, index=True)
     full_name = Column(String)
     email = Column(String, unique=True, index=True)
@@ -54,12 +54,13 @@ class User(Base):
     phone_number = Column(String)
     hashed_password = Column(String)
     is_verified = Column(Boolean, default=False)
+    is_banned = Column(Boolean, default=False)  
     profile_picture = Column(Text, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     products = relationship("Product", back_populates="owner")
 
 class Product(Base):
-    __tablename__ = "products_v6"  
+    __tablename__ = "products_v7"  
     id = Column(Integer, primary_key=True, index=True)
     product_name = Column(String, index=True)
     category = Column(String, index=True)
@@ -69,7 +70,7 @@ class Product(Base):
     description = Column(String, nullable=True)
     image_data = Column(Text, nullable=True)
     delivery_details = Column(String, nullable=True) 
-    farmer_id = Column(Integer, ForeignKey("users_v4.id"))
+    farmer_id = Column(Integer, ForeignKey("users_v5.id"))
     status = Column(String, default="pending")       
     rejection_reason = Column(String, nullable=True) 
     boost_tier = Column(String, default="standard")  
@@ -81,6 +82,15 @@ class VerificationPayment(Base):
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, index=True)
     paid_at = Column(DateTime, default=datetime.utcnow)
+
+# NEW MODEL FOR SCAM REPORTS
+class Report(Base):
+    __tablename__ = "reports_v1"
+    id = Column(Integer, primary_key=True, index=True)
+    reported_seller_name = Column(String)
+    reported_seller_phone = Column(String)
+    reason = Column(String)
+    created_at = Column(DateTime, default=datetime.utcnow)
 
 Base.metadata.create_all(bind=engine)
 
@@ -96,6 +106,8 @@ class ProductCreate(BaseModel):
     description: Optional[str] = None; image_data: Optional[str] = None; delivery_details: Optional[str] = None
 class AdminVerify(BaseModel):
     email: str
+class AdminBan(BaseModel):
+    email: str
 class RejectPayload(BaseModel):
     token: str; ad_id: int; reason: str
 class ForgotPasswordReq(BaseModel):
@@ -104,6 +116,8 @@ class ResetPasswordReq(BaseModel):
     phone_number: str; code: str; new_password: str
 class GoogleAuthRequest(BaseModel):
     credential: str
+class ReportCreate(BaseModel):
+    seller_name: str; seller_phone: str; reason: str
 
 # --- DEPENDENCIES ---
 def get_db():
@@ -197,10 +211,15 @@ def get_me(token: str, db: Session = Depends(get_db)):
 def create_product(product: ProductCreate, token: str, db: Session = Depends(get_db)):
     try:
         user = get_current_user(token, db)
+        if getattr(user, "is_banned", False):
+            raise HTTPException(status_code=403, detail="Your account has been permanently banned from posting ads.")
+            
         db_product = Product(**product.dict(), farmer_id=user.id, status="pending", boost_tier="standard")
         db.add(db_product); db.commit()
         return {"msg": "Product created"}
-    except Exception as e: db.rollback(); raise HTTPException(status_code=500, detail=f"Database sync failed. Error: {str(e)}")
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=e.status_code if hasattr(e, 'status_code') else 500, detail=str(e.detail) if hasattr(e, 'detail') else f"Error: {str(e)}")
 
 @app.get("/api/v1/products")
 def get_products(sort: str = "newest", category: str = "", search: str = "", neighborhood: str = "", db: Session = Depends(get_db)):
@@ -234,6 +253,13 @@ def delete_product(prod_id: int, token: str, db: Session = Depends(get_db)):
     db.delete(prod); db.commit()
     return {"msg": "Deleted"}
 
+@app.post("/api/v1/report")
+def submit_report(payload: ReportCreate, db: Session = Depends(get_db)):
+    db_report = Report(reported_seller_name=payload.seller_name, reported_seller_phone=payload.seller_phone, reason=payload.reason)
+    db.add(db_report)
+    db.commit()
+    return {"status": "success"}
+
 # ==========================================
 # ADMIN & AUTOMATIONS
 # ==========================================
@@ -254,6 +280,15 @@ def get_paid_verifications(token: str, db: Session = Depends(get_db)):
         return [{"email": u.email, "name": u.full_name, "phone": u.phone_number} for u in query]
     except: return []
 
+@app.get("/api/v1/admin/reports")
+def get_reports(token: str, db: Session = Depends(get_db)):
+    admin = get_current_user(token, db)
+    if admin.email != ADMIN_EMAIL: raise HTTPException(status_code=403, detail="Not authorized")
+    try:
+        reports = db.query(Report).order_by(Report.created_at.desc()).all()
+        return [{"id": r.id, "seller_name": r.reported_seller_name, "seller_phone": r.reported_seller_phone, "reason": r.reason, "time": r.created_at.strftime("%Y-%m-%d %H:%M")} for r in reports]
+    except: return []
+
 @app.post("/api/v1/admin/verify")
 def verify_seller(req: AdminVerify, token: str, db: Session = Depends(get_db)):
     admin = get_current_user(token, db)
@@ -266,6 +301,22 @@ def verify_seller(req: AdminVerify, token: str, db: Session = Depends(get_db)):
     if vp: db.delete(vp)
     db.commit()
     return {"detail": f"{target.full_name} is now a Verified Seller!"}
+
+@app.post("/api/v1/admin/ban-user")
+def ban_user(req: AdminBan, token: str, db: Session = Depends(get_db)):
+    admin = get_current_user(token, db)
+    if admin.email != ADMIN_EMAIL: raise HTTPException(status_code=403, detail="Not authorized")
+    
+    target = db.query(User).filter(User.email == req.email).first()
+    if not target: raise HTTPException(status_code=404, detail="User not found")
+    
+    target.is_banned = True
+    for prod in target.products:
+        if prod.status == "approved" or prod.status == "pending":
+            prod.status = "rejected"
+            prod.rejection_reason = "Account banned by administrator for violating platform rules."
+    db.commit()
+    return {"detail": f"{target.full_name} ({target.email}) has been permanently banned and their ads removed."}
 
 @app.get("/api/v1/admin/pending-ads")
 def get_pending_ads(token: str, db: Session = Depends(get_db)):
@@ -281,7 +332,7 @@ def admin_get_all_ads(token: str, db: Session = Depends(get_db)):
     if admin.email != ADMIN_EMAIL: raise HTTPException(status_code=403, detail="Not authorized")
     try:
         query = db.query(Product, User).join(User).order_by(Product.created_at.desc()).all()
-        return [{"id": p.id, "product_name": p.product_name, "seller_name": u.full_name, "phone_number": u.phone_number, "base_price_ghs": p.base_price_ghs, "status": p.status} for p, u in query]
+        return [{"id": p.id, "product_name": p.product_name, "seller_name": u.full_name, "seller_email": u.email, "phone_number": u.phone_number, "base_price_ghs": p.base_price_ghs, "status": p.status} for p, u in query]
     except: return []
 
 @app.delete("/api/v1/admin/products/{prod_id}")
