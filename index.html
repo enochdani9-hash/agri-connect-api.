@@ -166,7 +166,7 @@
                     <button id="call-farmer-btn" onclick="executeCallFarmer()" class="bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white font-black py-3 rounded-xl text-xs transition-all border border-blue-500/30 flex items-center justify-center gap-1.5 truncate">
                         📞 Call Farmer
                     </button>
-                    <button id="send-sms-btn" onclick="executeOfflineSMS()" class="col-span-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-black py-3 rounded-xl text-xs transition-all border border-slate-700 flex items-center justify-center gap-1.5 truncate">
+                    <button id="send-sms-btn" onclick="executeOfflineSMS()" class="col-span-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-black py-3 rounded-xl text-xs transition-all border border-slate-700 flex items-center justify-center gap-1.5 truncate" title="Offline SMS Fallback">
                         📱 Send Offline SMS Fallback
                     </button>
                 </div>
@@ -230,7 +230,7 @@
                             <span class="absolute left-4 text-emerald-500 z-10">🌍</span>
                             <select id="home-region" class="w-full bg-transparent text-sm text-white font-bold pl-10 pr-4 py-4 outline-none cursor-pointer appearance-none rounded-2xl">
                                 <option value="All Regions">All Regions (Ghana)</option>
-                                <option value="Ahafo">Ahafo Region</option><option value="Ashanti">Ashanti Region</option><option value="Bono">Bono Region</option><option value="Bono East">Bono East Region</option><option value="Central">Central Region</option><option value="Eastern">Eastern Region</option><option value="Greater Accra">Greater Accra Region</option><option value="North East">North East Region</option><option value="Northern">Northern Region</option><option value="Oti">Oti Region</option><option value="Savannah">Savannah Region</option><option value="Upper East">Upper East Region</option><option value="Upper West">Upper West Region</option><option value="Volta">Volta Region</option><option value="Western">Western Region</option><option value="Western North">Western North</option>
+                                <option value="Ahafo">Ahafo Region</option><option value="Ashanti">Ashanti Region</option><option value="Bono">Bono Region</option><option value="Bono East">Bono East Region</option><option value="Central">Central Region</option><option value="Eastern">Eastern Region</option><option value="Greater Accra">Greater Accra Region</option><option value="North East">North East Region</option><option value="Northern">Northern Region</option><option value="Oti">Oti Region</option><option value="Savannah">Savannah Region</option><option value="Upper East">Upper East Region</option><option value="Upper West">Upper West Region</option><option value="Volta">Volta Region</option><option value="Western">Western Region</option><option value="Western North">Western North Region</option>
                             </select>
                         </div>
                         <div class="relative w-full md:w-2/3 flex items-center">
@@ -260,11 +260,11 @@
                 <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-5">
                     <div onclick="executeCategory('Poultry')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
                         <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('poultry.jfif.jfif');"></div>
-                        <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Poultry</p>
+                        <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Live Poultry</p>
                     </div>
                     <div onclick="executeCategory('Chicks')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
                         <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('chicks.jfif');"></div>
-                        <p class="font-bold text-xs text-slate-300 group-hover:text-emerald-400">Day-old chicks</p>
+                        <p class="font-bold text-xs text-slate-300 group-hover:text-emerald-400 leading-tight">Day-old chicks</p>
                     </div>
                     <div onclick="executeCategory('Eggs')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
                         <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Chicken_egg_2009-06-04.jpg/500px-Chicken_egg_2009-06-04.jpg');"></div>
@@ -292,6 +292,28 @@
                     </div>
                 </div>
             </div>
+
+            <!-- PARTNERSHIP & DONATION SECTION -->
+            <div class="mt-20 glass-card p-10 rounded-[2.5rem] relative overflow-hidden border border-emerald-500/30 bg-gradient-to-br from-[#020617] to-emerald-950/40">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
+                <div class="text-center relative z-10">
+                    <span class="text-4xl mb-4 block">🤝</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-white mb-4 tracking-tight">Partner With Us & Fuel the Future</h2>
+                    <p class="text-slate-300 text-sm max-w-2xl mx-auto leading-relaxed mb-8">
+                        AgromartDirect is on a mission to completely digitize the agricultural supply chain in Ghana. By eliminating the middleman, we are increasing farmer profits and bringing cheaper, fresher food to consumers nationwide. 
+                        <br><br>
+                        Whether you are an NGO, an investor, a corporate partner, or simply someone who wants to support local agriculture through a donation—let's build the future of farming together.
+                    </p>
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-4">
+                        <a href="mailto:agriconnect886@gmail.com" class="bg-white/10 hover:bg-white/20 text-white font-bold py-3 px-6 rounded-xl transition-colors border border-white/10 flex items-center gap-2">
+                            ✉️ agriconnect886@gmail.com
+                        </a>
+                        <a href="https://wa.me/233245641480" target="_blank" class="bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white font-bold py-3 px-6 rounded-xl transition-all border border-[#25D366]/30 flex items-center gap-2">
+                            📞 +233 245 641 480
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- 2. PRICING VIEW -->
@@ -313,6 +335,7 @@
                     </ul>
                     <button onclick="navigate('post')" class="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-3.5 rounded-xl transition-colors border border-white/10">Post Free Ad</button>
                 </div>
+
                 <div class="glass-card p-8 rounded-[2rem] flex flex-col border-2 border-emerald-500 relative transform md:-translate-y-4 shadow-2xl shadow-emerald-900/20">
                     <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-emerald-500 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full">Most Popular</span>
                     <h3 class="text-xl font-bold text-emerald-400 mb-2">QuickSell Boost</h3>
@@ -325,6 +348,7 @@
                     </ul>
                     <button onclick="handlePricingBoostClick()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl transition-colors shadow-lg">Boost an Ad (MoMo)</button>
                 </div>
+
                 <div class="glass-card p-8 rounded-[2rem] flex flex-col border border-amber-500/30">
                     <h3 class="text-xl font-bold text-amber-400 mb-2">Agromart Pro</h3>
                     <div class="mb-6"><span class="text-4xl font-black text-white">GH₵ 70</span><span class="text-slate-500 text-sm font-medium"> / month</span></div>
@@ -643,7 +667,6 @@
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-sm">GH₵</span>
                             <input type="text" id="post-price" placeholder="Price (e.g. 100 - 150)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl pl-12 pr-5 py-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
                         </div>
-                        
                         <div class="flex gap-2">
                             <select id="post-region" class="w-1/2 bg-[#0f172a] border border-slate-700 rounded-xl px-2 py-4 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer font-bold">
                                 <option value="Ahafo">Ahafo</option><option value="Ashanti">Ashanti</option><option value="Bono">Bono</option><option value="Bono East">Bono East</option><option value="Central">Central</option><option value="Eastern">Eastern</option><option value="Greater Accra" selected>Greater Accra</option><option value="North East">North East</option><option value="Northern">Northern</option><option value="Oti">Oti</option><option value="Savannah">Savannah</option><option value="Upper East">Upper East</option><option value="Upper West">Upper West</option><option value="Volta">Volta</option><option value="Western">Western</option><option value="Western North">Western North</option>
@@ -664,7 +687,6 @@
 
         <!-- 11. DASHBOARD VIEW -->
         <div id="view-dashboard" class="fade-in hidden max-w-4xl mx-auto mt-6 space-y-6">
-            
             <div id="trial-banner" class="hidden bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 p-5 rounded-2xl flex-col md:flex-row items-center justify-between gap-4 shadow-lg shadow-amber-900/10">
                 <div>
                     <h4 class="text-sm font-black text-amber-400 flex items-center gap-2">⭐ Agromart Pro Premium Trial Active</h4>
@@ -691,7 +713,6 @@
                 </div>
                 <button onclick="navigate('post')" class="text-xs bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl shadow-lg hover:bg-emerald-500 transition-colors">+ New Ad</button>
             </div>
-            
             <div id="my-ads-list" class="grid grid-cols-1 gap-4"></div>
 
             <div id="admin-panel" class="hidden mt-12 glass-card p-6 rounded-2xl border border-emerald-500/30">
@@ -1309,10 +1330,6 @@
 
         function handleImageUpload(event) {
             const files = event.target.files; if (!files.length) return;
-            const pb = document.getElementById('image-preview'); pb.classList.add('border-emerald-500');
-            if (document.getElementById('upload-text')) document.getElementById('upload-text').style.display = 'none';
-            if (!document.getElementById('image-gallery')) pb.innerHTML = '<div id="image-gallery" class="flex gap-3 p-3 overflow-x-auto h-full items-center"></div>';
-            
             Array.from(files).forEach(file => {
                 const reader = new FileReader(); reader.readAsDataURL(file);
                 reader.onload = (e) => {
@@ -1321,13 +1338,42 @@
                         const canvas = document.createElement('canvas'); const scale = 500 / img.width;
                         canvas.width = 500; canvas.height = img.height * scale;
                         canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
-                        const cImg = canvas.toDataURL('image/jpeg', 0.6);
-                        uploadedImages.push(cImg);
-                        document.getElementById('image-gallery').insertAdjacentHTML('beforeend', `<img src="${cImg}" class="h-full w-auto object-cover rounded-xl shadow-lg">`);
+                        uploadedImages.push(canvas.toDataURL('image/jpeg', 0.6));
+                        renderImagePreview();
                     }
                 }
             });
             event.target.value = '';
+        }
+
+        function removeUploadedImage(index, event) {
+            event.stopPropagation();
+            uploadedImages.splice(index, 1);
+            renderImagePreview();
+        }
+
+        function renderImagePreview() {
+            const pb = document.getElementById('image-preview');
+            if (uploadedImages.length === 0) {
+                pb.classList.remove('border-emerald-500');
+                pb.innerHTML = `
+                    <span id="upload-text" class="text-slate-500 text-sm font-bold text-center px-4 group-hover:text-emerald-400 transition-colors">
+                        <svg class="w-8 h-8 mx-auto mb-2 opacity-50 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                        Click to upload photos
+                    </span>`;
+                return;
+            }
+            pb.classList.add('border-emerald-500');
+            let html = '<div id="image-gallery" class="flex gap-3 p-3 overflow-x-auto h-full items-center w-full">';
+            uploadedImages.forEach((cImg, idx) => {
+                html += `
+                    <div class="relative h-full shrink-0">
+                        <img src="${cImg}" class="h-full w-auto object-cover rounded-xl shadow-lg border border-slate-700">
+                        <button type="button" onclick="removeUploadedImage(${idx}, event)" class="absolute top-2 right-2 bg-rose-500 text-white rounded-full w-6 h-6 flex items-center justify-center font-black text-xs shadow-xl hover:bg-rose-600 hover:scale-110 transition-transform">✕</button>
+                    </div>`;
+            });
+            html += '</div>';
+            pb.innerHTML = html;
         }
 
         async function submitAd() {
@@ -1350,11 +1396,11 @@
                 if(!res.ok) throw new Error("Failed to post");
                 showToast("Ad Submitted for Review ⏳");
                 ['post-name', 'post-description', 'post-price', 'post-unit', 'post-town', 'post-delivery'].forEach(id => document.getElementById(id).value = '');
-                document.getElementById('image-preview').innerHTML = `<span id="upload-text" class="text-slate-500 text-sm font-bold text-center">Click to upload photos</span>`;
-                uploadedImages = []; navigate('dashboard'); 
+                uploadedImages = [];
+                renderImagePreview();
+                navigate('dashboard'); 
             } catch (err) { showToast(err.message, "error"); } finally { btn.innerHTML = "🚀 Submit Ad For Review"; btn.disabled = false; }
         }
     </script>
 </body>
 </html>
-<!-- END OF HTML FILE - IF YOU DO NOT SEE THIS, IT WAS CUT OFF -->
