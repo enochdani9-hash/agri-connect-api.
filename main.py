@@ -83,7 +83,6 @@ class VerificationPayment(Base):
     email = Column(String, unique=True, index=True)
     paid_at = Column(DateTime, default=datetime.utcnow)
 
-# NEW MODEL FOR SCAM REPORTS
 class Report(Base):
     __tablename__ = "reports_v1"
     id = Column(Integer, primary_key=True, index=True)
