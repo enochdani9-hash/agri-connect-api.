@@ -409,7 +409,7 @@
         <div id="view-profile" class="fade-in hidden space-y-8">
             <div class="glass-card p-8 rounded-[2.5rem] relative overflow-hidden flex flex-col md:flex-row items-center gap-8 shadow-2xl">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
-                <div class="w-32 h-32 bg-slate-800 rounded-full flex items-center justify-center text-5xl border-4 border-slate-700 shadow-xl shrink-0">👨🏽‍🌾</div>
+                <div id="public-profile-avatar" class="w-32 h-32 bg-slate-800 rounded-full flex items-center justify-center text-5xl border-4 border-slate-700 shadow-xl shrink-0 z-10 bg-cover bg-center">👨🏽‍🌾</div>
                 <div class="flex-grow text-center md:text-left z-10">
                     <div class="flex flex-col md:flex-row md:items-center gap-3 mb-2">
                         <h2 class="text-3xl font-black text-white tracking-tight" id="profile-name">Farmer Name</h2>
@@ -533,7 +533,16 @@
             <!-- MY PROFILE CARD -->
             <div class="glass-card p-8 rounded-[2.5rem] relative overflow-hidden flex flex-col md:flex-row items-center gap-8 shadow-2xl border border-emerald-500/20">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
-                <div class="w-24 h-24 bg-slate-800 rounded-full flex items-center justify-center text-4xl border-2 border-slate-700 shadow-xl shrink-0 z-10">👨🏽‍🌾</div>
+                
+                <!-- NEW INTERACTIVE AVATAR -->
+                <div class="relative w-24 h-24 shrink-0 z-10 group cursor-pointer" onclick="document.getElementById('profile-pic-upload').click()">
+                    <div id="my-profile-avatar" class="w-full h-full bg-slate-800 rounded-full flex items-center justify-center text-4xl border-2 border-slate-700 shadow-xl overflow-hidden bg-cover bg-center">👨🏽‍🌾</div>
+                    <div class="absolute inset-0 bg-black/60 rounded-full flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span class="text-xl">📷</span><span class="text-[8px] text-white font-bold uppercase tracking-wider mt-1">Edit</span>
+                    </div>
+                    <input type="file" id="profile-pic-upload" accept="image/*" class="hidden" onchange="uploadProfilePicture(event)">
+                </div>
+
                 <div class="flex-grow text-center md:text-left z-10 w-full">
                     <div class="flex flex-col md:flex-row md:items-center gap-3 mb-2">
                         <h2 class="text-3xl font-black text-white tracking-tight" id="my-profile-name">Loading...</h2>
@@ -548,7 +557,6 @@
                         <p>📅 Member Since: <span id="my-profile-joined" class="text-white font-medium">...</span></p>
                     </div>
                     
-                    <!-- NEW VERIFICATION APPLICATION BOX -->
                     <div id="my-profile-unverified-box" class="hidden mt-4 bg-rose-500/10 border border-rose-500/30 p-4 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4">
                         <div class="text-center md:text-left">
                             <p class="text-xs font-bold text-rose-400">Account Unverified</p>
@@ -558,7 +566,6 @@
                             Apply (GH₵ 5)
                         </button>
                     </div>
-
                 </div>
                 <button onclick="navigate('post')" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black px-6 py-3 rounded-xl text-sm transition-all shadow-lg hover:-translate-y-0.5 shrink-0 z-10">
                     + Post New Ad
@@ -566,38 +573,23 @@
             </div>
 
             <div id="trial-banner" class="hidden bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 p-5 rounded-2xl flex-col md:flex-row items-center justify-between gap-4 shadow-lg shadow-amber-900/10">
-                <div>
-                    <h4 class="text-sm font-black text-amber-400 flex items-center gap-2">⭐ Agromart Pro Premium Trial Active</h4>
-                    <p class="text-xs text-slate-300 mt-1.5 leading-relaxed">Enjoy unrestricted top-tier listings, automated social syndication, and premium visibility for your first 30 days. <br><span class="font-bold text-slate-400">After your trial, standard listings remain 100% free forever.</span></p>
-                </div>
-                <div class="text-center bg-[#020617]/80 px-5 py-3 rounded-xl border border-amber-500/20 shrink-0 min-w-[100px]">
-                    <span class="block text-2xl font-black text-amber-400" id="trial-days-count">30</span>
-                    <span class="text-[9px] uppercase tracking-wider text-slate-400 font-bold">Days Left</span>
-                </div>
+                <div><h4 class="text-sm font-black text-amber-400 flex items-center gap-2">⭐ Agromart Pro Premium Trial Active</h4><p class="text-xs text-slate-300 mt-1.5 leading-relaxed">Enjoy unrestricted top-tier listings, automated social syndication, and premium visibility for your first 30 days. <br><span class="font-bold text-slate-400">After your trial, standard listings remain 100% free forever.</span></p></div>
+                <div class="text-center bg-[#020617]/80 px-5 py-3 rounded-xl border border-amber-500/20 shrink-0 min-w-[100px]"><span class="block text-2xl font-black text-amber-400" id="trial-days-count">30</span><span class="text-[9px] uppercase tracking-wider text-slate-400 font-bold">Days Left</span></div>
             </div>
 
             <div class="glass-card p-5 rounded-2xl border-l-4 border-emerald-500 flex flex-col md:flex-row items-center gap-4 shadow-lg shadow-emerald-900/10">
                 <div class="w-12 h-12 bg-emerald-500/20 rounded-full flex items-center justify-center text-xl shrink-0">🌱</div>
-                <div>
-                    <h4 class="text-sm font-black text-white mb-1">Today's Agronomy Insight</h4>
-                    <p class="text-xs text-slate-300 leading-relaxed" id="agronomy-tip">Maintaining proper soil structure and organic matter drastically improves water retention for dry-season vegetable yields.</p>
-                </div>
+                <div><h4 class="text-sm font-black text-white mb-1">Today's Agronomy Insight</h4><p class="text-xs text-slate-300 leading-relaxed" id="agronomy-tip">Maintaining proper soil structure and organic matter drastically improves water retention for dry-season vegetable yields.</p></div>
             </div>
 
             <div class="flex items-center justify-between mb-2 glass-card p-6 rounded-2xl">
-                <div>
-                    <h2 class="text-2xl font-black text-white tracking-tight">Manage My Ads</h2>
-                    <p class="text-xs text-slate-400 mt-1">Boost visibility, generate WhatsApp Flyers, or delete sold items.</p>
-                </div>
+                <div><h2 class="text-2xl font-black text-white tracking-tight">Manage My Ads</h2><p class="text-xs text-slate-400 mt-1">Boost visibility, generate WhatsApp Flyers, or delete sold items.</p></div>
             </div>
             <div id="my-ads-list" class="grid grid-cols-1 gap-4"></div>
 
             <div id="admin-panel" class="hidden mt-12 glass-card p-6 rounded-2xl border border-emerald-500/30">
                 <div class="flex items-center justify-between mb-4">
-                    <div>
-                        <h3 class="text-lg font-black text-emerald-400">🛡️ Founder Admin Security & Verification Hub</h3>
-                        <p class="text-xs text-slate-400">Review new user registrations and grant Verified Badges.</p>
-                    </div>
+                    <div><h3 class="text-lg font-black text-emerald-400">🛡️ Founder Admin Security & Verification Hub</h3><p class="text-xs text-slate-400">Review new user registrations and grant Verified Badges.</p></div>
                     <span class="text-xs font-bold bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full border border-emerald-500/30">Founder Mode</span>
                 </div>
                 
@@ -613,10 +605,13 @@
 
                 <div class="pt-4 border-t border-white/10">
                     <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">Manual Verification (Override)</label>
-                    <div class="flex gap-2">
-                        <input type="email" id="verify-email-input" placeholder="Enter Farmer's Email Address" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 transition-colors">
-                        <button onclick="verifySeller()" class="bg-emerald-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-emerald-500 shrink-0 transition-colors">Verify</button>
-                    </div>
+                    <div class="flex gap-2"><input type="email" id="verify-email-input" placeholder="Enter Farmer's Email Address" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 transition-colors"><button onclick="verifySeller()" class="bg-emerald-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-emerald-500 shrink-0 transition-colors">Verify</button></div>
+                </div>
+
+                <!-- PERMANENT BAN UI -->
+                <div class="pt-4 border-t border-white/10 mt-6">
+                    <label class="block text-xs font-bold text-rose-400 mb-2 uppercase tracking-wider">Permanent Ban (Revoke Posting Access)</label>
+                    <div class="flex gap-2"><input type="email" id="ban-email-input" placeholder="Enter Farmer's Email Address to Ban" class="w-full bg-[#020617]/80 border border-rose-900/50 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-rose-500 transition-colors"><button onclick="banSeller()" class="bg-rose-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-rose-500 shrink-0 transition-colors">Ban</button></div>
                 </div>
 
                 <div class="mt-8 border-t border-white/10 pt-6">
@@ -634,13 +629,7 @@
 
     <footer class="mt-auto border-t border-white/10 bg-[#020617]/80 backdrop-blur-lg relative z-20">
         <div class="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="flex items-center gap-2">
-                <span class="text-emerald-500 text-2xl">🌾</span>
-                <div>
-                    <span class="font-black text-white tracking-tight text-lg block leading-none">AgromartDirect</span>
-                    <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Ghana Direct</span>
-                </div>
-            </div>
+            <div class="flex items-center gap-2"><span class="text-emerald-500 text-2xl">🌾</span><div><span class="font-black text-white tracking-tight text-lg block leading-none">AgromartDirect</span><span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Ghana Direct</span></div></div>
             <div class="flex flex-wrap justify-center gap-6 text-sm font-bold text-slate-400">
                 <button onclick="navigate('pricing')" class="hover:text-emerald-400 transition-colors">Pricing</button>
                 <button onclick="navigate('library')" class="hover:text-emerald-400 transition-colors">Agromart Library</button>
@@ -648,9 +637,7 @@
                 <button onclick="navigate('about')" class="hover:text-emerald-400 transition-colors">About Us</button>
                 <button onclick="navigate('support')" class="hover:text-emerald-400 transition-colors">Contact Support</button>
             </div>
-            <p class="text-xs text-slate-600 font-medium text-center md:text-right">
-                © 2026 AgromartDirect Ghana.<br> Empowering Local Farmers Nationwide.
-            </p>
+            <p class="text-xs text-slate-600 font-medium text-center md:text-right">© 2026 AgromartDirect Ghana.<br> Empowering Local Farmers Nationwide.</p>
         </div>
     </footer>
 
@@ -907,10 +894,18 @@
         function executeCallFarmer() { window.open(`tel:${currentOrderPhone.replace(/\D/g, '')}`, '_self'); closeOrderModal(); }
         function executeOfflineSMS() { window.open(`sms:${currentOrderPhone.replace(/\D/g, '')}?body=${encodeURIComponent("AGRO-ORDER: " + currentOrderName)}`, '_self'); closeOrderModal(); }
 
-        function openSellerProfile(sellerName, phone, isVerified, memberSince) {
+        function openSellerProfile(sellerName, phone, isVerified, memberSince, profilePicUrl) {
             document.getElementById('profile-name').innerText = sellerName; document.getElementById('profile-joined').innerText = memberSince || "2026";
             const badge = document.getElementById('profile-badge');
             if(isVerified) { badge.classList.remove('hidden'); badge.classList.add('flex'); } else { badge.classList.add('hidden'); badge.classList.remove('flex'); }
+            
+            const avatar = document.getElementById('public-profile-avatar');
+            if (profilePicUrl && profilePicUrl !== 'null' && profilePicUrl !== 'undefined') {
+                avatar.innerHTML = ''; avatar.style.backgroundImage = `url('${profilePicUrl}')`;
+            } else {
+                avatar.innerHTML = '👨🏽‍🌾'; avatar.style.backgroundImage = 'none';
+            }
+
             document.getElementById('profile-contact-btn').onclick = () => window.open(`https://wa.me/${phone.replace(/\D/g, '')}`, '_blank');
             document.getElementById('profile-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(window.location.origin)}&bgcolor=ffffff`;
             const grid = document.getElementById('profile-grid'); grid.innerHTML = ''; const fp = allLoadedProducts.filter(p => p.seller_name === sellerName);
@@ -957,6 +952,13 @@
             document.getElementById('my-profile-email').innerText = data.email;
             document.getElementById('my-profile-phone').innerText = data.phone_number;
             document.getElementById('my-profile-joined').innerText = data.member_since || '2026';
+
+            const myAvatar = document.getElementById('my-profile-avatar');
+            if(data.profile_picture && data.profile_picture !== 'null') {
+                myAvatar.innerHTML = ''; myAvatar.style.backgroundImage = `url('${data.profile_picture}')`;
+            } else {
+                myAvatar.innerHTML = '👨🏽‍🌾'; myAvatar.style.backgroundImage = 'none';
+            }
             
             if(data.is_verified) { 
                 document.getElementById('my-profile-badge').classList.remove('hidden'); document.getElementById('my-profile-badge').classList.add('flex'); 
@@ -970,6 +972,45 @@
                 document.getElementById('admin-panel').classList.remove('hidden'); 
                 renderAdminSignupsList(); renderAdminModQueue(); renderAdminAllAds(); renderAdminVerificationsList();
             }
+        }
+
+        async function uploadProfilePicture(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = async (e) => {
+                const img = new Image(); img.src = e.target.result;
+                img.onload = async () => {
+                    const canvas = document.createElement('canvas'); 
+                    const size = 200; canvas.width = size; canvas.height = size;
+                    const ctx = canvas.getContext('2d');
+                    
+                    const min = Math.min(img.width, img.height);
+                    const sx = (img.width - min) / 2; const sy = (img.height - min) / 2;
+                    ctx.drawImage(img, sx, sy, min, min, 0, 0, size, size);
+                    
+                    const base64Img = canvas.toDataURL('image/jpeg', 0.8);
+                    
+                    try {
+                        showToast("Uploading profile picture... ⏳");
+                        const res = await fetch(`${API_URL}/api/v1/me/profile-picture?token=${agriToken}`, {
+                            method: 'PUT', headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ image_data: base64Img })
+                        });
+                        if (!res.ok) throw new Error("Failed to upload");
+                        
+                        const avatar = document.getElementById('my-profile-avatar');
+                        avatar.innerHTML = ''; avatar.style.backgroundImage = `url('${base64Img}')`;
+                        showToast("Profile picture updated! ✅");
+                        loadMarketplace();
+                    } catch (err) {
+                        showToast(err.message, "error");
+                    }
+                }
+            };
+            event.target.value = '';
         }
 
         async function renderAdminSignupsList() {
@@ -1006,7 +1047,7 @@
                 if (!allAds.length) return c.innerHTML = `<p class="text-xs text-slate-500">No ads on platform.</p>`;
                 c.innerHTML = allAds.map((ad) => {
                     let statusColor = ad.status === 'approved' ? 'text-emerald-400' : (ad.status === 'pending' ? 'text-amber-400' : 'text-rose-400');
-                    return `<div id="admin-all-ad-${ad.id}" class="glass-card p-3 rounded-xl flex items-center justify-between border border-white/5 mb-2"><div><p class="text-xs font-bold text-white">${ad.product_name} <span class="${statusColor} text-[10px] uppercase">(${ad.status})</span></p><p class="text-[10px] text-slate-400">By: ${ad.seller_name} (${ad.phone_number}) • GH₵${ad.base_price_ghs}</p></div><button onclick="adminDeleteAd(${ad.id})" class="bg-rose-600 hover:bg-rose-500 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg transition-colors shadow shrink-0">🗑️ Delete</button></div>`;
+                    return `<div id="admin-all-ad-${ad.id}" class="glass-card p-3 rounded-xl flex items-center justify-between border border-white/5 mb-2"><div><p class="text-xs font-bold text-white">${ad.product_name} <span class="${statusColor} text-[10px] uppercase">(${ad.status})</span></p><p class="text-[10px] text-slate-400">By: ${ad.seller_name} (${ad.phone_number}) • GH₵${ad.base_price_ghs}</p></div><div class="flex gap-2"><button onclick="adminBanUser('${ad.seller_email}')" class="bg-black text-rose-500 border border-rose-500/50 hover:bg-slate-900 text-[10px] font-bold px-3 py-1.5 rounded-lg transition-colors shadow shrink-0" title="Ban User">🚫 Ban</button><button onclick="adminDeleteAd(${ad.id})" class="bg-rose-600 hover:bg-rose-500 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg transition-colors shadow shrink-0">🗑️ Delete</button></div></div>`;
                 }).join('');
             } catch (e) { c.innerHTML = `<p class="text-xs text-rose-400">Error fetching all ads.</p>`; }
         }
@@ -1018,6 +1059,24 @@
                 if (!res.ok) throw new Error("Could not delete");
                 showToast("Ad permanently deleted by Admin."); document.getElementById(`admin-all-ad-${adId}`)?.remove(); renderAdminModQueue(); loadMyAds();
             } catch (err) { showToast(err.message, "error"); }
+        }
+
+        async function adminBanUser(email) {
+            if(!confirm(`FOUNDER OVERRIDE: Permanently ban ${email}? They will not be able to post ads anymore, and their existing ads will be rejected.`)) return;
+            try {
+                const res = await fetch(`${API_URL}/api/v1/admin/ban-user?token=${agriToken}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: email }) });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.detail);
+                showToast(data.detail);
+                document.getElementById('ban-email-input').value = "";
+                renderAdminModQueue(); renderAdminAllAds(); loadMarketplace();
+            } catch (err) { showToast(err.message, "error"); }
+        }
+
+        async function banSeller() {
+            const email = document.getElementById('ban-email-input').value.trim();
+            if(!email) return showToast("Enter an email", "error");
+            adminBanUser(email);
         }
 
         async function approveAd(elId, adId) {
@@ -1123,6 +1182,11 @@
                 let isSos = sosListingIds.includes(item.id);
                 let premiumBadge = item.boost_tier !== "standard" ? `<span class="absolute top-3 right-3 bg-amber-500 text-white font-black text-[9px] uppercase px-3 py-1 rounded-full z-10">⭐ Premium</span>` : '';
                 let imgBlock = imgs.length ? `<div class="h-48 w-full bg-slate-800 bg-cover bg-center border-b border-white/5 relative" style="background-image: url('${imgs[0]}')">${premiumBadge}</div>` : `<div class="h-48 w-full bg-gradient-to-br from-emerald-900/40 to-slate-900 relative flex items-center justify-center text-4xl border-b border-white/5">${premiumBadge}🌾</div>`;
+                
+                let avatarSmall = (item.seller_profile_picture && item.seller_profile_picture !== 'null') 
+                    ? `<div class="w-4 h-4 rounded-full bg-cover bg-center shrink-0" style="background-image: url('${item.seller_profile_picture}')"></div>` 
+                    : `<span class="w-4 h-4 bg-slate-800 rounded-full flex items-center justify-center text-[8px] shrink-0">👤</span>`;
+
                 return `
                     <div class="glass-card hover:-translate-y-1 rounded-[2rem] flex flex-col justify-between transition-all overflow-hidden shadow-xl hover:border-emerald-500/30">
                         ${imgBlock}
@@ -1132,8 +1196,9 @@
                                 <h3 class="text-xl font-black text-white mb-2 leading-tight">${item.product_name}</h3>
                                 ${item.description ? `<p class="text-xs text-slate-400 mb-2 line-clamp-2">${item.description}</p>` : ''}
                                 <div class="flex flex-col gap-1 mb-5">
-                                    <div onclick="openSellerProfile('${item.seller_name}', '${item.phone_number}', ${item.seller_verified}, '${item.seller_member_since}')" class="flex items-center gap-1 text-slate-300 text-xs font-bold cursor-pointer hover:text-emerald-400 w-fit">
-                                        <span class="truncate underline decoration-emerald-500/30 underline-offset-4">👤 ${item.seller_name}</span>
+                                    <div onclick="openSellerProfile('${item.seller_name}', '${item.phone_number}', ${item.seller_verified}, '${item.seller_member_since}', '${item.seller_profile_picture || ''}')" class="flex items-center gap-1 text-slate-300 text-xs font-bold cursor-pointer hover:text-emerald-400 w-fit">
+                                        ${avatarSmall}
+                                        <span class="truncate underline decoration-emerald-500/30 underline-offset-4">${item.seller_name}</span>
                                     </div>
                                 </div>
                             </div>
@@ -1257,7 +1322,10 @@
             skipBtn.innerHTML = "Uploading to Database... ⏳";
             try {
                 const res = await fetch(`${API_URL}/api/v1/products?token=${agriToken}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(pendingAdPayload) });
-                if(!res.ok) throw new Error("Failed to post");
+                if(!res.ok) {
+                    const errData = await res.json();
+                    throw new Error(errData.detail || "Failed to post ad");
+                }
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#10b981', '#fbbf24', '#ffffff'] }); showToast("Ad Submitted for Review ⏳");
                 ['post-name', 'post-description', 'post-price', 'post-unit', 'post-town', 'post-delivery'].forEach(id => document.getElementById(id).value = '');
                 uploadedImages = []; renderImagePreview(); modal.classList.add('hidden'); modal.classList.remove('flex'); navigate('dashboard'); 
