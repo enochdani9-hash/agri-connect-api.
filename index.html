@@ -134,6 +134,11 @@
                 <div><h1 class="text-xl font-black tracking-tight text-white group-hover:text-emerald-400 transition-colors">AgromartDirect</h1><p class="text-[9px] font-black text-emerald-500 uppercase tracking-widest">Ghana Direct</p></div>
             </div>
             <div class="flex gap-3 items-center">
+                <!-- PWA Install Button -->
+                <button id="install-app-btn" class="hidden items-center gap-1.5 bg-blue-500/10 text-blue-400 border border-blue-500/30 hover:bg-blue-500 hover:text-white font-black px-4 py-2.5 rounded-xl transition-all shadow-lg">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    <span class="hidden md:inline">Install App</span>
+                </button>
                 <button onclick="navigate('library')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 transition-colors hidden md:block">Agromart Library</button>
                 <button onclick="navigate('pricing')" class="text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors hidden md:block border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg">⭐ Boost Ads</button>
                 <button onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 text-xs text-slate-300 transition-colors" title="Toggle High-Contrast Sunlight Mode">☀️</button>
@@ -685,6 +690,40 @@
         }
 
         function initDeviceNotifications() { if ("Notification" in window && Notification.permission !== "granted" && Notification.permission !== "denied") Notification.requestPermission(); }
+
+        // --- PWA INSTALLATION LOGIC ---
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const installBtn = document.getElementById('install-app-btn');
+            if (installBtn) {
+                installBtn.classList.remove('hidden');
+                installBtn.classList.add('flex');
+            }
+        });
+
+        document.getElementById('install-app-btn')?.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    showToast("AgromartDirect is installing! 📱", "success");
+                }
+                deferredPrompt = null;
+                const installBtn = document.getElementById('install-app-btn');
+                if (installBtn) {
+                    installBtn.classList.add('hidden');
+                    installBtn.classList.remove('flex');
+                }
+            }
+        });
+
+        window.addEventListener('appinstalled', () => {
+            showToast("AgromartDirect installed successfully! 🚀", "success");
+            deferredPrompt = null;
+        });
+        // ------------------------------
 
         async function pollForNewAds() {
             try {
