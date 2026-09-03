@@ -1,4 +1,5 @@
 import os
+import re
 from datetime import datetime, timedelta
 from typing import List, Optional
 import httpx
@@ -9,7 +10,6 @@ from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignK
 from sqlalchemy.orm import declarative_base, sessionmaker, Session, relationship
 from passlib.context import CryptContext
 from jose import JWTError, jwt
-import re
 
 # --- CONFIGURATION ---
 SECRET_KEY = "agriconnect_super_secret_key"
@@ -36,7 +36,7 @@ app.add_middleware(
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# --- AUTOMATION & PAYMENT SECRETS ---
+# --- SECRETS & KEYS ---
 ARKESEL_API_KEY = os.getenv("ARKESEL_API_KEY", "")
 MAKE_ZAPIER_WEBHOOK_URL = os.getenv("MAKE_WEBHOOK_URL", "")
 CRON_SECRET = os.getenv("CRON_SECRET", "super-secret-cron-key-123")
@@ -58,6 +58,7 @@ class User(Base):
     is_banned = Column(Boolean, default=False)  
     profile_picture = Column(Text, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
+    
     products = relationship("Product", back_populates="owner")
     buyer_requests = relationship("BuyerRequest", back_populates="buyer")
     farm_batches = relationship("FarmBatch", back_populates="farmer")
@@ -78,6 +79,7 @@ class Product(Base):
     rejection_reason = Column(String, nullable=True) 
     boost_tier = Column(String, default="standard")  
     created_at = Column(DateTime, default=datetime.utcnow)
+    
     owner = relationship("User", back_populates="products")
 
 class BuyerRequest(Base):
@@ -92,7 +94,32 @@ class BuyerRequest(Base):
     buyer_id = Column(Integer, ForeignKey("users_v5.id"))
     status = Column(String, default="open")  
     created_at = Column(DateTime, default=datetime.utcnow)
+    
     buyer = relationship("User", back_populates="buyer_requests")
+
+class FarmBatch(Base):
+    __tablename__ = "farm_batches_v1"
+    id = Column(Integer, primary_key=True, index=True)
+    batch_name = Column(String)
+    category = Column(String)
+    quantity = Column(Integer)
+    total_expenses = Column(Float, default=0.0)
+    start_date = Column(DateTime, default=datetime.utcnow)
+    harvest_date = Column(DateTime)
+    farmer_id = Column(Integer, ForeignKey("users_v5.id"))
+    is_harvested = Column(Boolean, default=False)
+    
+    farmer = relationship("User", back_populates="farm_batches")
+
+class AgriOpportunity(Base):
+    __tablename__ = "agri_opportunities_v1"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String)
+    provider = Column(String)
+    amount = Column(String)
+    deadline = Column(String)
+    link = Column(String)
+    created_at = Column(DateTime, default=datetime.utcnow)
 
 class VerificationPayment(Base):
     __tablename__ = "verification_payments_v2"
@@ -106,31 +133,6 @@ class Report(Base):
     reported_seller_name = Column(String)
     reported_seller_phone = Column(String)
     reason = Column(String)
-    created_at = Column(DateTime, default=datetime.utcnow)
-
-# NEW: Farm Manager Model
-class FarmBatch(Base):
-    __tablename__ = "farm_batches_v1"
-    id = Column(Integer, primary_key=True, index=True)
-    batch_name = Column(String)
-    category = Column(String)
-    quantity = Column(Integer)
-    total_expenses = Column(Float, default=0.0)
-    start_date = Column(DateTime, default=datetime.utcnow)
-    harvest_date = Column(DateTime)
-    farmer_id = Column(Integer, ForeignKey("users_v5.id"))
-    is_harvested = Column(Boolean, default=False)
-    farmer = relationship("User", back_populates="farm_batches")
-
-# NEW: Grants Aggregator Model
-class AgriOpportunity(Base):
-    __tablename__ = "agri_opportunities_v1"
-    id = Column(Integer, primary_key=True, index=True)
-    title = Column(String)
-    provider = Column(String)
-    amount = Column(String)
-    deadline = Column(String)
-    link = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow)
 
 Base.metadata.create_all(bind=engine)
@@ -189,8 +191,15 @@ def get_current_user(token: str, db: Session = Depends(get_db)):
 def signup(user: UserCreate, db: Session = Depends(get_db)):
     if db.query(User).filter(User.email == user.email).first(): 
         raise HTTPException(status_code=400, detail="Email already registered")
-    db_user = User(full_name=user.full_name, email=user.email, age=user.age, phone_number=user.phone_number, hashed_password=pwd_context.hash(user.password))
-    db.add(db_user); db.commit(); db.refresh(db_user)
+    
+    db_user = User(
+        full_name=user.full_name, email=user.email, age=user.age, 
+        phone_number=user.phone_number, hashed_password=pwd_context.hash(user.password)
+    )
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    
     token = jwt.encode({"sub": str(db_user.id), "exp": datetime.utcnow() + timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS)}, SECRET_KEY, algorithm=ALGORITHM)
     return {"access_token": token, "full_name": db_user.full_name, "is_verified": db_user.is_verified, "email": db_user.email}
 
@@ -199,6 +208,7 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.email == user.email).first()
     if not db_user or not pwd_context.verify(user.password, db_user.hashed_password): 
         raise HTTPException(status_code=400, detail="Incorrect email or password")
+    
     token = jwt.encode({"sub": str(db_user.id), "exp": datetime.utcnow() + timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS)}, SECRET_KEY, algorithm=ALGORITHM)
     return {"access_token": token, "full_name": db_user.full_name, "is_verified": db_user.is_verified, "email": db_user.email}
 
@@ -212,13 +222,22 @@ async def google_auth(req: GoogleAuthRequest, db: Session = Depends(get_db)):
     except Exception as e: 
         raise HTTPException(status_code=400, detail=f"Google authentication failed: {str(e)}")
 
-    email = google_data.get("email"); full_name = google_data.get("name", "Farmer"); picture = google_data.get("picture")
-    if not email: raise HTTPException(status_code=400, detail="Google account has no verified email")
+    email = google_data.get("email")
+    full_name = google_data.get("name", "Farmer")
+    picture = google_data.get("picture")
     
+    if not email: 
+        raise HTTPException(status_code=400, detail="Google account has no verified email")
+        
     db_user = db.query(User).filter(User.email == email).first()
     if not db_user:
-        db_user = User(full_name=full_name, email=email, age=25, phone_number="0000000000", hashed_password=pwd_context.hash(os.urandom(16).hex()), is_verified=False, profile_picture=picture)
-        db.add(db_user); db.commit(); db.refresh(db_user)
+        db_user = User(
+            full_name=full_name, email=email, age=25, phone_number="0000000000", 
+            hashed_password=pwd_context.hash(os.urandom(16).hex()), is_verified=False, profile_picture=picture
+        )
+        db.add(db_user)
+        db.commit()
+        db.refresh(db_user)
         
     token = jwt.encode({"sub": str(db_user.id), "exp": datetime.utcnow() + timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS)}, SECRET_KEY, algorithm=ALGORITHM)
     return {"access_token": token, "full_name": db_user.full_name, "is_verified": db_user.is_verified, "email": db_user.email}
@@ -242,8 +261,12 @@ def confirm_password_reset(req: ResetPasswordReq, db: Session = Depends(get_db))
     user = db.query(User).filter(User.phone_number == req.phone_number).first()
     if not user: 
         raise HTTPException(status_code=404, detail="User not found.")
-    user.hashed_password = pwd_context.hash(req.new_password); db.commit()
-    if req.phone_number in reset_codes_db: del reset_codes_db[req.phone_number]
+        
+    user.hashed_password = pwd_context.hash(req.new_password)
+    db.commit()
+    
+    if req.phone_number in reset_codes_db: 
+        del reset_codes_db[req.phone_number]
     return {"status": "success", "msg": "Password updated successfully. You can now log in."}
 
 @app.get("/api/v1/me")
@@ -266,31 +289,46 @@ def get_me(token: str, db: Session = Depends(get_db)):
 @app.post("/api/v1/bot/whatsapp")
 def whatsapp_auto_poster(payload: WhatsappWebhook, db: Session = Depends(get_db)):
     """
-    This endpoint catches messages from Make.com or Twilio.
-    Example text: "Selling 50 crates of eggs for 65 in Kasoa"
+    Endpoint for Make.com / Twilio integrations.
+    Turns raw WhatsApp messages into verified marketplace ads.
     """
     phone = payload.phone_number
     text = payload.message_text.lower()
     
-    # Auto-Account Creation based on phone number
     user = db.query(User).filter(User.phone_number == phone).first()
     if not user:
         auto_email = f"{phone}@wa.agromart.com"
-        user = User(full_name="WhatsApp Farmer", email=auto_email, phone_number=phone, hashed_password=pwd_context.hash("whatsapp123"), is_verified=True)
-        db.add(user); db.commit(); db.refresh(user)
+        user = User(
+            full_name="WhatsApp Farmer", email=auto_email, phone_number=phone, 
+            hashed_password=pwd_context.hash("whatsapp123"), is_verified=True
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
 
-    # NLP Logic (Extract Price & Loc)
-    price_match = re.search(r'\b(\d+)\s*(cedis|ghc|ghs)\b', text)
+    # Basic NLP regex for price extraction
+    price_match = re.search(r'\b(\d+)\s*(cedis|ghc|ghs|c)\b', text)
     price = price_match.group(1) if price_match else "Negotiable"
     
-    cat = "Poultry" if "broiler" in text or "bird" in text else "Eggs" if "egg" in text else "Vegetables/Fruits"
+    # Categorization logic
+    cat = "Poultry"
+    if "egg" in text: cat = "Eggs"
+    elif "tomato" in text or "pepper" in text or "onion" in text: cat = "Vegetables/Fruits"
+    elif "chick" in text: cat = "Chicks"
     
     db_product = Product(
         product_name=payload.message_text[:40] + "...",
-        category=cat, unit="unit", base_price_ghs=price, neighborhood="Ghana (Via WhatsApp)",
-        description=payload.message_text, farmer_id=user.id, status="approved", boost_tier="standard"
+        category=cat, 
+        unit="unit", 
+        base_price_ghs=price, 
+        neighborhood="Ghana (Via WhatsApp)",
+        description=payload.message_text, 
+        farmer_id=user.id, 
+        status="approved", 
+        boost_tier="standard"
     )
-    db.add(db_product); db.commit()
+    db.add(db_product)
+    db.commit()
     
     return {"status": "success", "reply": f"Your ad is live on AgromartDirect! Buyers will contact {phone}."}
 
@@ -299,8 +337,15 @@ def whatsapp_auto_poster(payload: WhatsappWebhook, db: Session = Depends(get_db)
 def create_batch(req: FarmBatchCreate, token: str, db: Session = Depends(get_db)):
     user = get_current_user(token, db)
     harvest_date = datetime.utcnow() + timedelta(days=req.harvest_days)
-    batch = FarmBatch(batch_name=req.batch_name, category=req.category, quantity=req.quantity, harvest_date=harvest_date, farmer_id=user.id)
-    db.add(batch); db.commit()
+    batch = FarmBatch(
+        batch_name=req.batch_name, 
+        category=req.category, 
+        quantity=req.quantity, 
+        harvest_date=harvest_date, 
+        farmer_id=user.id
+    )
+    db.add(batch)
+    db.commit()
     return {"status": "success"}
 
 @app.get("/api/v1/farm-batches")
@@ -308,8 +353,13 @@ def get_batches(token: str, db: Session = Depends(get_db)):
     user = get_current_user(token, db)
     batches = db.query(FarmBatch).filter(FarmBatch.farmer_id == user.id).all()
     return [{
-        "id": b.id, "batch_name": b.batch_name, "quantity": b.quantity, "expenses": b.total_expenses,
-        "harvest_date": b.harvest_date.strftime("%b %d, %Y"), "is_ready": datetime.utcnow() >= b.harvest_date, "is_harvested": b.is_harvested
+        "id": b.id, 
+        "batch_name": b.batch_name, 
+        "quantity": b.quantity, 
+        "expenses": b.total_expenses,
+        "harvest_date": b.harvest_date.strftime("%b %d, %Y"), 
+        "is_ready": datetime.utcnow() >= b.harvest_date, 
+        "is_harvested": b.is_harvested
     } for b in batches]
 
 # --- OPPORTUNITIES / GRANTS AGGREGATOR ---
@@ -317,13 +367,11 @@ def get_batches(token: str, db: Session = Depends(get_db)):
 def get_grants(db: Session = Depends(get_db)):
     grants = db.query(AgriOpportunity).order_by(AgriOpportunity.created_at.desc()).all()
     if not grants:
-        # Fallback to auto-generated dummy data if DB is empty to demonstrate the feature
+        # Fallback to automated placeholder data
         return [
-            {"title": "ALX Ventures AgriTech Grant", "provider": "ALX Africa", "amount": "$5,000", "deadline": "Next Month", "link": "#"},
-            {"title": "Ghana MoFA Fertilizer Subsidy", "provider": "Ministry of Food & Agric", "amount": "Material Supply", "deadline": "Rolling", "link": "#"},
-            {"title": "Youth in Poultry Fund", "provider": "GAPFA", "amount": "GH₵ 10,000", "deadline": "This Friday", "link": "#"},
-            {"title": "Mastercard Foundation Agrifood Grant", "provider": "Mastercard Foundation", "amount": "$10,000", "deadline": "November 2026", "link": "#"},
-            {"title": "USAID Feed the Future Loan", "provider": "USAID", "amount": "GH₵ 50,000", "deadline": "Rolling", "link": "#"}
+            {"title": "ALX Ventures AgriTech Grant", "provider": "ALX Africa", "amount": "$5,000 Seed", "deadline": "Rolling Basis", "link": "#"},
+            {"title": "Ghana MoFA Fertilizer Subsidy", "provider": "Ministry of Food & Agric", "amount": "Material Subsidy", "deadline": "Next Month", "link": "#"},
+            {"title": "Youth in Poultry Capital Fund", "provider": "GAPFA", "amount": "GH₵ 10,000", "deadline": "December 2026", "link": "#"}
         ]
     return [{"title": g.title, "provider": g.provider, "amount": g.amount, "deadline": g.deadline, "link": g.link} for g in grants]
 
@@ -335,7 +383,6 @@ def get_market_intel(db: Session = Depends(get_db)):
     
     for p in prods:
         try:
-            # Extract valid number from price string
             price_str = ''.join(c for c in p.base_price_ghs if c.isdigit() or c == '.')
             price = float(price_str) if price_str else 0
             if price <= 0: continue
@@ -345,11 +392,13 @@ def get_market_intel(db: Session = Depends(get_db)):
             
             if cat not in stats:
                 stats[cat] = {"total": 0, "count": 0, "regions": {}}
+            
             stats[cat]["total"] += price
             stats[cat]["count"] += 1
             
             if loc not in stats[cat]["regions"]:
                 stats[cat]["regions"][loc] = {"total": 0, "count": 0}
+            
             stats[cat]["regions"][loc]["total"] += price
             stats[cat]["regions"][loc]["count"] += 1
         except:
@@ -372,7 +421,7 @@ def get_market_intel(db: Session = Depends(get_db)):
         })
     return sorted(intel, key=lambda x: x["category"])
 
-# --- SELLER PRODUCTS ENDPOINTS ---
+# --- MARKETPLACE ADS ENDPOINTS ---
 @app.post("/api/v1/products")
 def create_product(product: ProductCreate, token: str, db: Session = Depends(get_db)):
     try:
@@ -381,7 +430,8 @@ def create_product(product: ProductCreate, token: str, db: Session = Depends(get
             raise HTTPException(status_code=403, detail="Your account has been permanently banned from posting ads.")
             
         db_product = Product(**product.dict(), farmer_id=user.id, status="pending", boost_tier="standard")
-        db.add(db_product); db.commit()
+        db.add(db_product)
+        db.commit()
         return {"msg": "Product created"}
     except Exception as e:
         db.rollback()
@@ -390,43 +440,60 @@ def create_product(product: ProductCreate, token: str, db: Session = Depends(get
 @app.get("/api/v1/products")
 def get_products(sort: str = "newest", category: str = "", search: str = "", neighborhood: str = "", db: Session = Depends(get_db)):
     query = db.query(Product, User).join(User).filter(Product.status == "approved")
-    if category: query = query.filter(Product.category.ilike(f"%{category}%"))
-    if neighborhood: query = query.filter(Product.neighborhood.ilike(f"%{neighborhood}%"))
-    if search: query = query.filter(Product.product_name.ilike(f"%{search}%") | Product.neighborhood.ilike(f"%{search}%"))
+    if category: 
+        query = query.filter(Product.category.ilike(f"%{category}%"))
+    if neighborhood: 
+        query = query.filter(Product.neighborhood.ilike(f"%{neighborhood}%"))
+    if search: 
+        query = query.filter(Product.product_name.ilike(f"%{search}%") | Product.neighborhood.ilike(f"%{search}%"))
     
     if sort == "price_asc": query = query.order_by(Product.base_price_ghs.asc())
     elif sort == "price_desc": query = query.order_by(Product.base_price_ghs.desc())
     else: query = query.order_by(Product.created_at.desc())
     
     results = query.all()
-    return [{"id": p.id, "product_name": p.product_name, "category": p.category, "unit": p.unit, "base_price_ghs": p.base_price_ghs, "neighborhood": p.neighborhood, "description": p.description, "image_data": p.image_data, "delivery_details": p.delivery_details, "seller_name": u.full_name, "seller_profile_picture": u.profile_picture, "seller_verified": u.is_verified, "seller_member_since": str(u.created_at.year) if u.created_at else "2026", "phone_number": u.phone_number, "boost_tier": getattr(p, "boost_tier", "standard")} for p, u in results]
+    return [{
+        "id": p.id, "product_name": p.product_name, "category": p.category, 
+        "unit": p.unit, "base_price_ghs": p.base_price_ghs, "neighborhood": p.neighborhood, 
+        "description": p.description, "image_data": p.image_data, "delivery_details": p.delivery_details, 
+        "seller_name": u.full_name, "seller_profile_picture": u.profile_picture, "seller_verified": u.is_verified, 
+        "seller_member_since": str(u.created_at.year) if u.created_at else "2026", 
+        "phone_number": u.phone_number, "boost_tier": getattr(p, "boost_tier", "standard")
+    } for p, u in results]
 
 @app.get("/api/v1/latest-ad")
 def get_latest_ad(db: Session = Depends(get_db)):
     prod = db.query(Product).filter(Product.status == "approved").order_by(Product.created_at.desc()).first()
-    if prod: return {"id": prod.id, "product_name": prod.product_name, "neighborhood": prod.neighborhood, "base_price_ghs": prod.base_price_ghs}
+    if prod: 
+        return {"id": prod.id, "product_name": prod.product_name, "neighborhood": prod.neighborhood, "base_price_ghs": prod.base_price_ghs}
     return None
 
 @app.get("/api/v1/my-products")
 def get_my_products(token: str, db: Session = Depends(get_db)):
     user = get_current_user(token, db)
     prods = db.query(Product).filter(Product.farmer_id == user.id).order_by(Product.created_at.desc()).all()
-    return [{"id": p.id, "product_name": p.product_name, "base_price_ghs": p.base_price_ghs, "unit": p.unit, "image_data": p.image_data, "phone_number": user.phone_number, "status": p.status, "rejection_reason": p.rejection_reason, "boost_tier": getattr(p, "boost_tier", "standard")} for p in prods]
+    return [{
+        "id": p.id, "product_name": p.product_name, "base_price_ghs": p.base_price_ghs, 
+        "unit": p.unit, "image_data": p.image_data, "phone_number": user.phone_number, 
+        "status": p.status, "rejection_reason": p.rejection_reason, "boost_tier": getattr(p, "boost_tier", "standard")
+    } for p in prods]
 
 @app.delete("/api/v1/products/{prod_id}")
 def delete_product(prod_id: int, token: str, db: Session = Depends(get_db)):
     user = get_current_user(token, db)
     prod = db.query(Product).filter(Product.id == prod_id, Product.farmer_id == user.id).first()
     if not prod: raise HTTPException(status_code=404)
-    db.delete(prod); db.commit()
+    db.delete(prod)
+    db.commit()
     return {"msg": "Deleted"}
 
-# --- BUYER REQUEST (RFQ / TENDER) ENDPOINTS ---
+# --- BUYER REQUEST (RFQ) ENDPOINTS ---
 @app.post("/api/v1/buyer-requests")
 def create_buyer_request(req: BuyerRequestCreate, token: str, db: Session = Depends(get_db)):
     user = get_current_user(token, db)
     if getattr(user, "is_banned", False):
         raise HTTPException(status_code=403, detail="Account banned.")
+    
     db_rfq = BuyerRequest(**req.dict(), buyer_id=user.id, status="open")
     db.add(db_rfq)
     db.commit()
@@ -437,19 +504,14 @@ def get_buyer_requests(category: str = "", region: str = "", db: Session = Depen
     query = db.query(BuyerRequest, User).join(User).filter(BuyerRequest.status == "open")
     if category: query = query.filter(BuyerRequest.category.ilike(f"%{category}%"))
     if region and region != "All Regions": query = query.filter(BuyerRequest.delivery_destination.ilike(f"%{region}%"))
+    
     query = query.order_by(BuyerRequest.created_at.desc())
     results = query.all()
     return [{
-        "id": r.id,
-        "item_needed": r.item_needed,
-        "category": r.category,
-        "quantity": r.quantity,
-        "target_budget_ghs": r.target_budget_ghs,
-        "delivery_destination": r.delivery_destination,
-        "description": r.description,
-        "buyer_name": u.full_name,
-        "buyer_phone": u.phone_number,
-        "buyer_verified": u.is_verified,
+        "id": r.id, "item_needed": r.item_needed, "category": r.category,
+        "quantity": r.quantity, "target_budget_ghs": r.target_budget_ghs,
+        "delivery_destination": r.delivery_destination, "description": r.description,
+        "buyer_name": u.full_name, "buyer_phone": u.phone_number, "buyer_verified": u.is_verified,
         "created_at": r.created_at.strftime("%b %d, %Y") if r.created_at else "Recent"
     } for r, u in results]
 
@@ -469,13 +531,15 @@ def submit_report(payload: ReportCreate, db: Session = Depends(get_db)):
     db.commit()
     return {"status": "success"}
 
-# --- ADMIN & AUTOMATIONS ---
+# --- ADMIN & SECURE FUNCTIONS ---
 @app.get("/api/v1/admin/pending-users")
 def get_pending_users(token: str, db: Session = Depends(get_db)):
     admin = get_current_user(token, db)
     if admin.email != ADMIN_EMAIL: raise HTTPException(status_code=403, detail="Not authorized")
-    try: users = db.query(User).filter(User.is_verified == False).order_by(User.created_at.desc()).limit(20).all()
-    except: return []
+    try: 
+        users = db.query(User).filter(User.is_verified == False).order_by(User.created_at.desc()).limit(20).all()
+    except: 
+        return []
     return [{"email": u.email, "name": u.full_name, "phone": u.phone_number, "age": u.age, "time": u.created_at.strftime("%Y-%m-%d %H:%M") if u.created_at else "Unknown"} for u in users]
 
 @app.get("/api/v1/admin/verifications")
@@ -485,7 +549,8 @@ def get_paid_verifications(token: str, db: Session = Depends(get_db)):
     try:
         query = db.query(User).join(VerificationPayment, User.email == VerificationPayment.email).filter(User.is_verified == False).all()
         return [{"email": u.email, "name": u.full_name, "phone": u.phone_number} for u in query]
-    except: return []
+    except: 
+        return []
 
 @app.get("/api/v1/admin/reports")
 def get_reports(token: str, db: Session = Depends(get_db)):
@@ -494,7 +559,8 @@ def get_reports(token: str, db: Session = Depends(get_db)):
     try:
         reports = db.query(Report).order_by(Report.created_at.desc()).all()
         return [{"id": r.id, "seller_name": r.reported_seller_name, "seller_phone": r.reported_seller_phone, "reason": r.reason, "time": r.created_at.strftime("%Y-%m-%d %H:%M")} for r in reports]
-    except: return []
+    except: 
+        return []
 
 @app.post("/api/v1/admin/verify")
 def verify_seller(req: AdminVerify, token: str, db: Session = Depends(get_db)):
@@ -518,19 +584,22 @@ def ban_user(req: AdminBan, token: str, db: Session = Depends(get_db)):
     if not target: raise HTTPException(status_code=404, detail="User not found")
     
     target.is_banned = True
+    # Invalidate all their active/pending ads
     for prod in target.products:
-        if prod.status == "approved" or prod.status == "pending":
+        if prod.status in ["approved", "pending"]:
             prod.status = "rejected"
-            prod.rejection_reason = "Account banned by administrator for violating platform rules."
+            prod.rejection_reason = "Account permanently banned by administrator."
     db.commit()
-    return {"detail": f"{target.full_name} ({target.email}) has been permanently banned and their ads removed."}
+    return {"detail": f"{target.full_name} ({target.email}) has been permanently banned."}
 
 @app.get("/api/v1/admin/pending-ads")
 def get_pending_ads(token: str, db: Session = Depends(get_db)):
     admin = get_current_user(token, db)
     if admin.email != ADMIN_EMAIL: raise HTTPException(status_code=403, detail="Not authorized")
-    try: query = db.query(Product, User).join(User).filter(Product.status == "pending").all()
-    except: return []
+    try: 
+        query = db.query(Product, User).join(User).filter(Product.status == "pending").all()
+    except: 
+        return []
     return [{"id": prod.id, "product_name": prod.product_name, "seller_name": user.full_name, "phone_number": user.phone_number, "base_price_ghs": prod.base_price_ghs} for prod, user in query]
 
 @app.get("/api/v1/admin/all-ads")
@@ -540,7 +609,8 @@ def admin_get_all_ads(token: str, db: Session = Depends(get_db)):
     try:
         query = db.query(Product, User).join(User).order_by(Product.created_at.desc()).all()
         return [{"id": p.id, "product_name": p.product_name, "seller_name": u.full_name, "seller_email": u.email, "phone_number": u.phone_number, "base_price_ghs": p.base_price_ghs, "status": p.status} for p, u in query]
-    except: return []
+    except: 
+        return []
 
 @app.delete("/api/v1/admin/products/{prod_id}")
 def admin_delete_product(prod_id: int, token: str, db: Session = Depends(get_db)):
@@ -548,23 +618,29 @@ def admin_delete_product(prod_id: int, token: str, db: Session = Depends(get_db)
     if admin.email != ADMIN_EMAIL: raise HTTPException(status_code=403, detail="Not authorized")
     prod = db.query(Product).filter(Product.id == prod_id).first()
     if not prod: raise HTTPException(status_code=404)
-    db.delete(prod); db.commit()
+    db.delete(prod)
+    db.commit()
     return {"msg": "Deleted by admin"}
 
 async def broadcast_social_syndication(product_name: str, price: str, neighborhood: str):
     if not MAKE_ZAPIER_WEBHOOK_URL: return
     payload = {"event": "ad_approved", "product_name": product_name, "price_ghs": price, "location": neighborhood}
     try:
-        async with httpx.AsyncClient() as client: await client.post(MAKE_ZAPIER_WEBHOOK_URL, json=payload, timeout=10.0)
-    except Exception as e: pass
+        async with httpx.AsyncClient() as client: 
+            await client.post(MAKE_ZAPIER_WEBHOOK_URL, json=payload, timeout=10.0)
+    except Exception: 
+        pass
 
 @app.post("/api/v1/admin/approve-ad")
 def approve_ad(background_tasks: BackgroundTasks, payload: dict = Body(...), db: Session = Depends(get_db)):
     admin = get_current_user(payload.get("token", ""), db)
     if admin.email != ADMIN_EMAIL: raise HTTPException(status_code=403, detail="Not authorized")
+    
     prod = db.query(Product).filter(Product.id == payload.get("ad_id")).first()
     if not prod: raise HTTPException(status_code=404, detail="Ad not found")
-    prod.status = "approved"; db.commit()
+    
+    prod.status = "approved"
+    db.commit()
     background_tasks.add_task(broadcast_social_syndication, prod.product_name, prod.base_price_ghs, prod.neighborhood)
     return {"status": "success", "message": "Ad Approved and Syndicated"}
 
@@ -572,17 +648,24 @@ def approve_ad(background_tasks: BackgroundTasks, payload: dict = Body(...), db:
 def reject_ad(payload: RejectPayload, db: Session = Depends(get_db)):
     admin = get_current_user(payload.token, db)
     if admin.email != ADMIN_EMAIL: raise HTTPException(status_code=403, detail="Not authorized")
+    
     prod = db.query(Product).filter(Product.id == payload.ad_id).first()
     if not prod: raise HTTPException(status_code=404, detail="Ad not found")
-    prod.status = "rejected"; prod.rejection_reason = payload.reason; db.commit()
+    
+    prod.status = "rejected"
+    prod.rejection_reason = payload.reason
+    db.commit()
     return {"status": "success"}
 
+# --- AUTOMATIONS & WEBHOOKS ---
 async def send_arkesel_sms(phone: str, message: str):
     if not ARKESEL_API_KEY or not phone: return
     url = "https://sms.arkesel.com/sms/api"
     try:
-        async with httpx.AsyncClient() as client: await client.post(url, json={"action": "send-sms", "api_key": ARKESEL_API_KEY, "to": phone, "from": "AgromartDirect", "sms": message}, timeout=10.0)
-    except Exception as e: pass
+        async with httpx.AsyncClient() as client: 
+            await client.post(url, json={"action": "send-sms", "api_key": ARKESEL_API_KEY, "to": phone, "from": "AgromartDirect", "sms": message}, timeout=10.0)
+    except Exception: 
+        pass
 
 @app.post("/api/v1/notify-farmer")
 def notify_farmer(background_tasks: BackgroundTasks, payload: dict = Body(...)):
@@ -594,14 +677,18 @@ def notify_farmer(background_tasks: BackgroundTasks, payload: dict = Body(...)):
 async def paystack_webhook(request: Request, db: Session = Depends(get_db)):
     payload = await request.json()
     if payload.get("event") == "charge.success":
-        data = payload.get("data", {}); metadata = data.get("metadata", {})
+        data = payload.get("data", {})
+        metadata = data.get("metadata", {})
         customer_email = data.get("customer", {}).get("email") or metadata.get("email")
-        ad_id = metadata.get("ad_id"); boost_type = metadata.get("boost_type", "premium")
+        ad_id = metadata.get("ad_id")
+        boost_type = metadata.get("boost_type", "premium")
         
         if ad_id:
             prod = db.query(Product).filter(Product.id == int(ad_id)).first()
-            if prod: prod.boost_tier = boost_type; db.commit()
-            
+            if prod: 
+                prod.boost_tier = boost_type
+                db.commit()
+                
         elif boost_type == "pro" and customer_email:
             user = db.query(User).filter(User.email == customer_email).first()
             if user:
@@ -612,7 +699,8 @@ async def paystack_webhook(request: Request, db: Session = Depends(get_db)):
             existing = db.query(VerificationPayment).filter(VerificationPayment.email == customer_email).first()
             if not existing:
                 vp = VerificationPayment(email=customer_email)
-                db.add(vp); db.commit()
+                db.add(vp)
+                db.commit()
                 
     return {"status": "success"}
 
