@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgromartDirect | National Classifieds</title>
-    <meta name="description" content="AgromartDirect is Ghana's premier online farmers market. Buy and sell fresh farm produce, live poultry, and machinery directly.">
-    <meta name="keywords" content="farmers market ghana, buy poultry ghana, fresh vegetables accra, agromart direct, farm produce ghana">
+    <title>AgromartDirect | National Classifieds & Tender Board</title>
+    <meta name="description" content="AgromartDirect is Ghana's premier online farmers market and wholesale tender board. Buy and sell farm produce or fulfill bulk buyer requests.">
+    <meta name="keywords" content="farmers market ghana, buy poultry ghana, rfq ghana, agricultural tenders accra, agromart direct, farm produce ghana">
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2814/2814468.png" type="image/png">
     <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/2814/2814468.png" type="image/png">
     <link rel="manifest" href="manifest.json">
@@ -28,8 +28,6 @@
         .animate-marquee { animation: marquee 25s linear infinite; }
         .mic-pulse { animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
-        .sos-pulse { animation: sosGlow 1.5s infinite alternate; }
-        @keyframes sosGlow { from { box-shadow: 0 0 15px rgba(244, 63, 94, 0.3); border-color: rgba(244, 63, 94, 0.5); } to { box-shadow: 0 0 30px rgba(244, 63, 94, 0.8); border-color: rgba(244, 63, 94, 1); } }
         select option { background-color: #0f172a !important; color: #ffffff !important; padding: 10px !important; }
         body.sunlight-mode { background-color: #f8fafc !important; color: #020617 !important; }
         body.sunlight-mode .glass-card { background: #ffffff !important; border: 2px solid #0f172a !important; color: #020617 !important; }
@@ -47,10 +45,11 @@
     <div class="bg-gradient-to-r from-emerald-950 via-[#020617] to-teal-950 border-b border-emerald-500/20 px-4 py-1.5 text-[11px] flex justify-between items-center text-slate-300">
         <div class="max-w-7xl mx-auto w-full flex items-center justify-between">
             <span class="flex items-center gap-2"><span class="text-amber-400">🌦️ Ghana Agro-Weather:</span><span id="agro-weather-text">29°C | Humidity 78% • Optimal conditions for nationwide trade</span></span>
-            <span class="hidden md:inline text-emerald-400 font-bold text-[10px] uppercase tracking-wider">🌱 Nationwide Direct Trade</span>
+            <span class="hidden md:inline text-emerald-400 font-bold text-[10px] uppercase tracking-wider">🌱 Nationwide Direct Trade & RFQ Tenders</span>
         </div>
     </div>
 
+    <!-- PWA INSTALL MODAL / PROMPT BUTTON -->
     <div id="flyer-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-6 rounded-[2.5rem] shadow-2xl border border-emerald-500/50 relative flex flex-col items-center">
             <button onclick="closeFlyerModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl font-bold bg-slate-800 rounded-full w-8 h-8 flex items-center justify-center">✕</button>
@@ -69,6 +68,52 @@
         </div>
     </div>
 
+    <!-- POST BUYER REQUEST (RFQ) MODAL -->
+    <div id="rfq-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[120] hidden items-center justify-center p-4">
+        <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] shadow-2xl border border-blue-500/30 relative max-h-[92vh] overflow-y-auto text-left">
+            <button onclick="closeRfqModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl bg-slate-800 rounded-full w-8 h-8 flex items-center justify-center">✕</button>
+            <div class="flex items-center gap-3 mb-2">
+                <span class="text-3xl">📢</span>
+                <div><h3 class="text-2xl font-black text-white tracking-tight">Post a Purchase Request</h3><p class="text-xs text-blue-400 font-bold">Hotels, Chop Bars, Schools & Commercial Aggregators</p></div>
+            </div>
+            <p class="text-xs text-slate-400 mb-6">Specify exactly what produce or livestock you need. Ghanaian farmers across all 16 regions will compete to supply your order directly.</p>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Item Needed</label>
+                    <input type="text" id="rfq-item" placeholder="e.g. 200 Live Broilers (2.5kg+)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-blue-500">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Category</label>
+                        <select id="rfq-category" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-blue-500 appearance-none cursor-pointer">
+                            <option value="Poultry">Live Poultry</option><option value="Chicks">Day-old chicks</option><option value="Eggs">Fresh Eggs</option><option value="Meat">Dressed Meat</option><option value="Vegetables/Fruits">Vegetables / Fruits</option><option value="Fishes">Fishes</option><option value="Livestock">Livestock</option><option value="Machinery">Machinery</option><option value="Pets">Pets</option><option value="Vaccines & Feed">Vaccines & Feed</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Quantity & Unit</label>
+                        <input type="text" id="rfq-quantity" placeholder="e.g. 50 crates / 200 birds" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-blue-500">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Target Budget (GH₵)</label>
+                        <input type="text" id="rfq-budget" placeholder="e.g. 85 / bird or 15,000 total" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Delivery Town / City</label>
+                        <input type="text" id="rfq-destination" placeholder="e.g. Spintex, Accra" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-blue-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Special Requirements / Deadline</label>
+                    <textarea id="rfq-description" placeholder="e.g. Need delivery by Friday morning. Birds must be weighed on site." rows="3" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-blue-500"></textarea>
+                </div>
+                <button onclick="submitBuyerRequest()" id="rfq-submit-btn" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black py-4 rounded-xl text-sm transition-all shadow-lg hover:shadow-blue-500/30">📢 Publish Tender (Free)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SPONSOR VIDEO MODAL -->
     <div id="video-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[200] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] shadow-2xl border border-emerald-500/50 relative flex flex-col items-center text-center">
             <h3 class="text-2xl font-black text-white mb-2">Publishing Your Ad...</h3>
@@ -85,6 +130,7 @@
         </div>
     </div>
 
+    <!-- DEAL ROOM MODAL -->
     <div id="order-modal" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] shadow-2xl border border-emerald-500/30 relative max-h-[92vh] overflow-y-auto">
             <button onclick="closeOrderModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
@@ -125,6 +171,7 @@
         </div>
     </div>
 
+    <!-- HEADER -->
     <header class="bg-[#020617]/70 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-50 transition-all">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
@@ -132,9 +179,13 @@
                 <div><h1 class="text-xl font-black tracking-tight text-white group-hover:text-emerald-400 transition-colors">AgromartDirect</h1><p class="text-[9px] font-black text-emerald-500 uppercase tracking-widest">Ghana Direct</p></div>
             </div>
             <div class="flex gap-3 items-center">
+                <!-- PWA Install Button -->
                 <button id="install-app-btn" class="hidden items-center gap-1.5 bg-blue-500/10 text-blue-400 border border-blue-500/30 hover:bg-blue-500 hover:text-white font-black px-4 py-2.5 rounded-xl transition-all shadow-lg">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                     <span class="hidden md:inline">Install App</span>
+                </button>
+                <button onclick="openRfqModal()" class="bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/30 text-xs font-black px-3 py-2 rounded-xl transition-all flex items-center gap-1.5">
+                    📢 Post Buy Request
                 </button>
                 <button onclick="navigate('library')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 transition-colors hidden md:block">Agromart Library</button>
                 <button onclick="navigate('pricing')" class="text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors hidden md:block border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg">⭐ Boost Ads</button>
@@ -157,13 +208,15 @@
         </div>
     </div>
 
+    <!-- MAIN CONTENT AREA -->
     <main class="max-w-7xl mx-auto px-6 py-8 relative z-10 flex-grow w-full">
+        <!-- 1. HOME VIEW -->
         <div id="view-home" class="fade-in space-y-16">
             <div class="text-center py-20 px-4 glass-card rounded-[2.5rem] shadow-2xl relative overflow-hidden border-t border-white/10">
                 <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
                 <div class="text-6xl mb-6 floating-element inline-block">🚜</div>
                 <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 mb-6 relative z-10 tracking-tight">The Farmers Market,<br>Now Online.</h1>
-                <p class="text-slate-400 mb-10 max-w-lg mx-auto relative z-10 text-sm md:text-base leading-relaxed">Buy and sell fresh farm produce directly across Ghana. Zero commissions, pure connections.</p>
+                <p class="text-slate-400 mb-10 max-w-lg mx-auto relative z-10 text-sm md:text-base leading-relaxed">Buy and sell fresh farm produce directly across Ghana. Or fulfill high-value commercial purchase tenders.</p>
                 <div class="max-w-4xl mx-auto relative z-10">
                     <div class="flex flex-col md:flex-row bg-[#020617]/50 rounded-3xl border border-slate-700/80 shadow-inner p-2 gap-2">
                         <div class="relative w-full md:w-1/3 flex items-center bg-[#0f172a] rounded-2xl border border-slate-700/50">
@@ -174,45 +227,72 @@
                         </div>
                         <div class="relative w-full md:w-2/3 flex items-center">
                             <span class="absolute left-4 text-slate-500 z-10">🔍</span><input type="text" name="email_trap" style="display:none;" aria-hidden="true"><input type="password" name="password_trap" style="display:none;" aria-hidden="true">
-                            <input type="search" id="market_finder" role="presentation" autocomplete="new-password" placeholder="Search 'Live Broilers' or 'Tomatoes'..." class="w-full bg-transparent pl-10 pr-12 py-4 text-sm text-white focus:outline-none transition-all relative z-0">
+                            <input type="search" id="market_finder" role="presentation" autocomplete="new-password" placeholder="Search 'Live Broilers', 'Tomatoes' or 'Buyer Requests'..." class="w-full bg-transparent pl-10 pr-12 py-4 text-sm text-white focus:outline-none transition-all relative z-0">
                             <button id="voice-search-btn" onclick="startVoiceSearch()" class="absolute right-4 text-slate-400 hover:text-emerald-400 transition-colors p-1 rounded-full" title="Search by Voice">🎤</button>
                         </div>
                         <button onclick="executeSearch()" class="bg-emerald-600 text-white font-black px-8 py-4 rounded-2xl hover:bg-emerald-500 transition-all shrink-0">Search</button>
                     </div>
                 </div>
-            </div>
 
-            <div class="mt-16">
-                <div class="flex items-center justify-between mb-6"><h3 class="text-2xl font-black text-white tracking-tight flex items-center gap-2">🔥 Trending Nationwide</h3><button onclick="navigate('marketplace')" class="text-xs font-bold text-emerald-400 hover:text-emerald-300">View All →</button></div>
-                <div id="trending-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
-            </div>
-
-            <div>
-                <div class="flex items-center justify-between mb-6"><h3 class="text-2xl font-black text-white tracking-tight">Browse Categories</h3></div>
-                <div class="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-5 gap-5">
-                    <div onclick="executeCategory('Poultry')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
-                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('poultry.jfif.jfif');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Live Poultry</p></div>
-                    <div onclick="executeCategory('Chicks')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
-                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('chicks.jfif');"></div><p class="font-bold text-xs text-slate-300 group-hover:text-emerald-400 leading-tight">Day-old chicks</p></div>
-                    <div onclick="executeCategory('Eggs')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
-                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Chicken_egg_2009-06-04.jpg/500px-Chicken_egg_2009-06-04.jpg');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Fresh Eggs</p></div>
-                    <div onclick="executeCategory('Meat')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
-                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('meat.jfif.jfif');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Dressed Meat</p></div>
-                    <div onclick="executeCategory('Vegetables/Fruits')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
-                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Marketvegetables.jpg/500px-Marketvegetables.jpg');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Vegetables / Fruits</p></div>
-                    <div onclick="executeCategory('Fishes')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
-                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('fishes.jfif');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400 leading-tight">Fishes<br><span class="text-[9px] font-normal">(Catfish, Salmon, Tilapia, etc.)</span></p></div>
-                    <div onclick="executeCategory('Livestock')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
-                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('livestock.jfif.jfif');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Livestock</p></div>
-                    <div onclick="executeCategory('Machinery')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
-                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('machinery.jfif.jfif');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Machinery</p></div>
-                    <div onclick="executeCategory('Pets')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
-                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('pets.jfif');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Pets</p></div>
-                    <div onclick="executeCategory('Vaccines & Feed')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
-                        <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('vaccines%20%26%20feed.jfif');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400 leading-tight">Vaccines &<br>Animal Foods</p></div>
+                <!-- MAIN DUAL-TRACK TOGGLE (SELLER ADS VS BUYER RFQS) -->
+                <div class="mt-8 flex justify-center">
+                    <div class="bg-[#0f172a] p-1.5 rounded-2xl border border-slate-700/80 inline-flex shadow-xl">
+                        <button onclick="switchMarketplaceTab('ads')" id="btn-tab-ads" class="px-6 py-2.5 rounded-xl font-black text-xs transition-all bg-emerald-600 text-white shadow-lg">🌾 Available Produce (Ads)</button>
+                        <button onclick="switchMarketplaceTab('rfqs')" id="btn-tab-rfqs" class="px-6 py-2.5 rounded-xl font-black text-xs transition-all text-slate-400 hover:text-white flex items-center gap-1.5">📢 Buyer Tenders (RFQs) <span class="bg-blue-500 text-[9px] px-1.5 py-0.5 rounded-full text-white font-bold animate-pulse">HOT</span></button>
+                    </div>
                 </div>
             </div>
 
+            <!-- BUYER REQUESTS / RFQ BOARD SECTION -->
+            <div id="home-rfq-container" class="hidden">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
+                    <div>
+                        <h3 class="text-2xl font-black text-white tracking-tight flex items-center gap-2">📢 Commercial Buyer Tenders</h3>
+                        <p class="text-xs text-slate-400 mt-1">Verified restaurants, chop bars, and wholesale aggregators looking for immediate farm suppliers.</p>
+                    </div>
+                    <button onclick="openRfqModal()" class="bg-blue-600 hover:bg-blue-500 text-white font-black text-xs px-5 py-3 rounded-xl transition-all shadow-lg flex items-center gap-2 shrink-0">
+                        + Post Purchase Tender
+                    </button>
+                </div>
+                <div id="rfq-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
+            </div>
+
+            <!-- TRENDING ADS SECTION -->
+            <div id="home-ads-container">
+                <div class="mt-16">
+                    <div class="flex items-center justify-between mb-6"><h3 class="text-2xl font-black text-white tracking-tight flex items-center gap-2">🔥 Trending Nationwide</h3><button onclick="navigate('marketplace')" class="text-xs font-bold text-emerald-400 hover:text-emerald-300">View All →</button></div>
+                    <div id="trending-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+                </div>
+
+                <!-- CATEGORIES -->
+                <div class="mt-16">
+                    <div class="flex items-center justify-between mb-6"><h3 class="text-2xl font-black text-white tracking-tight">Browse Categories</h3></div>
+                    <div class="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-5 gap-5">
+                        <div onclick="executeCategory('Poultry')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
+                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('poultry.jfif.jfif');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Live Poultry</p></div>
+                        <div onclick="executeCategory('Chicks')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
+                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('chicks.jfif');"></div><p class="font-bold text-xs text-slate-300 group-hover:text-emerald-400 leading-tight">Day-old chicks</p></div>
+                        <div onclick="executeCategory('Eggs')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
+                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Chicken_egg_2009-06-04.jpg/500px-Chicken_egg_2009-06-04.jpg');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Fresh Eggs</p></div>
+                        <div onclick="executeCategory('Meat')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
+                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('meat.jfif.jfif');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Dressed Meat</p></div>
+                        <div onclick="executeCategory('Vegetables/Fruits')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
+                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Marketvegetables.jpg/500px-Marketvegetables.jpg');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Vegetables / Fruits</p></div>
+                        <div onclick="executeCategory('Fishes')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
+                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('fishes.jfif');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400 leading-tight">Fishes<br><span class="text-[9px] font-normal">(Catfish, Salmon, Tilapia, etc.)</span></p></div>
+                        <div onclick="executeCategory('Livestock')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
+                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('livestock.jfif.jfif');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Livestock</p></div>
+                        <div onclick="executeCategory('Machinery')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
+                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('machinery.jfif.jfif');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Machinery</p></div>
+                        <div onclick="executeCategory('Pets')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
+                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('pets.jfif');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Pets</p></div>
+                        <div onclick="executeCategory('Vaccines & Feed')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
+                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('vaccines%20%26%20feed.jfif');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400 leading-tight">Vaccines &<br>Animal Foods</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PARTNERSHIP & DONATION SECTION -->
             <div class="mt-20 glass-card p-10 rounded-[2.5rem] relative overflow-hidden border border-emerald-500/30 bg-gradient-to-br from-[#020617] to-emerald-950/40">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
                 <div class="text-center relative z-10">
@@ -231,6 +311,7 @@
             </div>
         </div>
 
+        <!-- 2. PRICING VIEW -->
         <div id="view-pricing" class="fade-in hidden max-w-5xl mx-auto mt-10 space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">Boost Your Sales</h2>
@@ -256,6 +337,7 @@
             </div>
         </div>
 
+        <!-- 3. LIBRARY VIEW -->
         <div id="view-library" class="fade-in hidden max-w-6xl mx-auto mt-6 space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">AgromartDirect Knowledge Hub</h2>
@@ -301,6 +383,7 @@
             </div>
         </div>
 
+        <!-- 4. FAQ VIEW -->
         <div id="view-faq" class="fade-in hidden max-w-4xl mx-auto mt-6 space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">Frequently Asked Questions</h2>
@@ -313,8 +396,8 @@
                     <p class="text-slate-400 text-sm leading-relaxed">Yes! You can post up to 3 standard listings completely free of charge. Your ads will remain active for 30 days. We only charge for optional visibility boosts and our Agromart Pro monthly subscription.</p>
                 </div>
                 <div class="glass-card rounded-2xl p-6 border border-white/5">
-                    <h4 class="text-white font-bold text-base mb-2">How long does ad review take?</h4>
-                    <p class="text-slate-400 text-sm leading-relaxed">Our administration team typically reviews new ad submissions within a few hours to ensure platform quality and safety. Once approved, it will be visible on the marketplace.</p>
+                    <h4 class="text-white font-bold text-base mb-2">How do I post a Buyer Tender (RFQ)?</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed">Simply click the "📢 Post Buy Request" button at the top of your screen. State what you need, your target price, and town. Local Ghanaian farmers will view your tender and contact you directly via WhatsApp to supply.</p>
                 </div>
 
                 <h3 class="text-emerald-400 font-black uppercase tracking-wider text-xs mb-4 mt-8">🛡️ Trust & Safety</h3>
@@ -326,26 +409,22 @@
                     <h4 class="text-white font-bold text-base mb-2">What does the "Verified Seller" badge mean?</h4>
                     <p class="text-slate-400 text-sm leading-relaxed">Farmers with a Verified Seller badge have completed our manual background check process. This helps build trust within the community, though standard marketplace precautions should always be taken.</p>
                 </div>
-
-                <h3 class="text-emerald-400 font-black uppercase tracking-wider text-xs mb-4 mt-8">💳 Pricing & Boosts</h3>
-                <div class="glass-card rounded-2xl p-6 border border-white/5">
-                    <h4 class="text-white font-bold text-base mb-2">What is a QuickSell Boost?</h4>
-                    <p class="text-slate-400 text-sm leading-relaxed">For GH₵ 15, your listing is pinned to the top of its category for 7 days, receives a highlighted premium badge, and gets syndicated directly to our partner WhatsApp and Telegram trading groups.</p>
-                </div>
             </div>
         </div>
 
+        <!-- 5. ABOUT VIEW -->
         <div id="view-about" class="fade-in hidden max-w-3xl mx-auto mt-6">
             <div class="glass-card p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
                 <h2 class="text-4xl font-black text-white mb-6 tracking-tight">About AgromartDirect Ghana</h2>
                 <div class="space-y-6 text-slate-300 leading-relaxed text-base">
                     <p>AgromartDirect was built with a simple but powerful mission: <strong class="text-emerald-400">to bridge the gap between hardworking farmers and eager buyers across all 16 regions of Ghana.</strong></p>
-                    <p>For too long, the agricultural supply chain has been slowed down by middlemen, driving up costs for consumers and cutting into the profits of local farmers. We believe that technology can solve this.</p>
+                    <p>For too long, the agricultural supply chain has been slowed down by middlemen, driving up costs for consumers and cutting into the profits of local farmers. We believe that technology and transparent tender bidding can solve this.</p>
                 </div>
             </div>
         </div>
 
+        <!-- 6. SUPPORT VIEW -->
         <div id="view-support" class="fade-in hidden max-w-2xl mx-auto mt-10">
             <div class="glass-card p-10 rounded-[2.5rem] shadow-2xl text-center relative overflow-hidden">
                 <div class="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 border border-emerald-500/30 shadow-lg shadow-emerald-500/10">🎧</div>
@@ -384,9 +463,16 @@
             </div>
         </div>
 
+        <!-- 7. MARKETPLACE VIEW -->
         <div id="view-marketplace" class="fade-in hidden space-y-6">
             <div class="flex flex-col md:flex-row md:items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 backdrop-blur-sm gap-4">
-                <h2 class="text-2xl font-black text-white tracking-tight" id="market-title">Latest Ads</h2>
+                <div class="flex items-center gap-3">
+                    <h2 class="text-2xl font-black text-white tracking-tight" id="market-title">Market Catalog</h2>
+                    <div class="bg-[#0f172a] p-1 rounded-xl border border-slate-700/80 inline-flex">
+                        <button onclick="setMarketplaceMode('ads')" id="mode-ads-btn" class="px-3 py-1 rounded-lg text-xs font-black bg-emerald-600 text-white">Ads</button>
+                        <button onclick="setMarketplaceMode('rfqs')" id="mode-rfqs-btn" class="px-3 py-1 rounded-lg text-xs font-black text-slate-400 hover:text-white">Tenders (RFQs)</button>
+                    </div>
+                </div>
                 <div class="flex gap-2 flex-wrap items-center">
                     <select id="market-region-filter" onchange="executeFilters()" class="bg-[#0f172a] border border-slate-600 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer shadow-inner font-bold">
                         <option value="All Regions">All Regions (Ghana)</option><option value="Ahafo">Ahafo</option><option value="Ashanti">Ashanti</option><option value="Bono">Bono</option><option value="Bono East">Bono East</option><option value="Central">Central</option><option value="Eastern">Eastern</option><option value="Greater Accra">Greater Accra</option><option value="North East">North East</option><option value="Northern">Northern</option><option value="Oti">Oti</option><option value="Savannah">Savannah</option><option value="Upper East">Upper East</option><option value="Upper West">Upper West</option><option value="Volta">Volta</option><option value="Western">Western</option><option value="Western North">Western North</option>
@@ -397,9 +483,11 @@
                     <button onclick="navigate('home')" class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-4 py-2 rounded-xl hover:bg-emerald-500/20 transition-colors shrink-0">← Back Home</button>
                 </div>
             </div>
+            <!-- Dynamic Grid: Products or RFQs -->
             <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
         </div>
 
+        <!-- 8. PUBLIC PROFILE VIEW -->
         <div id="view-profile" class="fade-in hidden space-y-8">
             <div class="glass-card p-8 rounded-[2.5rem] relative overflow-hidden flex flex-col md:flex-row items-center gap-8 shadow-2xl">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
@@ -432,6 +520,7 @@
             </div>
         </div>
 
+        <!-- 9. AUTH VIEW WITH GOOGLE SIGN IN -->
         <div id="view-auth" class="fade-in hidden max-w-sm mx-auto mt-10">
             <div class="glass-card p-8 rounded-[2rem] shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
@@ -476,8 +565,9 @@
             </div>
         </div>
 
+        <!-- 10. POST AD VIEW (SELLER) -->
         <div id="view-post" class="fade-in hidden max-w-2xl mx-auto mt-6">
-            <div class="flex items-center gap-3 mb-6"><div class="w-10 h-10 bg-emerald-500/20 rounded-xl flex items-center justify-center text-emerald-400 border border-emerald-500/30">📢</div><h2 class="text-2xl font-black text-white tracking-tight">Post a New Ad</h2></div>
+            <div class="flex items-center gap-3 mb-6"><div class="w-10 h-10 bg-emerald-500/20 rounded-xl flex items-center justify-center text-emerald-400 border border-emerald-500/30">📢</div><h2 class="text-2xl font-black text-white tracking-tight">Post a Seller Ad</h2></div>
             <div class="glass-card p-8 rounded-[2rem] shadow-2xl space-y-6">
                 <div>
                     <label class="block text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">Product Photos (Select Multiple)</label>
@@ -519,8 +609,8 @@
             </div>
         </div>
 
+        <!-- 11. DASHBOARD VIEW -->
         <div id="view-dashboard" class="fade-in hidden max-w-4xl mx-auto mt-6 space-y-6">
-            
             <div class="glass-card p-8 rounded-[2.5rem] relative overflow-hidden flex flex-col md:flex-row items-center gap-8 shadow-2xl border border-emerald-500/20">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
                 
@@ -556,9 +646,14 @@
                         </button>
                     </div>
                 </div>
-                <button onclick="navigate('post')" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black px-6 py-3 rounded-xl text-sm transition-all shadow-lg hover:-translate-y-0.5 shrink-0 z-10">
-                    + Post New Ad
-                </button>
+                <div class="flex flex-col gap-2 shrink-0 z-10">
+                    <button onclick="navigate('post')" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black px-6 py-3 rounded-xl text-xs transition-all shadow-lg hover:-translate-y-0.5">
+                        + Post Seller Ad
+                    </button>
+                    <button onclick="openRfqModal()" class="bg-blue-600/20 hover:bg-blue-600 text-blue-300 hover:text-white border border-blue-500/30 font-black px-6 py-3 rounded-xl text-xs transition-all shadow-lg">
+                        📢 Post Buyer Tender
+                    </button>
+                </div>
             </div>
 
             <div id="trial-banner" class="hidden bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 p-5 rounded-2xl flex-col md:flex-row items-center justify-between gap-4 shadow-lg shadow-amber-900/10">
@@ -642,12 +737,11 @@
         const GOOGLE_CLIENT_ID = "235464348393-sovqvjql532r4f480ngva5287rupkjma.apps.googleusercontent.com"; 
 
         let agriToken = localStorage.getItem("agri_token") || "";
-        let pendingAction = null, uploadedImages = [], allLoadedProducts = [], currentUserEmail = "", myLoadedAds = [];
-        let currentCategoryState = "", currentSearchState = "", currentRegionState = "All Regions";
+        let pendingAction = null, uploadedImages = [], allLoadedProducts = [], allLoadedRfqs = [], currentUserEmail = "", myLoadedAds = [];
+        let currentCategoryState = "", currentSearchState = "", currentRegionState = "All Regions", currentMarketMode = "ads";
         let currentOrderPhone = "", currentOrderName = "", currentOrderBasePrice = 0, currentOrderUnit = "", currentOrderSellerLoc = "", currentOrderTabState = "direct";
         let sosListingIds = JSON.parse(localStorage.getItem('agri_sos_ids') || '[]');
-        let lastSeenAdId = 0; 
-        let pendingAdPayload = null;
+        let lastSeenAdId = 0, pendingAdPayload = null;
 
         const libData = {
             'soil': { icon: '🌱', title: 'Soil Texture', content: '<p>Soil texture is determined by the relative proportions of sand, silt, and clay. Sandy soils drain quickly but lose nutrients rapidly.</p>' },
@@ -675,33 +769,164 @@
             e.preventDefault();
             deferredPrompt = e;
             const installBtn = document.getElementById('install-app-btn');
-            if (installBtn) {
-                installBtn.classList.remove('hidden');
-                installBtn.classList.add('flex');
-            }
+            if (installBtn) { installBtn.classList.remove('hidden'); installBtn.classList.add('flex'); }
         });
 
         document.getElementById('install-app-btn')?.addEventListener('click', async () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    showToast("AgromartDirect is installing! 📱", "success");
-                }
+                if (outcome === 'accepted') showToast("AgromartDirect installed! 📱");
                 deferredPrompt = null;
                 const installBtn = document.getElementById('install-app-btn');
-                if (installBtn) {
-                    installBtn.classList.add('hidden');
-                    installBtn.classList.remove('flex');
-                }
+                if (installBtn) { installBtn.classList.add('hidden'); installBtn.classList.remove('flex'); }
             }
         });
 
-        window.addEventListener('appinstalled', () => {
-            showToast("AgromartDirect installed successfully! 🚀", "success");
-            deferredPrompt = null;
+        window.addEventListener('appinstalled', () => { showToast("AgromartDirect installed successfully! 🚀"); deferredPrompt = null; });
+
+        // --- BUYER REQUEST (RFQ) FUNCTIONS ---
+        function openRfqModal() {
+            if (!agriToken) { showToast("Sign in first to post a purchase tender", "error"); return navigate('auth'); }
+            document.getElementById('rfq-modal').classList.remove('hidden');
+            document.getElementById('rfq-modal').classList.add('flex');
+        }
+
+        function closeRfqModal() {
+            document.getElementById('rfq-modal').classList.add('hidden');
+            document.getElementById('rfq-modal').classList.remove('flex');
+        }
+
+        async function submitBuyerRequest() {
+            const btn = document.getElementById('rfq-submit-btn');
+            const payload = {
+                item_needed: document.getElementById('rfq-item').value.trim(),
+                category: document.getElementById('rfq-category').value,
+                quantity: document.getElementById('rfq-quantity').value.trim(),
+                target_budget_ghs: document.getElementById('rfq-budget').value.trim(),
+                delivery_destination: document.getElementById('rfq-destination').value.trim(),
+                description: document.getElementById('rfq-description').value.trim()
+            };
+            if (!payload.item_needed || !payload.quantity || !payload.target_budget_ghs || !payload.delivery_destination) {
+                return showToast("Please fill in item, quantity, budget, and destination", "error");
+            }
+            btn.disabled = true; btn.innerText = "Publishing Tender... ⏳";
+            try {
+                const res = await fetch(`${API_URL}/api/v1/buyer-requests?token=${agriToken}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) throw new Error("Failed to post tender");
+                confetti({ particleCount: 120, spread: 60 });
+                showToast("Tender Published! Farmers can now supply your order 📢");
+                ['rfq-item', 'rfq-quantity', 'rfq-budget', 'rfq-destination', 'rfq-description'].forEach(id => document.getElementById(id).value = '');
+                closeRfqModal();
+                loadBuyerRequests();
+            } catch (err) { showToast(err.message, "error"); }
+            finally { btn.disabled = false; btn.innerText = "📢 Publish Tender (Free)"; }
+        }
+
+        async function loadBuyerRequests() {
+            try {
+                const res = await fetch(`${API_URL}/api/v1/buyer-requests?t=${new Date().getTime()}`);
+                if (!res.ok) return;
+                const rfqs = await res.json();
+                allLoadedRfqs = rfqs;
+                renderRfqGrid(rfqs, document.getElementById('rfq-grid'));
+                if (currentMarketMode === 'rfqs') renderRfqGrid(rfqs, document.getElementById('product-grid'));
+            } catch (e) {}
+        }
+
+        function renderRfqGrid(rfqs, container) {
+            if (!container) return;
+            if (!rfqs || rfqs.length === 0) {
+                container.innerHTML = `<div class="col-span-full glass-card py-12 rounded-3xl text-center"><p class="text-slate-400 text-sm">No active tenders right now. Be the first to post what you need!</p></div>`;
+                return;
+            }
+            container.innerHTML = rfqs.map(r => {
+                let cleanPhone = r.buyer_phone.replace(/\D/g, '');
+                if (cleanPhone.startsWith('0')) cleanPhone = '233' + cleanPhone.substring(1);
+                let whatsappMsg = `*OFFER TO SUPPLY via AgromartDirect*\n📢 *Your Tender:* ${r.item_needed}\n🔢 *Quantity:* ${r.quantity}\n💰 *Your Budget:* GH₵${r.target_budget_ghs}\n📍 *Destination:* ${r.delivery_destination}\nHello, I can supply this order from my farm. Let's discuss dispatch!`;
+                return `
+                <div class="glass-card p-6 rounded-3xl border border-blue-500/20 hover:border-blue-500/50 transition-all flex flex-col justify-between shadow-xl">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="bg-blue-500/10 text-blue-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-lg border border-blue-500/20">Tender Wanted</span>
+                            <span class="text-[10px] text-slate-400">📍 ${r.delivery_destination}</span>
+                        </div>
+                        <h4 class="text-lg font-black text-white mb-1.5 leading-tight">${r.item_needed}</h4>
+                        <div class="text-xs text-slate-300 space-y-1 mb-3">
+                            <p>📦 <strong>Volume:</strong> ${r.quantity}</p>
+                            <p>💰 <strong>Target Budget:</strong> <span class="text-emerald-400 font-bold">GH₵${r.target_budget_ghs}</span></p>
+                            ${r.description ? `<p class="text-slate-400 text-[11px] mt-2 italic bg-slate-900/60 p-2 rounded-lg border border-white/5">"${r.description}"</p>` : ''}
+                        </div>
+                        <div class="text-[11px] text-slate-400 mb-4">Posted by <strong class="text-white">${r.buyer_name}</strong> • ${r.created_at}</div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/5">
+                        <a href="https://wa.me/${cleanPhone}?text=${encodeURIComponent(whatsappMsg)}" target="_blank" class="bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-2.5 rounded-xl text-xs flex items-center justify-center gap-1">
+                            💬 WhatsApp Bid
+                        </a>
+                        <a href="tel:${r.buyer_phone}" class="bg-blue-600/20 hover:bg-blue-600 text-blue-300 hover:text-white font-black py-2.5 rounded-xl text-xs flex items-center justify-center gap-1 border border-blue-500/30">
+                            📞 Call Buyer
+                        </a>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function switchMarketplaceTab(tab) {
+            const btnAds = document.getElementById('btn-tab-ads');
+            const btnRfqs = document.getElementById('btn-tab-rfqs');
+            const homeAds = document.getElementById('home-ads-container');
+            const homeRfqs = document.getElementById('home-rfq-container');
+            if (tab === 'ads') {
+                btnAds.className = "px-6 py-2.5 rounded-xl font-black text-xs transition-all bg-emerald-600 text-white shadow-lg";
+                btnRfqs.className = "px-6 py-2.5 rounded-xl font-black text-xs transition-all text-slate-400 hover:text-white flex items-center gap-1.5";
+                homeAds.classList.remove('hidden');
+                homeRfqs.classList.add('hidden');
+            } else {
+                btnRfqs.className = "px-6 py-2.5 rounded-xl font-black text-xs transition-all bg-blue-600 text-white shadow-lg flex items-center gap-1.5";
+                btnAds.className = "px-6 py-2.5 rounded-xl font-black text-xs transition-all text-slate-400 hover:text-white";
+                homeAds.classList.add('hidden');
+                homeRfqs.classList.remove('hidden');
+                loadBuyerRequests();
+            }
+        }
+
+        function setMarketplaceMode(mode) {
+            currentMarketMode = mode;
+            const btnAds = document.getElementById('mode-ads-btn');
+            const btnRfqs = document.getElementById('mode-rfqs-btn');
+            if (mode === 'ads') {
+                btnAds.className = "px-3 py-1 rounded-lg text-xs font-black bg-emerald-600 text-white";
+                btnRfqs.className = "px-3 py-1 rounded-lg text-xs font-black text-slate-400 hover:text-white";
+                loadMarketplace();
+            } else {
+                btnRfqs.className = "px-3 py-1 rounded-lg text-xs font-black bg-blue-600 text-white";
+                btnAds.className = "px-3 py-1 rounded-lg text-xs font-black text-slate-400 hover:text-white";
+                renderRfqGrid(allLoadedRfqs, document.getElementById('product-grid'));
+            }
+        }
+
+        // --- LIFECYCLE INITIALIZATION ---
+        window.addEventListener('DOMContentLoaded', async () => {
+            rotateAgronomyTips(); initGoogleAuth(); initDeviceNotifications(); setInterval(pollForNewAds, 30000);
+            loadBuyerRequests();
+            fetch(`${API_URL}/api/v1/products?sort=newest&t=${new Date().getTime()}`).then(res => res.json()).then(data => {
+                allLoadedProducts = data;
+                if(data.length > 0) { buildMarketTicker(data); buildTrendingSection(data); lastSeenAdId = Math.max(...data.map(d => d.id)); }
+            }).catch(e => console.log(e));
+
+            if (agriToken) {
+                try {
+                    const res = await fetch(`${API_URL}/api/v1/me?token=${agriToken}`);
+                    if (res.ok) { const fullData = await res.json(); setupUserProfile(fullData); } 
+                    else { logout(); }
+                } catch(e) { logout(); }
+            } else { document.getElementById('nav-login-btn').classList.remove('hidden'); }
+            navigate('home');
         });
-        // ------------------------------
 
         async function pollForNewAds() {
             try {
@@ -718,23 +943,6 @@
                 } else if (ad && lastSeenAdId === 0) { lastSeenAdId = ad.id; }
             } catch(e) {}
         }
-
-        window.addEventListener('DOMContentLoaded', async () => {
-            rotateAgronomyTips(); initGoogleAuth(); initDeviceNotifications(); setInterval(pollForNewAds, 30000);
-            fetch(`${API_URL}/api/v1/products?sort=newest&t=${new Date().getTime()}`).then(res => res.json()).then(data => {
-                allLoadedProducts = data;
-                if(data.length > 0) { buildMarketTicker(data); buildTrendingSection(data); lastSeenAdId = Math.max(...data.map(d => d.id)); }
-            }).catch(e => console.log(e));
-
-            if (agriToken) {
-                try {
-                    const res = await fetch(`${API_URL}/api/v1/me?token=${agriToken}`);
-                    if (res.ok) { const fullData = await res.json(); setupUserProfile(fullData); } 
-                    else { logout(); }
-                } catch(e) { logout(); }
-            } else { document.getElementById('nav-login-btn').classList.remove('hidden'); }
-            navigate('home');
-        });
 
         function buildTrendingSection(products) {
             const grid = document.getElementById('trending-grid'); if (!grid) return; grid.innerHTML = '';
@@ -839,7 +1047,7 @@
                 ref: 'AGRI_VERIFY_' + Math.floor((Math.random() * 1000000000) + 1), 
                 metadata: { boost_type: 'verification', email: currentUserEmail },
                 callback: function(response){ 
-                    showToast("Payment Successful! Your verification request has been sent to the admin."); 
+                    showToast("Payment Successful! Verification request sent."); 
                     confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); 
                 },
                 onClose: function(){ showToast("Cancelled.", "error"); }
@@ -850,12 +1058,6 @@
         function toggleSunlightMode() {
             const body = document.getElementById('app-body'); body.classList.toggle('sunlight-mode');
             if (body.classList.contains('sunlight-mode')) showToast("☀️ Sunlight Field Mode Enabled"); else showToast("🌙 Dark Mode Restored");
-        }
-
-        function toggleSOSClearance(id) {
-            if (sosListingIds.includes(id)) { sosListingIds = sosListingIds.filter(item => item !== id); showToast("Flash Sale Deactivated"); }
-            else { sosListingIds.push(id); showToast("🚨 Flash Sale Activated!"); }
-            localStorage.setItem('agri_sos_ids', JSON.stringify(sosListingIds)); loadMyAds(); if(!document.getElementById('view-marketplace').classList.contains('hidden')) loadMarketplace();
         }
 
         function startVoiceSearch() {
@@ -1028,7 +1230,6 @@
         async function uploadProfilePicture(event) {
             const file = event.target.files[0];
             if (!file) return;
-            
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = async (e) => {
@@ -1037,13 +1238,10 @@
                     const canvas = document.createElement('canvas'); 
                     const size = 200; canvas.width = size; canvas.height = size;
                     const ctx = canvas.getContext('2d');
-                    
                     const min = Math.min(img.width, img.height);
                     const sx = (img.width - min) / 2; const sy = (img.height - min) / 2;
                     ctx.drawImage(img, sx, sy, min, min, 0, 0, size, size);
-                    
                     const base64Img = canvas.toDataURL('image/jpeg', 0.8);
-                    
                     try {
                         showToast("Uploading profile picture... ⏳");
                         const res = await fetch(`${API_URL}/api/v1/me/profile-picture?token=${agriToken}`, {
@@ -1051,14 +1249,11 @@
                             body: JSON.stringify({ image_data: base64Img })
                         });
                         if (!res.ok) throw new Error("Failed to upload");
-                        
                         const avatar = document.getElementById('my-profile-avatar');
                         avatar.innerHTML = ''; avatar.style.backgroundImage = `url('${base64Img}')`;
                         showToast("Profile picture updated! ✅");
                         loadMarketplace();
-                    } catch (err) {
-                        showToast(err.message, "error");
-                    }
+                    } catch (err) { showToast(err.message, "error"); }
                 }
             };
             event.target.value = '';
@@ -1098,7 +1293,7 @@
                 if (!allAds.length) return c.innerHTML = `<p class="text-xs text-slate-500">No ads on platform.</p>`;
                 c.innerHTML = allAds.map((ad) => {
                     let statusColor = ad.status === 'approved' ? 'text-emerald-400' : (ad.status === 'pending' ? 'text-amber-400' : 'text-rose-400');
-                    return `<div id="admin-all-ad-${ad.id}" class="glass-card p-3 rounded-xl flex items-center justify-between border border-white/5 mb-2"><div><p class="text-xs font-bold text-white">${ad.product_name} <span class="${statusColor} text-[10px] uppercase">(${ad.status})</span></p><p class="text-[10px] text-slate-400">By: ${ad.seller_name} (${ad.phone_number}) • GH₵${ad.base_price_ghs}</p></div><div class="flex gap-2"><button onclick="adminBanUser('${ad.seller_email}')" class="bg-black text-rose-500 border border-rose-500/50 hover:bg-slate-900 text-[10px] font-bold px-3 py-1.5 rounded-lg transition-colors shadow shrink-0" title="Ban User">🚫 Ban</button><button onclick="adminDeleteAd(${ad.id})" class="bg-rose-600 hover:bg-rose-500 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg transition-colors shadow shrink-0">🗑️ Delete</button></div></div>`;
+                    return `<div id="admin-all-ad-${ad.id}" class="glass-card p-3 rounded-xl flex items-center justify-between border border-white/5 mb-2"><div><p class="text-xs font-bold text-white">${ad.product_name} <span class="${statusColor} text-[10px] uppercase">(${ad.status})</span></p><p class="text-[10px] text-slate-400">By: ${ad.seller_name} (${ad.phone_number}) • GH₵${ad.base_price_ghs}</p></div><div class="flex gap-2"><button onclick="adminBanUser('${ad.seller_email}')" class="bg-black text-rose-500 border border-rose-500/50 hover:bg-slate-900 text-[10px] font-bold px-3 py-1.5 rounded-lg transition-colors shadow shrink-0">🚫 Ban</button><button onclick="adminDeleteAd(${ad.id})" class="bg-rose-600 hover:bg-rose-500 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg transition-colors shadow shrink-0">🗑️ Delete</button></div></div>`;
                 }).join('');
             } catch (e) { c.innerHTML = `<p class="text-xs text-rose-400">Error fetching all ads.</p>`; }
         }
@@ -1124,7 +1319,7 @@
         }
 
         async function adminBanUser(email) {
-            if(!confirm(`FOUNDER OVERRIDE: Permanently ban ${email}? They will not be able to post ads anymore, and their existing ads will be rejected.`)) return;
+            if(!confirm(`FOUNDER OVERRIDE: Permanently ban ${email}?`)) return;
             try {
                 const res = await fetch(`${API_URL}/api/v1/admin/ban-user?token=${agriToken}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: email }) });
                 const data = await res.json();
@@ -1231,12 +1426,10 @@
 
         function logout() { localStorage.removeItem("agri_token"); window.location.reload(); }
         function requireAuthToPost() { if (!agriToken) { pendingAction = 'post'; showToast("Sign in to post", "error"); navigate('auth'); } else navigate('post'); }
-        function shareToX(name, price) { window.open(`https://twitter.com/intent/tweet?text=Fresh deal on AgromartDirect: ${name} for GH₵${price}!`, '_blank'); }
-        function shareAd(name, price, unit) { navigator.clipboard.writeText(`Deal on AgromartDirect: ${name} for GH₵${price}/${unit}`); showToast("Copied to clipboard!"); }
 
         function executeSearch() { currentRegionState = document.getElementById('home-region').value; currentSearchState = document.getElementById('market_finder').value; currentCategoryState = ''; document.getElementById('market-region-filter').value = currentRegionState; navigate('marketplace'); }
         function executeCategory(cat) { currentRegionState = document.getElementById('home-region').value; currentCategoryState = cat; currentSearchState = ''; document.getElementById('market-region-filter').value = currentRegionState; navigate('marketplace'); }
-        function executeFilters() { currentRegionState = document.getElementById('market-region-filter').value; loadMarketplace(); }
+        function executeFilters() { currentRegionState = document.getElementById('market-region-filter').value; if(currentMarketMode === 'ads') loadMarketplace(); else renderRfqGrid(allLoadedRfqs, document.getElementById('product-grid')); }
 
         function renderProductGrid(products, gridElement) {
             gridElement.innerHTML = products.map(item => {
@@ -1298,7 +1491,6 @@
                 
                 products.forEach(item => {
                     let imgs = []; try { imgs = JSON.parse(item.image_data) || []; } catch(e) {}
-                    let isSos = sosListingIds.includes(item.id);
                     let status = item.status === 'pending' ? `<span class="bg-amber-500/20 text-amber-400 text-[10px] px-2 rounded">Pending</span>` : (item.status === 'rejected' ? `<span class="bg-rose-500/20 text-rose-400 text-[10px] px-2 rounded">Rejected</span>` : `<span class="bg-emerald-500/20 text-emerald-400 text-[10px] px-2 rounded">Active</span>`);
                     let boostBtn = (item.boost_tier === 'standard' && item.status === 'approved') ? `<button onclick="boostAd(${item.id}, 15, 'premium')" class="text-xs text-amber-400 px-3 py-1 border border-amber-500/30 rounded-lg">⭐ Boost</button>` : '';
 
@@ -1384,10 +1576,7 @@
             skipBtn.innerHTML = "Uploading to Database... ⏳";
             try {
                 const res = await fetch(`${API_URL}/api/v1/products?token=${agriToken}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(pendingAdPayload) });
-                if(!res.ok) {
-                    const errData = await res.json();
-                    throw new Error(errData.detail || "Failed to post ad");
-                }
+                if(!res.ok) { const errData = await res.json(); throw new Error(errData.detail || "Failed to post ad"); }
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#10b981', '#fbbf24', '#ffffff'] }); showToast("Ad Submitted for Review ⏳");
                 ['post-name', 'post-description', 'post-price', 'post-unit', 'post-town', 'post-delivery'].forEach(id => document.getElementById(id).value = '');
                 uploadedImages = []; renderImagePreview(); modal.classList.add('hidden'); modal.classList.remove('flex'); navigate('dashboard'); 
