@@ -88,7 +88,7 @@ class BuyerRequest(Base):
     delivery_destination = Column(String)
     description = Column(String, nullable=True)
     buyer_id = Column(Integer, ForeignKey("users_v5.id"))
-    status = Column(String, default="open")  # open, fulfilled, closed
+    status = Column(String, default="open")  
     created_at = Column(DateTime, default=datetime.utcnow)
     buyer = relationship("User", back_populates="buyer_requests")
 
@@ -223,6 +223,51 @@ def get_me(token: str, db: Session = Depends(get_db)):
         "member_since": str(user.created_at.year) if user.created_at else "2026",
         "trial_days_left": trial_days_left
     }
+
+# --- MARKET INTEL ENDPOINT (THE BLOOMBERG TERMINAL) ---
+@app.get("/api/v1/market-intel")
+def get_market_intel(db: Session = Depends(get_db)):
+    prods = db.query(Product).filter(Product.status == "approved").all()
+    stats = {}
+    
+    for p in prods:
+        try:
+            # Extract just the first valid number from the price string
+            price_str = ''.join(c for c in p.base_price_ghs if c.isdigit() or c == '.')
+            price = float(price_str) if price_str else 0
+            if price <= 0: continue
+            
+            cat = p.category
+            loc = p.neighborhood.split(',')[-1].strip() if ',' in p.neighborhood else p.neighborhood
+            
+            if cat not in stats:
+                stats[cat] = {"total": 0, "count": 0, "regions": {}}
+            stats[cat]["total"] += price
+            stats[cat]["count"] += 1
+            
+            if loc not in stats[cat]["regions"]:
+                stats[cat]["regions"][loc] = {"total": 0, "count": 0}
+            stats[cat]["regions"][loc]["total"] += price
+            stats[cat]["regions"][loc]["count"] += 1
+        except:
+            continue
+            
+    intel = []
+    for cat, data in stats.items():
+        if data["count"] == 0: continue
+        avg = data["total"] / data["count"]
+        regions = [{"name": r, "avg": r_data["total"]/r_data["count"]} for r, r_data in data["regions"].items() if r_data["count"] > 0]
+        regions.sort(key=lambda x: x["avg"])
+        
+        intel.append({
+            "category": cat,
+            "national_avg": round(avg, 2),
+            "cheapest_region": regions[0]["name"] if regions else "N/A",
+            "cheapest_price": round(regions[0]["avg"], 2) if regions else 0,
+            "highest_region": regions[-1]["name"] if regions else "N/A",
+            "highest_price": round(regions[-1]["avg"], 2) if regions else 0
+        })
+    return sorted(intel, key=lambda x: x["category"])
 
 # --- SELLER PRODUCTS ENDPOINTS ---
 @app.post("/api/v1/products")
