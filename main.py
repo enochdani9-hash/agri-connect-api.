@@ -5,10 +5,11 @@ import httpx
 from fastapi import FastAPI, Depends, HTTPException, status, BackgroundTasks, Header, Request, Body
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey, Text, DateTime
+from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey, Text, DateTime, Float
 from sqlalchemy.orm import declarative_base, sessionmaker, Session, relationship
 from passlib.context import CryptContext
 from jose import JWTError, jwt
+import re
 
 # --- CONFIGURATION ---
 SECRET_KEY = "agriconnect_super_secret_key"
@@ -59,6 +60,7 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     products = relationship("Product", back_populates="owner")
     buyer_requests = relationship("BuyerRequest", back_populates="buyer")
+    farm_batches = relationship("FarmBatch", back_populates="farmer")
 
 class Product(Base):
     __tablename__ = "products_v7"  
@@ -106,6 +108,31 @@ class Report(Base):
     reason = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow)
 
+# NEW: Farm Manager Model
+class FarmBatch(Base):
+    __tablename__ = "farm_batches_v1"
+    id = Column(Integer, primary_key=True, index=True)
+    batch_name = Column(String)
+    category = Column(String)
+    quantity = Column(Integer)
+    total_expenses = Column(Float, default=0.0)
+    start_date = Column(DateTime, default=datetime.utcnow)
+    harvest_date = Column(DateTime)
+    farmer_id = Column(Integer, ForeignKey("users_v5.id"))
+    is_harvested = Column(Boolean, default=False)
+    farmer = relationship("User", back_populates="farm_batches")
+
+# NEW: Grants Aggregator Model
+class AgriOpportunity(Base):
+    __tablename__ = "agri_opportunities_v1"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String)
+    provider = Column(String)
+    amount = Column(String)
+    deadline = Column(String)
+    link = Column(String)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
 Base.metadata.create_all(bind=engine)
 
 # --- SCHEMAS ---
@@ -121,6 +148,10 @@ class ProductCreate(BaseModel):
 class BuyerRequestCreate(BaseModel):
     item_needed: str; category: str; quantity: str; target_budget_ghs: str; delivery_destination: str
     description: Optional[str] = None
+class FarmBatchCreate(BaseModel):
+    batch_name: str; category: str; quantity: int; harvest_days: int
+class WhatsappWebhook(BaseModel):
+    phone_number: str; message_text: str
 class AdminVerify(BaseModel):
     email: str
 class AdminBan(BaseModel):
@@ -156,7 +187,8 @@ def get_current_user(token: str, db: Session = Depends(get_db)):
 # --- AUTH ENDPOINTS ---
 @app.post("/api/v1/signup")
 def signup(user: UserCreate, db: Session = Depends(get_db)):
-    if db.query(User).filter(User.email == user.email).first(): raise HTTPException(status_code=400, detail="Email already registered")
+    if db.query(User).filter(User.email == user.email).first(): 
+        raise HTTPException(status_code=400, detail="Email already registered")
     db_user = User(full_name=user.full_name, email=user.email, age=user.age, phone_number=user.phone_number, hashed_password=pwd_context.hash(user.password))
     db.add(db_user); db.commit(); db.refresh(db_user)
     token = jwt.encode({"sub": str(db_user.id), "exp": datetime.utcnow() + timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS)}, SECRET_KEY, algorithm=ALGORITHM)
@@ -165,7 +197,8 @@ def signup(user: UserCreate, db: Session = Depends(get_db)):
 @app.post("/api/v1/login")
 def login(user: UserLogin, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.email == user.email).first()
-    if not db_user or not pwd_context.verify(user.password, db_user.hashed_password): raise HTTPException(status_code=400, detail="Incorrect email or password")
+    if not db_user or not pwd_context.verify(user.password, db_user.hashed_password): 
+        raise HTTPException(status_code=400, detail="Incorrect email or password")
     token = jwt.encode({"sub": str(db_user.id), "exp": datetime.utcnow() + timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS)}, SECRET_KEY, algorithm=ALGORITHM)
     return {"access_token": token, "full_name": db_user.full_name, "is_verified": db_user.is_verified, "email": db_user.email}
 
@@ -176,14 +209,17 @@ async def google_auth(req: GoogleAuthRequest, db: Session = Depends(get_db)):
             res = await client.get(f"https://oauth2.googleapis.com/tokeninfo?id_token={req.credential}")
             if res.status_code != 200: raise HTTPException(status_code=400, detail="Invalid Google token")
             google_data = res.json()
-    except Exception as e: raise HTTPException(status_code=400, detail=f"Google authentication failed: {str(e)}")
+    except Exception as e: 
+        raise HTTPException(status_code=400, detail=f"Google authentication failed: {str(e)}")
 
     email = google_data.get("email"); full_name = google_data.get("name", "Farmer"); picture = google_data.get("picture")
     if not email: raise HTTPException(status_code=400, detail="Google account has no verified email")
+    
     db_user = db.query(User).filter(User.email == email).first()
     if not db_user:
         db_user = User(full_name=full_name, email=email, age=25, phone_number="0000000000", hashed_password=pwd_context.hash(os.urandom(16).hex()), is_verified=False, profile_picture=picture)
         db.add(db_user); db.commit(); db.refresh(db_user)
+        
     token = jwt.encode({"sub": str(db_user.id), "exp": datetime.utcnow() + timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS)}, SECRET_KEY, algorithm=ALGORITHM)
     return {"access_token": token, "full_name": db_user.full_name, "is_verified": db_user.is_verified, "email": db_user.email}
 
@@ -201,9 +237,11 @@ def request_password_reset(req: ForgotPasswordReq, db: Session = Depends(get_db)
 
 @app.post("/api/v1/auth/reset-password")
 def confirm_password_reset(req: ResetPasswordReq, db: Session = Depends(get_db)):
-    if reset_codes_db.get(req.phone_number) != req.code and req.code != "12345": raise HTTPException(status_code=400, detail="Invalid or expired reset code.")
+    if reset_codes_db.get(req.phone_number) != req.code and req.code != "12345": 
+        raise HTTPException(status_code=400, detail="Invalid or expired reset code.")
     user = db.query(User).filter(User.phone_number == req.phone_number).first()
-    if not user: raise HTTPException(status_code=404, detail="User not found.")
+    if not user: 
+        raise HTTPException(status_code=404, detail="User not found.")
     user.hashed_password = pwd_context.hash(req.new_password); db.commit()
     if req.phone_number in reset_codes_db: del reset_codes_db[req.phone_number]
     return {"status": "success", "msg": "Password updated successfully. You can now log in."}
@@ -224,7 +262,72 @@ def get_me(token: str, db: Session = Depends(get_db)):
         "trial_days_left": trial_days_left
     }
 
-# --- MARKET INTEL ENDPOINT (THE BLOOMBERG TERMINAL) ---
+# --- WHATSAPP BOT WEBHOOK (INVISIBLE MARKETPLACE) ---
+@app.post("/api/v1/bot/whatsapp")
+def whatsapp_auto_poster(payload: WhatsappWebhook, db: Session = Depends(get_db)):
+    """
+    This endpoint catches messages from Make.com or Twilio.
+    Example text: "Selling 50 crates of eggs for 65 in Kasoa"
+    """
+    phone = payload.phone_number
+    text = payload.message_text.lower()
+    
+    # Auto-Account Creation based on phone number
+    user = db.query(User).filter(User.phone_number == phone).first()
+    if not user:
+        auto_email = f"{phone}@wa.agromart.com"
+        user = User(full_name="WhatsApp Farmer", email=auto_email, phone_number=phone, hashed_password=pwd_context.hash("whatsapp123"), is_verified=True)
+        db.add(user); db.commit(); db.refresh(user)
+
+    # NLP Logic (Extract Price & Loc)
+    price_match = re.search(r'\b(\d+)\s*(cedis|ghc|ghs)\b', text)
+    price = price_match.group(1) if price_match else "Negotiable"
+    
+    cat = "Poultry" if "broiler" in text or "bird" in text else "Eggs" if "egg" in text else "Vegetables/Fruits"
+    
+    db_product = Product(
+        product_name=payload.message_text[:40] + "...",
+        category=cat, unit="unit", base_price_ghs=price, neighborhood="Ghana (Via WhatsApp)",
+        description=payload.message_text, farmer_id=user.id, status="approved", boost_tier="standard"
+    )
+    db.add(db_product); db.commit()
+    
+    return {"status": "success", "reply": f"Your ad is live on AgromartDirect! Buyers will contact {phone}."}
+
+# --- FARM MANAGER SAAS ---
+@app.post("/api/v1/farm-batches")
+def create_batch(req: FarmBatchCreate, token: str, db: Session = Depends(get_db)):
+    user = get_current_user(token, db)
+    harvest_date = datetime.utcnow() + timedelta(days=req.harvest_days)
+    batch = FarmBatch(batch_name=req.batch_name, category=req.category, quantity=req.quantity, harvest_date=harvest_date, farmer_id=user.id)
+    db.add(batch); db.commit()
+    return {"status": "success"}
+
+@app.get("/api/v1/farm-batches")
+def get_batches(token: str, db: Session = Depends(get_db)):
+    user = get_current_user(token, db)
+    batches = db.query(FarmBatch).filter(FarmBatch.farmer_id == user.id).all()
+    return [{
+        "id": b.id, "batch_name": b.batch_name, "quantity": b.quantity, "expenses": b.total_expenses,
+        "harvest_date": b.harvest_date.strftime("%b %d, %Y"), "is_ready": datetime.utcnow() >= b.harvest_date, "is_harvested": b.is_harvested
+    } for b in batches]
+
+# --- OPPORTUNITIES / GRANTS AGGREGATOR ---
+@app.get("/api/v1/grants")
+def get_grants(db: Session = Depends(get_db)):
+    grants = db.query(AgriOpportunity).order_by(AgriOpportunity.created_at.desc()).all()
+    if not grants:
+        # Fallback to auto-generated dummy data if DB is empty to demonstrate the feature
+        return [
+            {"title": "ALX Ventures AgriTech Grant", "provider": "ALX Africa", "amount": "$5,000", "deadline": "Next Month", "link": "#"},
+            {"title": "Ghana MoFA Fertilizer Subsidy", "provider": "Ministry of Food & Agric", "amount": "Material Supply", "deadline": "Rolling", "link": "#"},
+            {"title": "Youth in Poultry Fund", "provider": "GAPFA", "amount": "GH₵ 10,000", "deadline": "This Friday", "link": "#"},
+            {"title": "Mastercard Foundation Agrifood Grant", "provider": "Mastercard Foundation", "amount": "$10,000", "deadline": "November 2026", "link": "#"},
+            {"title": "USAID Feed the Future Loan", "provider": "USAID", "amount": "GH₵ 50,000", "deadline": "Rolling", "link": "#"}
+        ]
+    return [{"title": g.title, "provider": g.provider, "amount": g.amount, "deadline": g.deadline, "link": g.link} for g in grants]
+
+# --- MARKET INTEL (BLOOMBERG DASHBOARD) ---
 @app.get("/api/v1/market-intel")
 def get_market_intel(db: Session = Depends(get_db)):
     prods = db.query(Product).filter(Product.status == "approved").all()
@@ -232,7 +335,7 @@ def get_market_intel(db: Session = Depends(get_db)):
     
     for p in prods:
         try:
-            # Extract just the first valid number from the price string
+            # Extract valid number from price string
             price_str = ''.join(c for c in p.base_price_ghs if c.isdigit() or c == '.')
             price = float(price_str) if price_str else 0
             if price <= 0: continue
@@ -290,9 +393,11 @@ def get_products(sort: str = "newest", category: str = "", search: str = "", nei
     if category: query = query.filter(Product.category.ilike(f"%{category}%"))
     if neighborhood: query = query.filter(Product.neighborhood.ilike(f"%{neighborhood}%"))
     if search: query = query.filter(Product.product_name.ilike(f"%{search}%") | Product.neighborhood.ilike(f"%{search}%"))
+    
     if sort == "price_asc": query = query.order_by(Product.base_price_ghs.asc())
     elif sort == "price_desc": query = query.order_by(Product.base_price_ghs.desc())
     else: query = query.order_by(Product.created_at.desc())
+    
     results = query.all()
     return [{"id": p.id, "product_name": p.product_name, "category": p.category, "unit": p.unit, "base_price_ghs": p.base_price_ghs, "neighborhood": p.neighborhood, "description": p.description, "image_data": p.image_data, "delivery_details": p.delivery_details, "seller_name": u.full_name, "seller_profile_picture": u.profile_picture, "seller_verified": u.is_verified, "seller_member_since": str(u.created_at.year) if u.created_at else "2026", "phone_number": u.phone_number, "boost_tier": getattr(p, "boost_tier", "standard")} for p, u in results]
 
