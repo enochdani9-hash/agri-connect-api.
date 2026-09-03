@@ -184,10 +184,12 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                     <span class="hidden md:inline">Install App</span>
                 </button>
-                <button onclick="openRfqModal()" class="bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/30 text-xs font-black px-3 py-2 rounded-xl transition-all flex items-center gap-1.5">
+                <button onclick="openRfqModal()" class="bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/30 text-xs font-black px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 hidden md:flex">
                     📢 Post Buy Request
                 </button>
-                <button onclick="navigate('library')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 transition-colors hidden md:block">Agromart Library</button>
+                <button onclick="navigate('calculator')" class="text-xs font-bold text-teal-400 hover:text-teal-300 transition-colors hidden md:block border border-teal-500/30 bg-teal-500/10 px-3 py-1.5 rounded-lg shadow-inner">
+                    🧮 Feed Calculator
+                </button>
                 <button onclick="navigate('pricing')" class="text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors hidden md:block border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg">⭐ Boost Ads</button>
                 <button onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 text-xs text-slate-300 transition-colors" title="Toggle High-Contrast Sunlight Mode">☀️</button>
                 <button id="nav-login-btn" onclick="navigate('auth')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 hidden transition-colors">Sign In</button>
@@ -196,7 +198,7 @@
                     <button onclick="navigate('dashboard')" class="text-xs font-black text-white hover:text-emerald-300 transition-colors">My Dashboard</button><div class="w-px h-3 bg-white/20"></div>
                     <button onclick="logout()" class="text-xs text-rose-400 hover:text-rose-300 font-bold transition-colors">Logout</button>
                 </div>
-                <button onclick="requireAuthToPost()" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white text-xs font-black px-5 py-2.5 rounded-xl shadow-lg shadow-emerald-600/25 hover:shadow-emerald-500/40 transition-all">Post Ad</button>
+                <button onclick="requireAuthToPost()" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white text-xs font-black px-5 py-2.5 rounded-xl shadow-lg shadow-emerald-600/25 hover:shadow-emerald-500/40 transition-all hidden md:block">Post Ad</button>
             </div>
         </div>
     </header>
@@ -210,6 +212,7 @@
 
     <!-- MAIN CONTENT AREA -->
     <main class="max-w-7xl mx-auto px-6 py-8 relative z-10 flex-grow w-full">
+        
         <!-- 1. HOME VIEW -->
         <div id="view-home" class="fade-in space-y-16">
             <div class="text-center py-20 px-4 glass-card rounded-[2.5rem] shadow-2xl relative overflow-hidden border-t border-white/10">
@@ -306,6 +309,88 @@
                     <div class="flex flex-col md:flex-row items-center justify-center gap-4">
                         <a href="mailto:agriconnect886@gmail.com" class="bg-white/10 hover:bg-white/20 text-white font-bold py-3 px-6 rounded-xl transition-colors border border-white/10 flex items-center gap-2">✉️ agriconnect886@gmail.com</a>
                         <a href="https://wa.me/233245641480" target="_blank" class="bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white font-bold py-3 px-6 rounded-xl transition-all border border-[#25D366]/30 flex items-center gap-2">📞 +233 245 641 480</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW: PRECISION FEED CALCULATOR VIEW -->
+        <div id="view-calculator" class="fade-in hidden max-w-4xl mx-auto mt-6 space-y-8">
+            <div class="text-center space-y-4 mb-10">
+                <div class="w-16 h-16 bg-teal-500/20 rounded-full flex items-center justify-center text-3xl mx-auto mb-2 border border-teal-500/30 shadow-lg shadow-teal-500/10">🧮</div>
+                <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">Precision Feed Calculator</h2>
+                <p class="text-slate-400 text-sm max-w-xl mx-auto">Use the Pearson Square method to instantly calculate the exact mix ratio and cost of formulating your own poultry or livestock feed.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Inputs Section -->
+                <div class="glass-card p-8 rounded-[2.5rem] border border-teal-500/30 shadow-2xl">
+                    <h3 class="text-lg font-black text-teal-400 mb-6 flex items-center gap-2">1. Set Your Targets</h3>
+                    
+                    <div class="space-y-5">
+                        <div class="bg-[#020617]/50 p-4 rounded-2xl border border-slate-700">
+                            <label class="block text-xs font-bold text-white mb-2 uppercase tracking-wider">Target Crude Protein (CP %)</label>
+                            <input type="number" id="calc-target-cp" value="22" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl px-4 py-3 text-lg font-black text-teal-400 outline-none focus:border-teal-500">
+                            <p class="text-[10px] text-slate-500 mt-2">Example: 22% for Broiler Starter, 18% for Layers.</p>
+                        </div>
+
+                        <div class="bg-[#020617]/50 p-4 rounded-2xl border border-slate-700 space-y-4">
+                            <label class="block text-xs font-bold text-emerald-400 uppercase tracking-wider">Protein Source (e.g., Soya Meal, Fish Meal)</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div><label class="text-[10px] text-slate-400 block mb-1">CP (%)</label><input type="number" id="calc-protein-cp" value="44" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white outline-none"></div>
+                                <div><label class="text-[10px] text-slate-400 block mb-1">Cost per 50kg (GH₵)</label><input type="number" id="calc-protein-price" value="350" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white outline-none"></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-[#020617]/50 p-4 rounded-2xl border border-slate-700 space-y-4">
+                            <label class="block text-xs font-bold text-amber-400 uppercase tracking-wider">Energy Source (e.g., Maize, Wheat Bran)</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div><label class="text-[10px] text-slate-400 block mb-1">CP (%)</label><input type="number" id="calc-energy-cp" value="8" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white outline-none"></div>
+                                <div><label class="text-[10px] text-slate-400 block mb-1">Cost per 50kg (GH₵)</label><input type="number" id="calc-energy-price" value="200" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white outline-none"></div>
+                            </div>
+                        </div>
+
+                        <button onclick="calculateFeedMix()" class="w-full bg-teal-600 hover:bg-teal-500 text-white font-black py-4 rounded-xl text-sm transition-all shadow-lg shadow-teal-500/25">Calculate Mix Ratio ✨</button>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div class="glass-card p-8 rounded-[2.5rem] border border-white/5 relative overflow-hidden flex flex-col justify-center shadow-xl">
+                    <div class="absolute top-[-50px] right-[-50px] w-48 h-48 bg-teal-500/10 rounded-full blur-[60px] pointer-events-none"></div>
+                    <h3 class="text-lg font-black text-white mb-6">2. Your Custom Formulation</h3>
+                    
+                    <div id="calc-results-empty" class="text-center py-10 text-slate-500 text-sm">
+                        Enter your targets and hit calculate to generate your formulation.
+                    </div>
+                    
+                    <div id="calc-results-filled" class="hidden space-y-6 z-10">
+                        <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-700">
+                            <h4 class="text-[10px] font-black uppercase tracking-wider text-slate-400 mb-3">To make one standard <span class="text-white">50kg</span> bag of feed, mix:</h4>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-bold text-emerald-400">Protein Source:</span>
+                                <span class="text-xl font-black text-white" id="res-protein-kg">0 kg</span>
+                            </div>
+                            <div class="flex justify-between items-center pb-3 border-b border-white/10">
+                                <span class="text-sm font-bold text-amber-400">Energy Source:</span>
+                                <span class="text-xl font-black text-white" id="res-energy-kg">0 kg</span>
+                            </div>
+                            <div class="flex justify-between items-center mt-3">
+                                <span class="text-xs text-slate-400">Total Mixed Weight:</span>
+                                <span class="text-sm font-bold text-teal-400">50.0 kg</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-teal-950/30 p-5 rounded-2xl border border-teal-500/30">
+                            <h4 class="text-[10px] font-black uppercase tracking-wider text-teal-400 mb-1">Estimated Cost Per Bag</h4>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-4xl font-black text-white" id="res-total-cost">GH₵ 0.00</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-3">Use this to compare against commercial feed prices in your area.</p>
+                        </div>
+                        
+                        <button onclick="navigate('post')" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold py-3.5 rounded-xl text-sm transition-all flex items-center justify-center gap-2">
+                            🛒 Want to buy these ingredients? Search Market
+                        </button>
                     </div>
                 </div>
             </div>
@@ -721,6 +806,7 @@
             <div class="flex flex-wrap justify-center gap-6 text-sm font-bold text-slate-400">
                 <button onclick="navigate('pricing')" class="hover:text-emerald-400 transition-colors">Pricing</button>
                 <button onclick="navigate('library')" class="hover:text-emerald-400 transition-colors">Agromart Library</button>
+                <button onclick="navigate('calculator')" class="hover:text-emerald-400 transition-colors">Feed Calculator</button>
                 <button onclick="navigate('faq')" class="hover:text-emerald-400 transition-colors">FAQs</button>
                 <button onclick="navigate('about')" class="hover:text-emerald-400 transition-colors">About Us</button>
                 <button onclick="navigate('support')" class="hover:text-emerald-400 transition-colors">Contact Support</button>
@@ -784,6 +870,50 @@
         });
 
         window.addEventListener('appinstalled', () => { showToast("AgromartDirect installed successfully! 🚀"); deferredPrompt = null; });
+
+        // --- FEED CALCULATOR LOGIC (PEARSON SQUARE) ---
+        function calculateFeedMix() {
+            const targetCP = parseFloat(document.getElementById('calc-target-cp').value);
+            const proteinCP = parseFloat(document.getElementById('calc-protein-cp').value);
+            const energyCP = parseFloat(document.getElementById('calc-energy-cp').value);
+            const proteinPrice = parseFloat(document.getElementById('calc-protein-price').value);
+            const energyPrice = parseFloat(document.getElementById('calc-energy-price').value);
+
+            if (isNaN(targetCP) || isNaN(proteinCP) || isNaN(energyCP)) {
+                return showToast("Please fill in all CP % values", "error");
+            }
+            if (targetCP >= proteinCP || targetCP <= energyCP) {
+                return showToast("Target CP must be between your Protein and Energy CP values!", "error");
+            }
+
+            // Pearson Square Math
+            const partsProtein = targetCP - energyCP;
+            const partsEnergy = proteinCP - targetCP;
+            const totalParts = partsProtein + partsEnergy;
+
+            const percentProtein = (partsProtein / totalParts);
+            const percentEnergy = (partsEnergy / totalParts);
+
+            // For a 50kg bag
+            const kgProtein = percentProtein * 50;
+            const kgEnergy = percentEnergy * 50;
+
+            // Cost calculation (assuming price is per 50kg bag)
+            const costProteinPerKg = proteinPrice / 50;
+            const costEnergyPerKg = energyPrice / 50;
+            const totalCost = (kgProtein * costProteinPerKg) + (kgEnergy * costEnergyPerKg);
+
+            // Update UI
+            document.getElementById('res-protein-kg').innerText = kgProtein.toFixed(1) + " kg";
+            document.getElementById('res-energy-kg').innerText = kgEnergy.toFixed(1) + " kg";
+            document.getElementById('res-total-cost').innerText = "GH₵ " + totalCost.toFixed(2);
+
+            document.getElementById('calc-results-empty').classList.add('hidden');
+            document.getElementById('calc-results-filled').classList.remove('hidden');
+            document.getElementById('calc-results-filled').classList.add('block');
+            
+            showToast("Feed Formulation Calculated! ✨");
+        }
 
         // --- BUYER REQUEST (RFQ) FUNCTIONS ---
         function openRfqModal() {
@@ -1367,7 +1497,7 @@
         }
 
         function navigate(view) {
-            ['home', 'marketplace', 'auth', 'post', 'dashboard', 'about', 'support', 'profile', 'pricing', 'library', 'faq'].forEach(v => document.getElementById(`view-${v}`)?.classList.add('hidden'));
+            ['home', 'marketplace', 'auth', 'post', 'dashboard', 'about', 'support', 'profile', 'pricing', 'library', 'faq', 'calculator'].forEach(v => document.getElementById(`view-${v}`)?.classList.add('hidden'));
             document.getElementById(`view-${view}`)?.classList.remove('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' });
             if (view === 'marketplace') executeFilters(); 
             if (view === 'dashboard') { loadMyAds(); if (agriToken && currentUserEmail === "enochdani9@gmail.com") { renderAdminModQueue(); renderAdminAllAds(); renderAdminSignupsList(); renderAdminVerificationsList(); renderAdminReports(); } }
