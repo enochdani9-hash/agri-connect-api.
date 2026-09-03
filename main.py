@@ -58,6 +58,7 @@ class User(Base):
     profile_picture = Column(Text, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     products = relationship("Product", back_populates="owner")
+    buyer_requests = relationship("BuyerRequest", back_populates="buyer")
 
 class Product(Base):
     __tablename__ = "products_v7"  
@@ -76,6 +77,20 @@ class Product(Base):
     boost_tier = Column(String, default="standard")  
     created_at = Column(DateTime, default=datetime.utcnow)
     owner = relationship("User", back_populates="products")
+
+class BuyerRequest(Base):
+    __tablename__ = "buyer_requests_v1"
+    id = Column(Integer, primary_key=True, index=True)
+    item_needed = Column(String, index=True)
+    category = Column(String, index=True)
+    quantity = Column(String)
+    target_budget_ghs = Column(String)
+    delivery_destination = Column(String)
+    description = Column(String, nullable=True)
+    buyer_id = Column(Integer, ForeignKey("users_v5.id"))
+    status = Column(String, default="open")  # open, fulfilled, closed
+    created_at = Column(DateTime, default=datetime.utcnow)
+    buyer = relationship("User", back_populates="buyer_requests")
 
 class VerificationPayment(Base):
     __tablename__ = "verification_payments_v2"
@@ -103,6 +118,9 @@ class ProfilePicUpdate(BaseModel):
 class ProductCreate(BaseModel):
     product_name: str; category: str; unit: str; base_price_ghs: str; neighborhood: str
     description: Optional[str] = None; image_data: Optional[str] = None; delivery_details: Optional[str] = None
+class BuyerRequestCreate(BaseModel):
+    item_needed: str; category: str; quantity: str; target_budget_ghs: str; delivery_destination: str
+    description: Optional[str] = None
 class AdminVerify(BaseModel):
     email: str
 class AdminBan(BaseModel):
@@ -135,7 +153,7 @@ def get_current_user(token: str, db: Session = Depends(get_db)):
     if user is None: raise credentials_exception
     return user
 
-# --- CORE ENDPOINTS ---
+# --- AUTH ENDPOINTS ---
 @app.post("/api/v1/signup")
 def signup(user: UserCreate, db: Session = Depends(get_db)):
     if db.query(User).filter(User.email == user.email).first(): raise HTTPException(status_code=400, detail="Email already registered")
@@ -206,6 +224,7 @@ def get_me(token: str, db: Session = Depends(get_db)):
         "trial_days_left": trial_days_left
     }
 
+# --- SELLER PRODUCTS ENDPOINTS ---
 @app.post("/api/v1/products")
 def create_product(product: ProductCreate, token: str, db: Session = Depends(get_db)):
     try:
@@ -252,6 +271,47 @@ def delete_product(prod_id: int, token: str, db: Session = Depends(get_db)):
     db.delete(prod); db.commit()
     return {"msg": "Deleted"}
 
+# --- BUYER REQUEST (RFQ / TENDER) ENDPOINTS ---
+@app.post("/api/v1/buyer-requests")
+def create_buyer_request(req: BuyerRequestCreate, token: str, db: Session = Depends(get_db)):
+    user = get_current_user(token, db)
+    if getattr(user, "is_banned", False):
+        raise HTTPException(status_code=403, detail="Account banned.")
+    db_rfq = BuyerRequest(**req.dict(), buyer_id=user.id, status="open")
+    db.add(db_rfq)
+    db.commit()
+    return {"status": "success", "msg": "Buyer tender posted successfully"}
+
+@app.get("/api/v1/buyer-requests")
+def get_buyer_requests(category: str = "", region: str = "", db: Session = Depends(get_db)):
+    query = db.query(BuyerRequest, User).join(User).filter(BuyerRequest.status == "open")
+    if category: query = query.filter(BuyerRequest.category.ilike(f"%{category}%"))
+    if region and region != "All Regions": query = query.filter(BuyerRequest.delivery_destination.ilike(f"%{region}%"))
+    query = query.order_by(BuyerRequest.created_at.desc())
+    results = query.all()
+    return [{
+        "id": r.id,
+        "item_needed": r.item_needed,
+        "category": r.category,
+        "quantity": r.quantity,
+        "target_budget_ghs": r.target_budget_ghs,
+        "delivery_destination": r.delivery_destination,
+        "description": r.description,
+        "buyer_name": u.full_name,
+        "buyer_phone": u.phone_number,
+        "buyer_verified": u.is_verified,
+        "created_at": r.created_at.strftime("%b %d, %Y") if r.created_at else "Recent"
+    } for r, u in results]
+
+@app.delete("/api/v1/buyer-requests/{req_id}")
+def delete_buyer_request(req_id: int, token: str, db: Session = Depends(get_db)):
+    user = get_current_user(token, db)
+    rfq = db.query(BuyerRequest).filter(BuyerRequest.id == req_id, BuyerRequest.buyer_id == user.id).first()
+    if not rfq: raise HTTPException(status_code=404, detail="Request not found")
+    db.delete(rfq)
+    db.commit()
+    return {"status": "success", "msg": "Buyer tender deleted"}
+
 @app.post("/api/v1/report")
 def submit_report(payload: ReportCreate, db: Session = Depends(get_db)):
     db_report = Report(reported_seller_name=payload.seller_name, reported_seller_phone=payload.seller_phone, reason=payload.reason)
@@ -259,9 +319,7 @@ def submit_report(payload: ReportCreate, db: Session = Depends(get_db)):
     db.commit()
     return {"status": "success"}
 
-# ==========================================
-# ADMIN & AUTOMATIONS
-# ==========================================
+# --- ADMIN & AUTOMATIONS ---
 @app.get("/api/v1/admin/pending-users")
 def get_pending_users(token: str, db: Session = Depends(get_db)):
     admin = get_current_user(token, db)
