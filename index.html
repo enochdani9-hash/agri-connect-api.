@@ -61,6 +61,12 @@
         .guide-content h3 { color: #10b981; font-weight: 900; margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 1.1rem; }
         .guide-content p { color: #cbd5e1; margin-bottom: 1rem; font-size: 0.875rem; line-height: 1.6; }
         .guide-content ul { list-style-type: disc; padding-left: 1.5rem; color: #cbd5e1; font-size: 0.875rem; margin-bottom: 1rem; }
+        
+        /* Wikipedia Embed Typography */
+        #wiki-content p { margin-bottom: 0.75rem; font-size: 0.875rem; line-height: 1.6; color: #cbd5e1; }
+        #wiki-content b { color: #ffffff; }
+        body.sunlight-mode #wiki-content p { color: #334155; }
+        body.sunlight-mode #wiki-content b { color: #020617; }
         body.sunlight-mode .guide-content p, body.sunlight-mode .guide-content ul { color: #334155; }
     </style>
 </head>
@@ -411,22 +417,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- PARTNERSHIP -->
-            <div class="mt-20 glass-card p-10 rounded-[2.5rem] relative overflow-hidden border border-emerald-500/30 bg-gradient-to-br from-[#020617] to-emerald-950/40">
-                <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
-                <div class="text-center relative z-10">
-                    <span class="text-4xl mb-4 block">🤝</span>
-                    <h2 class="text-3xl md:text-4xl font-black text-white mb-4 tracking-tight">Partner With Us & Fuel the Future</h2>
-                    <p class="text-slate-300 text-sm max-w-2xl mx-auto leading-relaxed mb-8">
-                        AgromartDirect is on a mission to completely digitize the agricultural supply chain in Ghana. By eliminating the middleman, we are increasing farmer profits and bringing cheaper, fresher food to consumers nationwide. 
-                    </p>
-                    <div class="flex flex-col md:flex-row items-center justify-center gap-4">
-                        <a href="mailto:agriconnect886@gmail.com" class="bg-white/10 hover:bg-white/20 text-white font-bold py-3 px-6 rounded-xl transition-colors border border-white/10 flex items-center gap-2">✉️ agriconnect886@gmail.com</a>
-                        <a href="https://wa.me/233245641480" target="_blank" class="bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white font-bold py-3 px-6 rounded-xl transition-all border border-[#25D366]/30 flex items-center gap-2">📞 +233 245 641 480</a>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- 2. MARKETPLACE VIEW -->
@@ -477,12 +467,13 @@
 
             <div id="trainer-items" class="hidden">
                 <button onclick="resetTrainer()" class="text-emerald-400 text-sm font-bold mb-6 hover:text-emerald-300 transition-colors flex items-center gap-2">← Back to Categories</button>
-                <div id="trainer-items-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+                <div id="trainer-items-grid" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
             </div>
 
             <div id="trainer-guide" class="hidden glass-card p-8 md:p-12 rounded-[2.5rem] border border-emerald-500/30 shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
                 <button onclick="document.getElementById('trainer-guide').classList.add('hidden'); document.getElementById('trainer-items').classList.remove('hidden');" class="text-emerald-400 text-sm font-bold mb-8 hover:text-emerald-300 transition-colors relative z-10 flex items-center gap-2">← Back to Selection</button>
+                
                 <div class="flex flex-col md:flex-row items-start md:items-center gap-6 mb-8 relative z-10 border-b border-white/10 pb-8">
                     <div id="guide-icon" class="text-6xl bg-white/5 p-4 rounded-3xl border border-white/10"></div>
                     <div>
@@ -490,6 +481,7 @@
                         <p id="guide-intro" class="text-emerald-400 font-bold tracking-wide"></p>
                     </div>
                 </div>
+                
                 <div id="guide-content" class="guide-content relative z-10 max-w-3xl"></div>
             </div>
         </div>
@@ -995,9 +987,7 @@
             </div>
             <p class="text-xs text-slate-600 font-medium text-center md:text-right">© 2026 AgromartDirect Ghana.</p>
         </div>
-    </footer>
-
-    <!-- ========================================== -->
+    </footer><!-- ========================================== -->
     <!-- JAVASCRIPT LOGIC                           -->
     <!-- ========================================== -->
     <script>
@@ -1036,17 +1026,54 @@
         
         let pendingAdPayload = null;
 
-        // --- PLATFORM FEATURE SLIDESHOW (NOW CLICKABLE) ---
+        // --- PLATFORM FEATURE SLIDESHOW (CLICKABLE) ---
         const platformFeatures = [
-            { icon: "🚜", title: "Direct Farmer Market", desc: "Sell poultry, crops, and livestock directly to buyers nationwide with zero middleman fees.", color: "from-emerald-900/60 to-[#020617]", view: "marketplace" },
-            { icon: "🤝", title: "Smart Deal Room", desc: "Negotiate prices, split group orders, and secure bulk buys with our integrated deal room.", color: "from-blue-900/60 to-[#020617]", view: "marketplace" },
-            { icon: "♻️", title: "Eco-Loop Logistics", desc: "Turn farm waste into cash. Request bulk pickups for used oil, cassava peels, and cocoa pods.", color: "from-teal-900/60 to-[#020617]", view: "waste" },
-            { icon: "📚", title: "Agri Trainer Hub", desc: "Access free, step-by-step commercial farming guides for crops, poultry, and aquaculture.", color: "from-purple-900/60 to-[#020617]", view: "trainer" },
-            { icon: "⚙️", title: "Peer-to-Peer Machinery", desc: "Rent heavy equipment like tillers and pumps from local farmers, or list your own idle machinery.", color: "from-amber-900/60 to-[#020617]", view: "rentals" },
-            { icon: "📊", title: "Live Market Intel", desc: "Track live regional price indexes and find the highest arbitrage margins across Ghana.", color: "from-rose-900/60 to-[#020617]", view: "intel" }
+            { 
+                icon: "🚜", 
+                title: "Direct Farmer Market", 
+                desc: "Sell poultry, crops, and livestock directly to buyers nationwide with zero middleman fees.", 
+                color: "from-emerald-900/60 to-[#020617]", 
+                view: "marketplace" 
+            },
+            { 
+                icon: "🤝", 
+                title: "Smart Deal Room", 
+                desc: "Negotiate prices, split group orders, and secure bulk buys with our integrated deal room.", 
+                color: "from-blue-900/60 to-[#020617]", 
+                view: "marketplace" 
+            },
+            { 
+                icon: "♻️", 
+                title: "Eco-Loop Logistics", 
+                desc: "Turn farm waste into cash. Request bulk pickups for used oil, cassava peels, and cocoa pods.", 
+                color: "from-teal-900/60 to-[#020617]", 
+                view: "waste" 
+            },
+            { 
+                icon: "📚", 
+                title: "Agri Trainer Hub", 
+                desc: "Access free, step-by-step commercial farming guides for crops, poultry, and aquaculture.", 
+                color: "from-purple-900/60 to-[#020617]", 
+                view: "trainer" 
+            },
+            { 
+                icon: "⚙️", 
+                title: "Peer-to-Peer Machinery", 
+                desc: "Rent heavy equipment like tillers and pumps from local farmers, or list your own idle machinery.", 
+                color: "from-amber-900/60 to-[#020617]", 
+                view: "rentals" 
+            },
+            { 
+                icon: "📊", 
+                title: "Live Market Intel", 
+                desc: "Track live regional price indexes and find the highest arbitrage margins across Ghana.", 
+                color: "from-rose-900/60 to-[#020617]", 
+                view: "intel" 
+            }
         ];
         
         let currentSlide = 0;
+
         function initSlideshow() {
             const container = document.getElementById('feature-slideshow');
             if(!container) return;
@@ -1072,9 +1099,27 @@
 
         // --- LIVE AGRI NEWSROOM (24-HOUR AUTO REFRESH) ---
         const fallbackDummyNews = [
-            { source: "MoFA Update", date: "Today", title: "Government Announces Subsidy on NPK Fertilizers for Season", snippet: "The Ministry of Food and Agriculture has rolled out a new digital tracking system...", link: "https://mofa.gov.gh/" },
-            { source: "COCOBOD", date: "Yesterday", title: "Cocoa Farm Gate Price Adjusted Upward to Support Local Growers", snippet: "In a bid to support local farmers, the guaranteed price per bag has seen an adjustment...", link: "https://cocobod.gh/" },
-            { source: "AgriTech Ghana", date: "Recent", title: "New Drought-Resistant Maize Variety Introduced to Northern Region", snippet: "CSIR researchers have approved the release of a new seed strain capable of surviving dry spells...", link: "https://www.csir.org.gh/" }
+            { 
+                source: "MoFA Update", 
+                date: "Today", 
+                title: "Government Announces Subsidy on NPK Fertilizers for Season", 
+                snippet: "The Ministry of Food and Agriculture has rolled out a new digital tracking system...", 
+                link: "https://mofa.gov.gh/" 
+            },
+            { 
+                source: "COCOBOD", 
+                date: "Yesterday", 
+                title: "Cocoa Farm Gate Price Adjusted Upward to Support Local Growers", 
+                snippet: "In a bid to support local farmers, the guaranteed price per bag has seen an adjustment...", 
+                link: "https://cocobod.gh/" 
+            },
+            { 
+                source: "AgriTech Ghana", 
+                date: "Recent", 
+                title: "New Drought-Resistant Maize Variety Introduced to Northern Region", 
+                snippet: "CSIR researchers have approved the release of a new seed strain capable of surviving dry spells...", 
+                link: "https://www.csir.org.gh/" 
+            }
         ];
 
         async function loadAgriNews() {
@@ -1132,17 +1177,41 @@
             `).join('');
         }
 
-        // --- AGRI TRAINER DATA ---
+        // --- EXPANDED AGRI TRAINER DATA (30 ITEMS) ---
         const agriTrainerData = {
             crops: [
-                { id: 'tomato', icon: '🍅', title: 'Tomatoes', intro: 'High yield, 3-month cycle.', guide: '<h3>Week 1-2: Nursery</h3><p>Start seeds in trays. Keep soil moist but not waterlogged. Ensure 6 hours of indirect sunlight.</p><h3>Week 3-4: Transplanting</h3><p>Move seedlings to main field. Space 60cm apart. Apply NPK 15-15-15 at base.</p><h3>Week 5-8: Flowering & Fruiting</h3><p>Stake the plants to prevent rot. Prune bottom leaves. Watch for whiteflies.</p><h3>Harvest (Week 10-12)</h3><p>Harvest when pink/red. Do not wait for deep red if transporting far to prevent bruising.</p>' },
-                { id: 'maize', icon: '🌽', title: 'Maize', intro: 'Staple crop, 100 days.', guide: '<h3>Land Prep & Planting</h3><p>Plough and harrow. Plant 2 seeds per hole, 75cm x 40cm spacing. Use certified Obaatanpa seeds.</p><h3>Week 2-3: Weed & Feed</h3><p>Apply first dose of NPK. Weed farm immediately to prevent competition.</p><h3>Week 6: Top Dressing</h3><p>Apply Urea or Sulphate of Ammonia before tasseling begins.</p><h3>Harvest (Week 14)</h3><p>Harvest when cobs point downward and husks dry up.</p>' },
-                { id: 'cassava', icon: '🥔', title: 'Cassava', intro: 'Drought resistant, 9-12 months.', guide: '<h3>Preparation</h3><p>Cut healthy stems into 20cm lengths. Plant on ridges or mounds.</p><h3>Months 1-3: Maintenance</h3><p>Weed regularly. Cassava canopy will soon shade out weeds.</p><h3>Harvest</h3><p>Harvest between 9 to 12 months depending on variety to prevent woody tubers.</p>' }
+                { id: 'tomato', icon: '🍅', title: 'Tomatoes', wikiSearch: 'Tomato', intro: 'High yield, 3-month cycle.', guide: '<h3>Nursery & Transplanting</h3><p>Start seeds in trays. Transplant at 3-4 weeks. Space 60cm apart.</p><h3>Maintenance</h3><p>Stake plants to prevent fruit rot. Apply NPK 15-15-15.</p><h3>Harvest</h3><p>Harvest at 10-12 weeks when pink/red.</p>' },
+                { id: 'maize', icon: '🌽', title: 'Maize', wikiSearch: 'Maize', intro: 'Staple crop, 100 days.', guide: '<h3>Planting</h3><p>Plant 2 seeds per hole, 75cm x 40cm spacing. Use certified seeds.</p><h3>Fertilizer</h3><p>Top dress with Urea before tasseling begins.</p><h3>Harvest</h3><p>Harvest when cobs point downward and husks dry up.</p>' },
+                { id: 'cassava', icon: '🥔', title: 'Cassava', wikiSearch: 'Cassava', intro: 'Drought resistant, 9-12 months.', guide: '<h3>Planting</h3><p>Cut healthy stems into 20cm lengths. Plant on ridges.</p><h3>Maintenance</h3><p>Weed regularly during the first 3 months.</p><h3>Harvest</h3><p>Harvest at 9-12 months to prevent woody tubers.</p>' },
+                { id: 'yam', icon: '🍠', title: 'Yam', wikiSearch: 'Yam (vegetable)', intro: 'Tuber crop, requires mounds.', guide: '<h3>Planting</h3><p>Plant seed yams or setts on large mounds at onset of rains.</p><h3>Staking</h3><p>Stake vines early to maximize sunlight exposure.</p><h3>Harvest</h3><p>Harvest when vines turn yellow and dry up.</p>' },
+                { id: 'plantain', icon: '🍌', title: 'Plantain', wikiSearch: 'Cooking banana', intro: 'Requires rich, loamy soil.', guide: '<h3>Suckers</h3><p>Use sword suckers. Treat against nematodes before planting.</p><h3>Spacing</h3><p>Space 3m x 3m. Apply organic manure heavily.</p><h3>Harvest</h3><p>Harvest 9-12 months when fingers are full and plump.</p>' },
+                { id: 'cocoa', icon: '🍫', title: 'Cocoa', wikiSearch: 'Cocoa bean', intro: 'Major cash crop, requires shade.', guide: '<h3>Nursery</h3><p>Raise seedlings in polybags under shade for 6 months.</p><h3>Planting</h3><p>Transplant with temporary shade crops like plantain.</p><h3>Maintenance</h3><p>Prune regularly and spray against black pod disease.</p>' },
+                { id: 'pineapple', icon: '🍍', title: 'Pineapple', wikiSearch: 'Pineapple', intro: '12-18 month cycle.', guide: '<h3>Suckers</h3><p>Use uniform slips or crowns for even fruiting.</p><h3>Planting</h3><p>Plant in double rows. Requires well-drained soil.</p><h3>Harvest</h3><p>Harvest when 1/3 of the fruit base turns yellow.</p>' },
+                { id: 'mango', icon: '🥭', title: 'Mango', wikiSearch: 'Mango', intro: 'Tree crop, grafted varieties best.', guide: '<h3>Planting</h3><p>Use grafted seedlings (e.g. Keitt, Kent) for early fruiting.</p><h3>Spacing</h3><p>Space 10m x 10m. Water deeply during dry season.</p><h3>Harvest</h3><p>Starts fruiting in 3-4 years. Harvest mature green for export.</p>' },
+                { id: 'chili', icon: '🌶️', title: 'Chili Pepper', wikiSearch: 'Chili pepper', intro: 'High demand spice.', guide: '<h3>Nursery</h3><p>Sow seeds in boxes. Transplant at 4 weeks.</p><h3>Field</h3><p>Requires regular watering but avoid waterlogging.</p><h3>Harvest</h3><p>Pick red ripe fruits regularly to encourage more fruiting.</p>' },
+                { id: 'onion', icon: '🧅', title: 'Onion', wikiSearch: 'Onion', intro: 'Bulb crop, dry season preferred.', guide: '<h3>Nursery</h3><p>Sow seeds thinly. Transplant pencil-thick seedlings.</p><h3>Maintenance</h3><p>Weed carefully to avoid damaging shallow roots. Stop watering as tops fall.</p><h3>Harvest</h3><p>Cure in the sun for a few days before storage.</p>' },
+                { id: 'rice', icon: '🌾', title: 'Rice', wikiSearch: 'Rice', intro: 'Staple cereal, requires water.', guide: '<h3>Preparation</h3><p>Level land perfectly. Can be direct seeded or transplanted.</p><h3>Water Management</h3><p>Maintain shallow water level. Drain field 2 weeks before harvest.</p><h3>Harvest</h3><p>Harvest when 80% of panicles turn straw color.</p>' },
+                { id: 'sorghum', icon: '🌾', title: 'Sorghum', wikiSearch: 'Sorghum', intro: 'Drought-tolerant cereal.', guide: '<h3>Planting</h3><p>Plant at onset of rains. Thrives in Northern regions.</p><h3>Maintenance</h3><p>Thin out to 2 plants per stand. Control birds during grain filling.</p><h3>Harvest</h3><p>Cut panicles when grains are hard and dry.</p>' },
+                { id: 'soya', icon: '🫘', title: 'Soya Bean', wikiSearch: 'Soybean', intro: 'Protein-rich legume.', guide: '<h3>Inoculation</h3><p>Treat seeds with inoculant to boost nitrogen fixation.</p><h3>Planting</h3><p>Sow in rows. Very sensitive to deep planting.</p><h3>Harvest</h3><p>Harvest when leaves drop and pods turn brown.</p>' },
+                { id: 'cabbage', icon: '🥬', title: 'Cabbage', wikiSearch: 'Cabbage', intro: 'Leafy vegetable, heavy feeder.', guide: '<h3>Nursery</h3><p>Protect seedlings from direct sun and heavy rain.</p><h3>Maintenance</h3><p>Apply heavy compost. Spray for Diamondback moths.</p><h3>Harvest</h3><p>Harvest when heads are firm and solid to the touch.</p>' },
+                { id: 'groundnut', icon: '🥜', title: 'Groundnut', wikiSearch: 'Peanut', intro: 'Legume, requires loose soil.', guide: '<h3>Planting</h3><p>Plant in loose, sandy-loam soil to allow peg penetration.</p><h3>Weeding</h3><p>Do not weed after pegs start entering the soil.</p><h3>Harvest</h3><p>Dig up when inner shell is dark and veined.</p>' }
             ],
             animals: [
-                { id: 'broiler', icon: '🐔', title: 'Broiler Chickens', intro: '6-week meat birds.', guide: '<h3>Pre-Arrival (Day 0)</h3><p>Disinfect pen. Spread wood shavings. Preheat brooder to 32°C. Prepare glucose water.</p><h3>Week 1-2: Brooding</h3><p>Feed Broiler Starter ad-libitum (24/7). Keep lights on. Watch for pasting around vents.</p><h3>Week 3-4: Growth Phase</h3><p>Switch to Broiler Grower feed. Expand space to prevent overcrowding. Vaccinate for Gumboro/Newcastle.</p><h3>Week 5-6: Finisher</h3><p>Feed Broiler Finisher. Ensure excellent ventilation. Harvest at 2.2kg - 2.5kg.</p>' },
-                { id: 'catfish', icon: '🐟', title: 'Catfish', intro: '6-month freshwater.', guide: '<h3>Pond Prep</h3><p>Use tarpaulin or concrete. Ensure water pH is between 6.5 and 8.0.</p><h3>Month 1-2: Fingerlings</h3><p>Feed 2mm floating pellets. Sort fish weekly to prevent cannibalism.</p><h3>Month 3-5: Juveniles to Adult</h3><p>Increase pellet size (4mm - 6mm). Change 50% of water weekly to prevent ammonia buildup.</p><h3>Harvest</h3><p>Harvest at 1kg average weight using drag nets.</p>' },
-                { id: 'goat', icon: '🐐', title: 'Goats (Boer / Local)', intro: 'Hardy livestock.', guide: '<h3>Housing</h3><p>Keep floors slated and dry. Goats hate wet feet. Ensure good ventilation.</p><h3>Feeding</h3><p>Provide forage (elephant grass, cassava peels) and a mineral salt lick block. Clean water daily.</p><h3>Healthcare</h3><p>Deworm every 3 months. Vaccinate against PPR annually.</p>' }
+                { id: 'broiler', icon: '🐔', title: 'Broiler Chickens', wikiSearch: 'Broiler', intro: '6-week meat birds.', guide: '<h3>Brooding</h3><p>Preheat brooder to 32°C. Feed Starter ad-libitum.</p><h3>Growth</h3><p>Expand space. Vaccinate for Gumboro/Newcastle.</p><h3>Finisher</h3><p>Feed Finisher. Ensure excellent ventilation. Harvest at 2.5kg.</p>' },
+                { id: 'layer', icon: '🥚', title: 'Layer Chickens', wikiSearch: 'Poultry farming', intro: 'Egg producers, 18-month cycle.', guide: '<h3>Pullet Rearing</h3><p>Feed Chick Mash, then Grower Mash. Control lighting.</p><h3>Laying Phase</h3><p>Introduce Layer Mash at 18 weeks. Provide 16 hours of light.</p><h3>Management</h3><p>Collect eggs twice daily. Cull non-layers.</p>' },
+                { id: 'catfish', icon: '🐟', title: 'Catfish', wikiSearch: 'Catfish', intro: 'Hardy freshwater fish.', guide: '<h3>Water Quality</h3><p>Ensure pH 6.5-8.0. Change water regularly to prevent ammonia.</p><h3>Feeding</h3><p>Use high-protein floating pellets. Feed twice daily.</p><h3>Sorting</h3><p>Sort fish by size monthly to prevent cannibalism.</p>' },
+                { id: 'tilapia', icon: '🐠', title: 'Tilapia', wikiSearch: 'Tilapia', intro: 'Fast-growing freshwater fish.', guide: '<h3>Stocking</h3><p>Use all-male fingerlings to prevent pond overpopulation.</p><h3>Feeding</h3><p>Feed 30-35% protein floating pellets. Supplement with duckweed.</p><h3>Harvest</h3><p>Harvest at 6-8 months using drag nets.</p>' },
+                { id: 'goat', icon: '🐐', title: 'Goats', wikiSearch: 'Goat', intro: 'Hardy ruminants.', guide: '<h3>Housing</h3><p>Keep floors slated and dry. Ensure good ventilation.</p><h3>Feeding</h3><p>Provide forage, cassava peels, and a mineral salt lick.</p><h3>Healthcare</h3><p>Deworm regularly. Vaccinate against PPR.</p>' },
+                { id: 'sheep', icon: '🐑', title: 'Sheep', wikiSearch: 'Sheep', intro: 'Grazing livestock.', guide: '<h3>Grazing</h3><p>Allow access to good pasture. Supplement with concentrates.</p><h3>Housing</h3><p>Provide dry shelter to protect from rain and predators.</p><h3>Healthcare</h3><p>Trim hooves and deworm to prevent foot rot and parasites.</p>' },
+                { id: 'cattle', icon: '🐄', title: 'Cattle', wikiSearch: 'Cattle', intro: 'Large ruminants for beef/dairy.', guide: '<h3>Feeding</h3><p>Requires large volumes of pasture/silage and clean water daily.</p><h3>Housing</h3><p>Provide shaded kraals. Practice rotational grazing.</p><h3>Healthcare</h3><p>Dip/spray for ticks. Vaccinate against CBPP and Foot & Mouth.</p>' },
+                { id: 'pig', icon: '🐷', title: 'Pigs', wikiSearch: 'Domestic pig', intro: 'Highly prolific, omnivores.', guide: '<h3>Housing</h3><p>Concrete floors with drainage. Provide a wallow or cooling system.</p><h3>Feeding</h3><p>Feed compounded rations or cooked swill. High water requirement.</p><h3>Management</h3><p>Creep feed piglets. Castrate males intended for meat.</p>' },
+                { id: 'rabbit', icon: '🐇', title: 'Rabbits', wikiSearch: 'Domestic rabbit', intro: 'Fast reproducing, small space.', guide: '<h3>Housing</h3><p>Wire mesh cages to allow droppings to fall through.</p><h3>Feeding</h3><p>Diet of pellets, dried grasses, and clean water. Avoid wet greens.</p><h3>Breeding</h3><p>Take the doe to the buck\'s cage for mating.</p>' },
+                { id: 'grasscutter', icon: '🐀', title: 'Grasscutters', wikiSearch: 'Greater cane rat', intro: 'Highly prized bushmeat.', guide: '<h3>Housing</h3><p>Strong iron cages or concrete pens. They chew through wood.</p><h3>Feeding</h3><p>Elephant grass, sugarcane, and maize stalks. Very little water needed.</p><h3>Handling</h3><p>Handle by the tail base. Easily frightened.</p>' },
+                { id: 'snail', icon: '🐌', title: 'Snails', wikiSearch: 'Lissachatina fulica', intro: 'Low capital, highly lucrative.', guide: '<h3>Housing</h3><p>Shaded trench pens or tires. Soil must be moist and loamy.</p><h3>Feeding</h3><p>Pawpaw leaves, fruits, and calcium (ground shells) for strong shells.</p><h3>Pests</h3><p>Protect fiercely against soldier ants and salt.</p>' },
+                { id: 'duck', icon: '🦆', title: 'Ducks', wikiSearch: 'Domestic duck', intro: 'Disease resistant poultry.', guide: '<h3>Housing</h3><p>Simple shelter. Swimming water is good but not strictly required.</p><h3>Feeding</h3><p>Wet mash or pellets. Forage well on their own.</p><h3>Management</h3><p>Very hardy. Keep bedding dry to prevent mold.</p>' },
+                { id: 'turkey', icon: '🦃', title: 'Turkeys', wikiSearch: 'Domestic turkey', intro: 'Large festive birds.', guide: '<h3>Poults</h3><p>Require extra care and higher heat during first 4 weeks.</p><h3>Feeding</h3><p>High protein turkey starter (28% CP). Susceptible to blackhead disease.</p><h3>Space</h3><p>Need much more roaming space than chickens.</p>' },
+                { id: 'guinea_fowl', icon: '🪶', title: 'Guinea Fowls', wikiSearch: 'Guineafowl', intro: 'Semi-wild, great foragers.', guide: '<h3>Keets</h3><p>Very fragile initially. Keep warm and dry.</p><h3>Adults</h3><p>Excellent at pest control (ticks/insects). Very noisy.</p><h3>Housing</h3><p>Will roost in trees if wings are not clipped or fully enclosed.</p>' },
+                { id: 'quail', icon: '🐦', title: 'Quails', wikiSearch: 'Quail', intro: 'Small birds, fast maturity.', guide: '<h3>Housing</h3><p>Small wire cages. Protect from drafts and predators.</p><h3>Production</h3><p>Start laying at 6 weeks. Require 14-16 hours of light.</p><h3>Feeding</h3><p>High protein crumble. Cannot eat large pellets.</p>' }
             ]
         };
 
@@ -1150,13 +1219,16 @@
         function showToast(msg, type='success') {
             const c = document.getElementById('toast-container');
             const t = document.createElement('div');
+            
             t.className = `p-4 pr-6 rounded-2xl shadow-2xl glass-card flex items-center gap-3 fade-in border-l-4 ${type === 'error' ? 'border-rose-500 text-rose-100' : 'border-emerald-500 text-emerald-100'}`;
             t.innerHTML = `<span class="text-sm font-bold tracking-wide">${msg}</span>`;
+            
             c.appendChild(t);
+            
             setTimeout(() => { 
                 t.style.opacity = '0'; 
                 t.style.transition = 'opacity 0.3s ease';
-                setTimeout(()=>t.remove(), 300); 
+                setTimeout(() => t.remove(), 300); 
             }, 3000);
         }
 
@@ -1182,12 +1254,24 @@
             
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
-            if(view === 'marketplace') executeFilters(); 
-            if(view === 'grants') loadGrants(); 
-            if(view === 'farm-manager') loadFarmBatches();
-            if(view === 'intel') loadMarketIntel();
-            if(view === 'rentals') loadRentals();
-            if(view === 'waste') loadWasteRequests();
+            if(view === 'marketplace') {
+                executeFilters(); 
+            }
+            if(view === 'grants') {
+                loadGrants(); 
+            }
+            if(view === 'farm-manager') {
+                loadFarmBatches();
+            }
+            if(view === 'intel') {
+                loadMarketIntel();
+            }
+            if(view === 'rentals') {
+                loadRentals();
+            }
+            if(view === 'waste') {
+                loadWasteRequests();
+            }
             if(view === 'dashboard') { 
                 loadMyAds(); 
                 loadMyTenders(); 
@@ -1207,11 +1291,15 @@
         function toggleAuthBox(box) { 
             ['login-box','signup-box', 'forgot-password-box'].forEach(b => {
                 const el = document.getElementById(b); 
-                if(el) el.classList.add('hidden');
+                if(el) {
+                    el.classList.add('hidden');
+                }
             }); 
             
             const target = document.getElementById(box + '-box'); 
-            if(target) target.classList.remove('hidden'); 
+            if(target) {
+                target.classList.remove('hidden'); 
+            }
         }
 
         function logout() { 
@@ -1230,6 +1318,7 @@
 
         function toggleSunlightMode() { 
             document.getElementById('app-body').classList.toggle('sunlight-mode'); 
+            
             if(document.getElementById('app-body').classList.contains('sunlight-mode')) { 
                 showToast("☀️ Sunlight Mode Enabled"); 
             } else { 
@@ -1279,10 +1368,14 @@
                 }); 
                 
                 const btn1 = document.getElementById('google-signin-btn-login'); 
-                if(btn1) google.accounts.id.renderButton(btn1, { theme: "filled_blue", size: "large", width: "300" }); 
+                if(btn1) {
+                    google.accounts.id.renderButton(btn1, { theme: "filled_blue", size: "large", width: "300" }); 
+                }
                 
                 const btn2 = document.getElementById('google-signin-btn-signup'); 
-                if(btn2) google.accounts.id.renderButton(btn2, { theme: "filled_blue", size: "large", width: "300" }); 
+                if(btn2) {
+                    google.accounts.id.renderButton(btn2, { theme: "filled_blue", size: "large", width: "300" }); 
+                }
             } catch(e) { 
                 console.warn("Google Auth disabled or blocked."); 
             }
@@ -1319,7 +1412,9 @@
                     });
             } else { 
                 const btn = document.getElementById('nav-login-btn'); 
-                if(btn) btn.classList.remove('hidden'); 
+                if(btn) {
+                    btn.classList.remove('hidden'); 
+                }
             }
             
             navigate('home');
@@ -1330,6 +1425,7 @@
             
             currentUserEmail = data.email || ""; 
             const navName = document.getElementById('nav-user-name'); 
+            
             if(navName) { 
                 const fName = data.full_name || "User";
                 navName.innerHTML = `Hi, ${fName.split(' ')[0]}`; 
@@ -1337,7 +1433,9 @@
             }
             
             const loginBtn = document.getElementById('nav-login-btn'); 
-            if(loginBtn) loginBtn.classList.add('hidden'); 
+            if(loginBtn) {
+                loginBtn.classList.add('hidden'); 
+            }
             
             const profileMenu = document.getElementById('nav-user-profile'); 
             if(profileMenu) { 
@@ -1346,10 +1444,14 @@
             }
             
             const pName = document.getElementById('my-profile-name'); 
-            if(pName) pName.innerText = data.full_name || "User"; 
+            if(pName) {
+                pName.innerText = data.full_name || "User"; 
+            }
             
             const pEmail = document.getElementById('my-profile-email'); 
-            if(pEmail) pEmail.innerText = data.email || ""; 
+            if(pEmail) {
+                pEmail.innerText = data.email || ""; 
+            }
             
             if(data.profile_picture && data.profile_picture !== 'null') { 
                 const avatar = document.getElementById('my-profile-avatar'); 
@@ -1384,7 +1486,9 @@
             
             if (data.email === "enochdani9@gmail.com") { 
                 const admin = document.getElementById('admin-panel'); 
-                if(admin) admin.classList.remove('hidden'); 
+                if(admin) {
+                    admin.classList.remove('hidden'); 
+                }
                 renderAdminSignupsList(); 
                 renderAdminModQueue(); 
                 renderAdminAllAds(); 
@@ -1396,6 +1500,7 @@
         async function loginUser() {
             const email = document.getElementById('login-email').value.trim();
             const password = document.getElementById('login-password').value.trim();
+            
             if(!email || !password) {
                 return showToast("Enter email and password", "error");
             }
@@ -1592,15 +1697,31 @@
             const homeRfqs = document.getElementById('home-rfq-container');
             
             if(tab === 'ads') { 
-                if(btnAds) btnAds.className = "px-6 py-2.5 rounded-xl font-black text-xs bg-emerald-600 text-white shadow-lg transition-all"; 
-                if(btnRfqs) btnRfqs.className = "px-6 py-2.5 rounded-xl font-black text-xs text-slate-400 hover:text-white flex items-center gap-1.5 transition-all"; 
-                if(homeAds) homeAds.classList.remove('hidden'); 
-                if(homeRfqs) homeRfqs.classList.add('hidden'); 
+                if(btnAds) {
+                    btnAds.className = "px-6 py-2.5 rounded-xl font-black text-xs bg-emerald-600 text-white shadow-lg transition-all"; 
+                }
+                if(btnRfqs) {
+                    btnRfqs.className = "px-6 py-2.5 rounded-xl font-black text-xs text-slate-400 hover:text-white flex items-center gap-1.5 transition-all"; 
+                }
+                if(homeAds) {
+                    homeAds.classList.remove('hidden'); 
+                }
+                if(homeRfqs) {
+                    homeRfqs.classList.add('hidden'); 
+                }
             } else { 
-                if(btnRfqs) btnRfqs.className = "px-6 py-2.5 rounded-xl font-black text-xs bg-blue-600 text-white shadow-lg flex items-center gap-1.5 transition-all"; 
-                if(btnAds) btnAds.className = "px-6 py-2.5 rounded-xl font-black text-xs text-slate-400 hover:text-white transition-all"; 
-                if(homeAds) homeAds.classList.add('hidden'); 
-                if(homeRfqs) homeRfqs.classList.remove('hidden'); 
+                if(btnRfqs) {
+                    btnRfqs.className = "px-6 py-2.5 rounded-xl font-black text-xs bg-blue-600 text-white shadow-lg flex items-center gap-1.5 transition-all"; 
+                }
+                if(btnAds) {
+                    btnAds.className = "px-6 py-2.5 rounded-xl font-black text-xs text-slate-400 hover:text-white transition-all"; 
+                }
+                if(homeAds) {
+                    homeAds.classList.add('hidden'); 
+                }
+                if(homeRfqs) {
+                    homeRfqs.classList.remove('hidden'); 
+                }
                 loadBuyerRequests(); 
             }
         }
@@ -1611,12 +1732,20 @@
             const btnRfqs = document.getElementById('mode-rfqs-btn');
             
             if (mode === 'ads') { 
-                if(btnAds) btnAds.className = "px-3 py-1 rounded-lg text-xs font-black bg-emerald-600 text-white transition-colors"; 
-                if(btnRfqs) btnRfqs.className = "px-3 py-1 rounded-lg text-xs font-black text-slate-400 hover:text-white transition-colors"; 
+                if(btnAds) {
+                    btnAds.className = "px-3 py-1 rounded-lg text-xs font-black bg-emerald-600 text-white transition-colors"; 
+                }
+                if(btnRfqs) {
+                    btnRfqs.className = "px-3 py-1 rounded-lg text-xs font-black text-slate-400 hover:text-white transition-colors"; 
+                }
                 loadMarketplaceGrid(); 
             } else { 
-                if(btnRfqs) btnRfqs.className = "px-3 py-1 rounded-lg text-xs font-black bg-emerald-600 text-white transition-colors"; 
-                if(btnAds) btnAds.className = "px-3 py-1 rounded-lg text-xs font-black text-slate-400 hover:text-white transition-colors"; 
+                if(btnRfqs) {
+                    btnRfqs.className = "px-3 py-1 rounded-lg text-xs font-black bg-emerald-600 text-white transition-colors"; 
+                }
+                if(btnAds) {
+                    btnAds.className = "px-3 py-1 rounded-lg text-xs font-black text-slate-400 hover:text-white transition-colors"; 
+                }
                 renderRfqGrid(allLoadedRfqs, document.getElementById('product-grid')); 
             }
         }
@@ -1657,8 +1786,12 @@
             const sortVal = sortEl ? sortEl.value : 'newest';
             
             let url = `${API_URL}/api/v1/products?sort=${sortVal}&t=${new Date().getTime()}`; 
-            if (currentCategoryState) url += `&category=${currentCategoryState}`; 
-            if (currentSearchState) url += `&search=${currentSearchState}`;
+            if (currentCategoryState) {
+                url += `&category=${currentCategoryState}`; 
+            }
+            if (currentSearchState) {
+                url += `&search=${currentSearchState}`;
+            }
             
             try { 
                 const res = await fetch(url); 
@@ -1985,7 +2118,9 @@
         async function deleteAd(id) { 
             if(!confirm("Are you sure you want to delete this ad forever?")) return; 
             try { 
-                await fetch(`${API_URL}/api/v1/products/${id}?token=${agriToken}`, { method: 'DELETE' }); 
+                await fetch(`${API_URL}/api/v1/products/${id}?token=${agriToken}`, { 
+                    method: 'DELETE' 
+                }); 
                 showToast("Ad deleted successfully"); 
                 loadMyAds(); 
             } catch (err) {} 
@@ -2107,13 +2242,17 @@
                         <button onclick="deleteMyTender(${r.id})" class="text-rose-400 font-bold px-4 py-2 border border-rose-500/30 rounded-lg text-xs hover:bg-rose-500/10 transition-colors w-full md:w-auto">Delete</button>
                     </div>`; 
                 });
-            } catch(e) { console.log(e); }
+            } catch(e) { 
+                console.log(e); 
+            }
         }
         
         async function deleteMyTender(id) {
             if(!confirm("Are you sure you want to delete this tender?")) return;
             try { 
-                await fetch(`${API_URL}/api/v1/buyer-requests/${id}?token=${agriToken}`, { method: 'DELETE' }); 
+                await fetch(`${API_URL}/api/v1/buyer-requests/${id}?token=${agriToken}`, { 
+                    method: 'DELETE' 
+                }); 
                 showToast("Tender deleted successfully."); 
                 loadMyTenders(); 
                 loadBuyerRequests(); 
@@ -2423,7 +2562,7 @@
             } 
         }
 
-        // --- AGRI TRAINER (LEARN TO GROW) ---
+        // --- AGRI TRAINER (WIKIPEDIA API + LOCAL GUIDE) ---
         function showTrainerSubCategory(cat) {
             const grid = document.getElementById('trainer-items-grid'); 
             grid.innerHTML = ''; 
@@ -2441,17 +2580,42 @@
             document.getElementById('trainer-items').classList.remove('hidden'); 
         }
         
-        function openTrainerGuide(cat, itemId) {
+        async function openTrainerGuide(cat, itemId) {
             const item = agriTrainerData[cat].find(i => i.id === itemId); 
             if(!item) return; 
             
             document.getElementById('guide-icon').innerText = item.icon; 
             document.getElementById('guide-title').innerText = item.title; 
             document.getElementById('guide-intro').innerText = item.intro; 
-            document.getElementById('guide-content').innerHTML = item.guide; 
+            
+            const contentContainer = document.getElementById('guide-content');
+            contentContainer.innerHTML = '<p class="text-emerald-400 font-bold animate-pulse">Fetching encyclopedia data...</p>';
             
             document.getElementById('trainer-items').classList.add('hidden'); 
             document.getElementById('trainer-guide').classList.remove('hidden'); 
+            
+            try {
+                const searchStr = encodeURIComponent(item.wikiSearch || item.title);
+                const wikiRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${searchStr}`);
+                
+                if(wikiRes.ok) {
+                    const wikiData = await wikiRes.json();
+                    
+                    let wikiHtml = `<div class="bg-[#0f172a] p-6 rounded-3xl border border-slate-700/50 mb-8 flex flex-col md:flex-row gap-6 shadow-inner items-start" id="wiki-content">`;
+                    
+                    if(wikiData.thumbnail && wikiData.thumbnail.source) {
+                        wikiHtml += `<img src="${wikiData.thumbnail.source}" class="w-full md:w-48 h-48 object-cover rounded-2xl shadow-lg border border-slate-700 shrink-0">`;
+                    }
+                    
+                    wikiHtml += `<div><h3 class="text-emerald-400 text-sm font-black uppercase tracking-wider mb-2 flex items-center gap-2">📖 Wikipedia Overview</h3><p class="text-sm text-slate-300 leading-relaxed">${wikiData.extract}</p></div></div>`;
+                    
+                    contentContainer.innerHTML = wikiHtml + `<h3 class="text-xl font-black text-white mb-4 mt-8 border-b border-white/10 pb-2">🚜 Agromart Cultivation Guide</h3>` + item.guide;
+                } else {
+                    throw new Error("Wiki not found");
+                }
+            } catch (e) {
+                contentContainer.innerHTML = `<h3 class="text-xl font-black text-white mb-4 border-b border-white/10 pb-2">🚜 Agromart Cultivation Guide</h3>` + item.guide;
+            }
         }
         
         function resetTrainer() {
@@ -2639,115 +2803,6 @@
                     </div>`; 
                 }).join(''); 
             } catch(e) {} 
-        }
-
-        // --- RFQ / BUYER REQUESTS ---
-        function openRfqModal() { 
-            if (!agriToken) { 
-                showToast("Sign in first", "error"); 
-                return navigate('auth'); 
-            } 
-            const modal = document.getElementById('rfq-modal'); 
-            if(modal) { 
-                modal.classList.remove('hidden'); 
-                modal.classList.add('flex'); 
-            } 
-        }
-        
-        function closeRfqModal() { 
-            const modal = document.getElementById('rfq-modal'); 
-            if(modal) { 
-                modal.classList.add('hidden'); 
-                modal.classList.remove('flex'); 
-            } 
-        }
-        
-        async function submitBuyerRequest() { 
-            const btn = document.getElementById('rfq-submit-btn'); 
-            const payload = { 
-                item_needed: document.getElementById('rfq-item').value.trim(), 
-                category: document.getElementById('rfq-category').value, 
-                quantity: document.getElementById('rfq-quantity').value.trim(), 
-                target_budget_ghs: document.getElementById('rfq-budget').value.trim(), 
-                delivery_destination: document.getElementById('rfq-destination').value.trim(), 
-                description: document.getElementById('rfq-description').value.trim() 
-            }; 
-            
-            if (!payload.item_needed || !payload.quantity || !payload.target_budget_ghs || !payload.delivery_destination) {
-                return showToast("Fill required fields", "error"); 
-            }
-            
-            btn.disabled = true; 
-            btn.innerText = "Publishing... ⏳"; 
-            
-            try { 
-                await fetch(`${API_URL}/api/v1/buyer-requests?token=${agriToken}`, { 
-                    method: 'POST', 
-                    headers: { 'Content-Type': 'application/json' }, 
-                    body: JSON.stringify(payload) 
-                }); 
-                showToast("Tender Published! 📢"); 
-                
-                ['rfq-item', 'rfq-quantity', 'rfq-budget', 'rfq-destination', 'rfq-description'].forEach(id => { 
-                    const el = document.getElementById(id); 
-                    if(el) el.value = ''; 
-                }); 
-                
-                closeRfqModal(); 
-                loadBuyerRequests(); 
-            } catch (err) {} finally { 
-                btn.disabled = false; 
-                btn.innerText = "Publish Tender"; 
-            } 
-        }
-        
-        async function loadBuyerRequests() { 
-            try { 
-                const res = await fetch(`${API_URL}/api/v1/buyer-requests?t=${new Date().getTime()}`); 
-                const rfqs = await res.json(); 
-                allLoadedRfqs = rfqs; 
-                
-                renderRfqGrid(rfqs, document.getElementById('rfq-grid')); 
-                
-                if (currentMarketMode === 'rfqs') {
-                    renderRfqGrid(rfqs, document.getElementById('product-grid')); 
-                }
-            } catch (e) {} 
-        }
-        
-        function renderRfqGrid(rfqs, container) { 
-            if (!container) return; 
-            
-            if (!rfqs || rfqs.length === 0) { 
-                container.innerHTML = `<div class="col-span-full glass-card py-16 rounded-3xl text-center border border-white/5"><p class="text-slate-400 text-sm">No active tenders.</p></div>`; 
-                return; 
-            } 
-            
-            container.innerHTML = rfqs.map(r => { 
-                let cleanPhone = r.buyer_phone.replace(/\D/g, ''); 
-                if (cleanPhone.startsWith('0')) cleanPhone = '233' + cleanPhone.substring(1); 
-                
-                let whatsappMsg = `*OFFER TO SUPPLY via AgromartDirect*\n📢 *Your Tender:* ${r.item_needed}\n🔢 *Quantity:* ${r.quantity}\n💰 *Your Budget:* GH₵${r.target_budget_ghs}\n📍 *Destination:* ${r.delivery_destination}\n\nHello, I can supply this order from my farm. Let's discuss dispatch!`; 
-                
-                return `
-                    <div class="glass-card p-6 rounded-[2rem] border border-blue-500/20 hover:border-blue-500/50 transition-all flex flex-col justify-between shadow-xl">
-                        <div>
-                            <div class="flex items-center justify-between mb-4">
-                                <span class="bg-blue-500/10 text-blue-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-lg border border-blue-500/20">Tender Wanted</span>
-                                <span class="text-[10px] text-slate-400">📍 ${r.delivery_destination}</span>
-                            </div>
-                            <h4 class="text-xl font-black text-white mb-2 leading-tight">${r.item_needed}</h4>
-                            <div class="text-xs text-slate-300 space-y-1 mb-4 bg-[#0f172a] p-4 rounded-xl border border-slate-700/50">
-                                <p>📦 <strong>Volume:</strong> ${r.quantity}</p>
-                                <p>💰 <strong>Target Budget:</strong> <span class="text-emerald-400 font-bold">GH₵${r.target_budget_ghs}</span></p>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 pt-4 border-t border-white/10 mt-auto">
-                            <a href="https://wa.me/${cleanPhone}?text=${encodeURIComponent(whatsappMsg)}" target="_blank" class="bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-3 rounded-xl text-xs flex items-center justify-center transition-colors">💬 WhatsApp Bid</a>
-                            <a href="tel:${r.buyer_phone}" class="bg-blue-600/20 hover:bg-blue-600 text-blue-300 hover:text-white border border-blue-500/30 font-black py-3 rounded-xl text-xs flex items-center justify-center transition-colors">📞 Call Buyer</a>
-                        </div>
-                    </div>`; 
-            }).join(''); 
         }
 
         // --- DEAL ROOM ---
