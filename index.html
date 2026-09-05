@@ -268,7 +268,6 @@
                 
                 <button onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center bg-white/5 border border-white/10 rounded-xl text-xs text-slate-300 hover:bg-white/10 transition-colors">☀️</button>
                 
-                <!-- FIX: Removed the 'hidden' class here so Sign In shows by default! -->
                 <button id="nav-login-btn" onclick="navigate('auth')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 transition-colors">Sign In</button>
                 
                 <div id="nav-user-profile" class="hidden items-center gap-3 bg-white/5 px-4 py-1.5 rounded-full border border-white/10">
@@ -996,7 +995,9 @@
             </div>
             <p class="text-xs text-slate-600 font-medium text-center md:text-right">© 2026 AgromartDirect Ghana.</p>
         </div>
-    </footer><!-- ========================================== -->
+    </footer>
+
+    <!-- ========================================== -->
     <!-- JAVASCRIPT LOGIC                           -->
     <!-- ========================================== -->
     <script>
@@ -1035,14 +1036,14 @@
         
         let pendingAdPayload = null;
 
-        // --- PLATFORM FEATURE SLIDESHOW ---
+        // --- PLATFORM FEATURE SLIDESHOW (NOW CLICKABLE) ---
         const platformFeatures = [
-            { icon: "🚜", title: "Direct Farmer Market", desc: "Sell poultry, crops, and livestock directly to buyers nationwide with zero middleman fees.", color: "from-emerald-900/60 to-[#020617]" },
-            { icon: "🤝", title: "Smart Deal Room", desc: "Negotiate prices, split group orders, and secure bulk buys with our integrated deal room.", color: "from-blue-900/60 to-[#020617]" },
-            { icon: "♻️", title: "Eco-Loop Logistics", desc: "Turn farm waste into cash. Request bulk pickups for used oil, cassava peels, and cocoa pods.", color: "from-teal-900/60 to-[#020617]" },
-            { icon: "📚", title: "Agri Trainer Hub", desc: "Access free, step-by-step commercial farming guides for crops, poultry, and aquaculture.", color: "from-purple-900/60 to-[#020617]" },
-            { icon: "⚙️", title: "Peer-to-Peer Machinery", desc: "Rent heavy equipment like tillers and pumps from local farmers, or list your own idle machinery.", color: "from-amber-900/60 to-[#020617]" },
-            { icon: "📊", title: "Live Market Intel", desc: "Track live regional price indexes and find the highest arbitrage margins across Ghana.", color: "from-rose-900/60 to-[#020617]" }
+            { icon: "🚜", title: "Direct Farmer Market", desc: "Sell poultry, crops, and livestock directly to buyers nationwide with zero middleman fees.", color: "from-emerald-900/60 to-[#020617]", view: "marketplace" },
+            { icon: "🤝", title: "Smart Deal Room", desc: "Negotiate prices, split group orders, and secure bulk buys with our integrated deal room.", color: "from-blue-900/60 to-[#020617]", view: "marketplace" },
+            { icon: "♻️", title: "Eco-Loop Logistics", desc: "Turn farm waste into cash. Request bulk pickups for used oil, cassava peels, and cocoa pods.", color: "from-teal-900/60 to-[#020617]", view: "waste" },
+            { icon: "📚", title: "Agri Trainer Hub", desc: "Access free, step-by-step commercial farming guides for crops, poultry, and aquaculture.", color: "from-purple-900/60 to-[#020617]", view: "trainer" },
+            { icon: "⚙️", title: "Peer-to-Peer Machinery", desc: "Rent heavy equipment like tillers and pumps from local farmers, or list your own idle machinery.", color: "from-amber-900/60 to-[#020617]", view: "rentals" },
+            { icon: "📊", title: "Live Market Intel", desc: "Track live regional price indexes and find the highest arbitrage margins across Ghana.", color: "from-rose-900/60 to-[#020617]", view: "intel" }
         ];
         
         let currentSlide = 0;
@@ -1053,11 +1054,11 @@
             const renderSlide = () => {
                 const slide = platformFeatures[currentSlide];
                 container.innerHTML = `
-                    <div class="w-full h-full bg-gradient-to-br ${slide.color} flex flex-col md:flex-row items-center justify-center p-8 text-center md:text-left slide-fade">
-                        <div class="text-7xl md:text-8xl mb-4 md:mb-0 md:mr-10 filter drop-shadow-lg">${slide.icon}</div>
+                    <div onclick="navigate('${slide.view}')" class="w-full h-full bg-gradient-to-br ${slide.color} flex flex-col md:flex-row items-center justify-center p-8 text-center md:text-left slide-fade cursor-pointer hover:opacity-90 transition-opacity group">
+                        <div class="text-7xl md:text-8xl mb-4 md:mb-0 md:mr-10 filter drop-shadow-lg group-hover:scale-110 transition-transform">${slide.icon}</div>
                         <div>
                             <span class="text-[10px] text-white/50 uppercase font-black tracking-widest mb-1 block">Platform Feature</span>
-                            <h3 class="text-2xl md:text-4xl font-black text-white mb-2 tracking-tight">${slide.title}</h3>
+                            <h3 class="text-2xl md:text-4xl font-black text-white mb-2 tracking-tight group-hover:text-emerald-400 transition-colors">${slide.title}</h3>
                             <p class="text-slate-300 text-sm md:text-base max-w-lg leading-relaxed mx-auto md:mx-0">${slide.desc}</p>
                         </div>
                     </div>
@@ -1069,25 +1070,58 @@
             setInterval(renderSlide, 5000);
         }
 
-        // --- AGRI NEWSROOM ---
-        const dummyNews = [
-            { source: "MoFA Update", date: "Just Now", title: "Government Announces 15% Subsidy on NPK Fertilizers for 2026 Season", snippet: "The Ministry of Food and Agriculture has rolled out a new digital tracking system for fertilizer distribution to curb cross-border smuggling...", link: "https://mofa.gov.gh/" },
-            { source: "COCOBOD", date: "2 Hours Ago", title: "Cocoa Farm Gate Price Adjusted Upward to Support Local Growers", snippet: "In a bid to support local farmers, the guaranteed price per bag has seen a historic adjustment following global market trends...", link: "https://cocobod.gh/" },
-            { source: "AgriTech Ghana", date: "5 Hours Ago", title: "New Drought-Resistant Maize Variety Introduced to Northern Region", snippet: "CSIR researchers have approved the release of a new seed strain capable of surviving prolonged dry spells to boost food security...", link: "https://www.csir.org.gh/" },
-            { source: "Export Council", date: "Yesterday", title: "Vegetable Exports to EU Resume Following Lifting of Phytosanitary Ban", snippet: "Strict controls have satisfied European regulators, opening up millions in trade for local vegetable and fruit growers...", link: "https://www.gepaghana.org/" },
-            { source: "Climate Watch", date: "Yesterday", title: "Heavy Rains Expected in Middle Belt: Farmers Advised to Delay Harvesting", snippet: "The Meteorological Agency warns of unseasonal downpours affecting the Bono and Ashanti regions over the next 48 hours...", link: "https://www.meteo.gov.gh/" },
-            { source: "Finance & Policy", date: "2 Days Ago", title: "Central Bank Urges Commercial Banks to Lower Agric Loan Rates", snippet: "Policy measures aimed at boosting food security target the high cost of capital for commercial farming ventures...", link: "https://www.bog.gov.gh/" }
+        // --- LIVE AGRI NEWSROOM (24-HOUR AUTO REFRESH) ---
+        const fallbackDummyNews = [
+            { source: "MoFA Update", date: "Today", title: "Government Announces Subsidy on NPK Fertilizers for Season", snippet: "The Ministry of Food and Agriculture has rolled out a new digital tracking system...", link: "https://mofa.gov.gh/" },
+            { source: "COCOBOD", date: "Yesterday", title: "Cocoa Farm Gate Price Adjusted Upward to Support Local Growers", snippet: "In a bid to support local farmers, the guaranteed price per bag has seen an adjustment...", link: "https://cocobod.gh/" },
+            { source: "AgriTech Ghana", date: "Recent", title: "New Drought-Resistant Maize Variety Introduced to Northern Region", snippet: "CSIR researchers have approved the release of a new seed strain capable of surviving dry spells...", link: "https://www.csir.org.gh/" }
         ];
 
-        function loadAgriNews() {
+        async function loadAgriNews() {
             const grid = document.getElementById('newsroom-grid');
             if(!grid) return;
             
-            grid.innerHTML = dummyNews.map(n => `
+            const cachedNews = localStorage.getItem('agri_news_cache');
+            const cacheTime = localStorage.getItem('agri_news_time');
+            const now = new Date().getTime();
+            
+            if (cachedNews && cacheTime && (now - parseInt(cacheTime)) < 24 * 60 * 60 * 1000) {
+                renderNewsData(JSON.parse(cachedNews), grid);
+                return;
+            }
+
+            try {
+                const rssUrl = encodeURIComponent("https://news.google.com/rss/search?q=agriculture+ghana&hl=en-US&gl=US&ceid=US:en");
+                const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`);
+                const data = await res.json();
+                
+                if (data.items && data.items.length > 0) {
+                    const formattedNews = data.items.slice(0, 6).map(item => ({
+                        source: item.source || "Agri News",
+                        date: new Date(item.pubDate).toLocaleDateString(),
+                        title: item.title,
+                        snippet: item.description.replace(/(<([^>]+)>)/gi, "").substring(0, 120) + "...",
+                        link: item.link
+                    }));
+                    
+                    localStorage.setItem('agri_news_cache', JSON.stringify(formattedNews));
+                    localStorage.setItem('agri_news_time', now.toString());
+                    
+                    renderNewsData(formattedNews, grid);
+                } else {
+                    renderNewsData(fallbackDummyNews, grid); 
+                }
+            } catch (e) {
+                renderNewsData(fallbackDummyNews, grid); 
+            }
+        }
+
+        function renderNewsData(newsArray, grid) {
+            grid.innerHTML = newsArray.map(n => `
                 <div class="glass-card p-6 rounded-3xl border border-white/5 hover:border-emerald-500/30 transition-all flex flex-col justify-between group shadow-lg cursor-pointer" onclick="window.open('${n.link}', '_blank')">
                     <div>
                         <div class="flex items-center justify-between mb-4">
-                            <span class="text-[9px] bg-white/10 text-slate-300 px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">${n.source}</span>
+                            <span class="text-[9px] bg-white/10 text-slate-300 px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">${n.source.substring(0,20)}</span>
                             <span class="text-[10px] text-slate-500 font-medium">${n.date}</span>
                         </div>
                         <h4 class="text-white font-black text-sm mb-2 group-hover:text-emerald-400 transition-colors leading-snug">${n.title}</h4>
@@ -2426,35 +2460,53 @@
             document.getElementById('trainer-categories').classList.remove('hidden'); 
         }
 
-        // --- GRANTS ---
+        // --- GRANTS (WITH 24-HOUR ROTATION) ---
         async function loadGrants() { 
             const grid = document.getElementById('grants-grid'); 
             if(!grid) return; 
             
             grid.innerHTML = '<div class="col-span-full text-center text-slate-400">Loading opportunities... ⏳</div>'; 
             
-            try { 
-                const res = await fetch(`${API_URL}/api/v1/grants?t=${new Date().getTime()}`); 
-                const grants = await res.json(); 
-                
-                if(!grants || grants.length === 0) {
-                    grid.innerHTML = '<div class="col-span-full text-center text-slate-400">No active grants found.</div>'; 
-                    return;
-                }
-                
-                grid.innerHTML = grants.map(g => `
-                    <div class="glass-card p-6 rounded-[2.5rem] border border-amber-500/20 shadow-xl group hover:border-amber-500/50 hover:-translate-y-1 transition-all flex flex-col justify-between">
-                        <div>
-                            <span class="bg-amber-500/10 text-amber-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-md border border-amber-500/20">${g.provider}</span>
-                            <h3 class="text-xl font-black text-white mt-4 mb-2 group-hover:text-amber-400 transition-colors">${g.title}</h3>
-                            <p class="text-sm text-emerald-400 font-bold mb-6">Value: ${g.amount}</p>
-                        </div>
-                        <div class="flex justify-between items-center border-t border-white/10 pt-4">
-                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Deadline: ${g.deadline}</span>
-                            <button onclick="window.open('${g.link}', '_blank')" class="bg-amber-500 text-[#020617] text-xs font-black px-4 py-2 rounded-xl hover:bg-amber-400 transition-colors shadow-lg">Apply Now</button>
-                        </div>
-                    </div>`).join(''); 
-            } catch(e) {} 
+            const cachedGrants = localStorage.getItem('agri_grants_cache');
+            const cacheTime = localStorage.getItem('agri_grants_time');
+            const now = new Date().getTime();
+            
+            let displayGrants = [];
+
+            if (cachedGrants && cacheTime && (now - parseInt(cacheTime)) < 24 * 60 * 60 * 1000) {
+                displayGrants = JSON.parse(cachedGrants);
+            } else {
+                try { 
+                    const res = await fetch(`${API_URL}/api/v1/grants?t=${now}`); 
+                    const grants = await res.json(); 
+                    
+                    if(grants && grants.length > 0) {
+                        const shuffled = grants.sort(() => 0.5 - Math.random());
+                        displayGrants = shuffled.slice(0, 6); 
+                        
+                        localStorage.setItem('agri_grants_cache', JSON.stringify(displayGrants));
+                        localStorage.setItem('agri_grants_time', now.toString());
+                    }
+                } catch(e) {} 
+            }
+
+            if(!displayGrants || displayGrants.length === 0) {
+                grid.innerHTML = '<div class="col-span-full text-center text-slate-400">No active grants found.</div>'; 
+                return;
+            }
+            
+            grid.innerHTML = displayGrants.map(g => `
+                <div class="glass-card p-6 rounded-[2.5rem] border border-amber-500/20 shadow-xl group hover:border-amber-500/50 hover:-translate-y-1 transition-all flex flex-col justify-between cursor-pointer" onclick="window.open('${g.link}', '_blank')">
+                    <div>
+                        <span class="bg-amber-500/10 text-amber-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-md border border-amber-500/20">${g.provider}</span>
+                        <h3 class="text-xl font-black text-white mt-4 mb-2 group-hover:text-amber-400 transition-colors">${g.title}</h3>
+                        <p class="text-sm text-emerald-400 font-bold mb-6">Value: ${g.amount}</p>
+                    </div>
+                    <div class="flex justify-between items-center border-t border-white/10 pt-4">
+                        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Deadline: ${g.deadline}</span>
+                        <button class="bg-amber-500 text-[#020617] text-xs font-black px-4 py-2 rounded-xl hover:bg-amber-400 transition-colors shadow-lg">Apply Now</button>
+                    </div>
+                </div>`).join(''); 
         }
         
         // --- FARM MANAGER SAAS ---
@@ -3088,7 +3140,7 @@
             } catch(e) {}
         }
         
-        // --- PAYSTACK INTEGRATIONS ---
+        // --- PAYSTACK LOGIC ---
         function payAgriProSubscription() {
             if (!agriToken || !currentUserEmail) return navigate('auth');
             let handler = PaystackPop.setup({
