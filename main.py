@@ -135,6 +135,32 @@ class Report(Base):
     reason = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow)
 
+class EquipmentListing(Base):
+    __tablename__ = "equipment_listings_v1"
+    id = Column(Integer, primary_key=True, index=True)
+    owner_id = Column(Integer, ForeignKey("users_v5.id"))
+    title = Column(String, index=True)
+    equipment_type = Column(String)
+    daily_rate_ghs = Column(Float)
+    security_deposit_ghs = Column(Float, default=0)
+    location = Column(String)
+    is_available = Column(Boolean, default=True)
+    image_url = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+class WasteCollection(Base):
+    __tablename__ = "waste_collections_v1"
+    id = Column(Integer, primary_key=True, index=True)
+    generator_id = Column(Integer, ForeignKey("users_v5.id"))
+    waste_type = Column(String)
+    quantity_est = Column(String)
+    pickup_address = Column(String)
+    contact_phone = Column(String)
+    status = Column(String, default="pending")
+    assigned_driver = Column(String, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+# -> CREATE TABLES AFTER ALL MODELS ARE DEFINED!
 Base.metadata.create_all(bind=engine)
 
 # --- SCHEMAS ---
@@ -170,6 +196,10 @@ class GoogleAuthRequest(BaseModel):
     credential: str
 class ReportCreate(BaseModel):
     seller_name: str; seller_phone: str; reason: str
+class EquipmentRentalCreate(BaseModel):
+    title: str; equipment_type: str; daily_rate_ghs: float; security_deposit_ghs: float; location: str; image_url: Optional[str] = None
+class WasteCollectionCreate(BaseModel):
+    waste_type: str; quantity_est: str; pickup_address: str; contact_phone: str
 
 # --- DEPENDENCIES ---
 def get_db():
@@ -250,27 +280,6 @@ def get_me(token: str, db: Session = Depends(get_db)):
     trial_days_left = max(0, 30 - days_passed)
     return {"full_name": user.full_name, "is_verified": user.is_verified, "email": user.email, "phone_number": user.phone_number, "age": getattr(user, "age", 0), "profile_picture": user.profile_picture, "member_since": str(user.created_at.year) if user.created_at else "2026", "trial_days_left": trial_days_left}
 
-# --- WHATSAPP BOT WEBHOOK ---
-@app.post("/api/v1/bot/whatsapp")
-def whatsapp_auto_poster(payload: WhatsappWebhook, db: Session = Depends(get_db)):
-    phone = payload.phone_number; text = payload.message_text.lower()
-    user = db.query(User).filter(User.phone_number == phone).first()
-    if not user:
-        auto_email = f"{phone}@wa.agromart.com"
-        user = User(full_name="WhatsApp Farmer", email=auto_email, phone_number=phone, hashed_password=pwd_context.hash("whatsapp123"), is_verified=True)
-        db.add(user); db.commit(); db.refresh(user)
-
-    price_match = re.search(r'\b(\d+)\s*(cedis|ghc|ghs|c)\b', text)
-    price = price_match.group(1) if price_match else "Negotiable"
-    cat = "Poultry"
-    if "egg" in text: cat = "Eggs"
-    elif "tomato" in text or "pepper" in text or "onion" in text: cat = "Vegetables/Fruits"
-    elif "chick" in text: cat = "Chicks"
-    
-    db_product = Product(product_name=payload.message_text[:40] + "...", category=cat, unit="unit", base_price_ghs=price, neighborhood="Ghana (Via WhatsApp)", description=payload.message_text, farmer_id=user.id, status="approved", boost_tier="standard")
-    db.add(db_product); db.commit()
-    return {"status": "success", "reply": f"Your ad is live on AgromartDirect! Buyers will contact {phone}."}
-
 # --- FARM MANAGER SAAS ---
 @app.post("/api/v1/farm-batches")
 def create_batch(req: FarmBatchCreate, token: str, db: Session = Depends(get_db)):
@@ -343,10 +352,7 @@ def get_market_intel(db: Session = Depends(get_db)):
             {"category": "Cassava (100kg Bag)", "national_avg": 450.00, "cheapest_region": "Mankessim Market", "cheapest_price": 300.00, "highest_region": "Agbogbloshie (Accra)", "highest_price": 600.00},
             {"category": "Onion (Maxi Bag)", "national_avg": 1200.00, "cheapest_region": "Bawku Market", "cheapest_price": 850.00, "highest_region": "Kejetia (Kumasi)", "highest_price": 1500.00},
             {"category": "Yam (100 Tubers)", "national_avg": 2100.00, "cheapest_region": "Kintampo Market", "cheapest_price": 1500.00, "highest_region": "Makola (Accra)", "highest_price": 2800.00},
-            {"category": "Plantain (Bunch)", "national_avg": 80.00, "cheapest_region": "Goaso Market", "cheapest_price": 45.00, "highest_region": "Agbogbloshie (Accra)", "highest_price": 120.00},
-            {"category": "Soya Beans (100kg)", "national_avg": 1300.00, "cheapest_region": "Wa Central Market", "cheapest_price": 950.00, "highest_region": "Kejetia (Kumasi)", "highest_price": 1500.00},
-            {"category": "Sorghum (100kg)", "national_avg": 950.00, "cheapest_region": "Navrongo Central", "cheapest_price": 750.00, "highest_region": "Accra Central", "highest_price": 1150.00},
-            {"category": "Shea Butter (25kg)", "national_avg": 650.00, "cheapest_region": "Tamale Wholesale", "cheapest_price": 450.00, "highest_region": "Takoradi Market", "highest_price": 850.00}
+            {"category": "Plantain (Bunch)", "national_avg": 80.00, "cheapest_region": "Goaso Market", "cheapest_price": 45.00, "highest_region": "Agbogbloshie (Accra)", "highest_price": 120.00}
         ])
 
     return sorted(intel, key=lambda x: x["category"])
@@ -389,12 +395,6 @@ def get_products(sort: str = "newest", category: str = "", search: str = "", nei
     
     results = query.all()
     return [{"id": p.id, "product_name": p.product_name, "category": p.category, "unit": p.unit, "base_price_ghs": p.base_price_ghs, "neighborhood": p.neighborhood, "description": p.description, "image_data": p.image_data, "delivery_details": p.delivery_details, "seller_name": u.full_name, "seller_profile_picture": u.profile_picture, "seller_verified": u.is_verified, "seller_member_since": str(u.created_at.year) if u.created_at else "2026", "phone_number": u.phone_number, "boost_tier": getattr(p, "boost_tier", "standard")} for p, u in results]
-
-@app.get("/api/v1/latest-ad")
-def get_latest_ad(db: Session = Depends(get_db)):
-    prod = db.query(Product).filter(Product.status == "approved").order_by(Product.created_at.desc()).first()
-    if prod: return {"id": prod.id, "product_name": prod.product_name, "neighborhood": prod.neighborhood, "base_price_ghs": prod.base_price_ghs}
-    return None
 
 @app.get("/api/v1/my-products")
 def get_my_products(token: str, db: Session = Depends(get_db)):
@@ -442,13 +442,67 @@ def delete_buyer_request(req_id: int, token: str, db: Session = Depends(get_db))
     db.delete(rfq); db.commit()
     return {"status": "success", "msg": "Buyer tender deleted"}
 
+# --- RENTALS (MACHINERY) ENDPOINTS ---
+@app.post("/api/v1/rentals")
+def create_rental_listing(payload: EquipmentRentalCreate, token: str, db: Session = Depends(get_db)):
+    user = get_current_user(token, db)
+    listing = EquipmentListing(owner_id=user.id, title=payload.title, equipment_type=payload.equipment_type, daily_rate_ghs=payload.daily_rate_ghs, security_deposit_ghs=payload.security_deposit_ghs, location=payload.location, image_url=payload.image_url)
+    db.add(listing); db.commit()
+    return {"status": "success", "message": "Equipment listed for rent"}
+
+@app.get("/api/v1/rentals")
+def get_rental_listings(equipment_type: str = "", db: Session = Depends(get_db)):
+    query = db.query(EquipmentListing, User).join(User, EquipmentListing.owner_id == User.id).filter(EquipmentListing.is_available == True)
+    if equipment_type: query = query.filter(EquipmentListing.equipment_type.ilike(f"%{equipment_type}%"))
+    results = query.order_by(EquipmentListing.created_at.desc()).all()
+    return [{"id": item.id, "title": item.title, "equipment_type": item.equipment_type, "daily_rate_ghs": item.daily_rate_ghs, "security_deposit_ghs": item.security_deposit_ghs, "location": item.location, "image_url": item.image_url, "owner_name": user.full_name, "owner_phone": user.phone_number, "owner_verified": user.is_verified} for item, user in results]
+
+@app.get("/api/v1/my-rentals")
+def get_my_rentals(token: str, db: Session = Depends(get_db)):
+    user = get_current_user(token, db)
+    items = db.query(EquipmentListing).filter(EquipmentListing.owner_id == user.id).order_by(EquipmentListing.created_at.desc()).all()
+    return [{"id": i.id, "title": i.title, "equipment_type": i.equipment_type, "daily_rate_ghs": i.daily_rate_ghs} for i in items]
+
+@app.delete("/api/v1/rentals/{id}")
+def delete_rental(id: int, token: str, db: Session = Depends(get_db)):
+    user = get_current_user(token, db)
+    item = db.query(EquipmentListing).filter(EquipmentListing.id == id, EquipmentListing.owner_id == user.id).first()
+    if item: db.delete(item); db.commit()
+    return {"status": "success"}
+
+# --- ECO-LOOP (WASTE) ENDPOINTS ---
+@app.post("/api/v1/waste-collections")
+def request_waste_collection(payload: WasteCollectionCreate, token: str, db: Session = Depends(get_db)):
+    user = get_current_user(token, db)
+    request = WasteCollection(generator_id=user.id, waste_type=payload.waste_type, quantity_est=payload.quantity_est, pickup_address=payload.pickup_address, contact_phone=payload.contact_phone)
+    db.add(request); db.commit()
+    return {"status": "success", "message": "Reverse logistics pickup logged."}
+
+@app.get("/api/v1/waste-collections")
+def list_waste_collections(db: Session = Depends(get_db)):
+    requests = db.query(WasteCollection).order_by(WasteCollection.created_at.desc()).limit(30).all()
+    return [{"id": r.id, "waste_type": r.waste_type, "quantity": r.quantity_est, "address": r.pickup_address, "contact_phone": r.contact_phone, "status": r.status, "created_at": r.created_at.strftime("%b %d, %Y")} for r in requests]
+
+@app.get("/api/v1/my-waste-requests")
+def get_my_waste_requests(token: str, db: Session = Depends(get_db)):
+    user = get_current_user(token, db)
+    items = db.query(WasteCollection).filter(WasteCollection.generator_id == user.id).order_by(WasteCollection.created_at.desc()).all()
+    return [{"id": i.id, "waste_type": i.waste_type, "quantity": i.quantity_est, "status": i.status} for i in items]
+
+@app.delete("/api/v1/waste-collections/{id}")
+def delete_waste_req(id: int, token: str, db: Session = Depends(get_db)):
+    user = get_current_user(token, db)
+    item = db.query(WasteCollection).filter(WasteCollection.id == id, WasteCollection.generator_id == user.id).first()
+    if item: db.delete(item); db.commit()
+    return {"status": "success"}
+
+# --- ADMIN & SECURE FUNCTIONS ---
 @app.post("/api/v1/report")
 def submit_report(payload: ReportCreate, db: Session = Depends(get_db)):
     db_report = Report(reported_seller_name=payload.seller_name, reported_seller_phone=payload.seller_phone, reason=payload.reason)
     db.add(db_report); db.commit()
     return {"status": "success"}
 
-# --- ADMIN & SECURE FUNCTIONS ---
 @app.get("/api/v1/admin/pending-users")
 def get_pending_users(token: str, db: Session = Depends(get_db)):
     admin = get_current_user(token, db)
@@ -606,8 +660,3 @@ async def paystack_webhook(request: Request, db: Session = Depends(get_db)):
 async def cron_ad_expiry_loop(x_cron_secret: str = Header(None)):
     if x_cron_secret != CRON_SECRET: raise HTTPException(status_code=401, detail="Unauthorized")
     return {"status": "success", "message": "Ad expiry verification complete"}
-
-@app.post("/api/v1/cron/weekly-market-digest")
-async def cron_weekly_market_digest(x_cron_secret: str = Header(None)):
-    if x_cron_secret != CRON_SECRET: raise HTTPException(status_code=401, detail="Unauthorized")
-    return {"status": "success", "message": "Weekly digest broadcast triggered"}
