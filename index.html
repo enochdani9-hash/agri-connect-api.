@@ -6,6 +6,7 @@
     <title>AgromartDirect | Ghana's Agribusiness OS</title>
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2814/2814468.png" type="image/png">
     
+    <!-- External Scripts -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://js.paystack.co/v1/inline.js"></script>
@@ -65,6 +66,7 @@
 </head>
 <body id="app-body" class="bg-[#020617] text-slate-100 font-sans min-h-screen flex flex-col transition-colors duration-300">
     
+    <!-- Ambient Background Lighting -->
     <div class="fixed top-[-20%] left-[-10%] w-[50%] h-[50%] bg-emerald-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
     <div class="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
     
@@ -80,6 +82,11 @@
         </div>
     </div>
 
+    <!-- ========================================== -->
+    <!-- MODALS SECTION                             -->
+    <!-- ========================================== -->
+
+    <!-- Edit Ad Modal -->
     <div id="edit-ad-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[120] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative">
             <button onclick="closeEditModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
@@ -103,6 +110,7 @@
         </div>
     </div>
 
+    <!-- Preview Ad Modal -->
     <div id="preview-ad-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[130] hidden items-center justify-center p-4">
         <div class="w-full max-w-md relative">
             <button onclick="closePreviewModal()" class="absolute -top-12 right-0 text-white font-black text-lg bg-slate-800 hover:bg-rose-500 rounded-full w-8 h-8 flex items-center justify-center shadow-lg transition-colors">✕</button>
@@ -110,6 +118,7 @@
         </div>
     </div>
 
+    <!-- Farm Batch Modal -->
     <div id="batch-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[120] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-8 rounded-[2.5rem] relative border border-blue-500/30">
             <button onclick="closeBatchModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
@@ -128,6 +137,7 @@
         </div>
     </div>
 
+    <!-- RFQ (Buyer Request) Modal -->
     <div id="rfq-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[120] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-blue-500/30 text-left">
             <button onclick="closeRfqModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
@@ -152,6 +162,7 @@
         </div>
     </div>
 
+    <!-- Sponsor Video Modal -->
     <div id="video-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[200] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] text-center border border-emerald-500/50">
             <h3 class="text-2xl font-black text-white mb-2">Publishing Ad...</h3>
@@ -165,6 +176,7 @@
         </div>
     </div>
 
+    <!-- Deal Room Modal -->
     <div id="order-modal" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-emerald-500/30">
             <button onclick="closeOrderModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
@@ -222,6 +234,7 @@
         </div>
     </div>
 
+    <!-- WhatsApp Flyer Modal -->
     <div id="flyer-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-6 rounded-[2.5rem] text-center border border-emerald-500/30">
             <button onclick="closeFlyerModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl font-bold">✕</button>
@@ -232,6 +245,9 @@
         </div>
     </div>
 
+    <!-- ========================================== -->
+    <!-- HEADER / NAVIGATION                        -->
+    <!-- ========================================== -->
     <header class="bg-[#020617]/70 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
@@ -252,7 +268,8 @@
                 
                 <button onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center bg-white/5 border border-white/10 rounded-xl text-xs text-slate-300 hover:bg-white/10 transition-colors">☀️</button>
                 
-                <button id="nav-login-btn" onclick="navigate('auth')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 hidden transition-colors">Sign In</button>
+                <!-- FIX: Removed the 'hidden' class here so Sign In shows by default! -->
+                <button id="nav-login-btn" onclick="navigate('auth')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 transition-colors">Sign In</button>
                 
                 <div id="nav-user-profile" class="hidden items-center gap-3 bg-white/5 px-4 py-1.5 rounded-full border border-white/10">
                     <span id="nav-user-name" class="text-xs font-bold text-emerald-400 hidden md:block"></span>
@@ -266,6 +283,7 @@
         </div>
     </header>
 
+    <!-- Mobile Navigation Bar (Visible only on mobile devices) -->
     <div class="md:hidden bg-[#020617] border-b border-white/10 px-4 py-3 overflow-x-auto whitespace-nowrap flex gap-3 z-40">
         <button onclick="navigate('trainer')" class="text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-4 py-2 rounded-xl shrink-0">📚 Agri Trainer</button>
         <button onclick="navigate('grants')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0">🏆 Agri-Grants</button>
@@ -276,6 +294,7 @@
         <button onclick="navigate('waste')" class="text-xs font-bold text-emerald-300 border border-emerald-400/30 bg-emerald-500/10 px-4 py-2 rounded-xl shrink-0">♻️ Eco-Loop</button>
     </div>
 
+    <!-- LIVE TICKER BAR -->
     <div class="bg-[#020617] border-b border-white/5 relative z-40 hidden md:block overflow-hidden shadow-inner">
         <div class="max-w-7xl mx-auto flex items-center pl-6">
             <div class="bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider px-4 py-2 rounded-r-lg z-10 shrink-0 flex items-center gap-2 shadow-lg">
@@ -289,9 +308,14 @@
         </div>
     </div>
 
+    <!-- ========================================== -->
+    <!-- MAIN APPLICATION VIEWS                     -->
+    <!-- ========================================== -->
     <main class="max-w-7xl mx-auto px-6 py-8 flex-grow w-full relative z-10">
         
+        <!-- 1. HOME VIEW -->
         <div id="view-home" class="fade-in space-y-16">
+            <!-- Hero Section -->
             <div class="text-center py-20 px-4 glass-card rounded-[2.5rem] shadow-2xl border-t border-white/10 relative overflow-hidden">
                 <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
                 <div class="text-6xl mb-6 floating-element inline-block">🚜</div>
@@ -316,8 +340,10 @@
                     </div>
                 </div>
 
+                <!-- PLATFORM FEATURES SLIDESHOW -->
                 <div class="mt-12 relative w-full max-w-5xl mx-auto glass-card rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl h-64 md:h-56" id="feature-slideshow">
-                    </div>
+                    <!-- Javascript will inject slides here -->
+                </div>
 
                 <div class="mt-8 flex justify-center relative z-10">
                     <div class="bg-[#0f172a] p-1.5 rounded-2xl border border-slate-700/80 inline-flex shadow-xl">
@@ -348,10 +374,9 @@
                     <div id="trending-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
                 </div>
 
+                <!-- 10 CUSTOM CATEGORIES -->
                 <div class="mt-16">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-2xl font-black text-white tracking-tight">Browse Categories</h3>
-                    </div>
+                    <div class="flex items-center justify-between mb-6"><h3 class="text-2xl font-black text-white tracking-tight">Browse Categories</h3></div>
                     <div class="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-5 gap-5">
                         <div onclick="executeCategory('Poultry')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
                             <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('poultry.jfif.jfif');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Live Poultry</p></div>
@@ -376,17 +401,36 @@
                     </div>
                 </div>
 
+                <!-- AGRI NEWSROOM & POLICY UPDATES -->
                 <div class="mt-20">
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-2xl font-black text-white tracking-tight flex items-center gap-2">📰 Agri Newsroom & Policy</h3>
                         <span class="text-[10px] bg-blue-500/20 text-blue-400 border border-blue-500/30 px-3 py-1 rounded-full uppercase font-bold tracking-widest">Live Updates</span>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="newsroom-grid">
-                        </div>
+                        <!-- Javascript will inject news here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- PARTNERSHIP -->
+            <div class="mt-20 glass-card p-10 rounded-[2.5rem] relative overflow-hidden border border-emerald-500/30 bg-gradient-to-br from-[#020617] to-emerald-950/40">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
+                <div class="text-center relative z-10">
+                    <span class="text-4xl mb-4 block">🤝</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-white mb-4 tracking-tight">Partner With Us & Fuel the Future</h2>
+                    <p class="text-slate-300 text-sm max-w-2xl mx-auto leading-relaxed mb-8">
+                        AgromartDirect is on a mission to completely digitize the agricultural supply chain in Ghana. By eliminating the middleman, we are increasing farmer profits and bringing cheaper, fresher food to consumers nationwide. 
+                    </p>
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-4">
+                        <a href="mailto:agriconnect886@gmail.com" class="bg-white/10 hover:bg-white/20 text-white font-bold py-3 px-6 rounded-xl transition-colors border border-white/10 flex items-center gap-2">✉️ agriconnect886@gmail.com</a>
+                        <a href="https://wa.me/233245641480" target="_blank" class="bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white font-bold py-3 px-6 rounded-xl transition-all border border-[#25D366]/30 flex items-center gap-2">📞 +233 245 641 480</a>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <!-- 2. MARKETPLACE VIEW -->
         <div id="view-marketplace" class="fade-in hidden space-y-6">
             <div class="flex flex-col md:flex-row md:items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 backdrop-blur-sm gap-4">
                 <div class="flex items-center gap-3">
@@ -413,6 +457,7 @@
             <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
         </div>
 
+        <!-- 3. AGRI TRAINER (LEARN TO GROW) -->
         <div id="view-trainer" class="fade-in hidden space-y-8">
             <div class="text-center mb-10">
                 <div class="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 border border-purple-500/30 shadow-lg">📚</div>
@@ -450,6 +495,7 @@
             </div>
         </div>
 
+        <!-- 4. FARM MANAGER SAAS -->
         <div id="view-farm-manager" class="fade-in hidden space-y-8">
             <div class="flex flex-col md:flex-row md:items-center justify-between bg-[#0f172a] p-6 rounded-3xl border border-blue-500/30 gap-4 shadow-xl">
                 <div>
@@ -462,6 +508,7 @@
             <div id="farm-batches-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </div>
 
+        <!-- 5. MARKET INTEL VIEW (BLOOMBERG DASHBOARD) -->
         <div id="view-intel" class="fade-in hidden space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <div class="w-16 h-16 bg-rose-500/20 rounded-full flex items-center justify-center text-3xl mx-auto border border-rose-500/30 shadow-lg">📊</div>
@@ -471,6 +518,7 @@
             <div id="intel-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
         </div>
 
+        <!-- 6. FEED CALCULATOR (PEARSON SQUARE) -->
         <div id="view-calculator" class="fade-in hidden space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <div class="w-16 h-16 bg-teal-500/20 rounded-full flex items-center justify-center text-3xl mx-auto border border-teal-500/30 shadow-lg shadow-teal-500/10">🧮</div>
@@ -479,6 +527,7 @@
             </div>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Calc Inputs -->
                 <div class="glass-card p-8 rounded-[2.5rem] border border-teal-500/30 shadow-2xl">
                     <h3 class="text-lg font-black text-teal-400 mb-6 flex items-center gap-2">1. Set Your Targets</h3>
                     <div class="space-y-5">
@@ -506,6 +555,7 @@
                     </div>
                 </div>
 
+                <!-- Calc Results -->
                 <div class="glass-card p-8 rounded-[2.5rem] border border-white/5 relative overflow-hidden flex flex-col justify-center shadow-xl">
                     <div class="absolute top-[-50px] right-[-50px] w-48 h-48 bg-teal-500/10 rounded-full blur-[60px] pointer-events-none"></div>
                     <h3 class="text-lg font-black text-white mb-6 z-10">2. Your Custom Formulation</h3>
@@ -532,6 +582,7 @@
             </div>
         </div>
 
+        <!-- 7. GRANTS & OPPORTUNITIES AGGREGATOR -->
         <div id="view-grants" class="fade-in hidden space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <div class="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center text-3xl mx-auto border border-amber-500/30 shadow-lg">🏆</div>
@@ -541,6 +592,7 @@
             <div id="grants-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </div>
 
+        <!-- 8. POST AD VIEW (SELLER) -->
         <div id="view-post" class="fade-in hidden max-w-2xl mx-auto mt-6">
             <div class="flex items-center gap-3 mb-6">
                 <div class="w-10 h-10 bg-emerald-500/20 rounded-xl flex items-center justify-center text-emerald-400 border border-emerald-500/30 shadow-lg">📢</div>
@@ -589,6 +641,7 @@
             </div>
         </div>
 
+        <!-- 9. DASHBOARD VIEW (W/ MY TENDERS & FULL ADMIN PANEL) -->
         <div id="view-dashboard" class="fade-in hidden max-w-5xl mx-auto mt-6 space-y-6">
             
             <div class="grid grid-cols-2 sm:grid-cols-3 md:hidden gap-3 mt-4 w-full">
@@ -644,6 +697,7 @@
                 </div>
             </div>
 
+            <!-- DASHBOARD GRIDS: ROW 1 -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div>
                     <div class="flex items-center justify-between mb-4 glass-card p-5 rounded-2xl">
@@ -659,6 +713,7 @@
                 </div>
             </div>
 
+            <!-- DASHBOARD GRIDS: ROW 2 (NEW EXTENSIONS) -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
                 <div>
                     <div class="flex items-center justify-between mb-4 glass-card p-5 rounded-2xl border border-amber-500/30">
@@ -674,6 +729,7 @@
                 </div>
             </div>
 
+            <!-- ADMIN PANEL -->
             <div id="admin-panel" class="hidden mt-12 glass-card p-8 rounded-3xl border border-emerald-500/30 shadow-2xl bg-slate-900/50">
                 <div class="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
                     <div>
@@ -683,6 +739,7 @@
                 </div>
                 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Left Column -->
                     <div>
                         <div class="mb-8">
                             <h4 class="text-xs font-black uppercase tracking-wider text-amber-400 mb-3">⭐ Paid Verification Requests (GH₵ 5)</h4>
@@ -711,6 +768,7 @@
                         </div>
                     </div>
 
+                    <!-- Right Column -->
                     <div>
                         <div class="mb-8">
                             <h4 class="text-xs font-black uppercase tracking-wider text-slate-400 mb-3">Ad Moderation Queue (Pending Review)</h4>
@@ -731,6 +789,7 @@
             </div>
         </div>
 
+        <!-- VIEW: MACHINERY & TOOL RENTALS (P2P) -->
         <div id="view-rentals" class="fade-in hidden space-y-8">
             <div class="flex flex-col md:flex-row md:items-center justify-between bg-[#0f172a] p-6 rounded-3xl border border-amber-500/30 gap-4 shadow-xl">
                 <div>
@@ -742,6 +801,7 @@
             <div id="rentals-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
         </div>
 
+        <!-- VIEW: ECO-LOOP REVERSE LOGISTICS -->
         <div id="view-waste" class="fade-in hidden space-y-8">
             <div class="text-center space-y-4 mb-8">
                 <div class="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center text-3xl mx-auto border border-emerald-500/30 shadow-lg">♻️</div>
@@ -790,6 +850,7 @@
             </div>
         </div>
 
+        <!-- 10. AUTHENTICATION -->
         <div id="view-auth" class="fade-in hidden max-w-sm mx-auto mt-10">
             <div class="glass-card p-8 rounded-[2rem] shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
@@ -852,6 +913,7 @@
             </div>
         </div>
 
+        <!-- 11. PRICING VIEW -->
         <div id="view-pricing" class="fade-in hidden max-w-5xl mx-auto mt-10 space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">Boost Your Sales</h2>
@@ -897,6 +959,7 @@
             </div>
         </div>
 
+        <!-- 12. FAQ & ABOUT & SUPPORT -->
         <div id="view-faq" class="fade-in hidden max-w-4xl mx-auto mt-6 space-y-8">
             <div class="text-center space-y-4 mb-10"><h2 class="text-3xl font-black text-white tracking-tight">Frequently Asked Questions</h2></div>
             <div class="space-y-4">
@@ -1008,12 +1071,12 @@
 
         // --- AGRI NEWSROOM ---
         const dummyNews = [
-            { source: "MoFA Update", date: "Just Now", title: "Government Announces 15% Subsidy on NPK Fertilizers for 2026 Season", snippet: "The Ministry of Food and Agriculture has rolled out a new digital tracking system for fertilizer distribution to curb cross-border smuggling...", link: "#" },
-            { source: "COCOBOD", date: "2 Hours Ago", title: "Cocoa Farm Gate Price Adjusted Upward to Support Local Growers", snippet: "In a bid to support local farmers, the guaranteed price per bag has seen a historic adjustment following global market trends...", link: "#" },
-            { source: "AgriTech Ghana", date: "5 Hours Ago", title: "New Drought-Resistant Maize Variety Introduced to Northern Region", snippet: "CSIR researchers have approved the release of a new seed strain capable of surviving prolonged dry spells to boost food security...", link: "#" },
-            { source: "Export Council", date: "Yesterday", title: "Vegetable Exports to EU Resume Following Lifting of Phytosanitary Ban", snippet: "Strict controls have satisfied European regulators, opening up millions in trade for local vegetable and fruit growers...", link: "#" },
-            { source: "Climate Watch", date: "Yesterday", title: "Heavy Rains Expected in Middle Belt: Farmers Advised to Delay Harvesting", snippet: "The Meteorological Agency warns of unseasonal downpours affecting the Bono and Ashanti regions over the next 48 hours...", link: "#" },
-            { source: "Finance & Policy", date: "2 Days Ago", title: "Central Bank Urges Commercial Banks to Lower Agric Loan Rates", snippet: "Policy measures aimed at boosting food security target the high cost of capital for commercial farming ventures...", link: "#" }
+            { source: "MoFA Update", date: "Just Now", title: "Government Announces 15% Subsidy on NPK Fertilizers for 2026 Season", snippet: "The Ministry of Food and Agriculture has rolled out a new digital tracking system for fertilizer distribution to curb cross-border smuggling...", link: "https://mofa.gov.gh/" },
+            { source: "COCOBOD", date: "2 Hours Ago", title: "Cocoa Farm Gate Price Adjusted Upward to Support Local Growers", snippet: "In a bid to support local farmers, the guaranteed price per bag has seen a historic adjustment following global market trends...", link: "https://cocobod.gh/" },
+            { source: "AgriTech Ghana", date: "5 Hours Ago", title: "New Drought-Resistant Maize Variety Introduced to Northern Region", snippet: "CSIR researchers have approved the release of a new seed strain capable of surviving prolonged dry spells to boost food security...", link: "https://www.csir.org.gh/" },
+            { source: "Export Council", date: "Yesterday", title: "Vegetable Exports to EU Resume Following Lifting of Phytosanitary Ban", snippet: "Strict controls have satisfied European regulators, opening up millions in trade for local vegetable and fruit growers...", link: "https://www.gepaghana.org/" },
+            { source: "Climate Watch", date: "Yesterday", title: "Heavy Rains Expected in Middle Belt: Farmers Advised to Delay Harvesting", snippet: "The Meteorological Agency warns of unseasonal downpours affecting the Bono and Ashanti regions over the next 48 hours...", link: "https://www.meteo.gov.gh/" },
+            { source: "Finance & Policy", date: "2 Days Ago", title: "Central Bank Urges Commercial Banks to Lower Agric Loan Rates", snippet: "Policy measures aimed at boosting food security target the high cost of capital for commercial farming ventures...", link: "https://www.bog.gov.gh/" }
         ];
 
         function loadAgriNews() {
@@ -1021,7 +1084,7 @@
             if(!grid) return;
             
             grid.innerHTML = dummyNews.map(n => `
-                <div class="glass-card p-6 rounded-3xl border border-white/5 hover:border-emerald-500/30 transition-all flex flex-col justify-between group shadow-lg cursor-pointer">
+                <div class="glass-card p-6 rounded-3xl border border-white/5 hover:border-emerald-500/30 transition-all flex flex-col justify-between group shadow-lg cursor-pointer" onclick="window.open('${n.link}', '_blank')">
                     <div>
                         <div class="flex items-center justify-between mb-4">
                             <span class="text-[9px] bg-white/10 text-slate-300 px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">${n.source}</span>
@@ -1030,7 +1093,7 @@
                         <h4 class="text-white font-black text-sm mb-2 group-hover:text-emerald-400 transition-colors leading-snug">${n.title}</h4>
                         <p class="text-xs text-slate-400 leading-relaxed mb-4 line-clamp-3">${n.snippet}</p>
                     </div>
-                    <a href="${n.link}" class="text-xs font-black text-blue-400 hover:text-emerald-400 transition-colors">Read Full Story →</a>
+                    <a href="${n.link}" target="_blank" class="text-xs font-black text-blue-400 hover:text-emerald-400 transition-colors mt-auto block">Read Full Story →</a>
                 </div>
             `).join('');
         }
@@ -1225,7 +1288,6 @@
                 if(btn) btn.classList.remove('hidden'); 
             }
             
-            // Navigate to home by default
             navigate('home');
         });
 
@@ -2527,7 +2589,283 @@
             } catch(e) {} 
         }
 
-        // --- MACHINERY RENTALS ---
+        // --- RFQ / BUYER REQUESTS ---
+        function openRfqModal() { 
+            if (!agriToken) { 
+                showToast("Sign in first", "error"); 
+                return navigate('auth'); 
+            } 
+            const modal = document.getElementById('rfq-modal'); 
+            if(modal) { 
+                modal.classList.remove('hidden'); 
+                modal.classList.add('flex'); 
+            } 
+        }
+        
+        function closeRfqModal() { 
+            const modal = document.getElementById('rfq-modal'); 
+            if(modal) { 
+                modal.classList.add('hidden'); 
+                modal.classList.remove('flex'); 
+            } 
+        }
+        
+        async function submitBuyerRequest() { 
+            const btn = document.getElementById('rfq-submit-btn'); 
+            const payload = { 
+                item_needed: document.getElementById('rfq-item').value.trim(), 
+                category: document.getElementById('rfq-category').value, 
+                quantity: document.getElementById('rfq-quantity').value.trim(), 
+                target_budget_ghs: document.getElementById('rfq-budget').value.trim(), 
+                delivery_destination: document.getElementById('rfq-destination').value.trim(), 
+                description: document.getElementById('rfq-description').value.trim() 
+            }; 
+            
+            if (!payload.item_needed || !payload.quantity || !payload.target_budget_ghs || !payload.delivery_destination) {
+                return showToast("Fill required fields", "error"); 
+            }
+            
+            btn.disabled = true; 
+            btn.innerText = "Publishing... ⏳"; 
+            
+            try { 
+                await fetch(`${API_URL}/api/v1/buyer-requests?token=${agriToken}`, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify(payload) 
+                }); 
+                showToast("Tender Published! 📢"); 
+                
+                ['rfq-item', 'rfq-quantity', 'rfq-budget', 'rfq-destination', 'rfq-description'].forEach(id => { 
+                    const el = document.getElementById(id); 
+                    if(el) el.value = ''; 
+                }); 
+                
+                closeRfqModal(); 
+                loadBuyerRequests(); 
+            } catch (err) {} finally { 
+                btn.disabled = false; 
+                btn.innerText = "Publish Tender"; 
+            } 
+        }
+        
+        async function loadBuyerRequests() { 
+            try { 
+                const res = await fetch(`${API_URL}/api/v1/buyer-requests?t=${new Date().getTime()}`); 
+                const rfqs = await res.json(); 
+                allLoadedRfqs = rfqs; 
+                
+                renderRfqGrid(rfqs, document.getElementById('rfq-grid')); 
+                
+                if (currentMarketMode === 'rfqs') {
+                    renderRfqGrid(rfqs, document.getElementById('product-grid')); 
+                }
+            } catch (e) {} 
+        }
+        
+        function renderRfqGrid(rfqs, container) { 
+            if (!container) return; 
+            
+            if (!rfqs || rfqs.length === 0) { 
+                container.innerHTML = `<div class="col-span-full glass-card py-16 rounded-3xl text-center border border-white/5"><p class="text-slate-400 text-sm">No active tenders.</p></div>`; 
+                return; 
+            } 
+            
+            container.innerHTML = rfqs.map(r => { 
+                let cleanPhone = r.buyer_phone.replace(/\D/g, ''); 
+                if (cleanPhone.startsWith('0')) cleanPhone = '233' + cleanPhone.substring(1); 
+                
+                let whatsappMsg = `*OFFER TO SUPPLY via AgromartDirect*\n📢 *Your Tender:* ${r.item_needed}\n🔢 *Quantity:* ${r.quantity}\n💰 *Your Budget:* GH₵${r.target_budget_ghs}\n📍 *Destination:* ${r.delivery_destination}\n\nHello, I can supply this order from my farm. Let's discuss dispatch!`; 
+                
+                return `
+                    <div class="glass-card p-6 rounded-[2rem] border border-blue-500/20 hover:border-blue-500/50 transition-all flex flex-col justify-between shadow-xl">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="bg-blue-500/10 text-blue-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-lg border border-blue-500/20">Tender Wanted</span>
+                                <span class="text-[10px] text-slate-400">📍 ${r.delivery_destination}</span>
+                            </div>
+                            <h4 class="text-xl font-black text-white mb-2 leading-tight">${r.item_needed}</h4>
+                            <div class="text-xs text-slate-300 space-y-1 mb-4 bg-[#0f172a] p-4 rounded-xl border border-slate-700/50">
+                                <p>📦 <strong>Volume:</strong> ${r.quantity}</p>
+                                <p>💰 <strong>Target Budget:</strong> <span class="text-emerald-400 font-bold">GH₵${r.target_budget_ghs}</span></p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 pt-4 border-t border-white/10 mt-auto">
+                            <a href="https://wa.me/${cleanPhone}?text=${encodeURIComponent(whatsappMsg)}" target="_blank" class="bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-3 rounded-xl text-xs flex items-center justify-center transition-colors">💬 WhatsApp Bid</a>
+                            <a href="tel:${r.buyer_phone}" class="bg-blue-600/20 hover:bg-blue-600 text-blue-300 hover:text-white border border-blue-500/30 font-black py-3 rounded-xl text-xs flex items-center justify-center transition-colors">📞 Call Buyer</a>
+                        </div>
+                    </div>`; 
+            }).join(''); 
+        }
+
+        // --- DEAL ROOM ---
+        function openOrderModal(phone, name, priceStr, unit, sellerLoc, prodId) { 
+            if (!agriToken) { 
+                showToast("Sign in to contact seller", "error"); 
+                return navigate('auth'); 
+            } 
+            let avgPrice = parseFloat(priceStr.toString().match(/\d+(\.\d+)?/g)?.[0] || 0); 
+            
+            currentOrderPhone = phone; 
+            currentOrderName = name; 
+            currentOrderBasePrice = avgPrice; 
+            currentOrderUnit = unit; 
+            currentOrderSellerLoc = sellerLoc || "Ghana"; 
+            
+            const pname = document.getElementById('order-product-name'); if(pname) pname.innerText = name; 
+            const pprice = document.getElementById('order-base-price'); if(pprice) pprice.innerText = avgPrice.toFixed(2); 
+            const punit = document.getElementById('order-unit'); if(punit) punit.innerText = unit; 
+            const oqty = document.getElementById('order-quantity'); if(oqty) oqty.value = 1; 
+            
+            const slider = document.getElementById('haggle-slider'); 
+            if(slider) { 
+                slider.min = Math.floor(avgPrice * 0.5); 
+                slider.max = Math.ceil(avgPrice * 1.2); 
+                slider.value = Math.floor(avgPrice * 0.85); 
+            } 
+            
+            updateHaggleMeter(); 
+            switchOrderTab('direct'); 
+            calculateOrderTotal(); 
+            
+            const modal = document.getElementById('order-modal'); 
+            if(modal) { 
+                modal.classList.remove('hidden'); 
+                modal.classList.add('flex'); 
+            } 
+        }
+        
+        function closeOrderModal() { 
+            const modal = document.getElementById('order-modal'); 
+            if(modal) { 
+                modal.classList.add('hidden'); 
+                modal.classList.remove('flex'); 
+            } 
+        }
+        
+        function switchOrderTab(tab) { 
+            currentOrderTabState = tab; 
+            ['direct', 'haggle', 'group'].forEach(t => { 
+                const btn = document.getElementById(`tab-${t}`); 
+                if(btn) { 
+                    if (t === tab) { 
+                        btn.classList.add('bg-emerald-600', 'text-white'); 
+                        btn.classList.remove('text-slate-400'); 
+                    } else { 
+                        btn.classList.remove('bg-emerald-600', 'text-white'); 
+                        btn.classList.add('text-slate-400'); 
+                    } 
+                } 
+            }); 
+            
+            const phaggle = document.getElementById('panel-haggle'); if(phaggle) phaggle.classList.toggle('hidden', tab !== 'haggle'); 
+            const pgroup = document.getElementById('panel-group'); if(pgroup) pgroup.classList.toggle('hidden', tab !== 'group'); 
+            
+            calculateOrderTotal(); 
+        }
+        
+        function updateHaggleMeter() { 
+            const slider = document.getElementById('haggle-slider'); if(!slider) return; 
+            
+            const val = parseFloat(slider.value); 
+            const hdisplay = document.getElementById('haggle-val-display'); if(hdisplay) hdisplay.innerText = val.toFixed(2); 
+            
+            const ratio = val / currentOrderBasePrice; 
+            const fb = document.getElementById('haggle-feedback'); 
+            
+            if(fb) { 
+                if (ratio < 0.65) { 
+                    fb.innerText = "⚠️ Low offer"; 
+                    fb.className = "font-bold text-rose-400"; 
+                } else if (ratio <= 0.90) { 
+                    fb.innerText = "🤝 Fair Offer"; 
+                    fb.className = "font-bold text-amber-400"; 
+                } else { 
+                    fb.innerText = "⭐ Premium Offer"; 
+                    fb.className = "font-bold text-emerald-400"; 
+                } 
+            } 
+            calculateOrderTotal(); 
+        }
+        
+        function calculateOrderTotal() { 
+            const oqty = document.getElementById('order-quantity'); 
+            let qty = Math.max(1, parseInt(oqty ? oqty.value : 1) || 1); 
+            let unitPrice = currentOrderBasePrice; 
+            
+            if (currentOrderTabState === 'haggle') { 
+                const slider = document.getElementById('haggle-slider'); 
+                unitPrice = parseFloat(slider ? slider.value : currentOrderBasePrice) || currentOrderBasePrice; 
+            } 
+            
+            let sub = unitPrice * qty; 
+            const osub = document.getElementById('order-total-price'); if(osub) osub.innerText = sub.toFixed(2); 
+            
+            let splitCount = parseInt(document.getElementById('group-split-count')?.value) || 2;
+            const eachP = document.getElementById('group-each-price');
+            if(eachP) eachP.innerText = (sub / splitCount).toFixed(2);
+        }
+        
+        function executeDealWhatsApp() { 
+            const oqty = document.getElementById('order-quantity'); let qty = oqty ? oqty.value : 1; 
+            const odest = document.getElementById('order-destination'); let dest = odest ? odest.value || "TBD" : "TBD"; 
+            const ototal = document.getElementById('order-total-price'); let total = ototal ? ototal.innerText : 0; 
+            
+            let cleanPhone = currentOrderPhone.replace(/\D/g, ''); 
+            if(cleanPhone.startsWith('0')) cleanPhone = '233' + cleanPhone.substring(1); 
+            
+            let msgText = `*ORDER via AgromartDirect*\n📦 *Item:* ${currentOrderName}\n🔢 *Qty:* ${qty} ${currentOrderUnit}\n📍 *Delivery:* ${dest}\n💰 *Total:* GH₵${total}\n\nHello, I am interested in this. Please confirm availability.`; 
+            
+            window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(msgText)}`, '_blank'); 
+            closeOrderModal(); 
+        }
+        
+        function executeCallFarmer() { 
+            window.open(`tel:${currentOrderPhone.replace(/\D/g, '')}`, '_self'); 
+            closeOrderModal(); 
+        }
+
+        // --- FEED CALCULATOR (PEARSON SQUARE) ---
+        function calculateFeedMix() {
+            const targetCP = parseFloat(document.getElementById('calc-target-cp').value);
+            const proteinCP = parseFloat(document.getElementById('calc-protein-cp').value);
+            const energyCP = parseFloat(document.getElementById('calc-energy-cp').value);
+            const proteinPrice = parseFloat(document.getElementById('calc-protein-price').value);
+            const energyPrice = parseFloat(document.getElementById('calc-energy-price').value);
+
+            if (isNaN(targetCP) || isNaN(proteinCP) || isNaN(energyCP)) {
+                return showToast("Please fill in all CP % values", "error");
+            }
+            if (targetCP >= proteinCP || targetCP <= energyCP) {
+                return showToast("Target CP must be between your Protein and Energy CP values!", "error");
+            }
+
+            const partsProtein = targetCP - energyCP;
+            const partsEnergy = proteinCP - targetCP;
+            const totalParts = partsProtein + partsEnergy;
+
+            const percentProtein = (partsProtein / totalParts);
+            const percentEnergy = (partsEnergy / totalParts);
+
+            const kgProtein = percentProtein * 50;
+            const kgEnergy = percentEnergy * 50;
+
+            const costProteinPerKg = proteinPrice / 50;
+            const costEnergyPerKg = energyPrice / 50;
+            const totalCost = (kgProtein * costProteinPerKg) + (kgEnergy * costEnergyPerKg);
+
+            document.getElementById('res-protein-kg').innerText = kgProtein.toFixed(1) + " kg";
+            document.getElementById('res-energy-kg').innerText = kgEnergy.toFixed(1) + " kg";
+            document.getElementById('res-total-cost').innerText = "GH₵ " + totalCost.toFixed(2);
+
+            document.getElementById('calc-results-empty').classList.add('hidden');
+            document.getElementById('calc-results-filled').classList.remove('hidden');
+            document.getElementById('calc-results-filled').classList.add('block');
+            
+            showToast("Feed Formulation Calculated! ✨");
+        }
+
+        // --- MACHINERY RENTALS CONTROLLER ---
         async function loadRentals() {
             const grid = document.getElementById('rentals-grid');
             if (!grid) return;
@@ -2643,7 +2981,7 @@
             } catch(e) {}
         }
 
-        // --- ECO-LOOP REVERSE LOGISTICS ---
+        // --- ECO-LOOP REVERSE LOGISTICS CONTROLLER ---
         async function submitWasteRequest() {
             if (!agriToken) {
                 showToast("Sign in to schedule collection", "error");
@@ -2750,7 +3088,7 @@
             } catch(e) {}
         }
         
-        // --- PAYSTACK LOGIC ---
+        // --- PAYSTACK INTEGRATIONS ---
         function payAgriProSubscription() {
             if (!agriToken || !currentUserEmail) return navigate('auth');
             let handler = PaystackPop.setup({
