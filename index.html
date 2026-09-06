@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AgromartDirect | Ghana's Agribusiness OS</title>
+    
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#10b981">
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2814/2814468.png" type="image/png">
     
-    <!-- External Scripts -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://js.paystack.co/v1/inline.js"></script>
@@ -72,7 +74,6 @@
 </head>
 <body id="app-body" class="bg-[#020617] text-slate-100 font-sans min-h-screen flex flex-col transition-colors duration-300">
     
-    <!-- Ambient Background Lighting -->
     <div class="fixed top-[-20%] left-[-10%] w-[50%] h-[50%] bg-emerald-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
     <div class="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
     
@@ -88,11 +89,6 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- MODALS SECTION                             -->
-    <!-- ========================================== -->
-
-    <!-- Edit Ad Modal -->
     <div id="edit-ad-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[120] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative">
             <button onclick="closeEditModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
@@ -116,7 +112,6 @@
         </div>
     </div>
 
-    <!-- Preview Ad Modal -->
     <div id="preview-ad-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[130] hidden items-center justify-center p-4">
         <div class="w-full max-w-md relative">
             <button onclick="closePreviewModal()" class="absolute -top-12 right-0 text-white font-black text-lg bg-slate-800 hover:bg-rose-500 rounded-full w-8 h-8 flex items-center justify-center shadow-lg transition-colors">✕</button>
@@ -124,7 +119,6 @@
         </div>
     </div>
 
-    <!-- Farm Batch Modal -->
     <div id="batch-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[120] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-8 rounded-[2.5rem] relative border border-blue-500/30">
             <button onclick="closeBatchModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
@@ -143,7 +137,6 @@
         </div>
     </div>
 
-    <!-- RFQ (Buyer Request) Modal -->
     <div id="rfq-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[120] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-blue-500/30 text-left">
             <button onclick="closeRfqModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
@@ -168,21 +161,6 @@
         </div>
     </div>
 
-    <!-- Sponsor Video Modal -->
-    <div id="video-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[200] hidden items-center justify-center p-4">
-        <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] text-center border border-emerald-500/50">
-            <h3 class="text-2xl font-black text-white mb-2">Publishing Ad...</h3>
-            <p class="text-xs text-slate-400 mb-6">Please wait while we secure your listing.</p>
-            <video id="sponsor-video" class="w-full rounded-2xl mb-6" playsinline muted>
-                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-            </video>
-            <button id="skip-video-btn" class="w-full bg-slate-800 text-slate-500 font-black py-4 rounded-xl text-sm" disabled>
-                Submitting... <span id="video-countdown"></span>
-            </button>
-        </div>
-    </div>
-
-    <!-- Deal Room Modal -->
     <div id="order-modal" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-emerald-500/30">
             <button onclick="closeOrderModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
@@ -240,7 +218,6 @@
         </div>
     </div>
 
-    <!-- WhatsApp Flyer Modal -->
     <div id="flyer-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-6 rounded-[2.5rem] text-center border border-emerald-500/30">
             <button onclick="closeFlyerModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl font-bold">✕</button>
@@ -251,7 +228,6 @@
         </div>
     </div>
 
-    <!-- AI Video Studio Modal (NEW) -->
     <div id="video-studio-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-purple-500/30">
             <button onclick="closeVideoStudio()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
@@ -308,9 +284,6 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- HEADER / NAVIGATION                        -->
-    <!-- ========================================== -->
     <header class="bg-[#020617]/70 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
@@ -329,6 +302,10 @@
                 <button onclick="navigate('rentals')" class="text-xs font-bold text-amber-300 border border-amber-400/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-amber-500/20 transition-colors flex items-center gap-1">🚜 Machinery Hire</button>
                 <button onclick="navigate('waste')" class="text-xs font-bold text-emerald-300 border border-emerald-400/30 bg-emerald-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-emerald-500/20 transition-colors flex items-center gap-1">♻️ Eco-Loop</button>
                 
+                <button id="pwa-install-btn" onclick="triggerPwaInstall()" class="hidden bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold px-3 py-1.5 rounded-lg text-xs hover:bg-emerald-500/30 transition-colors">
+                    📲 Install App
+                </button>
+                
                 <button onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center bg-white/5 border border-white/10 rounded-xl text-xs text-slate-300 hover:bg-white/10 transition-colors">☀️</button>
                 
                 <button id="nav-login-btn" onclick="navigate('auth')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 transition-colors">Sign In</button>
@@ -345,7 +322,6 @@
         </div>
     </header>
 
-    <!-- Mobile Navigation Bar (Visible only on mobile devices) -->
     <div class="md:hidden bg-[#020617] border-b border-white/10 px-4 py-3 overflow-x-auto whitespace-nowrap flex gap-3 z-40">
         <button onclick="navigate('trainer')" class="text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-4 py-2 rounded-xl shrink-0">📚 Agri Trainer</button>
         <button onclick="navigate('grants')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0">🏆 Agri-Grants</button>
@@ -356,7 +332,6 @@
         <button onclick="navigate('waste')" class="text-xs font-bold text-emerald-300 border border-emerald-400/30 bg-emerald-500/10 px-4 py-2 rounded-xl shrink-0">♻️ Eco-Loop</button>
     </div>
 
-    <!-- LIVE TICKER BAR -->
     <div class="bg-[#020617] border-b border-white/5 relative z-40 hidden md:block overflow-hidden shadow-inner">
         <div class="max-w-7xl mx-auto flex items-center pl-6">
             <div class="bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider px-4 py-2 rounded-r-lg z-10 shrink-0 flex items-center gap-2 shadow-lg">
@@ -370,14 +345,9 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- MAIN APPLICATION VIEWS                     -->
-    <!-- ========================================== -->
     <main class="max-w-7xl mx-auto px-6 py-8 flex-grow w-full relative z-10">
         
-        <!-- 1. HOME VIEW -->
         <div id="view-home" class="fade-in space-y-16">
-            <!-- Hero Section -->
             <div class="text-center py-20 px-4 glass-card rounded-[2.5rem] shadow-2xl border-t border-white/10 relative overflow-hidden">
                 <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
                 <div class="text-6xl mb-6 floating-element inline-block">🚜</div>
@@ -402,10 +372,8 @@
                     </div>
                 </div>
 
-                <!-- PLATFORM FEATURES SLIDESHOW -->
                 <div class="mt-12 relative w-full max-w-5xl mx-auto glass-card rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl h-64 md:h-56" id="feature-slideshow">
-                    <!-- Javascript will inject slides here -->
-                </div>
+                    </div>
 
                 <div class="mt-8 flex justify-center relative z-10">
                     <div class="bg-[#0f172a] p-1.5 rounded-2xl border border-slate-700/80 inline-flex shadow-xl">
@@ -436,7 +404,6 @@
                     <div id="trending-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
                 </div>
 
-                <!-- 10 CUSTOM CATEGORIES -->
                 <div class="mt-16">
                     <div class="flex items-center justify-between mb-6"><h3 class="text-2xl font-black text-white tracking-tight">Browse Categories</h3></div>
                     <div class="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-5 gap-5">
@@ -463,19 +430,16 @@
                     </div>
                 </div>
 
-                <!-- AGRI NEWSROOM & POLICY UPDATES -->
                 <div class="mt-20">
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-2xl font-black text-white tracking-tight flex items-center gap-2">📰 Agri Newsroom & Policy</h3>
                         <span class="text-[10px] bg-blue-500/20 text-blue-400 border border-blue-500/30 px-3 py-1 rounded-full uppercase font-bold tracking-widest">Live Updates</span>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="newsroom-grid">
-                        <!-- Javascript will inject news here -->
-                    </div>
+                        </div>
                 </div>
             </div>
 
-            <!-- PARTNERSHIP -->
             <div class="mt-20 glass-card p-10 rounded-[2.5rem] relative overflow-hidden border border-emerald-500/30 bg-gradient-to-br from-[#020617] to-emerald-950/40">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
                 <div class="text-center relative z-10">
@@ -492,7 +456,6 @@
             </div>
         </div>
 
-        <!-- 2. MARKETPLACE VIEW -->
         <div id="view-marketplace" class="fade-in hidden space-y-6">
             <div class="flex flex-col md:flex-row md:items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 backdrop-blur-sm gap-4">
                 <div class="flex items-center gap-3">
@@ -519,7 +482,6 @@
             <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
         </div>
 
-        <!-- 3. AGRI TRAINER (LEARN TO GROW) -->
         <div id="view-trainer" class="fade-in hidden space-y-8">
             <div class="text-center mb-10">
                 <div class="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 border border-purple-500/30 shadow-lg">📚</div>
@@ -559,7 +521,6 @@
             </div>
         </div>
 
-        <!-- 4. FARM MANAGER SAAS -->
         <div id="view-farm-manager" class="fade-in hidden space-y-8">
             <div class="flex flex-col md:flex-row md:items-center justify-between bg-[#0f172a] p-6 rounded-3xl border border-blue-500/30 gap-4 shadow-xl">
                 <div>
@@ -572,7 +533,6 @@
             <div id="farm-batches-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </div>
 
-        <!-- 5. MARKET INTEL VIEW (BLOOMBERG DASHBOARD) -->
         <div id="view-intel" class="fade-in hidden space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <div class="w-16 h-16 bg-rose-500/20 rounded-full flex items-center justify-center text-3xl mx-auto border border-rose-500/30 shadow-lg">📊</div>
@@ -582,7 +542,6 @@
             <div id="intel-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
         </div>
 
-        <!-- 6. FEED CALCULATOR (PEARSON SQUARE) -->
         <div id="view-calculator" class="fade-in hidden space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <div class="w-16 h-16 bg-teal-500/20 rounded-full flex items-center justify-center text-3xl mx-auto border border-teal-500/30 shadow-lg shadow-teal-500/10">🧮</div>
@@ -591,7 +550,6 @@
             </div>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Calc Inputs -->
                 <div class="glass-card p-8 rounded-[2.5rem] border border-teal-500/30 shadow-2xl">
                     <h3 class="text-lg font-black text-teal-400 mb-6 flex items-center gap-2">1. Set Your Targets</h3>
                     <div class="space-y-5">
@@ -619,7 +577,6 @@
                     </div>
                 </div>
 
-                <!-- Calc Results -->
                 <div class="glass-card p-8 rounded-[2.5rem] border border-white/5 relative overflow-hidden flex flex-col justify-center shadow-xl">
                     <div class="absolute top-[-50px] right-[-50px] w-48 h-48 bg-teal-500/10 rounded-full blur-[60px] pointer-events-none"></div>
                     <h3 class="text-lg font-black text-white mb-6 z-10">2. Your Custom Formulation</h3>
@@ -646,7 +603,6 @@
             </div>
         </div>
 
-        <!-- 7. GRANTS & OPPORTUNITIES AGGREGATOR -->
         <div id="view-grants" class="fade-in hidden space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <div class="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center text-3xl mx-auto border border-amber-500/30 shadow-lg">🏆</div>
@@ -656,7 +612,6 @@
             <div id="grants-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </div>
 
-        <!-- 8. POST AD VIEW (SELLER) -->
         <div id="view-post" class="fade-in hidden max-w-2xl mx-auto mt-6">
             <div class="flex items-center gap-3 mb-6">
                 <div class="w-10 h-10 bg-emerald-500/20 rounded-xl flex items-center justify-center text-emerald-400 border border-emerald-500/30 shadow-lg">📢</div>
@@ -705,7 +660,6 @@
             </div>
         </div>
 
-        <!-- 9. DASHBOARD VIEW (W/ MY TENDERS & FULL ADMIN PANEL) -->
         <div id="view-dashboard" class="fade-in hidden max-w-5xl mx-auto mt-6 space-y-6">
             
             <div class="grid grid-cols-2 sm:grid-cols-3 md:hidden gap-3 mt-4 w-full">
@@ -761,7 +715,6 @@
                 </div>
             </div>
 
-            <!-- DASHBOARD GRIDS: ROW 1 -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div>
                     <div class="flex items-center justify-between mb-4 glass-card p-5 rounded-2xl">
@@ -777,7 +730,6 @@
                 </div>
             </div>
 
-            <!-- DASHBOARD GRIDS: ROW 2 (NEW EXTENSIONS) -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
                 <div>
                     <div class="flex items-center justify-between mb-4 glass-card p-5 rounded-2xl border border-amber-500/30">
@@ -793,7 +745,6 @@
                 </div>
             </div>
 
-            <!-- ADMIN PANEL -->
             <div id="admin-panel" class="hidden mt-12 glass-card p-8 rounded-3xl border border-emerald-500/30 shadow-2xl bg-slate-900/50">
                 <div class="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
                     <div>
@@ -803,7 +754,6 @@
                 </div>
                 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <!-- Left Column -->
                     <div>
                         <div class="mb-8">
                             <h4 class="text-xs font-black uppercase tracking-wider text-amber-400 mb-3">⭐ Paid Verification Requests (GH₵ 5)</h4>
@@ -826,13 +776,12 @@
                         <div class="pt-4 border-t border-white/10 mt-6">
                             <label class="block text-xs font-bold text-rose-400 mb-2 uppercase tracking-wider">Permanent Ban (Revoke Access)</label>
                             <div class="flex gap-2">
-                                <input type="email" id="ban-email-input" placeholder="Farmer's Email Address" class="w-full bg-[#020617]/80 border border-rose-900/50 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-rose-500 transition-colors">
+                                <input type="email" id="ban-email-input" placeholder="Farmer's Email Address" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-rose-500 transition-colors">
                                 <button onclick="banSeller()" class="bg-rose-600 hover:bg-rose-500 text-white font-bold px-6 py-3 rounded-xl shrink-0 transition-colors">Ban</button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Right Column -->
                     <div>
                         <div class="mb-8">
                             <h4 class="text-xs font-black uppercase tracking-wider text-slate-400 mb-3">Ad Moderation Queue (Pending Review)</h4>
@@ -853,7 +802,6 @@
             </div>
         </div>
 
-        <!-- VIEW: MACHINERY & TOOL RENTALS (P2P) -->
         <div id="view-rentals" class="fade-in hidden space-y-8">
             <div class="flex flex-col md:flex-row md:items-center justify-between bg-[#0f172a] p-6 rounded-3xl border border-amber-500/30 gap-4 shadow-xl">
                 <div>
@@ -865,7 +813,6 @@
             <div id="rentals-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
         </div>
 
-        <!-- VIEW: ECO-LOOP REVERSE LOGISTICS -->
         <div id="view-waste" class="fade-in hidden space-y-8">
             <div class="text-center space-y-4 mb-8">
                 <div class="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center text-3xl mx-auto border border-emerald-500/30 shadow-lg">♻️</div>
@@ -914,7 +861,6 @@
             </div>
         </div>
 
-        <!-- 10. AUTHENTICATION -->
         <div id="view-auth" class="fade-in hidden max-w-sm mx-auto mt-10">
             <div class="glass-card p-8 rounded-[2rem] shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
@@ -977,7 +923,6 @@
             </div>
         </div>
 
-        <!-- 11. PRICING VIEW -->
         <div id="view-pricing" class="fade-in hidden max-w-5xl mx-auto mt-10 space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">Boost Your Sales</h2>
@@ -1023,7 +968,6 @@
             </div>
         </div>
 
-        <!-- 12. FAQ & ABOUT & SUPPORT -->
         <div id="view-faq" class="fade-in hidden max-w-4xl mx-auto mt-6 space-y-8">
             <div class="text-center space-y-4 mb-10"><h2 class="text-3xl font-black text-white tracking-tight">Frequently Asked Questions</h2></div>
             <div class="space-y-4">
@@ -1064,13 +1008,39 @@
     <!-- JAVASCRIPT LOGIC                           -->
     <!-- ========================================== -->
     <script>
-        // --- GLOBAL CONFIGURATION ---
+        // --- GLOBAL CONFIGURATION & PWA INSTALL ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => { 
                 navigator.serviceWorker.register('/sw.js').catch(err => {
                     console.log("Service worker registration failed", err);
                 }); 
             });
+        }
+
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const installBtn = document.getElementById('pwa-install-btn');
+            if (installBtn) {
+                installBtn.classList.remove('hidden');
+            }
+        });
+
+        function triggerPwaInstall() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        showToast("App installed successfully! 📱");
+                        const installBtn = document.getElementById('pwa-install-btn');
+                        if (installBtn) {
+                            installBtn.classList.add('hidden');
+                        }
+                    }
+                    deferredPrompt = null;
+                });
+            }
         }
 
         const API_URL = "https://agri-connect-api-3.onrender.com";
@@ -1304,7 +1274,6 @@
             }, 3000);
         }
 
-        // --- NAVIGATION ---
         function navigate(view) {
             const views = [
                 'home', 'marketplace', 'auth', 'grants', 'farm-manager', 
@@ -1405,7 +1374,6 @@
             }
         }
 
-        // --- AUTH LOGIC ---
         function initGoogleAuth() { 
             try {
                 if (typeof google === 'undefined' || !google.accounts) {
@@ -1453,7 +1421,6 @@
             }
         }
 
-        // --- LIFECYCLE ---
         window.addEventListener('DOMContentLoaded', () => {
             initGoogleAuth(); 
             initSlideshow();     
@@ -1734,7 +1701,6 @@
             event.target.value = '';
         }
 
-        // --- MARKETPLACE & SEARCH ---
         function executeSearch() { 
             currentRegionState = document.getElementById('home-region').value; 
             currentSearchState = document.getElementById('market_finder').value; 
