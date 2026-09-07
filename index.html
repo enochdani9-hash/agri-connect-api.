@@ -3667,3 +3667,28 @@
                             </div>
                         </div>
                         <a href="https://wa.me/233${h.phone.replace(/^0/,'')}?text=${encodeURIComponent('Hello, I want to book your empty-leg return truck space for ' + h.route + ' listed on AgromartDirect.')}" target="_blank" classI encountered an error doing what you asked. Could you try again?
+</a>
+                    </div>
+                `).join('');
+            } catch (e) {
+                grid.innerHTML = '<div class="col-span-full text-center text-rose-400 py-6">Could not load haulage board.</div>';
+            }
+        }
+
+        function openHaulagePostModal() {
+            if (!agriToken) {
+                showToast("Sign in to list empty trucks", "error");
+                return navigate('auth');
+            }
+            const route = prompt("Route (e.g. Tamale ➔ Accra):");
+            if (!route) return;
+            const truck = prompt("Truck Model & Capacity (e.g. 10-Ton Tata):");
+            const price = prompt("Discounted Return Rate (GH₵):");
+            const phone = prompt("Driver Phone Number:");
+            
+            showToast("Empty truck listed to Haulage Pool! 🚚");
+            loadHaulagePool();
+        }
+    </script>
+</body>
+</html>
