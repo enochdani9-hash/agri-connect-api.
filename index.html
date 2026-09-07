@@ -3237,7 +3237,7 @@
     </script>
 </body>
 </html><!-- ========================================== -->
-    <!-- JAVASCRIPT LOGIC                           -->
+    <!-- JAVASCRIPT LOGIC (FULLY PATCHED & RESTORED) -->
     <!-- ========================================== -->
     <script>
         // --- PWA INSTALL LOGIC & SERVICE WORKER ---
@@ -3254,9 +3254,7 @@
             e.preventDefault();
             deferredPrompt = e;
             const installBtn = document.getElementById('pwa-install-btn');
-            if (installBtn) {
-                installBtn.classList.remove('hidden');
-            }
+            if (installBtn) installBtn.classList.remove('hidden');
         });
 
         function triggerPwaInstall() {
@@ -3266,9 +3264,7 @@
                     if (choiceResult.outcome === 'accepted') {
                         showToast("App installed successfully! 📱");
                         const installBtn = document.getElementById('pwa-install-btn');
-                        if (installBtn) {
-                            installBtn.classList.add('hidden');
-                        }
+                        if (installBtn) installBtn.classList.add('hidden');
                     }
                     deferredPrompt = null;
                 });
@@ -3281,7 +3277,6 @@
         const GOOGLE_CLIENT_ID = "235464348393-sovqvjql532r4f480ngva5287rupkjma.apps.googleusercontent.com"; 
 
         let agriToken = localStorage.getItem("agri_token") || "";
-        let pendingAction = null;
         let uploadedImages = [];
         let allLoadedProducts = [];
         let allLoadedRfqs = [];
@@ -3299,8 +3294,8 @@
         let currentOrderUnit = "";
         let currentOrderSellerLoc = "";
         let currentOrderTabState = "direct";
-        
         let pendingAdPayload = null;
+        let adminPendingAdsCache = [];
 
         // --- PLATFORM FEATURE SLIDESHOW ---
         const platformFeatures = [
@@ -3316,7 +3311,6 @@
         function initSlideshow() {
             const container = document.getElementById('feature-slideshow');
             if(!container) return;
-            
             const renderSlide = () => {
                 const slide = platformFeatures[currentSlide];
                 container.innerHTML = `
@@ -3331,7 +3325,6 @@
                 `;
                 currentSlide = (currentSlide + 1) % platformFeatures.length;
             };
-            
             renderSlide();
             setInterval(renderSlide, 5000);
         }
@@ -3346,21 +3339,17 @@
         async function loadAgriNews() {
             const grid = document.getElementById('newsroom-grid');
             if(!grid) return;
-            
             const cachedNews = localStorage.getItem('agri_news_cache');
             const cacheTime = localStorage.getItem('agri_news_time');
             const now = new Date().getTime();
-            
             if (cachedNews && cacheTime && (now - parseInt(cacheTime)) < 24 * 60 * 60 * 1000) {
                 renderNewsData(JSON.parse(cachedNews), grid);
                 return;
             }
-
             try {
                 const rssUrl = encodeURIComponent("https://news.google.com/rss/search?q=agriculture+ghana&hl=en-US&gl=US&ceid=US:en");
                 const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`);
                 const data = await res.json();
-                
                 if (data.items && data.items.length > 0) {
                     const formattedNews = data.items.slice(0, 6).map(item => ({
                         source: item.source || "Agri News",
@@ -3375,9 +3364,7 @@
                 } else {
                     renderNewsData(fallbackDummyNews, grid); 
                 }
-            } catch (e) {
-                renderNewsData(fallbackDummyNews, grid); 
-            }
+            } catch (e) { renderNewsData(fallbackDummyNews, grid); }
         }
 
         function renderNewsData(newsArray, grid) {
@@ -3395,44 +3382,6 @@
                 </div>
             `).join('');
         }
-
-        // --- EXPANDED AGRI TRAINER DATA ---
-        const agriTrainerData = {
-            crops: [
-                { id: 'tomato', icon: '🍅', title: 'Tomatoes', wikiSearch: 'Tomato', intro: 'High yield, 3-month cycle.', guide: '<h3>Nursery & Transplanting</h3><p>Start seeds in trays. Transplant at 3-4 weeks. Space 60cm apart.</p><h3>Maintenance</h3><p>Stake plants to prevent fruit rot. Apply NPK 15-15-15.</p><h3>Harvest</h3><p>Harvest at 10-12 weeks when pink/red.</p>' },
-                { id: 'maize', icon: '🌽', title: 'Maize', wikiSearch: 'Maize', intro: 'Staple crop, 100 days.', guide: '<h3>Planting</h3><p>Plant 2 seeds per hole, 75cm x 40cm spacing. Use certified seeds.</p><h3>Fertilizer</h3><p>Top dress with Urea before tasseling begins.</p><h3>Harvest</h3><p>Harvest when cobs point downward and husks dry up.</p>' },
-                { id: 'cassava', icon: '🥔', title: 'Cassava', wikiSearch: 'Cassava', intro: 'Drought resistant, 9-12 months.', guide: '<h3>Planting</h3><p>Cut healthy stems into 20cm lengths. Plant on ridges.</p><h3>Maintenance</h3><p>Weed regularly during the first 3 months.</p><h3>Harvest</h3><p>Harvest at 9-12 months to prevent woody tubers.</p>' },
-                { id: 'yam', icon: '🍠', title: 'Yam', wikiSearch: 'Yam (vegetable)', intro: 'Tuber crop, requires mounds.', guide: '<h3>Planting</h3><p>Plant seed yams or setts on large mounds at onset of rains.</p><h3>Staking</h3><p>Stake vines early to maximize sunlight exposure.</p><h3>Harvest</h3><p>Harvest when vines turn yellow and dry up.</p>' },
-                { id: 'plantain', icon: '🍌', title: 'Plantain', wikiSearch: 'Cooking banana', intro: 'Requires rich, loamy soil.', guide: '<h3>Suckers</h3><p>Use sword suckers. Treat against nematodes before planting.</p><h3>Spacing</h3><p>Space 3m x 3m. Apply organic manure heavily.</p><h3>Harvest</h3><p>Harvest 9-12 months when fingers are full and plump.</p>' },
-                { id: 'cocoa', icon: '🍫', title: 'Cocoa', wikiSearch: 'Cocoa bean', intro: 'Major cash crop, requires shade.', guide: '<h3>Nursery</h3><p>Raise seedlings in polybags under shade for 6 months.</p><h3>Planting</h3><p>Transplant with temporary shade crops like plantain.</p><h3>Maintenance</h3><p>Prune regularly and spray against black pod disease.</p>' },
-                { id: 'pineapple', icon: '🍍', title: 'Pineapple', wikiSearch: 'Pineapple', intro: '12-18 month cycle.', guide: '<h3>Suckers</h3><p>Use uniform slips or crowns for even fruiting.</p><h3>Planting</h3><p>Plant in double rows. Requires well-drained soil.</p><h3>Harvest</h3><p>Harvest when 1/3 of the fruit base turns yellow.</p>' },
-                { id: 'mango', icon: '🥭', title: 'Mango', wikiSearch: 'Mango', intro: 'Tree crop, grafted varieties best.', guide: '<h3>Planting</h3><p>Use grafted seedlings (e.g. Keitt, Kent) for early fruiting.</p><h3>Spacing</h3><p>Space 10m x 10m. Water deeply during dry season.</p><h3>Harvest</h3><p>Starts fruiting in 3-4 years. Harvest mature green for export.</p>' },
-                { id: 'chili', icon: '🌶️', title: 'Chili Pepper', wikiSearch: 'Chili pepper', intro: 'High demand spice.', guide: '<h3>Nursery</h3><p>Sow seeds in boxes. Transplant at 4 weeks.</p><h3>Field</h3><p>Requires regular watering but avoid waterlogging.</p><h3>Harvest</h3><p>Pick red ripe fruits regularly to encourage more fruiting.</p>' },
-                { id: 'onion', icon: '🧅', title: 'Onion', wikiSearch: 'Onion', intro: 'Bulb crop, dry season preferred.', guide: '<h3>Nursery</h3><p>Sow seeds thinly. Transplant pencil-thick seedlings.</p><h3>Maintenance</h3><p>Weed carefully to avoid damaging shallow roots. Stop watering as tops fall.</p><h3>Harvest</h3><p>Cure in the sun for a few days before storage.</p>' },
-                { id: 'rice', icon: '🌾', title: 'Rice', wikiSearch: 'Rice', intro: 'Staple cereal, requires water.', guide: '<h3>Preparation</h3><p>Level land perfectly. Can be direct seeded or transplanted.</p><h3>Water Management</h3><p>Maintain shallow water level. Drain field 2 weeks before harvest.</p><h3>Harvest</h3><p>Harvest when 80% of panicles turn straw color.</p>' },
-                { id: 'sorghum', icon: '🌾', title: 'Sorghum', wikiSearch: 'Sorghum', intro: 'Drought-tolerant cereal.', guide: '<h3>Planting</h3><p>Plant at onset of rains. Thrives in Northern regions.</p><h3>Maintenance</h3><p>Thin out to 2 plants per stand. Control birds during grain filling.</p><h3>Harvest</h3><p>Cut panicles when grains are hard and dry.</p>' },
-                { id: 'soya', icon: '🫘', title: 'Soya Bean', wikiSearch: 'Soybean', intro: 'Protein-rich legume.', guide: '<h3>Inoculation</h3><p>Treat seeds with inoculant to boost nitrogen fixation.</p><h3>Planting</h3><p>Sow in rows. Very sensitive to deep planting.</p><h3>Harvest</h3><p>Harvest when leaves drop and pods turn brown.</p>' },
-                { id: 'cabbage', icon: '🥬', title: 'Cabbage', wikiSearch: 'Cabbage', intro: 'Leafy vegetable, heavy feeder.', guide: '<h3>Nursery</h3><p>Protect seedlings from direct sun and heavy rain.</p><h3>Maintenance</h3><p>Apply heavy compost. Spray for Diamondback moths.</p><h3>Harvest</h3><p>Harvest when heads are firm and solid to the touch.</p>' },
-                { id: 'groundnut', icon: '🥜', title: 'Groundnut', wikiSearch: 'Peanut', intro: 'Legume, requires loose soil.', guide: '<h3>Planting</h3><p>Plant in loose, sandy-loam soil to allow peg penetration.</p><h3>Weeding</h3><p>Do not weed after pegs start entering the soil.</p><h3>Harvest</h3><p>Dig up when inner shell is dark and veined.</p>' }
-            ],
-            animals: [
-                { id: 'broiler', icon: '🐔', title: 'Broiler Chickens', wikiSearch: 'Broiler', intro: '6-week meat birds.', guide: '<h3>Brooding</h3><p>Preheat brooder to 32°C. Feed Starter ad-libitum.</p><h3>Growth</h3><p>Expand space. Vaccinate for Gumboro/Newcastle.</p><h3>Finisher</h3><p>Feed Finisher. Ensure excellent ventilation. Harvest at 2.5kg.</p>' },
-                { id: 'layer', icon: '🥚', title: 'Layer Chickens', wikiSearch: 'Poultry farming', intro: 'Egg producers, 18-month cycle.', guide: '<h3>Pullet Rearing</h3><p>Feed Chick Mash, then Grower Mash. Control lighting.</p><h3>Laying Phase</h3><p>Introduce Layer Mash at 18 weeks. Provide 16 hours of light.</p><h3>Management</h3><p>Collect eggs twice daily. Cull non-layers.</p>' },
-                { id: 'catfish', icon: '🐟', title: 'Catfish', wikiSearch: 'Catfish', intro: 'Hardy freshwater fish.', guide: '<h3>Water Quality</h3><p>Ensure pH 6.5-8.0. Change water regularly to prevent ammonia.</p><h3>Feeding</h3><p>Use high-protein floating pellets. Feed twice daily.</p><h3>Sorting</h3><p>Sort fish by size monthly to prevent cannibalism.</p>' },
-                { id: 'tilapia', icon: '🐠', title: 'Tilapia', wikiSearch: 'Tilapia', intro: 'Fast-growing freshwater fish.', guide: '<h3>Stocking</h3><p>Use all-male fingerlings to prevent pond overpopulation.</p><h3>Feeding</h3><p>Feed 30-35% protein floating pellets. Supplement with duckweed.</p><h3>Harvest</h3><p>Harvest at 6-8 months using drag nets.</p>' },
-                { id: 'goat', icon: '🐐', title: 'Goats', wikiSearch: 'Goat', intro: 'Hardy ruminants.', guide: '<h3>Housing</h3><p>Keep floors slated and dry. Ensure good ventilation.</p><h3>Feeding</h3><p>Provide forage, cassava peels, and a mineral salt lick.</p><h3>Healthcare</h3><p>Deworm regularly. Vaccinate against PPR.</p>' },
-                { id: 'sheep', icon: '🐑', title: 'Sheep', wikiSearch: 'Sheep', intro: 'Grazing livestock.', guide: '<h3>Grazing</h3><p>Allow access to good pasture. Supplement with concentrates.</p><h3>Housing</h3><p>Provide dry shelter to protect from rain and predators.</p><h3>Healthcare</h3><p>Trim hooves and deworm to prevent foot rot and parasites.</p>' },
-                { id: 'cattle', icon: '🐄', title: 'Cattle', wikiSearch: 'Cattle', intro: 'Large ruminants for beef/dairy.', guide: '<h3>Feeding</h3><p>Requires large volumes of pasture/silage and clean water daily.</p><h3>Housing</h3><p>Provide shaded kraals. Practice rotational grazing.</p><h3>Healthcare</h3><p>Dip/spray for ticks. Vaccinate against CBPP and Foot & Mouth.</p>' },
-                { id: 'pig', icon: '🐷', title: 'Pigs', wikiSearch: 'Domestic pig', intro: 'Highly prolific, omnivores.', guide: '<h3>Housing</h3><p>Concrete floors with drainage. Provide a wallow or cooling system.</p><h3>Feeding</h3><p>Feed compounded rations or cooked swill. High water requirement.</p><h3>Management</h3><p>Creep feed piglets. Castrate males intended for meat.</p>' },
-                { id: 'rabbit', icon: '🐇', title: 'Rabbits', wikiSearch: 'Domestic rabbit', intro: 'Fast reproducing, small space.', guide: '<h3>Housing</h3><p>Wire mesh cages to allow droppings to fall through.</p><h3>Feeding</h3><p>Diet of pellets, dried grasses, and clean water. Avoid wet greens.</p><h3>Breeding</h3><p>Take the doe to the buck\'s cage for mating.</p>' },
-                { id: 'grasscutter', icon: '🐀', title: 'Grasscutters', wikiSearch: 'Greater cane rat', intro: 'Highly prized bushmeat.', guide: '<h3>Housing</h3><p>Strong iron cages or concrete pens. They chew through wood.</p><h3>Feeding</h3><p>Elephant grass, sugarcane, and maize stalks. Very little water needed.</p><h3>Handling</h3><p>Handle by the tail base. Easily frightened.</p>' },
-                { id: 'snail', icon: '🐌', title: 'Snails', wikiSearch: 'Lissachatina fulica', intro: 'Low capital, highly lucrative.', guide: '<h3>Housing</h3><p>Shaded trench pens or tires. Soil must be moist and loamy.</p><h3>Feeding</h3><p>Pawpaw leaves, fruits, and calcium (ground shells) for strong shells.</p><h3>Pests</h3><p>Protect fiercely against soldier ants and salt.</p>' },
-                { id: 'duck', icon: '🦆', title: 'Ducks', wikiSearch: 'Domestic duck', intro: 'Disease resistant poultry.', guide: '<h3>Housing</h3><p>Simple shelter. Swimming water is good but not strictly required.</p><h3>Feeding</h3><p>Wet mash or pellets. Forage well on their own.</p><h3>Management</h3><p>Very hardy. Keep bedding dry to prevent mold.</p>' },
-                { id: 'turkey', icon: '🦃', title: 'Turkeys', wikiSearch: 'Domestic turkey', intro: 'Large festive birds.', guide: '<h3>Poults</h3><p>Require extra care and higher heat during first 4 weeks.</p><h3>Feeding</h3><p>High protein turkey starter (28% CP). Susceptible to blackhead disease.</p><h3>Space</h3><p>Need much more roaming space than chickens.</p>' },
-                { id: 'guinea_fowl', icon: '🪶', title: 'Guinea Fowls', wikiSearch: 'Guineafowl', intro: 'Semi-wild, great foragers.', guide: '<h3>Keets</h3><p>Very fragile initially. Keep warm and dry.</p><h3>Adults</h3><p>Excellent at pest control (ticks/insects). Very noisy.</p><h3>Housing</h3><p>Will roost in trees if wings are not clipped or fully enclosed.</p>' },
-                { id: 'quail', icon: '🐦', title: 'Quails', wikiSearch: 'Quail', intro: 'Small birds, fast maturity.', guide: '<h3>Housing</h3><p>Small wire cages. Protect from drafts and predators.</p><h3>Production</h3><p>Start laying at 6 weeks. Require 14-16 hours of light.</p><h3>Feeding</h3><p>High protein crumble. Cannot eat large pellets.</p>' }
-            ]
-        };
 
         // --- UTILITY FUNCTIONS ---
         function showToast(msg, type='success') {
@@ -4058,7 +4007,7 @@
             handler.openIframe();
         }
 
-        // --- NEW: AGRIDOCTOR AI SCANNER LOGIC ---
+        // --- AGRIDOCTOR AI SCANNER LOGIC ---
         function handleAgriDoctorUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
