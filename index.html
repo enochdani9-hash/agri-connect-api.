@@ -284,7 +284,7 @@
         </div>
     </div>
 
-    <!-- HEADER WITH AGRI-DOCTOR AI ADDED -->
+    <!-- HEADER -->
     <header class="bg-[#020617]/70 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
@@ -295,7 +295,8 @@
             </div>
             
             <div class="flex gap-2 items-center flex-wrap justify-end">
-                <button onclick="navigate('agridoctor')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 rounded-lg hover:bg-rose-500/20 transition-colors flex items-center gap-1">🩺 AgriDoctor AI</button>
+                <button onclick="navigate('haulage')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-amber-500/20 transition-colors flex items-center gap-1">🚚 Haulage Pool</button>
+                <button onclick="navigate('agridoctor')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-rose-500/20 transition-colors flex items-center gap-1">🩺 AgriDoctor AI</button>
                 <button onclick="navigate('trainer')" class="text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-purple-500/20 transition-colors flex items-center gap-1">📚 Agri Trainer</button>
                 <button onclick="navigate('grants')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-amber-500/20 transition-colors flex items-center gap-1">🏆 Agri-Grants</button>
                 <button onclick="navigate('farm-manager')" class="text-xs font-bold text-blue-400 border border-blue-500/30 bg-blue-500/10 px-3 py-1.5 rounded-lg hidden md:block hover:bg-blue-500/20 transition-colors flex items-center gap-1">💼 Farm Manager</button>
@@ -325,6 +326,7 @@
     </header>
 
     <div class="md:hidden bg-[#020617] border-b border-white/10 px-4 py-3 overflow-x-auto whitespace-nowrap flex gap-3 z-40">
+        <button onclick="navigate('haulage')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0">🚚 Haulage Pool</button>
         <button onclick="navigate('agridoctor')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-4 py-2 rounded-xl shrink-0">🩺 AgriDoctor AI</button>
         <button onclick="navigate('trainer')" class="text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-4 py-2 rounded-xl shrink-0">📚 Agri Trainer</button>
         <button onclick="navigate('grants')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0">🏆 Agri-Grants</button>
@@ -524,67 +526,6 @@
             </div>
         </div>
 
-        <!-- AGRIDOCTOR AI SCANNER VIEW -->
-        <div id="view-agridoctor" class="fade-in hidden max-w-4xl mx-auto mt-6 space-y-8">
-            <div class="text-center space-y-4 mb-10">
-                <div class="w-16 h-16 bg-rose-500/20 rounded-full flex items-center justify-center text-3xl mx-auto border border-rose-500/30 shadow-lg">🩺</div>
-                <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">AgriDoctor AI</h2>
-                <p class="text-slate-400 text-sm max-w-xl mx-auto">Upload a photo of a diseased crop leaf or sick livestock. Our AI will diagnose the issue and provide an instant treatment plan.</p>
-            </div>
-
-            <div class="glass-card p-8 rounded-[2.5rem] border border-rose-500/30 shadow-2xl relative overflow-hidden">
-                <div class="absolute top-[-50px] right-[-50px] w-48 h-48 bg-rose-500/10 rounded-full blur-[60px] pointer-events-none"></div>
-                
-                <div id="agridoctor-upload-state" class="text-center">
-                    <div class="w-full h-64 bg-[#020617]/50 border-2 border-dashed border-rose-500/50 rounded-3xl flex flex-col items-center justify-center cursor-pointer hover:border-rose-400 transition-colors group relative overflow-hidden" onclick="document.getElementById('agridoctor-file').click()">
-                        <img id="agridoctor-preview" src="" class="hidden absolute inset-0 w-full h-full object-cover opacity-50 z-0">
-                        <div class="z-10 relative">
-                            <span class="text-5xl mb-4 block group-hover:scale-110 transition-transform">📸</span>
-                            <span class="text-white font-bold block">Tap to Scan Photo</span>
-                            <span class="text-slate-400 text-xs mt-1 block">Supports leaves, fruits, and livestock</span>
-                        </div>
-                    </div>
-                    <input type="file" id="agridoctor-file" accept="image/*" capture="environment" class="hidden" onchange="handleAgriDoctorUpload(event)">
-                    <button id="agridoctor-analyze-btn" onclick="processAgriDoctor()" class="hidden w-full mt-6 bg-rose-600 hover:bg-rose-500 text-white font-black py-4 rounded-xl text-sm transition-colors shadow-lg relative z-10">Analyze Image 🔍</button>
-                </div>
-
-                <div id="agridoctor-processing-state" class="hidden text-center py-12 relative z-10">
-                    <div class="w-16 h-16 border-4 border-rose-500/30 border-t-rose-500 rounded-full animate-spin mx-auto mb-6"></div>
-                    <h3 class="text-xl font-black text-white mb-2">Analyzing Biomarkers...</h3>
-                    <p class="text-xs text-slate-400">Cross-referencing with local Ghanaian pathology databases...</p>
-                </div>
-
-                <div id="agridoctor-result-state" class="hidden relative z-10">
-                    <div class="bg-[#0f172a]/80 border border-rose-500/30 rounded-2xl p-6 mb-6">
-                        <div class="flex items-center gap-3 mb-4 border-b border-white/10 pb-4">
-                            <span class="text-4xl" id="diag-icon">🦠</span>
-                            <div>
-                                <h4 class="text-[10px] text-rose-400 font-bold uppercase tracking-wider">Detected Pathogen / Issue</h4>
-                                <h3 class="text-2xl font-black text-white" id="diag-title">...</h3>
-                            </div>
-                        </div>
-                        <p class="text-sm text-slate-300 mb-6 leading-relaxed" id="diag-desc">...</p>
-                        
-                        <div class="space-y-4">
-                            <div class="bg-[#020617]/50 p-5 rounded-xl border border-emerald-500/20">
-                                <h4 class="text-[11px] font-black text-emerald-400 mb-2 uppercase tracking-wider flex items-center gap-2">🌱 Organic / Home Remedy</h4>
-                                <p class="text-sm text-slate-300 leading-relaxed" id="diag-organic">...</p>
-                            </div>
-                            <div class="bg-[#020617]/50 p-5 rounded-xl border border-amber-500/20">
-                                <h4 class="text-[11px] font-black text-amber-400 mb-2 uppercase tracking-wider flex items-center gap-2">🧪 Chemical Intervention</h4>
-                                <p class="text-sm text-slate-300 leading-relaxed" id="diag-chemical">...</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex flex-col sm:flex-row gap-3">
-                        <button onclick="resetAgriDoctor()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3.5 rounded-xl transition-colors text-sm border border-slate-700">Scan Another</button>
-                        <button onclick="navigate('marketplace')" class="flex-1 bg-rose-600 hover:bg-rose-500 text-white font-bold py-3.5 rounded-xl transition-colors shadow-lg text-sm">Buy Treatment on Market</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div id="view-farm-manager" class="fade-in hidden space-y-8">
             <div class="flex flex-col md:flex-row md:items-center justify-between bg-[#0f172a] p-6 rounded-3xl border border-blue-500/30 gap-4 shadow-xl">
                 <div>
@@ -676,6 +617,79 @@
             <div id="grants-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </div>
 
+        <!-- AGRIDOCTOR AI SCANNER VIEW (FEATURE 1) -->
+        <div id="view-agridoctor" class="fade-in hidden max-w-4xl mx-auto mt-6 space-y-8">
+            <div class="text-center space-y-4 mb-10">
+                <div class="w-16 h-16 bg-rose-500/20 rounded-full flex items-center justify-center text-3xl mx-auto border border-rose-500/30 shadow-lg">🩺</div>
+                <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">AgriDoctor AI</h2>
+                <p class="text-slate-400 text-sm max-w-xl mx-auto">Upload a photo of a diseased crop leaf or sick livestock. Our AI will diagnose the issue and provide an instant treatment plan.</p>
+            </div>
+
+            <div class="glass-card p-8 rounded-[2.5rem] border border-rose-500/30 shadow-2xl relative overflow-hidden">
+                <div class="absolute top-[-50px] right-[-50px] w-48 h-48 bg-rose-500/10 rounded-full blur-[60px] pointer-events-none"></div>
+                
+                <div id="agridoctor-upload-state" class="text-center">
+                    <div class="w-full h-64 bg-[#020617]/50 border-2 border-dashed border-rose-500/50 rounded-3xl flex flex-col items-center justify-center cursor-pointer hover:border-rose-400 transition-colors group relative overflow-hidden" onclick="document.getElementById('agridoctor-file').click()">
+                        <img id="agridoctor-preview" src="" class="hidden absolute inset-0 w-full h-full object-cover opacity-50 z-0">
+                        <div class="z-10 relative">
+                            <span class="text-5xl mb-4 block group-hover:scale-110 transition-transform">📸</span>
+                            <span class="text-white font-bold block">Tap to Scan Photo</span>
+                            <span class="text-slate-400 text-xs mt-1 block">Supports leaves, fruits, and livestock</span>
+                        </div>
+                    </div>
+                    <input type="file" id="agridoctor-file" accept="image/*" capture="environment" class="hidden" onchange="handleAgriDoctorUpload(event)">
+                    <button id="agridoctor-analyze-btn" onclick="processAgriDoctor()" class="hidden w-full mt-6 bg-rose-600 hover:bg-rose-500 text-white font-black py-4 rounded-xl text-sm transition-colors shadow-lg relative z-10">Analyze Image 🔍</button>
+                </div>
+
+                <div id="agridoctor-processing-state" class="hidden text-center py-12 relative z-10">
+                    <div class="w-16 h-16 border-4 border-rose-500/30 border-t-rose-500 rounded-full animate-spin mx-auto mb-6"></div>
+                    <h3 class="text-xl font-black text-white mb-2">Analyzing Biomarkers...</h3>
+                    <p class="text-xs text-slate-400">Cross-referencing with local Ghanaian pathology databases...</p>
+                </div>
+
+                <div id="agridoctor-result-state" class="hidden relative z-10">
+                    <div class="bg-[#0f172a]/80 border border-rose-500/30 rounded-2xl p-6 mb-6">
+                        <div class="flex items-center gap-3 mb-4 border-b border-white/10 pb-4">
+                            <span class="text-4xl" id="diag-icon">🦠</span>
+                            <div>
+                                <h4 class="text-[10px] text-rose-400 font-bold uppercase tracking-wider">Detected Pathogen / Issue</h4>
+                                <h3 class="text-2xl font-black text-white" id="diag-title">...</h3>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-300 mb-6 leading-relaxed" id="diag-desc">...</p>
+                        
+                        <div class="space-y-4">
+                            <div class="bg-[#020617]/50 p-5 rounded-xl border border-emerald-500/20">
+                                <h4 class="text-[11px] font-black text-emerald-400 mb-2 uppercase tracking-wider flex items-center gap-2">🌱 Organic / Home Remedy</h4>
+                                <p class="text-sm text-slate-300 leading-relaxed" id="diag-organic">...</p>
+                            </div>
+                            <div class="bg-[#020617]/50 p-5 rounded-xl border border-amber-500/20">
+                                <h4 class="text-[11px] font-black text-amber-400 mb-2 uppercase tracking-wider flex items-center gap-2">🧪 Chemical Intervention</h4>
+                                <p class="text-sm text-slate-300 leading-relaxed" id="diag-chemical">...</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button onclick="resetAgriDoctor()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3.5 rounded-xl transition-colors text-sm border border-slate-700">Scan Another</button>
+                        <button onclick="navigate('marketplace')" class="flex-1 bg-rose-600 hover:bg-rose-500 text-white font-bold py-3.5 rounded-xl transition-colors shadow-lg text-sm">Buy Treatment on Market</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HAULAGE POOL VIEW (FEATURE 2) -->
+        <div id="view-haulage" class="fade-in hidden space-y-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between bg-[#0f172a] p-6 rounded-3xl border border-amber-500/30 gap-4 shadow-xl">
+                <div>
+                    <h2 class="text-2xl font-black text-white flex items-center gap-2">🚚 Haulage Pool & Empty-Leg Freight</h2>
+                    <p class="text-xs text-slate-400 mt-1">Book cheap return-trip truck space or list your empty haulage truck returning from deliveries.</p>
+                </div>
+                <button onclick="openHaulagePostModal()" class="bg-amber-500 hover:bg-amber-400 text-[#020617] text-xs font-black px-5 py-3 rounded-xl shadow-lg transition-colors whitespace-nowrap">+ List Empty Truck</button>
+            </div>
+            <div id="haulage-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
+        </div>
+
         <div id="view-post" class="fade-in hidden max-w-2xl mx-auto mt-6">
             <div class="flex items-center gap-3 mb-6">
                 <div class="w-10 h-10 bg-emerald-500/20 rounded-xl flex items-center justify-center text-emerald-400 border border-emerald-500/30 shadow-lg">📢</div>
@@ -727,8 +741,9 @@
         <div id="view-dashboard" class="fade-in hidden max-w-5xl mx-auto mt-6 space-y-6">
             
             <div class="grid grid-cols-2 sm:grid-cols-3 md:hidden gap-3 mt-4 w-full">
-                <button onclick="navigate('trainer')" class="glass-card p-3 rounded-xl border border-purple-500/30 text-xs font-bold text-purple-400 text-center shadow-lg">📚 Agri Trainer</button>
+                <button onclick="navigate('haulage')" class="glass-card p-3 rounded-xl border border-amber-500/30 text-xs font-bold text-amber-400 text-center shadow-lg">🚚 Haulage Pool</button>
                 <button onclick="navigate('agridoctor')" class="glass-card p-3 rounded-xl border border-rose-500/30 text-xs font-bold text-rose-400 text-center shadow-lg">🩺 AgriDoctor AI</button>
+                <button onclick="navigate('trainer')" class="glass-card p-3 rounded-xl border border-purple-500/30 text-xs font-bold text-purple-400 text-center shadow-lg">📚 Agri Trainer</button>
                 <button onclick="navigate('grants')" class="glass-card p-3 rounded-xl border border-amber-500/30 text-xs font-bold text-amber-400 text-center shadow-lg">🏆 Agri-Grants</button>
                 <button onclick="navigate('farm-manager')" class="glass-card p-3 rounded-xl border border-blue-500/30 text-xs font-bold text-blue-400 text-center shadow-lg">💼 Farm Manager</button>
                 <button onclick="navigate('intel')" class="glass-card p-3 rounded-xl border border-rose-500/30 text-xs font-bold text-rose-400 text-center shadow-lg">📊 Market Intel</button>
@@ -1075,7 +1090,6 @@
     <!-- JAVASCRIPT LOGIC                           -->
     <!-- ========================================== -->
     <script>
-        // --- GLOBAL CONFIGURATION & PWA INSTALL ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => { 
                 navigator.serviceWorker.register('/sw.js').catch(err => {
@@ -1139,6 +1153,13 @@
         // --- PLATFORM FEATURE SLIDESHOW (CLICKABLE) ---
         const platformFeatures = [
             { 
+                icon: "🚚", 
+                title: "Haulage Pool", 
+                desc: "Book cheap return-trip truck space or list your empty haulage truck returning from deliveries.", 
+                color: "from-amber-900/60 to-[#020617]", 
+                view: "haulage" 
+            },
+            { 
                 icon: "🩺", 
                 title: "AgriDoctor AI Scanner", 
                 desc: "Scan diseased crops or sick livestock with your camera for instant organic and chemical treatment plans.", 
@@ -1172,13 +1193,6 @@
                 desc: "Access free, step-by-step commercial farming guides for crops, poultry, and aquaculture.", 
                 color: "from-purple-900/60 to-[#020617]", 
                 view: "trainer" 
-            },
-            { 
-                icon: "⚙️", 
-                title: "Peer-to-Peer Machinery", 
-                desc: "Rent heavy equipment like tillers and pumps from local farmers, or list your own idle machinery.", 
-                color: "from-amber-900/60 to-[#020617]", 
-                view: "rentals" 
             }
         ];
         
@@ -1345,7 +1359,7 @@
             const views = [
                 'home', 'marketplace', 'auth', 'grants', 'farm-manager', 
                 'intel', 'calculator', 'trainer', 'post', 'dashboard', 
-                'pricing', 'faq', 'about', 'support', 'rentals', 'waste', 'agridoctor'
+                'pricing', 'faq', 'about', 'support', 'rentals', 'waste', 'agridoctor', 'haulage'
             ];
             
             views.forEach(v => {
@@ -1379,6 +1393,9 @@
             }
             if(view === 'waste') {
                 loadWasteRequests();
+            }
+            if(view === 'haulage') {
+                loadHaulagePool();
             }
             if(view === 'dashboard') { 
                 loadMyAds(); 
@@ -2476,7 +2493,7 @@
             closeFlyerModal(); 
         }
 
-        // --- NEW: AI VIDEO STUDIO ---
+        // --- AI VIDEO STUDIO ---
         function openVideoStudio(adId) {
             const ad = myLoadedAds.find(p => p.id === adId);
             if(!ad) return;
@@ -2571,6 +2588,7 @@
             } catch (e) {} 
         }
         
+        let adminPendingAdsCache = []; 
         async function renderAdminModQueue() { 
             const c = document.getElementById('admin-mod-list'); 
             if (!c) return; 
@@ -3569,7 +3587,7 @@
             handler.openIframe();
         }
 
-        // --- NEW: AGRIDOCTOR AI SCANNER LOGIC ---
+        // --- FEATURE 1: AGRIDOCTOR AI SCANNER LOGIC ---
         function handleAgriDoctorUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -3617,6 +3635,35 @@
             document.getElementById('agridoctor-analyze-btn').classList.add('hidden');
             document.getElementById('agridoctor-upload-state').classList.remove('hidden');
         }
-    </script>
-</body>
-</html>
+
+        // --- FEATURE 2: HAULAGE POOL (EMPTY-LEG FREIGHT BOARD) LOGIC ---
+        async function loadHaulagePool() {
+            const grid = document.getElementById('haulage-grid');
+            if (!grid) return;
+            
+            grid.innerHTML = '<div class="col-span-full text-center text-slate-400 py-10">Scanning active return-trip haulage trucks... ⏳</div>';
+            
+            try {
+                // Mock or real backend fetch for empty-leg trucks
+                const mockHaulage = [
+                    { id: 1, route: "Tamale ➔ Accra", truck: "Tata 10-Ton Cargo (Empty Return)", driver: "Kwame Mensah", phone: "0244112233", price: "GH₵ 1,200", date: "Tomorrow, 6:00 AM", capacity: "8 Tons Available" },
+                    { id: 2, route: "Kumasi ➔ Takoradi", truck: "Mercedes Flatbed", driver: "Yaw Boateng", phone: "0277445566", price: "GH₵ 850", date: "Wed, 9:00 AM", capacity: "5 Tons Available" },
+                    { id: 3, route: "Sunyani ➔ Greater Accra", truck: "Hyundai Mighty Box", driver: "Salifu Danjumah", phone: "0203332211", price: "GH₵ 950", date: "Thursday", capacity: "3.5 Tons Available" }
+                ];
+                
+                grid.innerHTML = mockHaulage.map(h => `
+                    <div class="glass-card p-6 rounded-[2.5rem] border border-amber-500/30 shadow-xl flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="bg-amber-500/10 text-amber-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-md border border-amber-500/20">Empty-Leg Return</span>
+                                <span class="text-[10px] text-slate-400 font-bold">📅 ${h.date}</span>
+                            </div>
+                            <h3 class="text-xl font-black text-white mb-2">${h.route}</h3>
+                            <p class="text-xs text-slate-300 font-bold mb-1">🚛 ${h.truck}</p>
+                            <p class="text-xs text-slate-400 mb-4">Driver: <strong class="text-slate-200">${h.driver}</strong> (${h.capacity})</p>
+                            <div class="bg-[#020617]/60 p-4 rounded-xl border border-slate-700/50 mb-4 flex justify-between items-center">
+                                <span class="text-xs text-slate-400 font-bold">Discounted Rate:</span>
+                                <span class="text-lg font-black text-emerald-400">${h.price}</span>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/233${h.phone.replace(/^0/,'')}?text=${encodeURIComponent('Hello, I want to book your empty-leg return truck space for ' + h.route + ' listed on AgromartDirect.')}" target="_blank" classI encountered an error doing what you asked. Could you try again?
