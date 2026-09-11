@@ -7,7 +7,7 @@ import uuid
 
 app = FastAPI(title="AgromartDirect Backend OS")
 
-# --- CORS SETUP ---
+# --- CORS SETUP (THIS FIXES THE 'FAILED TO FETCH' ERROR) ---
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -23,6 +23,7 @@ farm_batches_db = []
 buyer_requests_db = []
 rentals_db = []
 waste_db = []
+haulage_db = []
 
 # Admin config
 ADMIN_EMAIL = "enochdani9@gmail.com"
@@ -105,7 +106,6 @@ async def login(req: LoginRequest):
 
 @app.post("/api/v1/auth/google")
 async def google_auth(req: dict):
-    # Mock Google Auth handling
     email = "google_user@example.com"
     token = f"token_{uuid.uuid4().hex}"
     if email not in users_db:
@@ -155,7 +155,6 @@ async def create_product(token: str, prod: Product):
 
 @app.get("/api/v1/products")
 async def get_products(sort: str = "newest", category: Optional[str] = None, search: Optional[str] = None):
-    # Only return approved active products to the public marketplace
     active_prods = [p for p in products_db if p["status"] == "approved"]
     
     if category:
@@ -292,8 +291,6 @@ async def delete_waste(token: str, wid: int):
     return {"status": "deleted"}
 
 # --- HAULAGE POOL ---
-haulage_db = []
-
 @app.post("/api/v1/haulage")
 async def create_haulage(token: str, req: dict):
     user = await get_me(token)
