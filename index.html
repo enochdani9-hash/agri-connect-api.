@@ -57,13 +57,9 @@
             color: #020617 !important; 
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
         }
-        body.sunlight-mode h1, 
-        body.sunlight-mode h2, 
-        body.sunlight-mode h3, 
-        body.sunlight-mode h4, 
-        body.sunlight-mode .text-white { color: #020617 !important; }
-        body.sunlight-mode p, 
-        body.sunlight-mode span.text-slate-400 { color: #334155 !important; }
+        body.sunlight-mode h1, body.sunlight-mode h2, body.sunlight-mode h3, 
+        body.sunlight-mode h4, body.sunlight-mode .text-white { color: #020617 !important; }
+        body.sunlight-mode p, body.sunlight-mode span.text-slate-400 { color: #334155 !important; }
         
         /* Agri Trainer Typography */
         .guide-content h3 { color: #10b981; font-weight: 900; margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 1.15rem; }
@@ -89,9 +85,9 @@
         <div class="max-w-7xl mx-auto w-full flex items-center justify-between">
             <span class="flex items-center gap-2">
                 <span class="text-amber-400">🌦️ Ghana Agro-Weather:</span>
-                <span id="agro-weather-text">29°C | Humidity 78% • Optimal conditions for nationwide trade</span>
+                <span id="agro-weather-text">29°C | Humidity 78% • Optimal conditions for nationwide trade & harvest dispatch</span>
             </span>
-            <span class="hidden md:inline text-emerald-400 font-bold text-[10px] uppercase tracking-wider">🌱 Nationwide Direct Trade & Agribusiness Tools</span>
+            <span class="hidden md:inline text-emerald-400 font-bold text-[10px] uppercase tracking-wider">🌱 Direct Trade & Agribusiness Infrastructure</span>
         </div>
     </div>
 
@@ -657,7 +653,7 @@
             <div id="grants-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </div>
 
-        <!-- AGRIDOCTOR AI SCANNER VIEW (FEATURE 1) -->
+        <!-- AGRIDOCTOR AI SCANNER VIEW -->
         <div id="view-agridoctor" class="fade-in hidden max-w-4xl mx-auto mt-6 space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <div class="w-16 h-16 bg-rose-500/20 rounded-full flex items-center justify-center text-3xl mx-auto border border-rose-500/30 shadow-lg">🩺</div>
@@ -1048,7 +1044,7 @@
             </div>
         </div>
 
-        <!-- PRICING, FAQ, ABOUT, SUPPORT VIEWS -->
+        <!-- PRICING, FAQ, ABOUT, SUPPORT -->
         <div id="view-pricing" class="fade-in hidden max-w-5xl mx-auto mt-10 space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">Boost Your Sales</h2>
@@ -1345,6 +1341,7 @@
             `).join('');
         }
 
+        // --- EXPANDED AGRI TRAINER DATA (30 ITEMS) ---
         const agriTrainerData = {
             crops: [
                 { id: 'tomato', icon: '🍅', title: 'Tomatoes', wikiSearch: 'Tomato', intro: 'High yield, 3-month cycle.', guide: '<h3>Nursery & Transplanting</h3><p>Start seeds in trays. Transplant at 3-4 weeks. Space 60cm apart.</p><h3>Maintenance</h3><p>Stake plants to prevent fruit rot. Apply NPK 15-15-15.</p><h3>Harvest</h3><p>Harvest at 10-12 weeks when pink/red.</p>' },
@@ -3731,23 +3728,28 @@
                     </div>`;
             }
         }
-
+        
         async function openHaulagePostModal() {
-            if (!agriToken) { showToast("Sign in to list empty trucks", "error"); return navigate('auth'); }
-            const route = prompt("Route (e.g. Tamale ➔ Accra):"); if (!route) return;
-            const truck = prompt("Truck Model & Capacity (e.g. 10-Ton Tata Cargo):"); if (!truck) return;
-            const price = prompt("Discounted Return Rate (GH₵):"); if (!price) return;
-            const date = prompt("Departure / Return Date:"); if (!date) return;
-            const capacity = prompt("Available Cargo Space:"); if (!capacity) return;
-
+            if (!agriToken) {
+                showToast("Sign in to list empty trucks", "error");
+                return navigate('auth');
+            }
+            const route = prompt("Route (e.g. Tamale ➔ Accra):");
+            if (!route) return;
+            const truck = prompt("Truck Model & Capacity (e.g. 10-Ton Tata):");
+            const price = prompt("Discounted Return Rate (GH₵):");
+            const phone = prompt("Driver Phone Number:");
+            const date = prompt("Departure / Return Date:");
+            const capacity = prompt("Available Cargo Space:");
+            
             try {
                 const res = await fetch(`${API_URL}/api/v1/haulage?token=${agriToken}`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ route, truck, price, date, capacity })
+                    body: JSON.stringify({ route, truck, price, date, capacity, driver_phone: phone })
                 });
                 if(!res.ok) throw new Error("Failed");
-                showToast("Empty truck successfully published! 🚚");
+                showToast("Empty truck listed to Haulage Pool! 🚚");
                 loadHaulagePool();
             } catch(e) {
                 showToast("Error posting haulage listing", "error");
