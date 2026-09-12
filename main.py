@@ -26,6 +26,7 @@ buyer_requests_db = []
 rentals_db = []
 waste_db = []
 haulage_db = []
+reviews_db = []
 
 # Admin config
 ADMIN_EMAIL = "enochdani9@gmail.com"
@@ -78,6 +79,11 @@ class WasteCollection(BaseModel):
     quantity_est: str
     pickup_address: str
     contact_phone: str
+
+class Review(BaseModel):
+    target_email: str
+    rating: int
+    comment: str
 
 # --- AUTH & USER ENDPOINTS ---
 @app.post("/api/v1/signup")
@@ -169,6 +175,25 @@ async def request_verification(token: str):
             u["verification_requested"] = True
             return {"status": "requested"}
     raise HTTPException(status_code=401, detail="Unauthorized")
+
+# --- REVIEWS ENDPOINTS ---
+@app.post("/api/v1/reviews")
+async def post_review(token: str, review: Review):
+    user = await get_me(token)
+    new_review = {
+        "id": len(reviews_db) + 1,
+        "target_email": review.target_email,
+        "reviewer_name": user["full_name"],
+        "rating": review.rating,
+        "comment": review.comment,
+        "date": datetime.now().strftime("%B %d, %Y")
+    }
+    reviews_db.insert(0, new_review)
+    return new_review
+
+@app.get("/api/v1/reviews/{email}")
+async def get_reviews(email: str):
+    return [r for r in reviews_db if r["target_email"] == email]
 
 # --- MARKETPLACE ENDPOINTS ---
 @app.post("/api/v1/products")
@@ -367,11 +392,6 @@ def require_admin(token: str):
         if u["token"] == token and u["email"] == ADMIN_EMAIL:
             return True
     raise HTTPException(status_code=403, detail="Admin only")
-
-@app.get("/api/v1/admin/pending-users")
-async def admin_pending_users(token: str):
-    require_admin(token)
-    return [{"name": u["full_name"], "email": u["email"]} for u in users_db.values() if not u["is_verified"]]
 
 @app.get("/api/v1/admin/verifications")
 async def admin_verifications(token: str):
