@@ -305,22 +305,53 @@
         </div>
     </div>
 
-    <!-- SELLER PROFILE & REPORT MODALS -->
-    <div id="seller-profile-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[140] hidden items-center justify-center p-4">
-        <div class="glass-card w-full max-w-md p-8 rounded-[2.5rem] relative border border-emerald-500/30 text-center">
-            <button onclick="closeSellerProfile()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
-            <div id="seller-modal-avatar" class="w-24 h-24 rounded-full bg-slate-800 border-2 border-emerald-500 mx-auto mb-4 bg-cover bg-center flex items-center justify-center text-4xl shadow-xl">👨🏽‍🌾</div>
-            <h3 class="text-2xl font-black text-white mb-1" id="seller-modal-name">Farmer Name</h3>
-            <div id="seller-modal-badge" class="mb-4 inline-flex items-center gap-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-black uppercase px-3 py-1 rounded-full">✓ Verified Seller</div>
-            <div class="bg-[#0f172a] p-4 rounded-2xl border border-slate-700/80 mb-6 text-left space-y-2 text-xs">
-                <p class="text-slate-300">📞 Phone: <strong class="text-white" id="seller-modal-phone">...</strong></p>
-                <p class="text-slate-300">📅 Member Since: <strong class="text-white" id="seller-modal-since">...</strong></p>
+    <!-- SELLER PROFILE & REPORT MODALS (UPDATED DASHBOARD) -->
+    <div id="seller-profile-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[140] hidden items-center justify-center p-4 md:p-10 overflow-y-auto">
+        <div class="glass-card w-full max-w-4xl p-8 rounded-[2.5rem] relative border border-emerald-500/30 my-auto">
+            <button onclick="closeSellerProfile()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl z-10">✕</button>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Seller Details Column -->
+                <div class="text-center lg:text-left border-b lg:border-b-0 lg:border-r border-white/10 pb-6 lg:pb-0 lg:pr-8">
+                    <div id="seller-modal-avatar" class="w-24 h-24 rounded-full bg-slate-800 border-2 border-emerald-500 mx-auto lg:mx-0 mb-4 bg-cover bg-center flex items-center justify-center text-4xl shadow-xl">👨🏽‍🌾</div>
+                    <h3 class="text-3xl font-black text-white mb-1" id="seller-modal-name">Farmer Name</h3>
+                    <div id="seller-modal-badge" class="mb-4 inline-flex items-center gap-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-black uppercase px-3 py-1 rounded-full">✓ Verified Seller</div>
+                    <div class="bg-[#0f172a] p-4 rounded-2xl border border-slate-700/80 mb-6 text-left space-y-2 text-xs">
+                        <p class="text-slate-300">📞 Phone: <strong class="text-white" id="seller-modal-phone">...</strong></p>
+                        <p class="text-slate-300">📅 Member Since: <strong class="text-white" id="seller-modal-since">...</strong></p>
+                    </div>
+                    <div class="flex gap-2 mb-4">
+                        <a id="seller-modal-call-btn" href="#" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl text-xs transition-colors flex items-center justify-center gap-1">📞 Call</a>
+                        <a id="seller-modal-wa-btn" href="#" target="_blank" class="flex-1 bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-bold py-3.5 rounded-xl text-xs transition-colors flex items-center justify-center gap-1">💬 WhatsApp</a>
+                    </div>
+                    <button onclick="triggerReportFromProfile()" class="text-[11px] text-rose-400/80 hover:text-rose-400 underline transition-colors block mx-auto lg:mx-0">🚩 Flag user for fraud or non-delivery</button>
+                </div>
+
+                <!-- Right Column: Ads & Reviews -->
+                <div class="lg:col-span-2 space-y-8">
+                    <!-- Space for Reviews and Ratings -->
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-lg font-black text-white">⭐ Seller Ratings & Reviews</h4>
+                            <span class="text-xs font-bold text-amber-400">4.8 / 5.0 (Mock)</span>
+                        </div>
+                        <div class="bg-[#0f172a]/50 p-6 rounded-3xl border border-slate-700/50 flex items-center justify-center text-center h-32">
+                            <div>
+                                <p class="text-sm text-slate-400 mb-2">Review system coming in Phase 2.</p>
+                                <p class="text-xs text-slate-500">Buyers will be able to leave verified feedback after a completed Escrow transaction.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Ads by Seller -->
+                    <div>
+                        <h4 class="text-lg font-black text-white mb-4">🛒 Active Listings by this Seller</h4>
+                        <div id="seller-modal-ads-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[300px] overflow-y-auto pr-2">
+                            <!-- Ads will inject here automatically -->
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="flex gap-2">
-                <a id="seller-modal-call-btn" href="#" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl text-xs transition-colors flex items-center justify-center gap-1">📞 Call</a>
-                <a id="seller-modal-wa-btn" href="#" target="_blank" class="flex-1 bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-bold py-3.5 rounded-xl text-xs transition-colors flex items-center justify-center gap-1">💬 WhatsApp</a>
-            </div>
-            <button onclick="triggerReportFromProfile()" class="mt-4 text-[11px] text-rose-400/80 hover:text-rose-400 underline transition-colors block mx-auto">Flag user for fraud or non-delivery</button>
         </div>
     </div>
 
@@ -886,11 +917,6 @@
                             <div id="admin-verifications-list" class="space-y-2"></div>
                         </div>
 
-                        <div class="mb-8">
-                            <h4 class="text-xs font-black uppercase tracking-wider text-slate-400 mb-3">All Pending User Registrations</h4>
-                            <div id="admin-signups-list" class="space-y-2 max-h-64 overflow-y-auto pr-2"></div>
-                        </div>
-                        
                         <div class="pt-4 border-t border-white/10">
                             <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">Manual Verification (Override)</label>
                             <div class="flex gap-2">
@@ -1195,50 +1221,13 @@
         
         let pendingAdPayload = null;
 
-        // --- PLATFORM FEATURE SLIDESHOW (CLICKABLE) ---
         const platformFeatures = [
-            { 
-                icon: "🚚", 
-                title: "Haulage Pool", 
-                desc: "Book cheap return-trip truck space or list your empty haulage truck returning from deliveries.", 
-                color: "from-amber-900/60 to-[#020617]", 
-                view: "haulage" 
-            },
-            { 
-                icon: "🩺", 
-                title: "AgriDoctor AI Scanner", 
-                desc: "Scan diseased crops or sick livestock with your camera for instant organic and chemical treatment plans.", 
-                color: "from-rose-900/60 to-[#020617]", 
-                view: "agridoctor" 
-            },
-            { 
-                icon: "🚜", 
-                title: "Direct Farmer Market", 
-                desc: "Sell poultry, crops, and livestock directly to buyers nationwide with zero middleman fees.", 
-                color: "from-emerald-900/60 to-[#020617]", 
-                view: "marketplace" 
-            },
-            { 
-                icon: "🤝", 
-                title: "Smart Deal Room", 
-                desc: "Negotiate prices, split group orders, and secure bulk buys with our integrated deal room.", 
-                color: "from-blue-900/60 to-[#020617]", 
-                view: "marketplace" 
-            },
-            { 
-                icon: "♻️", 
-                title: "Eco-Loop Logistics", 
-                desc: "Turn farm waste into cash. Request bulk pickups for used oil, cassava peels, and cocoa pods.", 
-                color: "from-teal-900/60 to-[#020617]", 
-                view: "waste" 
-            },
-            { 
-                icon: "📚", 
-                title: "Agri Trainer Hub", 
-                desc: "Access free, step-by-step commercial farming guides for crops, poultry, and aquaculture.", 
-                color: "from-purple-900/60 to-[#020617]", 
-                view: "trainer" 
-            }
+            { icon: "🚚", title: "Haulage Pool", desc: "Book cheap return-trip truck space or list your empty haulage truck returning from deliveries.", color: "from-amber-900/60 to-[#020617]", view: "haulage" },
+            { icon: "🩺", title: "AgriDoctor AI Scanner", desc: "Scan diseased crops or sick livestock with your camera for instant organic and chemical treatment plans.", color: "from-rose-900/60 to-[#020617]", view: "agridoctor" },
+            { icon: "🚜", title: "Direct Farmer Market", desc: "Sell poultry, crops, and livestock directly to buyers nationwide with zero middleman fees.", color: "from-emerald-900/60 to-[#020617]", view: "marketplace" },
+            { icon: "🤝", title: "Smart Deal Room", desc: "Negotiate prices, split group orders, and secure bulk buys with our integrated deal room.", color: "from-blue-900/60 to-[#020617]", view: "marketplace" },
+            { icon: "♻️", title: "Eco-Loop Logistics", desc: "Turn farm waste into cash. Request bulk pickups for used oil, cassava peels, and cocoa pods.", color: "from-teal-900/60 to-[#020617]", view: "waste" },
+            { icon: "📚", title: "Agri Trainer Hub", desc: "Access free, step-by-step commercial farming guides for crops, poultry, and aquaculture.", color: "from-purple-900/60 to-[#020617]", view: "trainer" }
         ];
         
         let currentSlide = 0;
@@ -1266,29 +1255,10 @@
             setInterval(renderSlide, 5000);
         }
 
-        // --- LIVE AGRI NEWSROOM (24-HOUR AUTO REFRESH) ---
         const fallbackDummyNews = [
-            { 
-                source: "MoFA Update", 
-                date: "Today", 
-                title: "Government Announces Subsidy on NPK Fertilizers for Season", 
-                snippet: "The Ministry of Food and Agriculture has rolled out a new digital tracking system...", 
-                link: "https://mofa.gov.gh/" 
-            },
-            { 
-                source: "COCOBOD", 
-                date: "Yesterday", 
-                title: "Cocoa Farm Gate Price Adjusted Upward to Support Local Growers", 
-                snippet: "In a bid to support local farmers, the guaranteed price per bag has seen an adjustment...", 
-                link: "https://cocobod.gh/" 
-            },
-            { 
-                source: "AgriTech Ghana", 
-                date: "Recent", 
-                title: "New Drought-Resistant Maize Variety Introduced to Northern Region", 
-                snippet: "CSIR researchers have approved the release of a new seed strain capable of surviving dry spells...", 
-                link: "https://www.csir.org.gh/" 
-            }
+            { source: "MoFA Update", date: "Today", title: "Government Announces Subsidy on NPK Fertilizers for Season", snippet: "The Ministry of Food and Agriculture has rolled out a new digital tracking system...", link: "https://mofa.gov.gh/" },
+            { source: "COCOBOD", date: "Yesterday", title: "Cocoa Farm Gate Price Adjusted Upward to Support Local Growers", snippet: "In a bid to support local farmers, the guaranteed price per bag has seen an adjustment...", link: "https://cocobod.gh/" },
+            { source: "AgriTech Ghana", date: "Recent", title: "New Drought-Resistant Maize Variety Introduced to Northern Region", snippet: "CSIR researchers have approved the release of a new seed strain capable of surviving dry spells...", link: "https://www.csir.org.gh/" }
         ];
 
         async function loadAgriNews() {
@@ -1346,7 +1316,6 @@
             `).join('');
         }
 
-        // --- EXPANDED AGRI TRAINER DATA (30 ITEMS) ---
         const agriTrainerData = {
             crops: [
                 { id: 'tomato', icon: '🍅', title: 'Tomatoes', wikiSearch: 'Tomato', intro: 'High yield, 3-month cycle.', guide: '<h3>Nursery & Transplanting</h3><p>Start seeds in trays. Transplant at 3-4 weeks. Space 60cm apart.</p><h3>Maintenance</h3><p>Stake plants to prevent fruit rot. Apply NPK 15-15-15.</p><h3>Harvest</h3><p>Harvest at 10-12 weeks when pink/red.</p>' },
@@ -1451,7 +1420,6 @@
                 if (agriToken && currentUserEmail === "enochdani9@gmail.com") { 
                     renderAdminModQueue(); 
                     renderAdminAllAds(); 
-                    renderAdminSignupsList(); 
                     renderAdminVerificationsList(); 
                     renderAdminReports();
                 } 
@@ -1657,7 +1625,6 @@
                 if(admin) {
                     admin.classList.remove('hidden'); 
                 }
-                renderAdminSignupsList(); 
                 renderAdminModQueue(); 
                 renderAdminAllAds(); 
                 renderAdminVerificationsList(); 
@@ -2382,6 +2349,97 @@
             document.getElementById('preview-ad-modal').classList.remove('flex'); 
         }
 
+        function openSellerProfile(name, phone, isVerified, memberSince, profilePic) {
+            document.getElementById('seller-modal-name').innerText = name;
+            document.getElementById('seller-modal-phone').innerText = phone;
+            document.getElementById('seller-modal-since').innerText = memberSince || 'Recent';
+            
+            const badge = document.getElementById('seller-modal-badge');
+            if(isVerified) {
+                badge.classList.remove('hidden');
+                badge.classList.add('inline-flex');
+            } else {
+                badge.classList.add('hidden');
+                badge.classList.remove('inline-flex');
+            }
+            
+            const avatar = document.getElementById('seller-modal-avatar');
+            if(profilePic && profilePic !== 'null') {
+                avatar.innerHTML = '';
+                avatar.style.backgroundImage = `url('${profilePic}')`;
+            } else {
+                avatar.innerHTML = '👨🏽‍🌾';
+                avatar.style.backgroundImage = 'none';
+            }
+            
+            let cleanPhone = phone.replace(/\D/g, ''); 
+            if(cleanPhone.startsWith('0')) cleanPhone = '233' + cleanPhone.substring(1);
+            
+            document.getElementById('seller-modal-call-btn').href = `tel:${phone}`;
+            document.getElementById('seller-modal-wa-btn').href = `https://wa.me/${cleanPhone}`;
+
+            // Fetch and render this seller's active ads into the dashboard
+            const sellerAdsGrid = document.getElementById('seller-modal-ads-grid');
+            const sellerAds = allLoadedProducts.filter(p => p.seller_name === name && p.status === 'approved');
+            
+            if (sellerAds.length === 0) {
+                sellerAdsGrid.innerHTML = `<p class="text-slate-500 text-xs">No active listings right now.</p>`;
+            } else {
+                sellerAdsGrid.innerHTML = sellerAds.map(item => {
+                    let imgs = []; 
+                    try { imgs = JSON.parse(item.image_data) || []; } catch(e) { imgs = item.image_data ? [item.image_data] : []; }
+                    let imgBlock = imgs.length ? `<img src="${imgs[0]}" class="w-16 h-16 rounded-xl object-cover border border-slate-700 shrink-0">` : `<div class="w-16 h-16 bg-slate-800 rounded-xl flex items-center justify-center text-xl shrink-0">🌾</div>`;
+                    
+                    return `
+                    <div class="glass-card p-3 rounded-2xl flex items-center gap-3 border border-white/5 hover:border-emerald-500/30 transition-colors">
+                        ${imgBlock}
+                        <div>
+                            <h4 class="font-black text-white text-xs line-clamp-1">${item.product_name}</h4>
+                            <p class="text-[10px] text-emerald-400 font-bold mt-1">GH₵${item.base_price_ghs} / ${item.unit}</p>
+                        </div>
+                    </div>`;
+                }).join('');
+            }
+
+            document.getElementById('seller-profile-modal').classList.remove('hidden');
+            document.getElementById('seller-profile-modal').classList.add('flex');
+        }
+
+        function closeSellerProfile() {
+            document.getElementById('seller-profile-modal').classList.add('hidden');
+            document.getElementById('seller-profile-modal').classList.remove('flex');
+        }
+
+        function triggerReportFromProfile() {
+            const name = document.getElementById('seller-modal-name').innerText;
+            const phone = document.getElementById('seller-modal-phone').innerText;
+            document.getElementById('report-target-name').value = "Reporting: " + name;
+            document.getElementById('report-target-phone').value = phone;
+            
+            closeSellerProfile();
+            document.getElementById('report-modal').classList.remove('hidden');
+            document.getElementById('report-modal').classList.add('flex');
+        }
+        
+        function triggerScamReportFromOrder() {
+            document.getElementById('report-target-name').value = "Reporting: " + currentOrderPhone;
+            document.getElementById('report-target-phone').value = currentOrderPhone;
+            closeOrderModal();
+            document.getElementById('report-modal').classList.remove('hidden');
+            document.getElementById('report-modal').classList.add('flex');
+        }
+
+        function closeReportModal() {
+            document.getElementById('report-modal').classList.add('hidden');
+            document.getElementById('report-modal').classList.remove('flex');
+        }
+
+        function submitScamReport() {
+            showToast("Report submitted successfully to the Moderation team. Thank you.");
+            document.getElementById('report-details').value = "";
+            closeReportModal();
+        }
+
         async function loadMyTenders() {
             if(!agriToken) return;
             try {
@@ -2598,24 +2656,6 @@
         }
 
         // --- ADMIN PANEL FUNCTIONS ---
-        async function renderAdminSignupsList() { 
-            const c = document.getElementById('admin-signups-list'); 
-            if (!c) return; 
-            try { 
-                const res = await fetch(`${API_URL}/api/v1/admin/pending-users?token=${agriToken}`); 
-                const users = await res.json(); 
-                if (!users.length) {
-                    c.innerHTML = `<p class="text-xs text-slate-500">No pending users.</p>`; 
-                    return;
-                }
-                c.innerHTML = users.map((u, i) => `
-                    <div class="glass-card p-3 rounded-xl flex justify-between items-center border border-white/5 mb-2">
-                        <div><p class="text-xs font-bold text-white">${u.name} <span class="text-slate-400">(${u.email})</span></p></div>
-                        <button onclick="quickVerifyUser('${u.email}', null)" class="bg-emerald-600 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition-colors">✅ Verify</button>
-                    </div>`).join(''); 
-            } catch (e) {} 
-        }
-        
         async function renderAdminVerificationsList() { 
             const c = document.getElementById('admin-verifications-list'); 
             if (!c) return; 
@@ -2722,7 +2762,6 @@
                 showToast("Verified!"); 
                 if(elId) document.getElementById(elId)?.remove(); 
                 
-                renderAdminSignupsList(); 
                 renderAdminVerificationsList(); 
             } catch (err) {} 
         }
@@ -2790,66 +2829,29 @@
             } 
         }
 
-        // --- AGRI TRAINER (WIKIPEDIA API + LOCAL GUIDE) ---
-        function showTrainerSubCategory(cat) {
-            const grid = document.getElementById('trainer-items-grid'); 
-            grid.innerHTML = ''; 
-            
-            agriTrainerData[cat].forEach(item => { 
-                grid.innerHTML += `
-                    <div onclick="openTrainerGuide('${cat}', '${item.id}')" class="glass-card p-6 rounded-[2rem] cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 transition-all text-center shadow-xl">
-                        <div class="text-5xl mb-4">${item.icon}</div>
-                        <h4 class="text-lg font-black text-white">${item.title}</h4>
-                        <p class="text-xs text-slate-400 mt-2">${item.intro}</p>
-                    </div>`; 
-            }); 
-            
-            document.getElementById('trainer-categories').classList.add('hidden'); 
-            document.getElementById('trainer-items').classList.remove('hidden'); 
-        }
-        
-        async function openTrainerGuide(cat, itemId) {
-            const item = agriTrainerData[cat].find(i => i.id === itemId); 
-            if(!item) return; 
-            
-            document.getElementById('guide-icon').innerText = item.icon; 
-            document.getElementById('guide-title').innerText = item.title; 
-            document.getElementById('guide-intro').innerText = item.intro; 
-            
-            const contentContainer = document.getElementById('guide-content');
-            contentContainer.innerHTML = '<p class="text-emerald-400 font-bold animate-pulse">Fetching encyclopedia data...</p>';
-            
-            document.getElementById('trainer-items').classList.add('hidden'); 
-            document.getElementById('trainer-guide').classList.remove('hidden'); 
-            
-            try {
-                const searchStr = encodeURIComponent(item.wikiSearch || item.title);
-                const wikiRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${searchStr}`);
-                
-                if(wikiRes.ok) {
-                    const wikiData = await wikiRes.json();
-                    
-                    let wikiHtml = `<div class="bg-[#0f172a] p-6 rounded-3xl border border-slate-700/50 mb-8 flex flex-col md:flex-row gap-6 shadow-inner items-start" id="wiki-content">`;
-                    
-                    if(wikiData.thumbnail && wikiData.thumbnail.source) {
-                        wikiHtml += `<img src="${wikiData.thumbnail.source}" class="w-full md:w-48 h-48 object-cover rounded-2xl shadow-lg border border-slate-700 shrink-0">`;
+        function payForVerification() {
+            if (!agriToken || !currentUserEmail) return navigate('auth');
+            let handler = PaystackPop.setup({
+                key: PAYSTACK_PUBLIC_KEY, 
+                email: currentUserEmail, 
+                amount: 5 * 100, 
+                currency: 'GHS', 
+                ref: 'AGRI_VERIFY_' + Math.floor((Math.random() * 1000000000) + 1), 
+                metadata: { boost_type: 'verification', email: currentUserEmail },
+                callback: async function(response){ 
+                    try {
+                        await fetch(`${API_URL}/api/v1/me/request-verification?token=${agriToken}`, { method: 'POST' });
+                        showToast("Payment Successful! Verification request sent."); 
+                        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); 
+                    } catch(e) {
+                        showToast("Error sending request to server", "error");
                     }
-                    
-                    wikiHtml += `<div><h3 class="text-emerald-400 text-sm font-black uppercase tracking-wider mb-2 flex items-center gap-2">📖 Wikipedia Overview</h3><p class="text-sm text-slate-300 leading-relaxed">${wikiData.extract}</p></div></div>`;
-                    
-                    contentContainer.innerHTML = wikiHtml + `<h3 class="text-xl font-black text-white mb-4 mt-8 border-b border-white/10 pb-2">🚜 Agromart Cultivation Guide</h3>` + item.guide;
-                } else {
-                    throw new Error("Wiki not found");
+                },
+                onClose: function(){ 
+                    showToast("Payment Cancelled.", "error"); 
                 }
-            } catch (e) {
-                contentContainer.innerHTML = `<h3 class="text-xl font-black text-white mb-4 border-b border-white/10 pb-2">🚜 Agromart Cultivation Guide</h3>` + item.guide;
-            }
-        }
-        
-        function resetTrainer() {
-            document.getElementById('trainer-guide').classList.add('hidden'); 
-            document.getElementById('trainer-items').classList.add('hidden'); 
-            document.getElementById('trainer-categories').classList.remove('hidden'); 
+            });
+            handler.openIframe();
         }
 
         // --- GRANTS (WITH 24-HOUR ROTATION) ---
@@ -3031,242 +3033,6 @@
                     </div>`; 
                 }).join(''); 
             } catch(e) {} 
-        }
-
-        // --- RFQ / BUYER REQUESTS ---
-        function openRfqModal() { 
-            if (!agriToken) { 
-                showToast("Sign in first", "error"); 
-                return navigate('auth'); 
-            } 
-            const modal = document.getElementById('rfq-modal'); 
-            if(modal) { 
-                modal.classList.remove('hidden'); 
-                modal.classList.add('flex'); 
-            } 
-        }
-        
-        function closeRfqModal() { 
-            const modal = document.getElementById('rfq-modal'); 
-            if(modal) { 
-                modal.classList.add('hidden'); 
-                modal.classList.remove('flex'); 
-            } 
-        }
-        
-        async function submitBuyerRequest() { 
-            const btn = document.getElementById('rfq-submit-btn'); 
-            const payload = { 
-                item_needed: document.getElementById('rfq-item').value.trim(), 
-                category: document.getElementById('rfq-category').value, 
-                quantity: document.getElementById('rfq-quantity').value.trim(), 
-                target_budget_ghs: document.getElementById('rfq-budget').value.trim(), 
-                delivery_destination: document.getElementById('rfq-destination').value.trim(), 
-                description: document.getElementById('rfq-description').value.trim() 
-            }; 
-            
-            if (!payload.item_needed || !payload.quantity || !payload.target_budget_ghs || !payload.delivery_destination) {
-                return showToast("Fill required fields", "error"); 
-            }
-            
-            btn.disabled = true; 
-            btn.innerText = "Publishing... ⏳"; 
-            
-            try { 
-                await fetch(`${API_URL}/api/v1/buyer-requests?token=${agriToken}`, { 
-                    method: 'POST', 
-                    headers: { 'Content-Type': 'application/json' }, 
-                    body: JSON.stringify(payload) 
-                }); 
-                showToast("Tender Published! 📢"); 
-                
-                ['rfq-item', 'rfq-quantity', 'rfq-budget', 'rfq-destination', 'rfq-description'].forEach(id => { 
-                    const el = document.getElementById(id); 
-                    if(el) el.value = ''; 
-                }); 
-                
-                closeRfqModal(); 
-                loadBuyerRequests(); 
-            } catch (err) {} finally { 
-                btn.disabled = false; 
-                btn.innerText = "Publish Tender"; 
-            } 
-        }
-        
-        async function loadBuyerRequests() { 
-            try { 
-                const res = await fetch(`${API_URL}/api/v1/buyer-requests?t=${new Date().getTime()}`); 
-                const rfqs = await res.json(); 
-                allLoadedRfqs = rfqs; 
-                
-                renderRfqGrid(rfqs, document.getElementById('rfq-grid')); 
-                
-                if (currentMarketMode === 'rfqs') {
-                    renderRfqGrid(rfqs, document.getElementById('product-grid')); 
-                }
-            } catch (e) {} 
-        }
-        
-        function renderRfqGrid(rfqs, container) { 
-            if (!container) return; 
-            
-            if (!rfqs || rfqs.length === 0) { 
-                container.innerHTML = `<div class="col-span-full glass-card py-16 rounded-3xl text-center border border-white/5"><p class="text-slate-400 text-sm">No active tenders.</p></div>`; 
-                return; 
-            } 
-            
-            container.innerHTML = rfqs.map(r => { 
-                let cleanPhone = r.buyer_phone.replace(/\D/g, ''); 
-                if (cleanPhone.startsWith('0')) cleanPhone = '233' + cleanPhone.substring(1); 
-                
-                let whatsappMsg = `*OFFER TO SUPPLY via AgromartDirect*\n📢 *Your Tender:* ${r.item_needed}\n🔢 *Quantity:* ${r.quantity}\n💰 *Your Budget:* GH₵${r.target_budget_ghs}\n📍 *Destination:* ${r.delivery_destination}\n\nHello, I can supply this order from my farm. Let's discuss dispatch!`; 
-                
-                return `
-                    <div class="glass-card p-6 rounded-[2rem] border border-blue-500/20 hover:border-blue-500/50 transition-all flex flex-col justify-between shadow-xl">
-                        <div>
-                            <div class="flex items-center justify-between mb-4">
-                                <span class="bg-blue-500/10 text-blue-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-lg border border-blue-500/20">Tender Wanted</span>
-                                <span class="text-[10px] text-slate-400">📍 ${r.delivery_destination}</span>
-                            </div>
-                            <h4 class="text-xl font-black text-white mb-2 leading-tight">${r.item_needed}</h4>
-                            <div class="text-xs text-slate-300 space-y-1 mb-4 bg-[#0f172a] p-4 rounded-xl border border-slate-700/50">
-                                <p>📦 <strong>Volume:</strong> ${r.quantity}</p>
-                                <p>💰 <strong>Target Budget:</strong> <span class="text-emerald-400 font-bold">GH₵${r.target_budget_ghs}</span></p>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 pt-4 border-t border-white/10 mt-auto">
-                            <a href="https://wa.me/${cleanPhone}?text=${encodeURIComponent(whatsappMsg)}" target="_blank" class="bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-3 rounded-xl text-xs flex items-center justify-center transition-colors">💬 WhatsApp Bid</a>
-                            <a href="tel:${r.buyer_phone}" class="bg-blue-600/20 hover:bg-blue-600 text-blue-300 hover:text-white border border-blue-500/30 font-black py-3 rounded-xl text-xs flex items-center justify-center transition-colors">📞 Call Buyer</a>
-                        </div>
-                    </div>`; 
-            }).join(''); 
-        }
-
-        // --- DEAL ROOM ---
-        function openOrderModal(phone, name, priceStr, unit, sellerLoc, prodId) { 
-            if (!agriToken) { 
-                showToast("Sign in to contact seller", "error"); 
-                return navigate('auth'); 
-            } 
-            let avgPrice = parseFloat(priceStr.toString().match(/\d+(\.\d+)?/g)?.[0] || 0); 
-            
-            currentOrderPhone = phone; 
-            currentOrderName = name; 
-            currentOrderBasePrice = avgPrice; 
-            currentOrderUnit = unit; 
-            currentOrderSellerLoc = sellerLoc || "Ghana"; 
-            
-            const pname = document.getElementById('order-product-name'); if(pname) pname.innerText = name; 
-            const pprice = document.getElementById('order-base-price'); if(pprice) pprice.innerText = avgPrice.toFixed(2); 
-            const punit = document.getElementById('order-unit'); if(punit) punit.innerText = unit; 
-            const oqty = document.getElementById('order-quantity'); if(oqty) oqty.value = 1; 
-            
-            const slider = document.getElementById('haggle-slider'); 
-            if(slider) { 
-                slider.min = Math.floor(avgPrice * 0.5); 
-                slider.max = Math.ceil(avgPrice * 1.2); 
-                slider.value = Math.floor(avgPrice * 0.85); 
-            } 
-            
-            updateHaggleMeter(); 
-            switchOrderTab('direct'); 
-            calculateOrderTotal(); 
-            
-            const modal = document.getElementById('order-modal'); 
-            if(modal) { 
-                modal.classList.remove('hidden'); 
-                modal.classList.add('flex'); 
-            } 
-        }
-        
-        function closeOrderModal() { 
-            const modal = document.getElementById('order-modal'); 
-            if(modal) { 
-                modal.classList.add('hidden'); 
-                modal.classList.remove('flex'); 
-            } 
-        }
-        
-        function switchOrderTab(tab) { 
-            currentOrderTabState = tab; 
-            ['direct', 'haggle', 'group'].forEach(t => { 
-                const btn = document.getElementById(`tab-${t}`); 
-                if(btn) { 
-                    if (t === tab) { 
-                        btn.classList.add('bg-emerald-600', 'text-white'); 
-                        btn.classList.remove('text-slate-400'); 
-                    } else { 
-                        btn.classList.remove('bg-emerald-600', 'text-white'); 
-                        btn.classList.add('text-slate-400'); 
-                    } 
-                } 
-            }); 
-            
-            const phaggle = document.getElementById('panel-haggle'); if(phaggle) phaggle.classList.toggle('hidden', tab !== 'haggle'); 
-            const pgroup = document.getElementById('panel-group'); if(pgroup) pgroup.classList.toggle('hidden', tab !== 'group'); 
-            
-            calculateOrderTotal(); 
-        }
-        
-        function updateHaggleMeter() { 
-            const slider = document.getElementById('haggle-slider'); if(!slider) return; 
-            
-            const val = parseFloat(slider.value); 
-            const hdisplay = document.getElementById('haggle-val-display'); if(hdisplay) hdisplay.innerText = val.toFixed(2); 
-            
-            const ratio = val / currentOrderBasePrice; 
-            const fb = document.getElementById('haggle-feedback'); 
-            
-            if(fb) { 
-                if (ratio < 0.65) { 
-                    fb.innerText = "⚠️ Low offer"; 
-                    fb.className = "font-bold text-rose-400"; 
-                } else if (ratio <= 0.90) { 
-                    fb.innerText = "🤝 Fair Offer"; 
-                    fb.className = "font-bold text-amber-400"; 
-                } else { 
-                    fb.innerText = "⭐ Premium Offer"; 
-                    fb.className = "font-bold text-emerald-400"; 
-                } 
-            } 
-            calculateOrderTotal(); 
-        }
-        
-        function calculateOrderTotal() { 
-            const oqty = document.getElementById('order-quantity'); 
-            let qty = Math.max(1, parseInt(oqty ? oqty.value : 1) || 1); 
-            let unitPrice = currentOrderBasePrice; 
-            
-            if (currentOrderTabState === 'haggle') { 
-                const slider = document.getElementById('haggle-slider'); 
-                unitPrice = parseFloat(slider ? slider.value : currentOrderBasePrice) || currentOrderBasePrice; 
-            } 
-            
-            let sub = unitPrice * qty; 
-            const osub = document.getElementById('order-total-price'); if(osub) osub.innerText = sub.toFixed(2); 
-            
-            let splitCount = parseInt(document.getElementById('group-split-count')?.value) || 2;
-            const eachP = document.getElementById('group-each-price');
-            if(eachP) eachP.innerText = (sub / splitCount).toFixed(2);
-        }
-        
-        function executeDealWhatsApp() { 
-            const oqty = document.getElementById('order-quantity'); let qty = oqty ? oqty.value : 1; 
-            const odest = document.getElementById('order-destination'); let dest = odest ? odest.value || "TBD" : "TBD"; 
-            const ototal = document.getElementById('order-total-price'); let total = ototal ? ototal.innerText : 0; 
-            
-            let cleanPhone = currentOrderPhone.replace(/\D/g, ''); 
-            if(cleanPhone.startsWith('0')) cleanPhone = '233' + cleanPhone.substring(1); 
-            
-            let msgText = `*ORDER via AgromartDirect*\n📦 *Item:* ${currentOrderName}\n🔢 *Qty:* ${qty} ${currentOrderUnit}\n📍 *Delivery:* ${dest}\n💰 *Total:* GH₵${total}\n\nHello, I am interested in this. Please confirm availability.`; 
-            
-            window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(msgText)}`, '_blank'); 
-            closeOrderModal(); 
-        }
-        
-        function executeCallFarmer() { 
-            window.open(`tel:${currentOrderPhone.replace(/\D/g, '')}`, '_self'); 
-            closeOrderModal(); 
         }
 
         // --- FEED CALCULATOR (PEARSON SQUARE) ---
@@ -3532,106 +3298,6 @@
             } catch(e) {}
         }
         
-        // --- PAYSTACK LOGIC ---
-        function payAgriProSubscription() {
-            if (!agriToken || !currentUserEmail) return navigate('auth');
-            let handler = PaystackPop.setup({
-                key: PAYSTACK_PUBLIC_KEY, 
-                email: currentUserEmail, 
-                amount: 70 * 100, 
-                currency: 'GHS', 
-                ref: 'AGRI_PRO_' + Math.floor((Math.random() * 1000000000) + 1), 
-                metadata: { boost_type: 'pro', email: currentUserEmail },
-                callback: function(response){ 
-                    showToast("Welcome to Agromart Pro 🏆"); 
-                    confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } }); 
-                    setTimeout(() => { 
-                        loadMyAds(); 
-                        loadMarketplaceGrid(); 
-                        navigate('dashboard'); 
-                    }, 2500); 
-                },
-                onClose: function(){ 
-                    showToast("Payment Cancelled.", "error"); 
-                }
-            });
-            handler.openIframe();
-        }
-
-        function boostAd(adId, amountGHS, boostType) {
-            if (!currentUserEmail) return navigate('auth');
-            let handler = PaystackPop.setup({
-                key: PAYSTACK_PUBLIC_KEY, 
-                email: currentUserEmail, 
-                amount: amountGHS * 100, 
-                currency: 'GHS', 
-                ref: 'AGRI_' + Math.floor((Math.random() * 1000000000) + 1), 
-                metadata: { ad_id: adId, boost_type: boostType },
-                callback: function(response){ 
-                    showToast("Ad boosted to Premium! 🚀"); 
-                    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); 
-                    setTimeout(() => { 
-                        loadMyAds(); 
-                        loadMarketplaceGrid(); 
-                    }, 2500); 
-                },
-                onClose: function(){ 
-                    showToast("Payment Cancelled.", "error"); 
-                }
-            });
-            handler.openIframe();
-        }
-
-        async function handlePricingBoostClick() {
-            if (!agriToken) { 
-                showToast("Sign in first", "error"); 
-                return navigate('auth'); 
-            }
-            try {
-                const res = await fetch(`${API_URL}/api/v1/my-products?token=${agriToken}`); 
-                const ads = await res.json(); 
-                const approvedAds = ads.filter(a => a.status === 'approved');
-                
-                if (approvedAds.length === 0) { 
-                    showToast("Post an ad first!", "error"); 
-                    return navigate('post'); 
-                }
-                
-                if (approvedAds.length === 1) {
-                    boostAd(approvedAds[0].id, 15, 'premium');
-                } else {
-                    let adOptions = approvedAds.map((a, i) => `${i + 1}. ${a.product_name}`).join("\n");
-                    let choice = prompt(`Select ad to boost (Enter number):\n\n${adOptions}`);
-                    let idx = parseInt(choice) - 1; 
-                    if (idx >= 0 && idx < approvedAds.length) {
-                        boostAd(approvedAds[idx].id, 15, 'premium');
-                    }
-                }
-            } catch (e) { 
-                showToast("Error loading ads", "error"); 
-            }
-        }
-
-        function payForVerification() {
-            if (!agriToken || !currentUserEmail) return navigate('auth');
-            let handler = PaystackPop.setup({
-                key: PAYSTACK_PUBLIC_KEY, 
-                email: currentUserEmail, 
-                amount: 5 * 100, 
-                currency: 'GHS', 
-                ref: 'AGRI_VERIFY_' + Math.floor((Math.random() * 1000000000) + 1), 
-                metadata: { boost_type: 'verification', email: currentUserEmail },
-                callback: function(response){ 
-                    showToast("Payment Successful! Verification request sent."); 
-                    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); 
-                },
-                onClose: function(){ 
-                    showToast("Payment Cancelled.", "error"); 
-                }
-            });
-            handler.openIframe();
-        }
-
         // --- FEATURE 1: AGRIDOCTOR AI SCANNER LOGIC ---
         function handleAgriDoctorUpload(event) {
             const file = event.target.files[0];
