@@ -95,6 +95,7 @@ async def signup(req: SignupRequest):
         "token": token,
         "profile_picture": None,
         "is_verified": False if req.email != ADMIN_EMAIL else True,
+        "verification_requested": False,
         "member_since": datetime.now().strftime("%B %Y")
     }
     return {"access_token": token}
@@ -113,7 +114,6 @@ async def google_auth(req: dict):
         raise HTTPException(status_code=400, detail="No Google credential provided")
     
     try:
-        # Decode the Google JWT payload to extract real user details
         payload_segment = credential.split('.')[1]
         padding = '=' * (4 - len(payload_segment) % 4)
         payload_json = base64.urlsafe_b64decode(payload_segment + padding).decode('utf-8')
@@ -137,10 +137,10 @@ async def google_auth(req: dict):
             "token": token,
             "profile_picture": picture,
             "is_verified": True if email == ADMIN_EMAIL else False,
+            "verification_requested": False,
             "member_since": datetime.now().strftime("%B %Y")
         }
     else:
-        # Update the session token and picture if the user already exists
         users_db[email]["token"] = token
         if picture:
             users_db[email]["profile_picture"] = picture
@@ -160,6 +160,14 @@ async def update_profile_pic(token: str, req: dict):
         if u["token"] == token:
             u["profile_picture"] = req.get("image_data")
             return {"status": "success"}
+    raise HTTPException(status_code=401, detail="Unauthorized")
+
+@app.post("/api/v1/me/request-verification")
+async def request_verification(token: str):
+    for u in users_db.values():
+        if u["token"] == token:
+            u["verification_requested"] = True
+            return {"status": "requested"}
     raise HTTPException(status_code=401, detail="Unauthorized")
 
 # --- MARKETPLACE ENDPOINTS ---
@@ -368,7 +376,7 @@ async def admin_pending_users(token: str):
 @app.get("/api/v1/admin/verifications")
 async def admin_verifications(token: str):
     require_admin(token)
-    return [{"name": u["full_name"], "email": u["email"]} for u in users_db.values() if not u["is_verified"]]
+    return [{"name": u["full_name"], "email": u["email"]} for u in users_db.values() if u.get("verification_requested") and not u["is_verified"]]
 
 @app.post("/api/v1/admin/verify")
 async def admin_verify_user(req: dict, token: str):
@@ -376,6 +384,7 @@ async def admin_verify_user(req: dict, token: str):
     email = req.get("email")
     if email in users_db:
         users_db[email]["is_verified"] = True
+        users_db[email]["verification_requested"] = False
         return {"status": "verified"}
     raise HTTPException(status_code=404, detail="User not found")
 
