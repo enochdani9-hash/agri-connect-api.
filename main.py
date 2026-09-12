@@ -4,10 +4,12 @@ from pydantic import BaseModel
 from typing import List, Optional, Any
 from datetime import datetime
 import uuid
+import base64
+import json
 
 app = FastAPI(title="AgromartDirect Backend OS")
 
-# --- CORS SETUP (THIS FIXES THE 'FAILED TO FETCH' ERROR) ---
+# --- CORS SETUP ---
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -106,19 +108,43 @@ async def login(req: LoginRequest):
 
 @app.post("/api/v1/auth/google")
 async def google_auth(req: dict):
-    email = "google_user@example.com"
+    credential = req.get("credential")
+    if not credential:
+        raise HTTPException(status_code=400, detail="No Google credential provided")
+    
+    try:
+        # Decode the Google JWT payload to extract real user details
+        payload_segment = credential.split('.')[1]
+        padding = '=' * (4 - len(payload_segment) % 4)
+        payload_json = base64.urlsafe_b64decode(payload_segment + padding).decode('utf-8')
+        payload = json.loads(payload_json)
+        
+        email = payload.get("email")
+        full_name = payload.get("name", "Farmer")
+        picture = payload.get("picture", None)
+        
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid Google token")
+
     token = f"token_{uuid.uuid4().hex}"
+    
     if email not in users_db:
         users_db[email] = {
-            "full_name": "Google User",
+            "full_name": full_name,
             "email": email,
             "phone_number": "",
             "password": "", 
             "token": token,
-            "profile_picture": None,
-            "is_verified": False,
+            "profile_picture": picture,
+            "is_verified": True if email == ADMIN_EMAIL else False,
             "member_since": datetime.now().strftime("%B %Y")
         }
+    else:
+        # Update the session token and picture if the user already exists
+        users_db[email]["token"] = token
+        if picture:
+            users_db[email]["profile_picture"] = picture
+            
     return {"access_token": users_db[email]["token"]}
 
 @app.get("/api/v1/me")
