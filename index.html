@@ -35,7 +35,7 @@
         }
         
         .glass-card { 
-            background: rgba(15, 23, 42, 0.6); 
+            background: rgba(15, 23, 42, 0.65); 
             backdrop-filter: blur(12px); 
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.05); 
@@ -49,7 +49,6 @@
         
         select option { background-color: #0f172a !important; color: #ffffff !important; }
         
-        /* Sunlight Mode / High Contrast */
         body.sunlight-mode { background-color: #f8fafc !important; color: #020617 !important; }
         body.sunlight-mode .glass-card { 
             background: #ffffff !important; 
@@ -61,12 +60,10 @@
         body.sunlight-mode h4, body.sunlight-mode .text-white { color: #020617 !important; }
         body.sunlight-mode p, body.sunlight-mode span.text-slate-400 { color: #334155 !important; }
         
-        /* Agri Trainer Typography */
         .guide-content h3 { color: #10b981; font-weight: 900; margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 1.15rem; }
         .guide-content p { color: #cbd5e1; margin-bottom: 1rem; font-size: 0.9rem; line-height: 1.65; }
         .guide-content ul { list-style-type: disc; padding-left: 1.5rem; color: #cbd5e1; font-size: 0.9rem; margin-bottom: 1rem; }
         
-        /* Wikipedia Embed Typography */
         #wiki-content p { margin-bottom: 0.75rem; font-size: 0.875rem; line-height: 1.6; color: #cbd5e1; }
         #wiki-content b { color: #ffffff; }
         body.sunlight-mode #wiki-content p { color: #334155; }
@@ -91,7 +88,7 @@
         </div>
     </div>
 
-    <!-- MODALS SECTION -->
+    <!-- EDIT AD MODAL -->
     <div id="edit-ad-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[120] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative">
             <button onclick="closeEditModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
@@ -115,6 +112,7 @@
         </div>
     </div>
 
+    <!-- PREVIEW MODAL -->
     <div id="preview-ad-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[130] hidden items-center justify-center p-4">
         <div class="w-full max-w-md relative">
             <button onclick="closePreviewModal()" class="absolute -top-12 right-0 text-white font-black text-lg bg-slate-800 hover:bg-rose-500 rounded-full w-8 h-8 flex items-center justify-center shadow-lg transition-colors">✕</button>
@@ -122,6 +120,7 @@
         </div>
     </div>
 
+    <!-- BATCH MODAL -->
     <div id="batch-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[120] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-8 rounded-[2.5rem] relative border border-blue-500/30">
             <button onclick="closeBatchModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
@@ -156,6 +155,7 @@
         </div>
     </div>
 
+    <!-- RFQ MODAL -->
     <div id="rfq-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[120] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-blue-500/30 text-left">
             <button onclick="closeRfqModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
@@ -182,6 +182,7 @@
         </div>
     </div>
 
+    <!-- DEAL ROOM MODAL -->
     <div id="order-modal" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-emerald-500/30">
             <button onclick="closeOrderModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
@@ -242,6 +243,7 @@
         </div>
     </div>
 
+    <!-- FLYER MODAL -->
     <div id="flyer-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-6 rounded-[2.5rem] text-center border border-emerald-500/30">
             <button onclick="closeFlyerModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl font-bold">✕</button>
@@ -253,6 +255,7 @@
         </div>
     </div>
 
+    <!-- VIDEO STUDIO MODAL -->
     <div id="video-studio-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-purple-500/30">
             <button onclick="closeVideoStudio()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
@@ -1344,7 +1347,6 @@
             `).join('');
         }
 
-        // DOUBLE QUOTES GUARANTEE JSON SAFETY FOR THE TRAINER
         const agriTrainerData = {
             "crops": [
                 { "id": "tomato", "icon": "🍅", "title": "Tomatoes", "wikiSearch": "Tomato", "intro": "High yield, 3-month cycle.", "guide": "<h3>Nursery & Transplanting</h3><p>Start seeds in trays. Transplant at 3-4 weeks. Space 60cm apart.</p><h3>Maintenance</h3><p>Stake plants to prevent fruit rot. Apply NPK 15-15-15.</p><h3>Harvest</h3><p>Harvest at 10-12 weeks when pink/red.</p>" },
@@ -2379,7 +2381,7 @@
             document.getElementById('preview-ad-modal').classList.remove('flex'); 
         }
 
-        // CRITICAL FIX: Safe profile lookup by Ad ID
+        // SAFE PROFILE LOOKUP
         function openSellerProfileByAdId(adId) {
             const ad = allLoadedProducts.find(p => p.id === adId);
             if (!ad) return;
@@ -2522,6 +2524,7 @@
             } catch(e) {}
         }
 
+        // --- FLYER MODAL LOGIC ---
         function generateWhatsAppFlyer(name, price, unit, imageSrc, phone) { 
             const modal = document.getElementById('flyer-modal'); 
             if(modal) { 
@@ -2842,7 +2845,6 @@
                 document.getElementById(elId)?.remove(); 
                 showToast("✅ Approved!"); 
                 
-                // Refresh the grid and master list automatically
                 loadMarketplaceGrid(); 
                 renderAdminAllAds(); 
             } catch (err) {} 
@@ -2889,53 +2891,37 @@
             handler.openIframe();
         }
 
-        // --- GRANTS (WITH 24-HOUR ROTATION) ---
+        // --- GRANTS (CACHE CLEARED, SHOWING ALL) ---
         async function loadGrants() { 
             const grid = document.getElementById('grants-grid'); 
             if(!grid) return; 
             
             grid.innerHTML = '<div class="col-span-full text-center text-slate-400">Loading opportunities... ⏳</div>'; 
             
-            const cachedGrants = localStorage.getItem('agri_grants_cache');
-            const cacheTime = localStorage.getItem('agri_grants_time');
-            const now = new Date().getTime();
-            
-            let displayGrants = [];
-
-            if (cachedGrants && cacheTime && (now - parseInt(cacheTime)) < 24 * 60 * 60 * 1000) {
-                displayGrants = JSON.parse(cachedGrants);
-            } else {
-                try { 
-                    const res = await fetch(`${API_URL}/api/v1/grants?t=${now}`); 
-                    const grants = await res.json(); 
-                    
-                    if(grants && grants.length > 0) {
-                        const shuffled = grants.sort(() => 0.5 - Math.random());
-                        displayGrants = shuffled.slice(0, 6); 
-                        
-                        localStorage.setItem('agri_grants_cache', JSON.stringify(displayGrants));
-                        localStorage.setItem('agri_grants_time', now.toString());
-                    }
-                } catch(e) {} 
-            }
-
-            if(!displayGrants || displayGrants.length === 0) {
-                grid.innerHTML = '<div class="col-span-full text-center text-slate-400">No active grants found.</div>'; 
-                return;
-            }
-            
-            grid.innerHTML = displayGrants.map(g => `
-                <div class="glass-card p-6 rounded-[2.5rem] border border-amber-500/20 shadow-xl group hover:border-amber-500/50 hover:-translate-y-1 transition-all flex flex-col justify-between cursor-pointer" onclick="window.open('${g.link}', '_blank')">
-                    <div>
-                        <span class="bg-amber-500/10 text-amber-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-md border border-amber-500/20">${g.provider}</span>
-                        <h3 class="text-xl font-black text-white mt-4 mb-2 group-hover:text-amber-400 transition-colors">${g.title}</h3>
-                        <p class="text-sm text-emerald-400 font-bold mb-6">Value: ${g.amount}</p>
-                    </div>
-                    <div class="flex justify-between items-center border-t border-white/10 pt-4">
-                        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Deadline: ${g.deadline}</span>
-                        <button class="bg-amber-500 text-[#020617] text-xs font-black px-4 py-2 rounded-xl hover:bg-amber-400 transition-colors shadow-lg">Apply Now</button>
-                    </div>
-                </div>`).join(''); 
+            try { 
+                const res = await fetch(`${API_URL}/api/v1/grants?t=${new Date().getTime()}`); 
+                const grants = await res.json(); 
+                
+                if(!grants || grants.length === 0) {
+                    grid.innerHTML = '<div class="col-span-full text-center text-slate-400">No active grants found.</div>'; 
+                    return;
+                }
+                
+                grid.innerHTML = grants.map(g => `
+                    <div class="glass-card p-6 rounded-[2.5rem] border border-amber-500/20 shadow-xl group hover:border-amber-500/50 hover:-translate-y-1 transition-all flex flex-col justify-between cursor-pointer" onclick="window.open('${g.link}', '_blank')">
+                        <div>
+                            <span class="bg-amber-500/10 text-amber-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-md border border-amber-500/20">${g.provider}</span>
+                            <h3 class="text-xl font-black text-white mt-4 mb-2 group-hover:text-amber-400 transition-colors">${g.title}</h3>
+                            <p class="text-sm text-emerald-400 font-bold mb-6">Value: ${g.amount}</p>
+                        </div>
+                        <div class="flex justify-between items-center border-t border-white/10 pt-4">
+                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Deadline: ${g.deadline}</span>
+                            <button class="bg-amber-500 text-[#020617] text-xs font-black px-4 py-2 rounded-xl hover:bg-amber-400 transition-colors shadow-lg">Apply Now</button>
+                        </div>
+                    </div>`).join(''); 
+            } catch(e) {
+                grid.innerHTML = '<div class="col-span-full text-center text-rose-400">Could not load grants. Check connection.</div>';
+            } 
         }
         
         // --- FARM MANAGER SAAS ---
