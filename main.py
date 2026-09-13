@@ -26,6 +26,7 @@ buyer_requests_db = []
 rentals_db = []
 waste_db = []
 haulage_db = []
+reviews_db = []
 
 ADMIN_EMAIL = "enochdani9@gmail.com"
 
@@ -77,6 +78,11 @@ class WasteCollection(BaseModel):
     quantity_est: str
     pickup_address: str
     contact_phone: str
+
+class Review(BaseModel):
+    seller_name: str
+    rating: int
+    comment: str
 
 # --- AUTH & USER ENDPOINTS ---
 @app.post("/api/v1/signup")
@@ -168,6 +174,21 @@ async def request_verification(token: str):
             return {"status": "requested"}
     raise HTTPException(status_code=401, detail="Unauthorized")
 
+# --- SELLER REVIEWS ---
+@app.post("/api/v1/reviews")
+async def post_review(token: str, review: Review):
+    user = await get_me(token)
+    new_review = review.dict()
+    new_review["id"] = len(reviews_db) + 1
+    new_review["reviewer_name"] = user["full_name"]
+    new_review["created_at"] = datetime.now().strftime("%Y-%m-%d")
+    reviews_db.insert(0, new_review) # Add to top of list
+    return new_review
+
+@app.get("/api/v1/reviews")
+async def get_reviews(seller: str):
+    return [r for r in reviews_db if r["seller_name"] == seller]
+
 # --- MARKETPLACE ENDPOINTS ---
 @app.post("/api/v1/products")
 async def create_product(token: str, prod: Product):
@@ -182,7 +203,7 @@ async def create_product(token: str, prod: Product):
     new_prod["seller_member_since"] = user.get("member_since", "September 2026")
     new_prod["status"] = "pending"
     new_prod["boost_tier"] = "standard"
-    products_db.append(new_prod)
+    products_db.insert(0, new_prod)
     return new_prod
 
 @app.get("/api/v1/products")
@@ -246,7 +267,7 @@ async def create_rfq(token: str, rfq: BuyerRequest):
     new_rfq["buyer_email"] = user["email"]
     new_rfq["buyer_phone"] = user["phone_number"]
     new_rfq["created_at"] = datetime.now().strftime("%Y-%m-%d")
-    buyer_requests_db.append(new_rfq)
+    buyer_requests_db.insert(0, new_rfq)
     return new_rfq
 
 @app.get("/api/v1/buyer-requests")
@@ -274,7 +295,7 @@ async def create_rental(token: str, rental: Rental):
     new_rent["owner_email"] = user["email"]
     new_rent["owner_name"] = user["full_name"]
     new_rent["owner_phone"] = user["phone_number"]
-    rentals_db.append(new_rent)
+    rentals_db.insert(0, new_rent)
     return new_rent
 
 @app.get("/api/v1/rentals")
@@ -303,7 +324,7 @@ async def create_waste(token: str, waste: WasteCollection):
     new_waste["status"] = "Pending Pickup"
     new_waste["address"] = waste.pickup_address
     new_waste["quantity"] = waste.quantity_est
-    waste_db.append(new_waste)
+    waste_db.insert(0, new_waste)
     return new_waste
 
 @app.get("/api/v1/waste-collections")
@@ -336,7 +357,7 @@ async def create_haulage(token: str, req: dict):
         "driver_name": user["full_name"],
         "driver_phone": req.get("driver_phone", user["phone_number"])
     }
-    haulage_db.append(new_haul)
+    haulage_db.insert(0, new_haul)
     return new_haul
 
 @app.get("/api/v1/haulage")
