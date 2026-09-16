@@ -19,16 +19,26 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     
     <style>
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-thumb { background: #10b981; border-radius: 10px; }
+        ::-webkit-scrollbar { 
+            width: 6px; 
+            height: 6px; 
+        }
+        ::-webkit-scrollbar-thumb { 
+            background: #10b981; 
+            border-radius: 10px; 
+        }
         
-        .fade-in { animation: fadeIn 0.4s ease forwards; }
+        .fade-in { 
+            animation: fadeIn 0.4s ease forwards; 
+        }
         @keyframes fadeIn { 
             from { opacity: 0; transform: translateY(10px); } 
             to { opacity: 1; transform: translateY(0); } 
         }
 
-        .slide-fade { animation: slideFade 0.5s ease-in-out forwards; }
+        .slide-fade { 
+            animation: slideFade 0.5s ease-in-out forwards; 
+        }
         @keyframes slideFade { 
             from { opacity: 0; transform: scale(0.98); } 
             to { opacity: 1; transform: scale(1); } 
@@ -41,16 +51,25 @@
             border: 1px solid rgba(255, 255, 255, 0.05); 
         }
         
-        .animate-marquee { display: inline-flex; animation: marquee 25s linear infinite; }
+        .animate-marquee { 
+            display: inline-flex; 
+            animation: marquee 25s linear infinite; 
+        }
         @keyframes marquee { 
             0% { transform: translateX(100%); } 
             100% { transform: translateX(-100%); } 
         }
         
-        select option { background-color: #0f172a !important; color: #ffffff !important; }
+        select option { 
+            background-color: #0f172a !important; 
+            color: #ffffff !important; 
+        }
         
         /* Sunlight Mode / High Contrast */
-        body.sunlight-mode { background-color: #f8fafc !important; color: #020617 !important; }
+        body.sunlight-mode { 
+            background-color: #f8fafc !important; 
+            color: #020617 !important; 
+        }
         body.sunlight-mode .glass-card { 
             background: #ffffff !important; 
             border: 2px solid #0f172a !important; 
@@ -58,20 +77,54 @@
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
         }
         body.sunlight-mode h1, body.sunlight-mode h2, body.sunlight-mode h3, 
-        body.sunlight-mode h4, body.sunlight-mode .text-white { color: #020617 !important; }
-        body.sunlight-mode p, body.sunlight-mode span.text-slate-400 { color: #334155 !important; }
+        body.sunlight-mode h4, body.sunlight-mode .text-white { 
+            color: #020617 !important; 
+        }
+        body.sunlight-mode p, body.sunlight-mode span.text-slate-400 { 
+            color: #334155 !important; 
+        }
         
         /* Agri Trainer Typography */
-        .guide-content h3 { color: #10b981; font-weight: 900; margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 1.15rem; }
-        .guide-content p { color: #cbd5e1; margin-bottom: 1rem; font-size: 0.9rem; line-height: 1.65; }
-        .guide-content ul { list-style-type: disc; padding-left: 1.5rem; color: #cbd5e1; font-size: 0.9rem; margin-bottom: 1rem; }
+        .guide-content h3 { 
+            color: #10b981; 
+            font-weight: 900; 
+            margin-top: 1.5rem; 
+            margin-bottom: 0.5rem; 
+            font-size: 1.15rem; 
+        }
+        .guide-content p { 
+            color: #cbd5e1; 
+            margin-bottom: 1rem; 
+            font-size: 0.9rem; 
+            line-height: 1.65; 
+        }
+        .guide-content ul { 
+            list-style-type: disc; 
+            padding-left: 1.5rem; 
+            color: #cbd5e1; 
+            font-size: 0.9rem; 
+            margin-bottom: 1rem; 
+        }
         
         /* Wikipedia Embed Typography */
-        #wiki-content p { margin-bottom: 0.75rem; font-size: 0.875rem; line-height: 1.6; color: #cbd5e1; }
-        #wiki-content b { color: #ffffff; }
-        body.sunlight-mode #wiki-content p { color: #334155; }
-        body.sunlight-mode #wiki-content b { color: #020617; }
-        body.sunlight-mode .guide-content p, body.sunlight-mode .guide-content ul { color: #334155; }
+        #wiki-content p { 
+            margin-bottom: 0.75rem; 
+            font-size: 0.875rem; 
+            line-height: 1.6; 
+            color: #cbd5e1; 
+        }
+        #wiki-content b { 
+            color: #ffffff; 
+        }
+        body.sunlight-mode #wiki-content p { 
+            color: #334155; 
+        }
+        body.sunlight-mode #wiki-content b { 
+            color: #020617; 
+        }
+        body.sunlight-mode .guide-content p, body.sunlight-mode .guide-content ul { 
+            color: #334155; 
+        }
     </style>
 </head>
 <body id="app-body" class="bg-[#020617] text-slate-100 font-sans min-h-screen flex flex-col transition-colors duration-300">
@@ -517,7 +570,9 @@
 
             <div id="home-rfq-container" class="hidden">
                 <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
-                    <div><h3 class="text-2xl font-black text-white tracking-tight flex items-center gap-2">📢 Commercial Buyer Tenders</h3></div>
+                    <div>
+                        <h3 class="text-2xl font-black text-white tracking-tight flex items-center gap-2">📢 Commercial Buyer Tenders</h3>
+                    </div>
                     <button onclick="openRfqModal()" class="bg-blue-600 hover:bg-blue-500 text-white font-black text-xs px-5 py-3 rounded-xl transition-all shadow-lg flex items-center gap-2 shrink-0">+ Post Purchase Tender</button>
                 </div>
                 <div id="rfq-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
@@ -533,28 +588,50 @@
                 </div>
 
                 <div class="mt-16">
-                    <div class="flex items-center justify-between mb-6"><h3 class="text-2xl font-black text-white tracking-tight">Browse Categories</h3></div>
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-black text-white tracking-tight">Browse Categories</h3>
+                    </div>
                     <div class="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-5 gap-5">
                         <div onclick="executeCategory('Poultry')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
-                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('poultry.jfif.jfif');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Live Poultry</p></div>
+                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('poultry.jfif.jfif');"></div>
+                            <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Live Poultry</p>
+                        </div>
                         <div onclick="executeCategory('Chicks')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
-                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('chicks.jfif');"></div><p class="font-bold text-xs text-slate-300 group-hover:text-emerald-400 leading-tight">Day-old chicks</p></div>
+                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('chicks.jfif');"></div>
+                            <p class="font-bold text-xs text-slate-300 group-hover:text-emerald-400 leading-tight">Day-old chicks</p>
+                        </div>
                         <div onclick="executeCategory('Eggs')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
-                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Chicken_egg_2009-06-04.jpg/500px-Chicken_egg_2009-06-04.jpg');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Fresh Eggs</p></div>
+                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Chicken_egg_2009-06-04.jpg/500px-Chicken_egg_2009-06-04.jpg');"></div>
+                            <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Fresh Eggs</p>
+                        </div>
                         <div onclick="executeCategory('Meat')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
-                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('meat.jfif.jfif');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Dressed Meat</p></div>
+                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('meat.jfif.jfif');"></div>
+                            <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Dressed Meat</p>
+                        </div>
                         <div onclick="executeCategory('Vegetables/Fruits')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
-                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Marketvegetables.jpg/500px-Marketvegetables.jpg');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Vegetables / Fruits</p></div>
+                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Marketvegetables.jpg/500px-Marketvegetables.jpg');"></div>
+                            <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Vegetables / Fruits</p>
+                        </div>
                         <div onclick="executeCategory('Fishes')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
-                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('fishes.jfif');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400 leading-tight">Fishes</p></div>
+                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('fishes.jfif');"></div>
+                            <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400 leading-tight">Fishes</p>
+                        </div>
                         <div onclick="executeCategory('Livestock')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
-                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('livestock.jfif.jfif');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Livestock</p></div>
+                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('livestock.jfif.jfif');"></div>
+                            <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Livestock</p>
+                        </div>
                         <div onclick="executeCategory('Machinery')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
-                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('machinery.jfif.jfif');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Machinery</p></div>
+                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('machinery.jfif.jfif');"></div>
+                            <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Machinery</p>
+                        </div>
                         <div onclick="executeCategory('Pets')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
-                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('pets.jfif');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Pets</p></div>
+                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('pets.jfif');"></div>
+                            <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400">Pets</p>
+                        </div>
                         <div onclick="executeCategory('Vaccines & Feed')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 text-center transition-all group flex flex-col items-center">
-                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('vaccines%20%26%20feed.jfif');"></div><p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400 leading-tight">Vaccines & Feed</p></div>
+                            <div class="w-20 h-20 mb-4 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('vaccines%20%26%20feed.jfif');"></div>
+                            <p class="font-bold text-sm text-slate-300 group-hover:text-emerald-400 leading-tight">Vaccines & Feed</p>
+                        </div>
                     </div>
                 </div>
 
@@ -705,16 +782,28 @@
                         <div class="bg-[#020617]/50 p-4 rounded-2xl border border-slate-700 space-y-4">
                             <label class="block text-xs font-bold text-emerald-400 uppercase tracking-wider">Protein Source (e.g., Soya)</label>
                             <div class="grid grid-cols-2 gap-3">
-                                <div><label class="text-[10px] text-slate-400 block mb-1">CP (%)</label><input type="number" id="calc-protein-cp" value="44" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white outline-none"></div>
-                                <div><label class="text-[10px] text-slate-400 block mb-1">Price / 50kg</label><input type="number" id="calc-protein-price" value="350" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white outline-none"></div>
+                                <div>
+                                    <label class="text-[10px] text-slate-400 block mb-1">CP (%)</label>
+                                    <input type="number" id="calc-protein-cp" value="44" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white outline-none">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] text-slate-400 block mb-1">Price / 50kg</label>
+                                    <input type="number" id="calc-protein-price" value="350" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white outline-none">
+                                </div>
                             </div>
                         </div>
 
                         <div class="bg-[#020617]/50 p-4 rounded-2xl border border-slate-700 space-y-4">
                             <label class="block text-xs font-bold text-amber-400 uppercase tracking-wider">Energy Source (e.g., Maize)</label>
                             <div class="grid grid-cols-2 gap-3">
-                                <div><label class="text-[10px] text-slate-400 block mb-1">CP (%)</label><input type="number" id="calc-energy-cp" value="8" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white outline-none"></div>
-                                <div><label class="text-[10px] text-slate-400 block mb-1">Price / 50kg</label><input type="number" id="calc-energy-price" value="200" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white outline-none"></div>
+                                <div>
+                                    <label class="text-[10px] text-slate-400 block mb-1">CP (%)</label>
+                                    <input type="number" id="calc-energy-cp" value="8" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white outline-none">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] text-slate-400 block mb-1">Price / 50kg</label>
+                                    <input type="number" id="calc-energy-price" value="200" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white outline-none">
+                                </div>
                             </div>
                         </div>
                         <button onclick="calculateFeedMix()" class="w-full bg-teal-600 hover:bg-teal-500 text-white font-black py-4 rounded-xl text-sm transition-colors shadow-lg">Calculate Mix Ratio ✨</button>
@@ -732,13 +821,21 @@
                     <div id="calc-results-filled" class="hidden space-y-6 z-10">
                         <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-700">
                             <h4 class="text-[10px] font-black uppercase tracking-wider text-slate-400 mb-3">To make one standard <span class="text-white">50kg</span> bag, mix:</h4>
-                            <div class="flex justify-between items-center mb-2"><span class="text-sm font-bold text-emerald-400">Protein Source:</span><span class="text-xl font-black text-white" id="res-protein-kg">0 kg</span></div>
-                            <div class="flex justify-between items-center pb-3 border-b border-white/10"><span class="text-sm font-bold text-amber-400">Energy Source:</span><span class="text-xl font-black text-white" id="res-energy-kg">0 kg</span></div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-bold text-emerald-400">Protein Source:</span>
+                                <span class="text-xl font-black text-white" id="res-protein-kg">0 kg</span>
+                            </div>
+                            <div class="flex justify-between items-center pb-3 border-b border-white/10">
+                                <span class="text-sm font-bold text-amber-400">Energy Source:</span>
+                                <span class="text-xl font-black text-white" id="res-energy-kg">0 kg</span>
+                            </div>
                         </div>
 
                         <div class="bg-teal-950/30 p-5 rounded-2xl border border-teal-500/30">
                             <h4 class="text-[10px] font-black uppercase tracking-wider text-teal-400 mb-1">Estimated Cost Per Bag</h4>
-                            <div class="flex items-baseline gap-2"><span class="text-4xl font-black text-white" id="res-total-cost">GH₵ 0.00</span></div>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-4xl font-black text-white" id="res-total-cost">GH₵ 0.00</span>
+                            </div>
                         </div>
                         
                         <button onclick="navigate('marketplace')" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold py-3.5 rounded-xl text-sm transition-colors">🛒 Buy Ingredients on Market</button>
@@ -923,7 +1020,8 @@
                 <div class="relative w-24 h-24 shrink-0 z-10 group cursor-pointer" onclick="document.getElementById('profile-pic-upload').click()">
                     <div id="my-profile-avatar" class="w-full h-full bg-slate-800 rounded-full flex items-center justify-center text-4xl border-2 border-slate-700 shadow-xl overflow-hidden bg-cover bg-center">👨🏽‍🌾</div>
                     <div class="absolute inset-0 bg-black/60 rounded-full flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="text-xl">📷</span><span class="text-[8px] text-white font-bold uppercase tracking-wider mt-1">Edit</span>
+                        <span class="text-xl">📷</span>
+                        <span class="text-[8px] text-white font-bold uppercase tracking-wider mt-1">Edit</span>
                     </div>
                     <input type="file" id="profile-pic-upload" accept="image/*" class="hidden" onchange="uploadProfilePicture(event)">
                 </div>
@@ -1214,15 +1312,26 @@
         </div>
 
         <div id="view-faq" class="fade-in hidden max-w-4xl mx-auto mt-6 space-y-8">
-            <div class="text-center space-y-4 mb-10"><h2 class="text-3xl font-black text-white tracking-tight">Frequently Asked Questions</h2></div>
+            <div class="text-center space-y-4 mb-10">
+                <h2 class="text-3xl font-black text-white tracking-tight">Frequently Asked Questions</h2>
+            </div>
             <div class="space-y-4">
-                <div class="glass-card rounded-2xl p-6 border border-white/5"><h4 class="text-white font-bold mb-2">Is it free to sell?</h4><p class="text-slate-400 text-sm">Yes! You can post up to 3 standard listings completely free of charge.</p></div>
-                <div class="glass-card rounded-2xl p-6 border border-white/5"><h4 class="text-white font-bold mb-2">How do I post a Buyer Tender?</h4><p class="text-slate-400 text-sm">Click the "📢 Post Buy Request" button. State what you need, and local farmers will bid to supply.</p></div>
+                <div class="glass-card rounded-2xl p-6 border border-white/5">
+                    <h4 class="text-white font-bold mb-2">Is it free to sell?</h4>
+                    <p class="text-slate-400 text-sm">Yes! You can post up to 3 standard listings completely free of charge.</p>
+                </div>
+                <div class="glass-card rounded-2xl p-6 border border-white/5">
+                    <h4 class="text-white font-bold mb-2">How do I post a Buyer Tender?</h4>
+                    <p class="text-slate-400 text-sm">Click the "📢 Post Buy Request" button. State what you need, and local farmers will bid to supply.</p>
+                </div>
             </div>
         </div>
         
         <div id="view-about" class="fade-in hidden max-w-3xl mx-auto mt-6">
-            <div class="glass-card p-10 rounded-[2.5rem] shadow-2xl text-center"><h2 class="text-4xl font-black text-white mb-6">About AgromartDirect</h2><p class="text-slate-300 text-base">We are digitizing the agricultural supply chain in Ghana.</p></div>
+            <div class="glass-card p-10 rounded-[2.5rem] shadow-2xl text-center">
+                <h2 class="text-4xl font-black text-white mb-6">About AgromartDirect</h2>
+                <p class="text-slate-300 text-base">We are digitizing the agricultural supply chain in Ghana.</p>
+            </div>
         </div>
 
         <div id="view-support" class="fade-in hidden max-w-2xl mx-auto mt-10">
@@ -1316,19 +1425,55 @@
         let pendingAdPayload = null;
 
         const platformFeatures = [
-            { icon: "🚚", title: "Haulage Pool", desc: "Book cheap return-trip truck space or list your empty haulage truck returning from deliveries.", color: "from-amber-900/60 to-[#020617]", view: "haulage" },
-            { icon: "🩺", title: "AgriDoctor AI Scanner", desc: "Scan diseased crops or sick livestock with your camera for instant organic and chemical treatment plans.", color: "from-rose-900/60 to-[#020617]", view: "agridoctor" },
-            { icon: "🚜", title: "Direct Farmer Market", desc: "Sell poultry, crops, and livestock directly to buyers nationwide with zero middleman fees.", color: "from-emerald-900/60 to-[#020617]", view: "marketplace" },
-            { icon: "🤝", title: "Smart Deal Room", desc: "Negotiate prices, split group orders, and secure bulk buys with our integrated deal room.", color: "from-blue-900/60 to-[#020617]", view: "marketplace" },
-            { icon: "♻️", title: "Eco-Loop Logistics", desc: "Turn farm waste into cash. Request bulk pickups for used oil, cassava peels, and cocoa pods.", color: "from-teal-900/60 to-[#020617]", view: "waste" },
-            { icon: "📚", title: "Agri Trainer Hub", desc: "Access free, step-by-step commercial farming guides for crops, poultry, and aquaculture.", color: "from-purple-900/60 to-[#020617]", view: "trainer" }
+            { 
+                icon: "🚚", 
+                title: "Haulage Pool", 
+                desc: "Book cheap return-trip truck space or list your empty haulage truck returning from deliveries.", 
+                color: "from-amber-900/60 to-[#020617]", 
+                view: "haulage" 
+            },
+            { 
+                icon: "🩺", 
+                title: "AgriDoctor AI Scanner", 
+                desc: "Scan diseased crops or sick livestock with your camera for instant organic and chemical treatment plans.", 
+                color: "from-rose-900/60 to-[#020617]", 
+                view: "agridoctor" 
+            },
+            { 
+                icon: "🚜", 
+                title: "Direct Farmer Market", 
+                desc: "Sell poultry, crops, and livestock directly to buyers nationwide with zero middleman fees.", 
+                color: "from-emerald-900/60 to-[#020617]", 
+                view: "marketplace" 
+            },
+            { 
+                icon: "🤝", 
+                title: "Smart Deal Room", 
+                desc: "Negotiate prices, split group orders, and secure bulk buys with our integrated deal room.", 
+                color: "from-blue-900/60 to-[#020617]", 
+                view: "marketplace" 
+            },
+            { 
+                icon: "♻️", 
+                title: "Eco-Loop Logistics", 
+                desc: "Turn farm waste into cash. Request bulk pickups for used oil, cassava peels, and cocoa pods.", 
+                color: "from-teal-900/60 to-[#020617]", 
+                view: "waste" 
+            },
+            { 
+                icon: "📚", 
+                title: "Agri Trainer Hub", 
+                desc: "Access free, step-by-step commercial farming guides for crops, poultry, and aquaculture.", 
+                color: "from-purple-900/60 to-[#020617]", 
+                view: "trainer" 
+            }
         ];
         
         let currentSlide = 0;
 
         function initSlideshow() {
             const container = document.getElementById('feature-slideshow');
-            if(!container) return;
+            if (!container) return;
             
             const renderSlide = () => {
                 const slide = platformFeatures[currentSlide];
@@ -1350,14 +1495,32 @@
         }
 
         const fallbackDummyNews = [
-            { source: "MoFA Update", date: "Today", title: "Government Announces Subsidy on NPK Fertilizers for Season", snippet: "The Ministry of Food and Agriculture has rolled out a new digital tracking system...", link: "https://mofa.gov.gh/" },
-            { source: "COCOBOD", date: "Yesterday", title: "Cocoa Farm Gate Price Adjusted Upward to Support Local Growers", snippet: "In a bid to support local farmers, the guaranteed price per bag has seen an adjustment...", link: "https://cocobod.gh/" },
-            { source: "AgriTech Ghana", date: "Recent", title: "New Drought-Resistant Maize Variety Introduced to Northern Region", snippet: "CSIR researchers have approved the release of a new seed strain capable of surviving dry spells...", link: "https://www.csir.org.gh/" }
+            { 
+                source: "MoFA Update", 
+                date: "Today", 
+                title: "Government Announces Subsidy on NPK Fertilizers for Season", 
+                snippet: "The Ministry of Food and Agriculture has rolled out a new digital tracking system...", 
+                link: "https://mofa.gov.gh/" 
+            },
+            { 
+                source: "COCOBOD", 
+                date: "Yesterday", 
+                title: "Cocoa Farm Gate Price Adjusted Upward to Support Local Growers", 
+                snippet: "In a bid to support local farmers, the guaranteed price per bag has seen an adjustment...", 
+                link: "https://cocobod.gh/" 
+            },
+            { 
+                source: "AgriTech Ghana", 
+                date: "Recent", 
+                title: "New Drought-Resistant Maize Variety Introduced to Northern Region", 
+                snippet: "CSIR researchers have approved the release of a new seed strain capable of surviving dry spells...", 
+                link: "https://www.csir.org.gh/" 
+            }
         ];
 
         async function loadAgriNews() {
             const grid = document.getElementById('newsroom-grid');
-            if(!grid) return;
+            if (!grid) return;
             
             const cachedNews = localStorage.getItem('agri_news_cache');
             const cacheTime = localStorage.getItem('agri_news_time');
@@ -1447,7 +1610,7 @@
                     })
                 });
                 
-                if(!res.ok) throw new Error("API not available");
+                if (!res.ok) throw new Error("API not available");
                 
                 showToast("Batch Initialized! 🌱");
                 closeBatchModal();
@@ -1525,14 +1688,14 @@
         }
 
         async function deleteBatch(id) {
-            if(!confirm("Are you sure you want to end/harvest this batch?")) return;
+            if (!confirm("Are you sure you want to end/harvest this batch?")) return;
             
             try {
                 const res = await fetch(`${API_URL}/api/v1/farm-batches/${id}?token=${agriToken}`, { 
                     method: 'DELETE' 
                 });
                 
-                if(!res.ok) throw new Error("Fallback");
+                if (!res.ok) throw new Error("Fallback");
                 
                 showToast("Batch harvested successfully.");
                 loadFarmBatches();
@@ -1546,6 +1709,7 @@
             }
         }
 
+        // --- AGRI TRAINER ENCYCLOPEDIA (UNCOMPRESSED & FORMATTED) ---
         const agriTrainerData = {
             "crops": [
                 {
@@ -1832,7 +1996,6 @@
                 };
             };
             
-            // Reset input so the same file can be uploaded again if needed
             event.target.value = '';
         }
 
@@ -1844,7 +2007,6 @@
             document.getElementById('agridoctor-upload-state').classList.add('hidden');
             document.getElementById('agridoctor-processing-state').classList.remove('hidden');
 
-            // Simulating pathology diagnostic processing matching Ghanaian agronomy profiles
             setTimeout(() => {
                 document.getElementById('agridoctor-processing-state').classList.add('hidden');
                 document.getElementById('agridoctor-result-state').classList.remove('hidden');
@@ -1919,7 +2081,6 @@
             
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
-            // Execute view-specific loaders
             if (view === 'marketplace') {
                 executeFilters(); 
             }
@@ -1927,7 +2088,7 @@
                 loadGrants(); 
             }
             if (view === 'farm-manager') {
-                loadFarmBatches(); // Fixed: Farm manager correctly loads data now upon navigation
+                loadFarmBatches(); 
             }
             if (view === 'intel') {
                 loadMarketIntel();
@@ -3591,386 +3752,74 @@
             } catch (e) {} 
         }
 
-        function generateWhatsAppFlyer(name, price, unit, imageSrc, phone) { 
-            const modal = document.getElementById('flyer-modal'); 
-            if (modal) { 
-                modal.classList.remove('hidden'); 
-                modal.classList.add('flex'); 
-            } 
+        // --- AGRI TRAINER FUNCTIONS ---
+        function showTrainerSubCategory(cat) {
+            const grid = document.getElementById('trainer-items-grid'); 
+            grid.innerHTML = ''; 
             
-            const canvas = document.getElementById('flyer-canvas'); 
-            if (!canvas) return; 
+            agriTrainerData[cat].forEach(item => { 
+                grid.innerHTML += `
+                    <div onclick="openTrainerGuide('${cat}', '${item.id}')" class="glass-card p-6 rounded-[2rem] cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 transition-all text-center shadow-xl">
+                        <div class="text-5xl mb-4">${item.icon}</div>
+                        <h4 class="text-lg font-black text-white">${item.title}</h4>
+                        <p class="text-xs text-slate-400 mt-2">${item.intro}</p>
+                    </div>`; 
+            }); 
             
-            const ctx = canvas.getContext('2d'); 
-            canvas.width = 1080; 
-            canvas.height = 1080; 
-            
-            ctx.fillStyle = '#0f172a'; 
-            ctx.fillRect(0, 0, 1080, 1080); 
-            ctx.fillStyle = '#10b981'; 
-            ctx.fillRect(0, 0, 1080, 150); 
-            
-            ctx.fillStyle = '#ffffff'; 
-            ctx.font = 'bold 65px sans-serif'; 
-            ctx.textAlign = 'center'; 
-            ctx.fillText('🌾 AgromartDirect Ghana', 540, 105); 
-            
-            const img = new Image(); 
-            img.crossOrigin = "Anonymous"; 
-            
-            img.onload = () => { 
-                drawFlyerText(ctx, name, price, unit, phone); 
-                
-                ctx.save(); 
-                ctx.beginPath(); 
-                ctx.arc(540, 480, 200, 0, Math.PI * 2, true); 
-                ctx.closePath(); 
-                ctx.clip(); 
-                ctx.drawImage(img, 340, 280, 400, 400); 
-                ctx.restore(); 
-                
-                ctx.beginPath(); 
-                ctx.arc(540, 480, 200, 0, Math.PI * 2, true); 
-                ctx.lineWidth = 15; 
-                ctx.strokeStyle = '#34d399'; 
-                ctx.stroke(); 
-                
-                const preview = document.getElementById('flyer-preview'); 
-                if (preview) {
-                    preview.src = canvas.toDataURL('image/png'); 
-                }
-            }; 
-            
-            img.onerror = () => { 
-                drawFlyerText(ctx, name, price, unit, phone); 
-                
-                const preview = document.getElementById('flyer-preview'); 
-                if (preview) {
-                    preview.src = canvas.toDataURL('image/png'); 
-                }
-            }; 
-            
-            img.src = (imageSrc && imageSrc.startsWith('http')) ? imageSrc : 'https://ui-avatars.com/api/?name=Agromart+Direct&background=020617&color=10b981&size=400'; 
+            document.getElementById('trainer-categories').classList.add('hidden'); 
+            document.getElementById('trainer-items').classList.remove('hidden'); 
         }
         
-        function drawFlyerText(ctx, name, price, unit, phone) { 
-            ctx.fillStyle = '#ffffff'; 
-            ctx.font = 'bold 75px sans-serif'; 
-            ctx.textAlign = 'center'; 
-            ctx.fillText(name.toUpperCase(), 540, 240); 
+        async function openTrainerGuide(cat, itemId) {
+            const item = agriTrainerData[cat].find(i => i.id === itemId); 
+            if (!item) return; 
             
-            ctx.fillStyle = '#34d399'; 
-            ctx.font = 'bold 110px sans-serif'; 
-            ctx.fillText(`GH₵ ${price}`, 540, 770); 
+            document.getElementById('guide-icon').innerText = item.icon; 
+            document.getElementById('guide-title').innerText = item.title; 
+            document.getElementById('guide-intro').innerText = item.intro; 
             
-            ctx.fillStyle = '#94a3b8'; 
-            ctx.font = '40px sans-serif'; 
-            ctx.fillText(`per ${unit}`, 540, 830); 
+            const contentContainer = document.getElementById('guide-content');
+            contentContainer.innerHTML = '<p class="text-emerald-400 font-bold animate-pulse">Fetching encyclopedia data...</p>';
             
-            ctx.fillStyle = '#ffffff'; 
-            ctx.font = 'bold 50px sans-serif'; 
-            ctx.fillText(`📞 WhatsApp/Call: ${phone}`, 540, 920); 
+            document.getElementById('trainer-items').classList.add('hidden'); 
+            document.getElementById('trainer-guide').classList.remove('hidden'); 
             
-            ctx.fillStyle = '#1e293b'; 
-            ctx.fillRect(0, 960, 1080, 120); 
-            
-            ctx.fillStyle = '#cbd5e1'; 
-            ctx.font = '35px sans-serif'; 
-            ctx.fillText('Securely traded via AgromartDirect. Buy Direct.', 540, 1035); 
-        }
-        
-        function closeFlyerModal() { 
-            const modal = document.getElementById('flyer-modal'); 
-            if (modal) { 
-                modal.classList.add('hidden'); 
-                modal.classList.remove('flex'); 
-            } 
-        }
-        
-        function downloadFlyer() { 
-            const canvas = document.getElementById('flyer-canvas'); 
-            if (!canvas) return; 
-            
-            const link = document.createElement('a'); 
-            link.download = 'AgromartDirect-Flyer.png'; 
-            link.href = canvas.toDataURL('image/png'); 
-            link.click(); 
-            
-            showToast("Flyer Downloaded!"); 
-            closeFlyerModal(); 
-        }
-
-        function openVideoStudio(adId) {
-            const ad = myLoadedAds.find(p => p.id === adId); 
-            if (!ad) return;
-            
-            document.getElementById('vs-ad-id').value = ad.id; 
-            document.getElementById('vs-ad-name').innerText = ad.product_name;
-            
-            document.getElementById('video-studio-setup').classList.remove('hidden'); 
-            document.getElementById('video-studio-processing').classList.add('hidden'); 
-            document.getElementById('video-studio-result').classList.add('hidden');
-            
-            const modal = document.getElementById('video-studio-modal'); 
-            modal.classList.remove('hidden'); 
-            modal.classList.add('flex');
-        }
-
-        function closeVideoStudio() { 
-            const modal = document.getElementById('video-studio-modal'); 
-            modal.classList.add('hidden'); 
-            modal.classList.remove('flex'); 
-        }
-
-        function generateAiVideo() {
-            const adId = parseInt(document.getElementById('vs-ad-id').value); 
-            const ad = myLoadedAds.find(p => p.id === adId); 
-            if (!ad) return;
-            
-            document.getElementById('video-studio-setup').classList.add('hidden'); 
-            document.getElementById('video-studio-processing').classList.remove('hidden');
-            
-            const statusText = document.getElementById('vs-status-text');
-            const generatedScript = `Fresh ${ad.product_name} available now in ${ad.neighborhood}! Secure it today for only ${ad.base_price_ghs} cedis per ${ad.unit}. Buy direct from the farmer on AgromartDirect. No middlemen, just great prices. Tap the link to order now!`;
-            
-            document.getElementById('vs-script-display').innerText = `"${generatedScript}"`;
-            
-            setTimeout(() => { statusText.innerText = "Generating Voiceover..."; }, 1500); 
-            setTimeout(() => { statusText.innerText = "Animating Photos..."; }, 3000); 
-            setTimeout(() => { statusText.innerText = "Rendering Video..."; }, 4500);
-            
-            setTimeout(() => { 
-                document.getElementById('video-studio-processing').classList.add('hidden'); 
-                document.getElementById('video-studio-result').classList.remove('hidden'); 
-                showToast("AI Video Ready! 🎬"); 
-            }, 6000);
-        }
-
-        function downloadAiVideo() { 
-            const link = document.createElement('a'); 
-            link.href = "https://www.w3schools.com/html/mov_bbb.mp4"; 
-            link.download = "Agromart-Promo.mp4"; 
-            
-            document.body.appendChild(link); 
-            link.click(); 
-            document.body.removeChild(link); 
-            
-            showToast("Video downloaded for WhatsApp!"); 
-            closeVideoStudio(); 
-        }
-
-        async function renderAdminVerificationsList() { 
-            const c = document.getElementById('admin-verifications-list'); 
-            if (!c) return; 
-            
-            try { 
-                const res = await fetch(`${API_URL}/api/v1/admin/verifications?token=${agriToken}`); 
-                const reqs = await res.json(); 
+            try {
+                const searchStr = encodeURIComponent(item.wikiSearch || item.title);
+                const wikiRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${searchStr}`);
                 
-                if (!reqs.length) {
-                    c.innerHTML = `<p class="text-xs text-slate-500">No pending paid verifications.</p>`;
-                    return;
-                }
-                 
-                c.innerHTML = reqs.map((u) => `
-                    <div class="glass-card p-3 rounded-xl flex justify-between items-center border border-amber-500/30 bg-amber-500/5 mb-2">
-                        <div>
-                            <p class="text-xs font-bold text-white">${u.name}</p>
-                            <p class="text-[10px] text-amber-400">${u.email}</p>
-                        </div>
-                        <button onclick="quickVerifyUser('${u.email}', null)" class="bg-emerald-600 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition-colors">✅ Approve</button>
-                    </div>`).join(''); 
-            } catch (e) {} 
-        }
-        
-        let adminPendingAdsCache = []; 
-        
-        async function renderAdminModQueue() { 
-            const c = document.getElementById('admin-mod-list'); 
-            if (!c) return; 
-            
-            try { 
-                const res = await fetch(`${API_URL}/api/v1/admin/pending-ads?token=${agriToken}`); 
-                const ads = await res.json(); 
-                adminPendingAdsCache = ads; 
-                
-                if (!ads.length) {
-                    c.innerHTML = `<p class="text-xs text-slate-500">No ads pending review.</p>`;
-                    return;
-                } 
-                
-                c.innerHTML = ads.map((ad) => `
-                    <div id="mod-ad-${ad.id}" class="glass-card p-4 rounded-xl flex flex-col sm:flex-row justify-between sm:items-center gap-3 border border-amber-500/30 mb-3 shadow-lg bg-[#020617]/50">
-                        <div>
-                            <p class="text-sm font-black text-white">${ad.product_name}</p>
-                            <p class="text-xs text-emerald-400 font-bold mb-1">GH₵${ad.base_price_ghs}</p>
-                            <p class="text-[10px] text-slate-400">By: ${ad.seller_name}</p>
-                        </div>
-                        <div class="flex gap-2 items-center shrink-0">
-                            <button onclick="previewAd(${ad.id}, true, adminPendingAdsCache.find(a=>a.id===${ad.id}))" class="text-slate-300 font-bold text-xs px-3 py-2 border border-slate-500/50 rounded-lg hover:bg-slate-800 transition-colors">👁️ Preview</button>
-                            <button onclick="approveAd('mod-ad-${ad.id}', ${ad.id})" class="bg-emerald-600 text-white font-bold text-xs px-4 py-2 rounded-lg hover:bg-emerald-500 transition-colors">Approve</button>
-                            <button onclick="rejectAd(${ad.id})" class="bg-rose-600 text-white font-bold text-xs px-4 py-2 rounded-lg hover:bg-rose-500 transition-colors">Reject</button>
-                        </div>
-                    </div>`).join(''); 
-            } catch (e) {} 
-        }
-
-        async function renderAdminAllAds() { 
-            const c = document.getElementById('admin-all-ads-list'); 
-            if (!c) return; 
-            
-            try { 
-                const res = await fetch(`${API_URL}/api/v1/admin/all-ads?token=${agriToken}`); 
-                const allAds = await res.json(); 
-                
-                if (!allAds.length) {
-                    c.innerHTML = `<p class="text-xs text-slate-500">No ads on platform.</p>`;
-                    return;
-                } 
-                
-                c.innerHTML = allAds.map((ad) => { 
-                    let statusColor = ad.status === 'approved' ? 'text-emerald-400' : (ad.status === 'pending' ? 'text-amber-400' : 'text-rose-400');
-                    return `
-                        <div id="admin-all-ad-${ad.id}" class="glass-card p-3 rounded-xl flex justify-between items-center border border-white/5 mb-2 hover:border-white/20 transition-colors">
-                            <div>
-                                <p class="text-xs font-bold text-white">${ad.product_name} <span class="${statusColor} text-[9px] uppercase tracking-wider ml-1 bg-slate-900 px-1 rounded">(${ad.status})</span></p>
-                                <p class="text-[10px] text-slate-400 mt-1">By: ${ad.seller_name} (${ad.phone_number})</p>
-                            </div>
-                            <div class="flex gap-2">
-                                <button onclick="adminBanUser('${ad.seller_email}')" class="bg-[#020617] text-rose-500 font-bold border border-rose-500/50 text-[10px] px-3 py-1.5 rounded-lg hover:bg-rose-900/30 transition-colors">🚫 Ban</button>
-                                <button onclick="adminDeleteAd(${ad.id})" class="bg-rose-600 text-white font-bold text-[10px] px-3 py-1.5 rounded-lg hover:bg-rose-500 transition-colors">🗑️ Delete</button>
-                            </div>
-                        </div>`; 
-                }).join(''); 
-            } catch (e) {} 
-        }
-        
-        async function renderAdminReports() { 
-            const c = document.getElementById('admin-reports-list'); 
-            if (!c) return; 
-            
-            try { 
-                const res = await fetch(`${API_URL}/api/v1/admin/reports?token=${agriToken}`); 
-                const reports = await res.json(); 
-                
-                if (!reports.length) {
-                    c.innerHTML = `<p class="text-xs text-slate-500">No scam reports submitted.</p>`;
-                    return;
-                }
-                 
-                c.innerHTML = reports.map((r) => `
-                    <div class="glass-card p-4 rounded-xl flex flex-col border border-rose-500/30 bg-rose-500/10 mb-3 shadow-lg">
-                        <p class="text-xs font-bold text-white">Reported: ${r.seller_name} <span class="text-slate-400 font-normal">(${r.seller_phone})</span></p>
-                        <p class="text-[11px] text-rose-400 mt-2 italic">"${r.reason}"</p>
-                        <p class="text-[9px] text-slate-500 mt-2 text-right">${r.time}</p>
-                    </div>`).join(''); 
-            } catch(e){} 
-        }
-
-        async function verifySeller() { 
-            const email = document.getElementById('verify-email-input').value.trim(); 
-            if (email) {
-                quickVerifyUser(email, null); 
-            }
-        }
-        
-        async function quickVerifyUser(targetEmail, elId) { 
-            try { 
-                await fetch(`${API_URL}/api/v1/admin/verify?token=${agriToken}`, { 
-                    method: 'POST', 
-                    headers: { 'Content-Type': 'application/json' }, 
-                    body: JSON.stringify({ email: targetEmail }) 
-                }); 
-                
-                showToast("Verified!"); 
-                if (elId) {
-                    document.getElementById(elId)?.remove(); 
-                }
-                renderAdminVerificationsList(); 
-            } catch (err) {} 
-        }
-        
-        async function banSeller() { 
-            const email = document.getElementById('ban-email-input').value.trim(); 
-            if (email) {
-                adminBanUser(email); 
-            }
-        }
-        
-        async function adminBanUser(email) { 
-            if (!confirm(`Are you sure you want to ban ${email}?`)) return; 
-            
-            try { 
-                await fetch(`${API_URL}/api/v1/admin/ban-user?token=${agriToken}`, { 
-                    method: 'POST', 
-                    headers: { 'Content-Type': 'application/json' }, 
-                    body: JSON.stringify({ email: email }) 
-                }); 
-                
-                showToast("Banned"); 
-                renderAdminModQueue(); 
-                renderAdminAllAds(); 
-                loadMarketplaceGrid(); 
-            } catch (err) {} 
-        }
-        
-        async function adminDeleteAd(adId) { 
-            if (!confirm("Are you sure you want to delete this ad?")) return; 
-            
-            try { 
-                await fetch(`${API_URL}/api/v1/admin/products/${adId}?token=${agriToken}`, { 
-                    method: 'DELETE' 
-                }); 
-                
-                showToast("Deleted"); 
-                document.getElementById(`admin-all-ad-${adId}`)?.remove(); 
-                renderAdminModQueue(); 
-                loadMyAds(); 
-            } catch (err) {} 
-        }
-        
-        async function approveAd(elId, adId) { 
-            try { 
-                await fetch(`${API_URL}/api/v1/admin/approve-ad`, { 
-                    method: 'POST', 
-                    headers: { 'Content-Type': 'application/json' }, 
-                    body: JSON.stringify({ ad_id: adId, token: agriToken }) 
-                }); 
-                
-                document.getElementById(elId)?.remove(); 
-                showToast("✅ Approved!"); 
-                
-                loadMarketplaceGrid(); 
-                renderAdminAllAds(); 
-            } catch (err) {} 
-        }
-        
-        async function rejectAd(adId) { 
-            let reason = prompt("Reason for rejection?"); 
-            if (reason) { 
-                try { 
-                    await fetch(`${API_URL}/api/v1/admin/reject-ad`, { 
-                        method: 'POST', 
-                        headers: { 'Content-Type': 'application/json' }, 
-                        body: JSON.stringify({ token: agriToken, ad_id: adId, reason: reason }) 
-                    }); 
+                if (wikiRes.ok) {
+                    const wikiData = await wikiRes.json();
                     
-                    document.getElementById(`mod-ad-${adId}`)?.remove(); 
-                    showToast("❌ Rejected."); 
-                    renderAdminAllAds(); 
-                } catch(e){} 
-            } 
-        }
-
-        function payAgriProSubscription() { 
-            showToast("Pro subscriptions require external approval for this demo.", "error"); 
+                    let wikiHtml = `<div class="bg-[#0f172a] p-6 rounded-3xl border border-slate-700/50 mb-8 flex flex-col md:flex-row gap-6 shadow-inner items-start" id="wiki-content">`;
+                    
+                    if (wikiData.thumbnail && wikiData.thumbnail.source) {
+                        wikiHtml += `<img src="${wikiData.thumbnail.source}" class="w-full md:w-48 h-48 object-cover rounded-2xl shadow-lg border border-slate-700 shrink-0">`;
+                    }
+                    
+                    wikiHtml += `
+                        <div>
+                            <h3 class="text-emerald-400 text-sm font-black uppercase tracking-wider mb-2 flex items-center gap-2">📖 Wikipedia Overview</h3>
+                            <p class="text-sm text-slate-300 leading-relaxed">${wikiData.extract}</p>
+                        </div>
+                    </div>`;
+                    
+                    contentContainer.innerHTML = wikiHtml + `<h3 class="text-xl font-black text-white mb-4 mt-8 border-b border-white/10 pb-2">🚜 Agromart Cultivation Guide</h3>` + item.guide;
+                } else {
+                    throw new Error("Wiki not found");
+                }
+            } catch (e) {
+                contentContainer.innerHTML = `<h3 class="text-xl font-black text-white mb-4 border-b border-white/10 pb-2">🚜 Agromart Cultivation Guide</h3>` + item.guide;
+            }
         }
         
-        function handlePricingBoostClick() { 
-            showToast("Navigating to ad selection...", "success"); 
-            navigate('dashboard'); 
+        function resetTrainer() {
+            document.getElementById('trainer-guide').classList.add('hidden'); 
+            document.getElementById('trainer-items').classList.add('hidden'); 
+            document.getElementById('trainer-categories').classList.remove('hidden'); 
         }
 
+        // --- PLATFORM TOOLS & EXTRAS ---
         async function loadGrants() { 
             const grid = document.getElementById('grants-grid'); 
             if (!grid) return; 
@@ -4060,38 +3909,6 @@
                         </div>`; 
                 }).join(''); 
             } catch(e) {} 
-        }
-
-        function calculateFeedMix() {
-            const targetCP = parseFloat(document.getElementById('calc-target-cp').value); 
-            const proteinCP = parseFloat(document.getElementById('calc-protein-cp').value); 
-            const energyCP = parseFloat(document.getElementById('calc-energy-cp').value); 
-            const proteinPrice = parseFloat(document.getElementById('calc-protein-price').value); 
-            const energyPrice = parseFloat(document.getElementById('calc-energy-price').value);
-            
-            if (isNaN(targetCP) || isNaN(proteinCP) || isNaN(energyCP)) {
-                return showToast("Please fill in all CP % values", "error");
-            }
-            if (targetCP >= proteinCP || targetCP <= energyCP) {
-                return showToast("Target CP must be between your Protein and Energy CP values!", "error");
-            }
-            
-            const partsProtein = targetCP - energyCP; 
-            const partsEnergy = proteinCP - targetCP; 
-            const totalParts = partsProtein + partsEnergy;
-            
-            const kgProtein = (partsProtein / totalParts) * 50; 
-            const kgEnergy = (partsEnergy / totalParts) * 50; 
-            const totalCost = (kgProtein * (proteinPrice / 50)) + (kgEnergy * (energyPrice / 50));
-            
-            document.getElementById('res-protein-kg').innerText = kgProtein.toFixed(1) + " kg"; 
-            document.getElementById('res-energy-kg').innerText = kgEnergy.toFixed(1) + " kg"; 
-            document.getElementById('res-total-cost').innerText = "GH₵ " + totalCost.toFixed(2);
-            
-            document.getElementById('calc-results-empty').classList.add('hidden'); 
-            document.getElementById('calc-results-filled').classList.remove('hidden'); 
-            document.getElementById('calc-results-filled').classList.add('block'); 
-            showToast("Feed Formulation Calculated! ✨");
         }
 
         async function loadRentals() {
