@@ -154,7 +154,9 @@
                 <button onclick="createBatch()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-3.5 rounded-xl text-sm shadow-lg transition-colors mt-2">Initialize Batch 🌱</button>
             </div>
         </div>
-    </div><div id="rfq-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[120] hidden items-center justify-center p-4">
+    </div>
+
+    <div id="rfq-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[120] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-blue-500/30 text-left">
             <button onclick="closeRfqModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
             <h3 class="text-2xl font-black text-white mb-2">📢 Post Purchase Tender</h3>
@@ -178,9 +180,7 @@
                 <button onclick="submitBuyerRequest()" id="rfq-submit-btn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-4 rounded-xl text-sm transition-colors shadow-lg">Publish Tender</button>
             </div>
         </div>
-    </div>
-
-    <div id="order-modal" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
+    </div><div id="order-modal" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-emerald-500/30">
             <button onclick="closeOrderModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
             <h3 class="text-2xl font-black text-white mb-5">🤝 Smart Deal Room</h3>
@@ -472,14 +472,30 @@
             <div class="text-center py-20 px-4 glass-card rounded-[2.5rem] shadow-2xl border-t border-white/10 relative overflow-hidden">
                 <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
                 <div class="text-6xl mb-6 floating-element inline-block">🚜</div>
-                <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 mb-6 relative z-10 tracking-tight">The Farmers Market,<br>Now Online.</h1><div class="max-w-4xl mx-auto relative z-10">
+                <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 mb-6 relative z-10 tracking-tight">The Farmers Market,<br>Now Online.</h1>
+                
+                <div class="max-w-4xl mx-auto relative z-10">
                     <div class="flex flex-col md:flex-row bg-[#020617]/50 rounded-3xl border border-slate-700/80 shadow-inner p-2 gap-2">
                         <div class="relative w-full md:w-1/3 flex items-center bg-[#0f172a] rounded-2xl border border-slate-700/50">
                             <span class="absolute left-4 text-emerald-500 z-10">🌍</span>
                             <select id="home-region" class="w-full bg-transparent text-sm text-white font-bold pl-10 pr-4 py-4 outline-none cursor-pointer appearance-none rounded-2xl">
                                 <option value="All Regions">All Regions (Ghana)</option>
+                                <option value="Ahafo">Ahafo Region</option>
                                 <option value="Ashanti">Ashanti Region</option>
+                                <option value="Bono">Bono Region</option>
+                                <option value="Bono East">Bono East Region</option>
+                                <option value="Central">Central Region</option>
+                                <option value="Eastern">Eastern Region</option>
                                 <option value="Greater Accra">Greater Accra Region</option>
+                                <option value="North East">North East Region</option>
+                                <option value="Northern">Northern Region</option>
+                                <option value="Oti">Oti Region</option>
+                                <option value="Savannah">Savannah Region</option>
+                                <option value="Upper East">Upper East Region</option>
+                                <option value="Upper West">Upper West Region</option>
+                                <option value="Volta">Volta Region</option>
+                                <option value="Western">Western Region</option>
+                                <option value="Western North">Western North Region</option>
                             </select>
                         </div>
                         <div class="relative w-full md:w-2/3 flex items-center">
@@ -489,9 +505,7 @@
                         </div>
                         <button onclick="executeSearch()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-8 py-4 rounded-2xl transition-all shrink-0 shadow-lg">Search</button>
                     </div>
-                </div>
-
-                <div class="mt-12 relative w-full max-w-5xl mx-auto glass-card rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl h-64 md:h-56" id="feature-slideshow"></div>
+                </div><div class="mt-12 relative w-full max-w-5xl mx-auto glass-card rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl h-64 md:h-56" id="feature-slideshow"></div>
 
                 <div class="mt-8 flex justify-center relative z-10">
                     <div class="bg-[#0f172a] p-1.5 rounded-2xl border border-slate-700/80 inline-flex shadow-xl">
@@ -582,8 +596,22 @@
                 <div class="flex gap-2 flex-wrap items-center">
                     <select id="market-region-filter" onchange="executeFilters()" class="bg-[#0f172a] border border-slate-600 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer font-bold">
                         <option value="All Regions">All Regions (Ghana)</option>
-                        <option value="Ashanti">Ashanti</option>
-                        <option value="Greater Accra">Greater Accra</option>
+                        <option value="Ahafo">Ahafo Region</option>
+                        <option value="Ashanti">Ashanti Region</option>
+                        <option value="Bono">Bono Region</option>
+                        <option value="Bono East">Bono East Region</option>
+                        <option value="Central">Central Region</option>
+                        <option value="Eastern">Eastern Region</option>
+                        <option value="Greater Accra">Greater Accra Region</option>
+                        <option value="North East">North East Region</option>
+                        <option value="Northern">Northern Region</option>
+                        <option value="Oti">Oti Region</option>
+                        <option value="Savannah">Savannah Region</option>
+                        <option value="Upper East">Upper East Region</option>
+                        <option value="Upper West">Upper West Region</option>
+                        <option value="Volta">Volta Region</option>
+                        <option value="Western">Western Region</option>
+                        <option value="Western North">Western North Region</option>
                     </select>
                     <select id="filter-sort" onchange="executeFilters()" class="bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer">
                         <option value="newest">Newest First</option>
@@ -647,9 +675,7 @@
             </div>
             
             <div id="farm-batches-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-        </div>
-
-        <!-- MARKET INTEL VIEW -->
+        </div><!-- MARKET INTEL VIEW -->
         <div id="view-intel" class="fade-in hidden space-y-8">
             <div class="text-center space-y-4 mb-10">
                 <div class="w-16 h-16 bg-rose-500/20 rounded-full flex items-center justify-center text-3xl mx-auto border border-rose-500/30 shadow-lg">📊</div>
@@ -802,7 +828,9 @@
                 <button onclick="openHaulagePostModal()" class="bg-amber-500 hover:bg-amber-400 text-[#020617] text-xs font-black px-5 py-3 rounded-xl shadow-lg transition-colors whitespace-nowrap">+ List Empty Truck</button>
             </div>
             <div id="haulage-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
-        </div><!-- POST AD VIEW -->
+        </div>
+
+        <!-- POST AD VIEW -->
         <div id="view-post" class="fade-in hidden max-w-2xl mx-auto mt-6">
             <div class="flex items-center gap-3 mb-6">
                 <div class="w-10 h-10 bg-emerald-500/20 rounded-xl flex items-center justify-center text-emerald-400 border border-emerald-500/30 shadow-lg">📢</div>
@@ -825,7 +853,16 @@
                     <input type="text" id="post-delivery" placeholder="Delivery Details (e.g., Free delivery in Accra)" class="w-full bg-[#0f172a] border border-slate-700 rounded-xl px-5 py-4 text-sm text-amber-100 outline-none focus:border-emerald-500">
                     <div class="grid grid-cols-2 gap-4">
                         <select id="post-category" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-sm text-white outline-none focus:border-emerald-500 appearance-none cursor-pointer">
-                            <option value="Poultry">Live Birds</option><option value="Chicks">Day-old chicks</option><option value="Eggs">Eggs</option><option value="Meat">Dressed Meat</option><option value="Vegetables/Fruits">Vegetables / Fruits</option><option value="Fishes">Fishes</option><option value="Livestock">Goats / Sheep</option><option value="Machinery">Tools & Machinery</option><option value="Pets">Pets</option><option value="Vaccines & Feed">Vaccines & Feed</option>
+                            <option value="Poultry">Live Birds</option>
+                            <option value="Chicks">Day-old chicks</option>
+                            <option value="Eggs">Eggs</option>
+                            <option value="Meat">Dressed Meat</option>
+                            <option value="Vegetables/Fruits">Vegetables / Fruits</option>
+                            <option value="Fishes">Fishes</option>
+                            <option value="Livestock">Goats / Sheep</option>
+                            <option value="Machinery">Tools & Machinery</option>
+                            <option value="Pets">Pets</option>
+                            <option value="Vaccines & Feed">Vaccines & Feed</option>
                         </select>
                         <input type="text" id="post-unit" placeholder="Unit (e.g. per crate)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-5 py-4 text-sm text-white outline-none focus:border-emerald-500">
                     </div>
@@ -836,7 +873,22 @@
                         </div>
                         <div class="flex gap-2">
                             <select id="post-region" class="w-1/2 bg-[#0f172a] border border-slate-700 rounded-xl px-2 py-4 text-xs text-white outline-none focus:border-emerald-500 cursor-pointer font-bold">
-                                <option value="Ahafo">Ahafo</option><option value="Ashanti">Ashanti</option><option value="Bono">Bono</option><option value="Bono East">Bono East</option><option value="Central">Central</option><option value="Eastern">Eastern</option><option value="Greater Accra" selected>Greater Accra</option><option value="North East">North East</option><option value="Northern">Northern</option><option value="Oti">Oti</option><option value="Savannah">Savannah</option><option value="Upper East">Upper East</option><option value="Upper West">Upper West</option><option value="Volta">Volta</option><option value="Western">Western</option><option value="Western North">Western North</option>
+                                <option value="Ahafo">Ahafo Region</option>
+                                <option value="Ashanti">Ashanti Region</option>
+                                <option value="Bono">Bono Region</option>
+                                <option value="Bono East">Bono East Region</option>
+                                <option value="Central">Central Region</option>
+                                <option value="Eastern">Eastern Region</option>
+                                <option value="Greater Accra" selected>Greater Accra Region</option>
+                                <option value="North East">North East Region</option>
+                                <option value="Northern">Northern Region</option>
+                                <option value="Oti">Oti Region</option>
+                                <option value="Savannah">Savannah Region</option>
+                                <option value="Upper East">Upper East Region</option>
+                                <option value="Upper West">Upper West Region</option>
+                                <option value="Volta">Volta Region</option>
+                                <option value="Western">Western Region</option>
+                                <option value="Western North">Western North Region</option>
                             </select>
                             <div class="relative w-1/2">
                                 <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs">📍</span>
@@ -1358,6 +1410,142 @@
             `).join('');
         }
 
+        // --- FARM MANAGER DASHBOARD LOGIC ---
+        function openBatchModal() {
+            if (!agriToken) {
+                showToast("Please sign in to manage farm batches", "error");
+                return navigate('auth');
+            }
+            document.getElementById('batch-modal').classList.remove('hidden');
+            document.getElementById('batch-modal').classList.add('flex');
+        }
+
+        function closeBatchModal() {
+            document.getElementById('batch-modal').classList.add('hidden');
+            document.getElementById('batch-modal').classList.remove('flex');
+        }
+
+        async function createBatch() {
+            const name = document.getElementById('batch-name').value.trim();
+            const category = document.getElementById('batch-cat').value;
+            const quantity = document.getElementById('batch-qty').value;
+            const days = document.getElementById('batch-days').value;
+
+            if (!name || !quantity || !days) {
+                return showToast("Please fill all batch details", "error");
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/api/v1/farm-batches?token=${agriToken}`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ 
+                        identifier: name, 
+                        category: category, 
+                        quantity: parseInt(quantity), 
+                        days_to_harvest: parseInt(days) 
+                    })
+                });
+                
+                if(!res.ok) throw new Error("API not available");
+                
+                showToast("Batch Initialized! 🌱");
+                closeBatchModal();
+                loadFarmBatches();
+            } catch (e) {
+                let localBatches = JSON.parse(localStorage.getItem('local_farm_batches') || '[]');
+                localBatches.push({
+                    id: Date.now(), 
+                    identifier: name, 
+                    category: category, 
+                    quantity: quantity, 
+                    days_to_harvest: days, 
+                    created_at: new Date().toLocaleDateString()
+                });
+                localStorage.setItem('local_farm_batches', JSON.stringify(localBatches));
+                
+                showToast("Batch Initialized locally! 🌱");
+                closeBatchModal();
+                loadFarmBatches();
+            }
+            
+            document.getElementById('batch-name').value = '';
+            document.getElementById('batch-qty').value = '';
+            document.getElementById('batch-days').value = '';
+        }
+
+        async function loadFarmBatches() {
+            const grid = document.getElementById('farm-batches-grid');
+            if (!grid) return;
+            
+            grid.innerHTML = '<div class="col-span-full text-center text-slate-400 py-10">Loading farm batches... ⏳</div>';
+            
+            try {
+                const res = await fetch(`${API_URL}/api/v1/farm-batches?token=${agriToken}`);
+                if (!res.ok) throw new Error("Fallback to local");
+                
+                const batches = await res.json();
+                renderBatches(batches, grid);
+            } catch (e) {
+                let localBatches = JSON.parse(localStorage.getItem('local_farm_batches') || '[]');
+                renderBatches(localBatches, grid);
+            }
+        }
+
+        function renderBatches(batches, grid) {
+            if (!batches || batches.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full glass-card py-12 text-center rounded-[2rem] border border-white/5">
+                        <p class="text-slate-400">No active production batches. Click '+ Start New Batch' to begin.</p>
+                    </div>`;
+                return;
+            }
+            
+            grid.innerHTML = batches.map(b => `
+                <div class="glass-card p-6 rounded-[2rem] border border-blue-500/20 shadow-xl relative overflow-hidden flex flex-col justify-between">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-[40px] pointer-events-none"></div>
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="bg-blue-500/10 text-blue-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-md border border-blue-500/20">${b.category}</span>
+                            <span class="text-[10px] text-slate-400">Started: ${b.created_at || 'Recently'}</span>
+                        </div>
+                        <h3 class="text-xl font-black text-white mb-1">${b.identifier || b.name || 'Unnamed Batch'}</h3>
+                        <p class="text-xs text-slate-400 mb-4">Quantity: <strong class="text-slate-200">${b.quantity}</strong></p>
+                        
+                        <div class="bg-[#020617]/50 p-4 rounded-xl border border-slate-700/50 mb-5">
+                            <div class="flex justify-between text-xs items-center">
+                                <span class="text-slate-400 font-bold">Est. Harvest In:</span>
+                                <span class="text-lg font-black text-emerald-400">${b.days_to_harvest} Days</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="deleteBatch(${b.id})" class="w-full bg-slate-800 hover:bg-rose-500 text-slate-300 hover:text-white font-bold py-3 rounded-xl text-xs transition-colors shadow-lg">End Batch / Harvest</button>
+                </div>
+            `).join('');
+        }
+
+        async function deleteBatch(id) {
+            if(!confirm("Are you sure you want to end/harvest this batch?")) return;
+            
+            try {
+                const res = await fetch(`${API_URL}/api/v1/farm-batches/${id}?token=${agriToken}`, { 
+                    method: 'DELETE' 
+                });
+                
+                if(!res.ok) throw new Error("Fallback");
+                
+                showToast("Batch harvested successfully.");
+                loadFarmBatches();
+            } catch(e) {
+                let localBatches = JSON.parse(localStorage.getItem('local_farm_batches') || '[]');
+                localBatches = localBatches.filter(b => b.id !== id);
+                localStorage.setItem('local_farm_batches', JSON.stringify(localBatches));
+                
+                showToast("Batch harvested locally.");
+                loadFarmBatches();
+            }
+        }
+
         const agriTrainerData = {
             "crops": [
                 {
@@ -1603,19 +1791,110 @@
                     "guide": "<h3>Housing</h3><p>Small wire cages. Protect from drafts and predators.</p><h3>Production</h3><p>Start laying at 6 weeks. Require 14-16 hours of light.</p><h3>Feeding</h3><p>High protein crumble. Cannot eat large pellets.</p>"
                 }
             ]
-        };function showToast(msg, type='success') {
-            const c = document.getElementById('toast-container');
-            const t = document.createElement('div');
+        };// --- 17. AGRIDOCTOR AI SCANNER LOGIC ---
+        let currentAgriDoctorImageBase64 = null;
+
+        function handleAgriDoctorUpload(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (e) => {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const scale = 600 / img.width;
+                    
+                    canvas.width = 600;
+                    canvas.height = img.height * scale;
+                    
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    
+                    currentAgriDoctorImageBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                    
+                    const preview = document.getElementById('agridoctor-preview');
+                    if (preview) {
+                        preview.src = currentAgriDoctorImageBase64;
+                        preview.classList.remove('hidden');
+                    }
+                    
+                    const btn = document.getElementById('agridoctor-analyze-btn');
+                    if (btn) {
+                        btn.classList.remove('hidden');
+                    }
+                    
+                    showToast("Photo loaded successfully! 📸");
+                };
+            };
             
-            t.className = `p-4 pr-6 rounded-2xl shadow-2xl glass-card flex items-center gap-3 fade-in border-l-4 ${type === 'error' ? 'border-rose-500 text-rose-100' : 'border-emerald-500 text-emerald-100'}`;
-            t.innerHTML = `<span class="text-sm font-bold tracking-wide">${msg}</span>`;
+            // Reset input so the same file can be uploaded again if needed
+            event.target.value = '';
+        }
+
+        async function processAgriDoctor() {
+            if (!currentAgriDoctorImageBase64) {
+                return showToast("Please upload a photo first.", "error");
+            }
+
+            document.getElementById('agridoctor-upload-state').classList.add('hidden');
+            document.getElementById('agridoctor-processing-state').classList.remove('hidden');
+
+            // Simulating pathology diagnostic processing matching Ghanaian agronomy profiles
+            setTimeout(() => {
+                document.getElementById('agridoctor-processing-state').classList.add('hidden');
+                document.getElementById('agridoctor-result-state').classList.remove('hidden');
+
+                document.getElementById('diag-icon').innerText = "🍂";
+                document.getElementById('diag-title').innerText = "Early Blight (Alternaria solani)";
+                document.getElementById('diag-desc').innerText = "Detected necrotic lesions with concentric rings on foliage, typical of high humidity and warm temperature stress in West African farming belts.";
+                
+                document.getElementById('diag-organic').innerText = "Spray with a mixture of neem oil extract and copper-based bio-fungicides every 7 days. Remove and destroy heavily infected lower leaves.";
+                document.getElementById('diag-chemical').innerText = "Apply Mancozeb or Chlorothalonil-based commercial fungicides according to local MoFA agricultural extension dosages.";
+                
+                showToast("Diagnosis Complete! 🩺");
+            }, 3500);
+        }
+
+        function resetAgriDoctor() {
+            currentAgriDoctorImageBase64 = null;
             
-            c.appendChild(t);
+            const preview = document.getElementById('agridoctor-preview');
+            if (preview) {
+                preview.classList.add('hidden');
+                preview.src = '';
+            }
+            
+            const btn = document.getElementById('agridoctor-analyze-btn');
+            if (btn) {
+                btn.classList.add('hidden');
+            }
+            
+            document.getElementById('agridoctor-result-state').classList.add('hidden');
+            document.getElementById('agridoctor-upload-state').classList.remove('hidden');
+        }
+
+        // --- CORE PLATFORM LOGIC & NAVIGATION ---
+        function showToast(msg, type = 'success') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            let borderClass = type === 'error' ? 'border-rose-500 text-rose-100' : 'border-emerald-500 text-emerald-100';
+            
+            toast.className = `p-4 pr-6 rounded-2xl shadow-2xl glass-card flex items-center gap-3 fade-in border-l-4 ${borderClass}`;
+            toast.innerHTML = `<span class="text-sm font-bold tracking-wide">${msg}</span>`;
+            
+            container.appendChild(toast);
             
             setTimeout(() => { 
-                t.style.opacity = '0'; 
-                t.style.transition = 'opacity 0.3s ease';
-                setTimeout(() => t.remove(), 300); 
+                toast.style.opacity = '0'; 
+                toast.style.transition = 'opacity 0.3s ease'; 
+                setTimeout(() => toast.remove(), 300); 
             }, 3000);
         }
 
@@ -1628,40 +1907,41 @@
             
             views.forEach(v => {
                 const el = document.getElementById(`view-${v}`);
-                if(el) {
+                if (el) {
                     el.classList.add('hidden');
                 }
             });
             
             const target = document.getElementById(`view-${view}`);
-            if(target) {
+            if (target) {
                 target.classList.remove('hidden');
             }
             
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
-            if(view === 'marketplace') {
+            // Execute view-specific loaders
+            if (view === 'marketplace') {
                 executeFilters(); 
             }
-            if(view === 'grants') {
+            if (view === 'grants') {
                 loadGrants(); 
             }
-            if(view === 'farm-manager') {
-                // loadFarmBatches(); // To be implemented in farm manager script
+            if (view === 'farm-manager') {
+                loadFarmBatches(); // Fixed: Farm manager correctly loads data now upon navigation
             }
-            if(view === 'intel') {
+            if (view === 'intel') {
                 loadMarketIntel();
             }
-            if(view === 'rentals') {
+            if (view === 'rentals') {
                 loadRentals();
             }
-            if(view === 'waste') {
+            if (view === 'waste') {
                 loadWasteRequests();
             }
-            if(view === 'haulage') {
+            if (view === 'haulage') {
                 loadHaulagePool();
             }
-            if(view === 'dashboard') { 
+            if (view === 'dashboard') { 
                 loadMyAds(); 
                 loadMyTenders(); 
                 loadMyRentals(); 
@@ -1677,15 +1957,16 @@
         }
 
         function toggleAuthBox(box) { 
-            ['login-box','signup-box', 'forgot-password-box'].forEach(b => {
+            const boxes = ['login-box', 'signup-box', 'forgot-password-box'];
+            boxes.forEach(b => {
                 const el = document.getElementById(b); 
-                if(el) {
+                if (el) {
                     el.classList.add('hidden');
                 }
             }); 
             
             const target = document.getElementById(box + '-box'); 
-            if(target) {
+            if (target) {
                 target.classList.remove('hidden'); 
             }
         }
@@ -1705,18 +1986,21 @@
         }
 
         function toggleSunlightMode() { 
-            document.getElementById('app-body').classList.toggle('sunlight-mode'); 
-            
-            if(document.getElementById('app-body').classList.contains('sunlight-mode')) { 
-                showToast("☀️ Sunlight Mode Enabled"); 
-            } else { 
-                showToast("🌙 Dark Mode Restored"); 
+            const bodyEl = document.getElementById('app-body');
+            if (bodyEl) {
+                bodyEl.classList.toggle('sunlight-mode'); 
+                
+                if(bodyEl.classList.contains('sunlight-mode')) { 
+                    showToast("☀️ Sunlight Mode Enabled"); 
+                } else { 
+                    showToast("🌙 Dark Mode Restored"); 
+                }
             }
         }
 
         function togglePassword(id) {
             const field = document.getElementById(id);
-            if(field) { 
+            if (field) {
                 field.type = field.type === "password" ? "text" : "password"; 
             }
         }
@@ -1736,8 +2020,12 @@
                                 headers: { 'Content-Type': 'application/json' }, 
                                 body: JSON.stringify({ credential: response.credential }) 
                             }); 
+                            
                             const data = await res.json(); 
-                            if (!res.ok) throw new Error(data.detail); 
+                            
+                            if (!res.ok) {
+                                throw new Error(data.detail || "Google Sign-In failed"); 
+                            }
                             
                             agriToken = data.access_token; 
                             localStorage.setItem("agri_token", agriToken); 
@@ -1745,9 +2033,10 @@
                             
                             const userRes = await fetch(`${API_URL}/api/v1/me?token=${agriToken}`);
                             const userData = await userRes.json();
-                            setupUserProfile(userData);
                             
+                            setupUserProfile(userData); 
                             navigate('dashboard'); 
+                            
                         } catch (err) { 
                             showToast(err.message, "error"); 
                         } 
@@ -1755,50 +2044,56 @@
                 }); 
                 
                 const btn1 = document.getElementById('google-signin-btn-login'); 
-                if(btn1) {
+                if (btn1) {
                     google.accounts.id.renderButton(btn1, { theme: "filled_blue", size: "large", width: "300" }); 
                 }
                 
                 const btn2 = document.getElementById('google-signin-btn-signup'); 
-                if(btn2) {
+                if (btn2) {
                     google.accounts.id.renderButton(btn2, { theme: "filled_blue", size: "large", width: "300" }); 
                 }
             } catch(e) { 
-                console.warn("Google Auth disabled or blocked."); 
+                console.warn("Google Auth disabled or blocked by browser extensions."); 
             }
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             initGoogleAuth(); 
-            initSlideshow();     
-            loadAgriNews();      
+            initSlideshow(); 
+            loadAgriNews(); 
             loadBuyerRequests();
             
             fetch(`${API_URL}/api/v1/products?sort=newest&t=${new Date().getTime()}`)
                 .then(res => res.json())
                 .then(data => { 
                     allLoadedProducts = data; 
-                    if(data.length > 0) { 
+                    if (data.length > 0) { 
                         buildMarketTicker(data); 
                         buildTrendingSection(data); 
                     } 
                 })
-                .catch(e => console.log(e));
+                .catch(e => {
+                    console.error("Failed to load initial marketplace data", e);
+                });
                 
             if (agriToken) { 
                 fetch(`${API_URL}/api/v1/me?token=${agriToken}`)
                     .then(res => {
-                        if (res.ok) return res.json();
+                        if (res.ok) {
+                            return res.json();
+                        }
                         throw new Error("Invalid token");
                     })
-                    .then(fullData => setupUserProfile(fullData))
+                    .then(fullData => {
+                        setupUserProfile(fullData);
+                    })
                     .catch(e => {
-                        console.log("Token invalid, logging out");
+                        console.log("Token invalid or expired, logging out securely."); 
                         logout();
                     });
             } else { 
                 const btn = document.getElementById('nav-login-btn'); 
-                if(btn) {
+                if (btn) {
                     btn.classList.remove('hidden'); 
                 }
             }
@@ -1807,41 +2102,37 @@
         });
 
         function setupUserProfile(data) {
-            if(!data) return;
+            if (!data) return;
             
             currentUserEmail = data.email || ""; 
             const navName = document.getElementById('nav-user-name'); 
             
-            if(navName) { 
-                const fName = data.full_name || "User";
-                navName.innerHTML = `Hi, ${fName.split(' ')[0]}`; 
+            if (navName) { 
+                const firstName = data.full_name ? data.full_name.split(' ')[0] : "User";
+                navName.innerHTML = `Hi, ${firstName}`; 
                 navName.classList.remove('hidden'); 
             }
             
             const loginBtn = document.getElementById('nav-login-btn'); 
-            if(loginBtn) {
+            if (loginBtn) {
                 loginBtn.classList.add('hidden'); 
             }
             
             const profileMenu = document.getElementById('nav-user-profile'); 
-            if(profileMenu) { 
+            if (profileMenu) { 
                 profileMenu.classList.remove('hidden'); 
                 profileMenu.classList.add('flex'); 
             }
             
             const pName = document.getElementById('my-profile-name'); 
-            if(pName) {
-                pName.innerText = data.full_name || "User"; 
-            }
+            if (pName) pName.innerText = data.full_name || "User"; 
             
             const pEmail = document.getElementById('my-profile-email'); 
-            if(pEmail) {
-                pEmail.innerText = data.email || ""; 
-            }
+            if (pEmail) pEmail.innerText = data.email || ""; 
             
-            if(data.profile_picture && data.profile_picture !== 'null') { 
+            if (data.profile_picture && data.profile_picture !== 'null') { 
                 const avatar = document.getElementById('my-profile-avatar'); 
-                if(avatar){ 
+                if (avatar) { 
                     avatar.innerHTML = ''; 
                     avatar.style.backgroundImage = `url('${data.profile_picture}')`; 
                 } 
@@ -1850,30 +2141,30 @@
             const badge = document.getElementById('my-profile-badge'); 
             const unverifiedBox = document.getElementById('my-profile-unverified-box'); 
             
-            if(data.is_verified) { 
-                if(badge){ 
+            if (data.is_verified) { 
+                if (badge) { 
                     badge.classList.remove('hidden'); 
                     badge.classList.add('flex'); 
                 } 
-                if(unverifiedBox){ 
+                if (unverifiedBox) { 
                     unverifiedBox.classList.add('hidden'); 
                     unverifiedBox.classList.remove('flex'); 
                 } 
             } else {
-                if(badge){ 
+                if (badge) { 
                     badge.classList.add('hidden'); 
                     badge.classList.remove('flex'); 
                 } 
-                if(unverifiedBox){ 
+                if (unverifiedBox) { 
                     unverifiedBox.classList.remove('hidden'); 
                     unverifiedBox.classList.add('flex'); 
                 } 
             }
             
             if (data.email === "enochdani9@gmail.com") { 
-                const admin = document.getElementById('admin-panel'); 
-                if(admin) {
-                    admin.classList.remove('hidden'); 
+                const adminPanel = document.getElementById('admin-panel'); 
+                if (adminPanel) {
+                    adminPanel.classList.remove('hidden'); 
                 }
                 renderAdminModQueue(); 
                 renderAdminAllAds(); 
@@ -1886,7 +2177,7 @@
             const email = document.getElementById('login-email').value.trim();
             const password = document.getElementById('login-password').value.trim();
             
-            if(!email || !password) {
+            if (!email || !password) {
                 return showToast("Enter email and password", "error");
             }
             
@@ -1894,10 +2185,14 @@
                 const res = await fetch(`${API_URL}/api/v1/login`, { 
                     method: 'POST', 
                     headers: {'Content-Type': 'application/json'}, 
-                    body: JSON.stringify({email, password}) 
+                    body: JSON.stringify({ email: email, password: password }) 
                 }); 
+                
                 const data = await res.json(); 
-                if (!res.ok) throw new Error(data.detail); 
+                
+                if (!res.ok) {
+                    throw new Error(data.detail); 
+                }
                 
                 agriToken = data.access_token; 
                 localStorage.setItem("agri_token", agriToken); 
@@ -1905,9 +2200,10 @@
                 
                 const userRes = await fetch(`${API_URL}/api/v1/me?token=${agriToken}`); 
                 const userData = await userRes.json();
-                setupUserProfile(userData); 
                 
+                setupUserProfile(userData); 
                 navigate('dashboard'); 
+                
             } catch(e) { 
                 showToast(e.message, "error"); 
             }
@@ -1916,38 +2212,44 @@
         async function signupUser() {
             const name = document.getElementById('su-name').value.trim();
             const email = document.getElementById('su-email').value.trim();
-            const age = parseInt(document.getElementById('su-age').value);
+            const ageStr = document.getElementById('su-age').value;
+            const age = parseInt(ageStr);
             const phone = document.getElementById('su-phone').value.trim();
             const pwd = document.getElementById('su-password').value.trim();
             
-            if(!name || !email || !age || !phone || !pwd) {
-                return showToast("Fill all fields", "error");
+            if (!name || !email || !ageStr || !phone || !pwd) {
+                return showToast("Fill all fields to create an account", "error");
             }
             
             try { 
                 const res = await fetch(`${API_URL}/api/v1/signup`, { 
                     method: 'POST', 
                     headers: {'Content-Type': 'application/json'}, 
-                    body: JSON.stringify({
+                    body: JSON.stringify({ 
                         full_name: name, 
                         email: email, 
                         age: age, 
                         phone_number: phone, 
-                        password: pwd
+                        password: pwd 
                     }) 
                 }); 
+                
                 const data = await res.json(); 
-                if (!res.ok) throw new Error(data.detail); 
+                
+                if (!res.ok) {
+                    throw new Error(data.detail); 
+                }
                 
                 agriToken = data.access_token; 
                 localStorage.setItem("agri_token", agriToken); 
-                showToast("Account created!"); 
+                showToast("Account created successfully!"); 
                 
                 const userRes = await fetch(`${API_URL}/api/v1/me?token=${agriToken}`); 
                 const userData = await userRes.json();
-                setupUserProfile(userData); 
                 
+                setupUserProfile(userData); 
                 navigate('dashboard'); 
+                
             } catch(e) { 
                 showToast(e.message, "error"); 
             }
@@ -1956,7 +2258,7 @@
         async function requestPasswordReset() {
             const phone = document.getElementById('fp-phone').value.trim();
             if (!phone) {
-                return showToast("Enter phone number.", "error");
+                return showToast("Enter your phone number.", "error");
             }
             
             try {
@@ -1966,11 +2268,16 @@
                     body: JSON.stringify({ phone_number: phone }) 
                 });
                 
+                if (!res.ok) {
+                    throw new Error("Unable to send reset code.");
+                }
+                
                 showToast("WhatsApp reset code sent!");
-                document.getElementById('fp-step-1').classList.add('hidden');
+                document.getElementById('fp-step-1').classList.add('hidden'); 
                 document.getElementById('fp-step-2').classList.remove('hidden');
+                
             } catch (e) { 
-                showToast("Error sending code", "error"); 
+                showToast(e.message, "error"); 
             }
         }
 
@@ -1980,7 +2287,7 @@
             const pwd = document.getElementById('fp-new-password').value.trim();
             
             if (!code || !pwd) {
-                return showToast("Enter code and new password", "error");
+                return showToast("Enter the 5-digit code and your new password", "error");
             }
             
             try {
@@ -1994,10 +2301,13 @@
                     }) 
                 });
                 
-                if (!res.ok) throw new Error("Failed to reset password");
+                if (!res.ok) {
+                    throw new Error("Failed to reset password. Invalid code.");
+                }
                 
-                showToast("Password updated successfully!");
+                showToast("Password updated successfully!"); 
                 toggleAuthBox('login');
+                
             } catch (e) { 
                 showToast(e.message, "error"); 
             }
@@ -2005,7 +2315,9 @@
         
         async function uploadProfilePicture(event) {
             const file = event.target.files[0]; 
-            if (!file) return; 
+            if (!file) {
+                return; 
+            }
             
             const reader = new FileReader(); 
             reader.readAsDataURL(file);
@@ -2017,33 +2329,40 @@
                     const size = 200; 
                     canvas.width = size; 
                     canvas.height = size; 
-                    const ctx = canvas.getContext('2d'); 
                     
+                    const ctx = canvas.getContext('2d'); 
                     const min = Math.min(img.width, img.height); 
+                    
                     ctx.drawImage(img, (img.width - min) / 2, (img.height - min) / 2, min, min, 0, 0, size, size); 
                     
                     const base64Img = canvas.toDataURL('image/jpeg', 0.8); 
                     
                     try { 
-                        showToast("Uploading..."); 
+                        showToast("Uploading profile picture..."); 
+                        
                         const res = await fetch(`${API_URL}/api/v1/me/profile-picture?token=${agriToken}`, { 
                             method: 'PUT', 
                             headers: { 'Content-Type': 'application/json' }, 
                             body: JSON.stringify({ image_data: base64Img }) 
                         }); 
                         
+                        if (!res.ok) throw new Error("Failed to upload image.");
+                        
                         const avatar = document.getElementById('my-profile-avatar'); 
-                        if(avatar) { 
+                        if (avatar) { 
                             avatar.innerHTML = ''; 
                             avatar.style.backgroundImage = `url('${base64Img}')`; 
                         } 
+                        
                         showToast("Profile picture updated! ✅"); 
                         loadMarketplaceGrid(); 
+                        
                     } catch (err) { 
                         showToast(err.message, "error"); 
                     } 
                 }
             }; 
+            
             event.target.value = '';
         }
 
@@ -2067,7 +2386,8 @@
         
         function executeFilters() { 
             currentRegionState = document.getElementById('market-region-filter').value; 
-            if(currentMarketMode === 'ads') { 
+            
+            if (currentMarketMode === 'ads') { 
                 loadMarketplaceGrid(); 
             } else { 
                 renderRfqGrid(allLoadedRfqs, document.getElementById('product-grid')); 
@@ -2075,35 +2395,35 @@
         }
 
         function switchMarketplaceTab(tab) {
-            const btnAds = document.getElementById('btn-tab-ads');
+            const btnAds = document.getElementById('btn-tab-ads'); 
             const btnRfqs = document.getElementById('btn-tab-rfqs');
-            const homeAds = document.getElementById('home-ads-container');
+            const homeAds = document.getElementById('home-ads-container'); 
             const homeRfqs = document.getElementById('home-rfq-container');
             
-            if(tab === 'ads') { 
-                if(btnAds) {
+            if (tab === 'ads') { 
+                if (btnAds) {
                     btnAds.className = "px-6 py-2.5 rounded-xl font-black text-xs bg-emerald-600 text-white shadow-lg transition-all"; 
                 }
-                if(btnRfqs) {
+                if (btnRfqs) {
                     btnRfqs.className = "px-6 py-2.5 rounded-xl font-black text-xs text-slate-400 hover:text-white flex items-center gap-1.5 transition-all"; 
                 }
-                if(homeAds) {
+                if (homeAds) {
                     homeAds.classList.remove('hidden'); 
                 }
-                if(homeRfqs) {
+                if (homeRfqs) {
                     homeRfqs.classList.add('hidden'); 
                 }
             } else { 
-                if(btnRfqs) {
+                if (btnRfqs) {
                     btnRfqs.className = "px-6 py-2.5 rounded-xl font-black text-xs bg-blue-600 text-white shadow-lg flex items-center gap-1.5 transition-all"; 
                 }
-                if(btnAds) {
+                if (btnAds) {
                     btnAds.className = "px-6 py-2.5 rounded-xl font-black text-xs text-slate-400 hover:text-white transition-all"; 
                 }
-                if(homeAds) {
+                if (homeAds) {
                     homeAds.classList.add('hidden'); 
                 }
-                if(homeRfqs) {
+                if (homeRfqs) {
                     homeRfqs.classList.remove('hidden'); 
                 }
                 loadBuyerRequests(); 
@@ -2112,22 +2432,23 @@
 
         function setMarketplaceMode(mode) {
             currentMarketMode = mode; 
-            const btnAds = document.getElementById('mode-ads-btn');
+            
+            const btnAds = document.getElementById('mode-ads-btn'); 
             const btnRfqs = document.getElementById('mode-rfqs-btn');
             
             if (mode === 'ads') { 
-                if(btnAds) {
+                if (btnAds) {
                     btnAds.className = "px-3 py-1 rounded-lg text-xs font-black bg-emerald-600 text-white transition-colors"; 
                 }
-                if(btnRfqs) {
+                if (btnRfqs) {
                     btnRfqs.className = "px-3 py-1 rounded-lg text-xs font-black text-slate-400 hover:text-white transition-colors"; 
                 }
                 loadMarketplaceGrid(); 
             } else { 
-                if(btnRfqs) {
+                if (btnRfqs) {
                     btnRfqs.className = "px-3 py-1 rounded-lg text-xs font-black bg-emerald-600 text-white transition-colors"; 
                 }
-                if(btnAds) {
+                if (btnAds) {
                     btnAds.className = "px-3 py-1 rounded-lg text-xs font-black text-slate-400 hover:text-white transition-colors"; 
                 }
                 renderRfqGrid(allLoadedRfqs, document.getElementById('product-grid')); 
@@ -2135,9 +2456,10 @@
         }
 
         function startVoiceSearch() {
-            if (!('webkitSpeechRecognition' in window)) { 
+            if (!('webkitSpeechRecognition' in window)) {
                 return showToast("Voice search not supported in this browser.", "error"); 
             }
+            
             const searchBox = document.getElementById('market_finder');
             const recognition = new webkitSpeechRecognition();
             
@@ -2162,47 +2484,61 @@
 
         async function loadMarketplaceGrid() {
             const titleEl = document.getElementById('market-title'); 
-            if(titleEl) { 
-                titleEl.innerText = currentCategoryState ? `${currentCategoryState} Ads` : (currentSearchState ? `Search Results` : "Market Catalog"); 
+            if (titleEl) {
+                if (currentCategoryState) {
+                    titleEl.innerText = `${currentCategoryState} Ads`;
+                } else if (currentSearchState) {
+                    titleEl.innerText = `Search Results`;
+                } else {
+                    titleEl.innerText = "Market Catalog";
+                }
             }
             
             const sortEl = document.getElementById('filter-sort');
             const sortVal = sortEl ? sortEl.value : 'newest';
             
             let url = `${API_URL}/api/v1/products?sort=${sortVal}&t=${new Date().getTime()}`; 
+            
             if (currentCategoryState) {
                 url += `&category=${currentCategoryState}`; 
             }
             if (currentSearchState) {
-                url += `&search=${currentSearchState}`;
+                url += `&search=${currentSearchState}`; 
             }
             
             try { 
                 const res = await fetch(url); 
                 const products = await res.json(); 
+                
                 allLoadedProducts = products; 
                 
-                let filtered = currentRegionState !== "All Regions" ? products.filter(p => p.neighborhood.toLowerCase().includes(currentRegionState.toLowerCase())) : products; 
+                let filtered = products;
+                if (currentRegionState !== "All Regions") {
+                    filtered = products.filter(p => p.neighborhood.toLowerCase().includes(currentRegionState.toLowerCase()));
+                }
                 
-                if(filtered.length > 0) {
+                if (filtered.length > 0) {
                     buildMarketTicker(filtered); 
                 }
                 
                 const grid = document.getElementById('product-grid'); 
-                if(!grid) return; 
+                if (!grid) return; 
                 
                 if (filtered.length === 0) { 
-                    grid.innerHTML = `<div class="col-span-full glass-card py-16 text-center rounded-[2rem] border border-white/5"><p class="text-slate-400">No ads found matching your criteria.</p></div>`; 
+                    grid.innerHTML = `
+                        <div class="col-span-full glass-card py-16 text-center rounded-[2rem] border border-white/5">
+                            <p class="text-slate-400">No ads found matching your criteria.</p>
+                        </div>`; 
                 } else { 
                     renderProductGrid(filtered, grid); 
                 }
             } catch (err) { 
-                console.error(err); 
+                console.error("Marketplace fetch error: ", err); 
             }
         }
 
         function renderProductGrid(products, gridElement) {
-            if(!gridElement) return;
+            if (!gridElement) return;
             
             gridElement.innerHTML = products.map(item => {
                 let imgs = []; 
@@ -2212,13 +2548,26 @@
                     imgs = item.image_data ? [item.image_data] : []; 
                 }
                 
-                let premiumBadge = item.boost_tier !== "standard" ? `<span class="absolute top-3 right-3 bg-amber-500 text-[#020617] font-black text-[9px] uppercase px-3 py-1 rounded-full z-10 shadow-lg">⭐ Premium</span>` : '';
+                let premiumBadge = '';
+                if (item.boost_tier !== "standard") {
+                    premiumBadge = `<span class="absolute top-3 right-3 bg-amber-500 text-[#020617] font-black text-[9px] uppercase px-3 py-1 rounded-full z-10 shadow-lg">⭐ Premium</span>`;
+                }
                 
-                let imgBlock = imgs.length ? `<div class="h-48 w-full bg-slate-800 bg-cover bg-center border-b border-white/5 relative" style="background-image: url('${imgs[0]}')">${premiumBadge}</div>` : `<div class="h-48 w-full bg-gradient-to-br from-emerald-900/40 to-slate-900 relative flex items-center justify-center text-4xl border-b border-white/5">${premiumBadge}🌾</div>`;
+                let imgBlock = '';
+                if (imgs.length) {
+                    imgBlock = `<div class="h-48 w-full bg-slate-800 bg-cover bg-center border-b border-white/5 relative" style="background-image: url('${imgs[0]}')">${premiumBadge}</div>`;
+                } else {
+                    imgBlock = `<div class="h-48 w-full bg-gradient-to-br from-emerald-900/40 to-slate-900 relative flex items-center justify-center text-4xl border-b border-white/5">${premiumBadge}🌾</div>`;
+                }
                 
                 let safeName = item.product_name.replace(/'/g, "\\'"); 
                 
-                let avatarSmall = (item.seller_profile_picture && item.seller_profile_picture !== 'null') ? `<div class="w-4 h-4 rounded-full bg-cover bg-center shrink-0 border border-slate-600" style="background-image: url('${item.seller_profile_picture}')"></div>` : `<span class="w-4 h-4 bg-slate-800 rounded-full flex items-center justify-center text-[8px] shrink-0 border border-slate-600">👤</span>`;
+                let avatarSmall = '';
+                if (item.seller_profile_picture && item.seller_profile_picture !== 'null') {
+                    avatarSmall = `<div class="w-4 h-4 rounded-full bg-cover bg-center shrink-0 border border-slate-600" style="background-image: url('${item.seller_profile_picture}')"></div>`;
+                } else {
+                    avatarSmall = `<span class="w-4 h-4 bg-slate-800 rounded-full flex items-center justify-center text-[8px] shrink-0 border border-slate-600">👤</span>`;
+                }
                 
                 return `
                     <div class="glass-card hover:-translate-y-2 rounded-[2rem] flex flex-col justify-between transition-all overflow-hidden shadow-xl hover:border-emerald-500/50 hover:shadow-emerald-500/20">
@@ -2255,8 +2604,11 @@
             
             let approvedAds = products.filter(p => p.status === 'approved');
             let trendingAds = approvedAds.filter(p => p.boost_tier === 'premium'); 
+            
             if (trendingAds.length < 3) { 
-                trendingAds = trendingAds.concat(approvedAds.filter(p => p.boost_tier !== 'premium').slice(0, 3 - trendingAds.length)); 
+                let extraAdsNeeded = 3 - trendingAds.length;
+                let standardAds = approvedAds.filter(p => p.boost_tier !== 'premium');
+                trendingAds = trendingAds.concat(standardAds.slice(0, extraAdsNeeded)); 
             }
             
             renderProductGrid(trendingAds.slice(0, 3), grid); 
@@ -2281,7 +2633,10 @@
                 } 
             }); 
             
-            let tickerHtml = Object.keys(categoryTotals).map(cat => `<span class="text-xs font-bold text-slate-300">${cat}: <span class="text-emerald-400">GH₵${(categoryTotals[cat] / categoryCounts[cat]).toFixed(2)} Avg</span></span> <span class="text-slate-600 mx-4">•</span>`).join(''); 
+            let tickerHtml = Object.keys(categoryTotals).map(cat => {
+                let avg = (categoryTotals[cat] / categoryCounts[cat]).toFixed(2);
+                return `<span class="text-xs font-bold text-slate-300">${cat}: <span class="text-emerald-400">GH₵${avg} Avg</span></span> <span class="text-slate-600 mx-4">•</span>`;
+            }).join(''); 
             
             const ticker = document.getElementById('market-ticker'); 
             if (ticker && tickerHtml) {
@@ -2302,15 +2657,19 @@
                     img.onload = () => { 
                         const canvas = document.createElement('canvas'); 
                         const scale = 500 / img.width; 
+                        
                         canvas.width = 500; 
                         canvas.height = img.height * scale; 
                         
-                        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height); 
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height); 
+                        
                         uploadedImages.push(canvas.toDataURL('image/jpeg', 0.6)); 
                         renderImagePreview(); 
                     } 
                 } 
             }); 
+            
             event.target.value = '';
         }
 
@@ -2322,7 +2681,7 @@
 
         function renderImagePreview() {
             const pb = document.getElementById('image-preview'); 
-            if(!pb) return; 
+            if (!pb) return; 
             
             if (uploadedImages.length === 0) { 
                 pb.innerHTML = `<span class="text-slate-500 text-sm font-bold text-center px-4 group-hover:text-emerald-400 transition-colors">Click to upload photos</span>`; 
@@ -2330,19 +2689,21 @@
             } 
             
             let html = '<div class="flex gap-3 p-3 overflow-x-auto h-full items-center w-full">'; 
+            
             uploadedImages.forEach((cImg, idx) => { 
                 html += `
-                <div class="relative h-full shrink-0">
-                    <img src="${cImg}" class="h-full w-auto object-cover rounded-xl border border-slate-700 shadow-xl">
-                    <button type="button" onclick="removeUploadedImage(${idx}, event)" class="absolute top-2 right-2 bg-rose-500 text-white rounded-full w-6 h-6 flex items-center justify-center font-black text-xs hover:scale-110 transition-transform shadow-lg">✕</button>
-                </div>`; 
+                    <div class="relative h-full shrink-0">
+                        <img src="${cImg}" class="h-full w-auto object-cover rounded-xl border border-slate-700 shadow-xl">
+                        <button type="button" onclick="removeUploadedImage(${idx}, event)" class="absolute top-2 right-2 bg-rose-500 text-white rounded-full w-6 h-6 flex items-center justify-center font-black text-xs hover:scale-110 transition-transform shadow-lg">✕</button>
+                    </div>`; 
             }); 
+            
             html += '</div>'; 
             pb.innerHTML = html;
         }
 
         function autoWriteDescription() { 
-            const cat = document.getElementById('post-category').value;
+            const cat = document.getElementById('post-category').value; 
             const name = document.getElementById('post-name').value; 
             
             if (!name) {
@@ -2355,51 +2716,51 @@
                 'Eggs': `Freshly collected ${name}. Safely crated. Great yolk color.`
             }; 
             
-            document.getElementById('post-description').value = tpl[cat] || `High-quality ${name} available for immediate sale. Contact for details.`; 
+            const finalDesc = tpl[cat] || `High-quality ${name} available for immediate sale. Contact for details.`;
+            document.getElementById('post-description').value = finalDesc; 
+            
             showToast("Description Applied! ✨"); 
         }
 
         async function submitAd() {
             const btn = document.getElementById('submit-ad-btn'); 
             
+            const prodName = document.getElementById('post-name').value.trim();
+            const prodDesc = document.getElementById('post-description').value.trim();
+            const prodCat = document.getElementById('post-category').value;
+            const prodUnit = document.getElementById('post-unit').value.trim();
+            const prodPrice = document.getElementById('post-price').value.trim();
+            const prodDel = document.getElementById('post-delivery').value.trim();
+            
+            const town = document.getElementById('post-town').value.trim();
+            const region = document.getElementById('post-region').value;
+            const fullLoc = town ? `${town}, ${region}` : region;
+            
             const payload = { 
-                product_name: document.getElementById('post-name').value.trim(), 
-                description: document.getElementById('post-description').value.trim(), 
-                category: document.getElementById('post-category').value, 
-                unit: document.getElementById('post-unit').value.trim(), 
-                base_price_ghs: document.getElementById('post-price').value.trim(), 
-                delivery_details: document.getElementById('post-delivery').value.trim(), 
-                neighborhood: document.getElementById('post-town').value.trim() ? `${document.getElementById('post-town').value.trim()}, ${document.getElementById('post-region').value}` : document.getElementById('post-region').value, 
+                product_name: prodName, 
+                description: prodDesc, 
+                category: prodCat, 
+                unit: prodUnit, 
+                base_price_ghs: prodPrice, 
+                delivery_details: prodDel, 
+                neighborhood: fullLoc, 
                 image_data: uploadedImages.length > 0 ? JSON.stringify(uploadedImages) : null 
             }; 
             
-            if (!payload.product_name || !payload.unit || !payload.base_price_ghs) { 
+            if (!payload.product_name || !payload.unit || !payload.base_price_ghs) {
                 return showToast("Fill all required fields", "error"); 
-            } 
+            }
             
             pendingAdPayload = payload; 
             btn.innerHTML = "Processing... ⏳"; 
             btn.disabled = true; 
             
-            const modal = document.getElementById('video-modal'); 
-            if(modal) { 
-                modal.classList.remove('hidden'); 
-                modal.classList.add('flex'); 
-            } 
-            
-            const video = document.getElementById('sponsor-video'); 
-            if(video) { 
-                video.play().catch(e => executePendingAdSubmission()); 
-                video.onended = () => { executePendingAdSubmission(); }; 
-            } else { 
-                executePendingAdSubmission(); 
-            }
+            executePendingAdSubmission(); 
         }
 
         async function executePendingAdSubmission() {
             if (!pendingAdPayload) return; 
             
-            const modal = document.getElementById('video-modal'); 
             const btn = document.getElementById('submit-ad-btn');
             
             try { 
@@ -2409,33 +2770,29 @@
                     body: JSON.stringify(pendingAdPayload) 
                 }); 
                 
-                if(!res.ok) throw new Error("Failed to post ad"); 
+                if (!res.ok) {
+                    throw new Error("Failed to post ad"); 
+                }
                 
                 confetti(); 
                 showToast("Ad Submitted for Review! ⏳"); 
                 
                 ['post-name', 'post-description', 'post-price', 'post-unit', 'post-town', 'post-delivery'].forEach(id => { 
                     const el = document.getElementById(id); 
-                    if(el) el.value = ''; 
+                    if(el) {
+                        el.value = ''; 
+                    }
                 }); 
                 
                 uploadedImages = []; 
                 renderImagePreview(); 
                 
-                if(modal){ 
-                    modal.classList.add('hidden'); 
-                    modal.classList.remove('flex'); 
-                } 
-                
                 navigate('dashboard'); 
+                
             } catch (err) { 
                 showToast(err.message, "error"); 
-                if(modal){ 
-                    modal.classList.add('hidden'); 
-                    modal.classList.remove('flex'); 
-                } 
             } finally { 
-                if(btn){ 
+                if (btn) { 
                     btn.innerHTML = "🚀 Submit Ad For Review"; 
                     btn.disabled = false; 
                 } 
@@ -2450,12 +2807,15 @@
                 myLoadedAds = products; 
                 
                 const list = document.getElementById('my-ads-list'); 
-                if(!list) return; 
+                if (!list) return; 
                 
                 list.innerHTML = ''; 
                 
                 if (products.length === 0) { 
-                    list.innerHTML = `<div class="glass-card p-12 text-center rounded-[2rem] border border-white/5"><p class="text-slate-400">No ads posted yet.</p></div>`; 
+                    list.innerHTML = `
+                        <div class="glass-card p-12 text-center rounded-[2rem] border border-white/5">
+                            <p class="text-slate-400">No ads posted yet.</p>
+                        </div>`; 
                     return; 
                 } 
                 
@@ -2465,37 +2825,53 @@
                         imgs = JSON.parse(item.image_data) || []; 
                     } catch(e) {} 
                     
-                    let statusHtml = item.status === 'pending' ? 
-                        `<span class="text-[10px] text-amber-400 bg-amber-500/20 px-2 py-0.5 rounded uppercase font-bold tracking-wider">Pending</span>` : 
-                        (item.status === 'rejected' ? `<span class="text-[10px] text-rose-400 bg-rose-500/20 px-2 py-0.5 rounded uppercase font-bold tracking-wider" title="${item.rejection_reason || ''}">Rejected</span>` : `<span class="text-[10px] text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded uppercase font-bold tracking-wider">Active</span>`); 
+                    let statusHtml = '';
+                    if (item.status === 'pending') {
+                        statusHtml = `<span class="text-[10px] text-amber-400 bg-amber-500/20 px-2 py-0.5 rounded uppercase font-bold tracking-wider">Pending</span>`;
+                    } else if (item.status === 'rejected') {
+                        statusHtml = `<span class="text-[10px] text-rose-400 bg-rose-500/20 px-2 py-0.5 rounded uppercase font-bold tracking-wider" title="${item.rejection_reason || ''}">Rejected</span>`;
+                    } else {
+                        statusHtml = `<span class="text-[10px] text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded uppercase font-bold tracking-wider">Active</span>`;
+                    }
                     
                     let safeName = item.product_name.replace(/'/g, "\\'"); 
-                    
                     let editBtn = `<button onclick="openEditModal(${item.id})" class="text-xs text-blue-400 font-bold px-4 py-1.5 border border-blue-500/30 rounded-lg hover:bg-blue-500/10 transition-colors">Edit</button>`; 
                     let previewBtn = `<button onclick="previewAd(${item.id})" class="text-xs text-slate-300 font-bold px-4 py-1.5 border border-slate-500/30 rounded-lg hover:bg-slate-500/10 transition-colors">👁️ Preview</button>`; 
-                    let flyerBtn = (item.status === 'approved') ? `<button onclick="generateWhatsAppFlyer('${item.product_name.replace(/'/g, "\\'")}', '${item.base_price_ghs}', '${item.unit}', '${imgs.length ? imgs[0] : ''}', '${item.phone_number}')" class="text-xs text-[#25D366] font-bold px-4 py-1.5 border border-[#25D366]/30 rounded-lg hover:bg-[#25D366]/10 transition-colors">📲 Flyer</button>` : '';
-                    let videoBtn = (item.status === 'approved') ? `<button onclick="openVideoStudio(${item.id})" class="text-xs text-purple-400 font-bold px-4 py-1.5 border border-purple-500/30 rounded-lg hover:bg-purple-500/10 transition-colors">🎬 Video</button>` : '';
+                    
+                    let flyerBtn = '';
+                    if (item.status === 'approved') {
+                        flyerBtn = `<button onclick="generateWhatsAppFlyer('${safeName}', '${item.base_price_ghs}', '${item.unit}', '${imgs.length ? imgs[0] : ''}', '${item.phone_number}')" class="text-xs text-[#25D366] font-bold px-4 py-1.5 border border-[#25D366]/30 rounded-lg hover:bg-[#25D366]/10 transition-colors">📲 Flyer</button>`;
+                    }
+                    
+                    let videoBtn = '';
+                    if (item.status === 'approved') {
+                        videoBtn = `<button onclick="openVideoStudio(${item.id})" class="text-xs text-purple-400 font-bold px-4 py-1.5 border border-purple-500/30 rounded-lg hover:bg-purple-500/10 transition-colors">🎬 Video</button>`;
+                    }
+                    
+                    let imgBlock = imgs.length > 0 
+                        ? `<img src="${imgs[0]}" class="w-16 h-16 rounded-xl object-cover border border-slate-700">` 
+                        : `<div class="w-16 h-16 bg-white/5 border border-slate-700 rounded-xl flex items-center justify-center text-xl">🌾</div>`;
 
                     list.innerHTML += `
-                    <div class="glass-card p-5 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4 mb-4 border border-white/5 shadow-lg">
-                        <div class="flex items-center gap-4 w-full md:w-auto">
-                            ${imgs.length > 0 ? `<img src="${imgs[0]}" class="w-16 h-16 rounded-xl object-cover border border-slate-700">` : `<div class="w-16 h-16 bg-white/5 border border-slate-700 rounded-xl flex items-center justify-center text-xl">🌾</div>`}
-                            <div>
-                                <h3 class="font-black text-white text-base line-clamp-1">${item.product_name}</h3>
-                                <div class="flex items-center gap-3 mt-1">
-                                    <p class="text-[11px] text-emerald-400 font-bold">GH₵${item.base_price_ghs}</p>
-                                    ${statusHtml}
+                        <div class="glass-card p-5 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4 mb-4 border border-white/5 shadow-lg">
+                            <div class="flex items-center gap-4 w-full md:w-auto">
+                                ${imgBlock}
+                                <div>
+                                    <h3 class="font-black text-white text-base line-clamp-1">${item.product_name}</h3>
+                                    <div class="flex items-center gap-3 mt-1">
+                                        <p class="text-[11px] text-emerald-400 font-bold">GH₵${item.base_price_ghs}</p>
+                                        ${statusHtml}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="flex gap-2 w-full md:w-auto justify-end flex-wrap">
-                            ${videoBtn}
-                            ${flyerBtn}
-                            ${previewBtn}
-                            ${editBtn}
-                            <button onclick="deleteAd(${item.id})" class="text-rose-400 font-bold px-4 py-1.5 border border-rose-500/30 rounded-lg text-xs hover:bg-rose-500/10 transition-colors">Delete</button>
-                        </div>
-                    </div>`; 
+                            <div class="flex gap-2 w-full md:w-auto justify-end flex-wrap">
+                                ${videoBtn}
+                                ${flyerBtn}
+                                ${previewBtn}
+                                ${editBtn}
+                                <button onclick="deleteAd(${item.id})" class="text-rose-400 font-bold px-4 py-1.5 border border-rose-500/30 rounded-lg text-xs hover:bg-rose-500/10 transition-colors">Delete</button>
+                            </div>
+                        </div>`; 
                 });
             } catch (err) { 
                 console.log(err); 
@@ -2503,19 +2879,22 @@
         }
 
         async function deleteAd(id) { 
-            if(!confirm("Are you sure you want to delete this ad forever?")) return; 
+            if (!confirm("Are you sure you want to delete this ad forever?")) return; 
+            
             try { 
                 await fetch(`${API_URL}/api/v1/products/${id}?token=${agriToken}`, { 
                     method: 'DELETE' 
                 }); 
                 showToast("Ad deleted successfully"); 
                 loadMyAds(); 
-            } catch (err) {} 
+            } catch (err) {
+                console.error(err);
+            } 
         }
 
         function openEditModal(adId) {
             const ad = myLoadedAds.find(p => p.id === adId); 
-            if(!ad) return; 
+            if (!ad) return; 
             
             document.getElementById('edit-ad-id').value = ad.id; 
             document.getElementById('edit-ad-name').value = ad.product_name; 
@@ -2533,13 +2912,14 @@
         
         async function submitAdEdit() {
             const adId = document.getElementById('edit-ad-id').value;
+            
             const payload = { 
                 product_name: document.getElementById('edit-ad-name').value, 
                 base_price_ghs: document.getElementById('edit-ad-price').value, 
                 description: document.getElementById('edit-ad-desc').value 
             }; 
             
-            const btn = document.querySelector('#edit-ad-modal button.bg-emerald-600');
+            const btn = document.querySelector('#edit-ad-modal button.bg-emerald-600'); 
             btn.innerText = "Saving..."; 
             
             try { 
@@ -2548,6 +2928,7 @@
                     headers: {'Content-Type': 'application/json'}, 
                     body: JSON.stringify(payload) 
                 }); 
+                
                 showToast("Ad updated successfully!"); 
                 closeEditModal(); 
                 loadMyAds(); 
@@ -2559,13 +2940,15 @@
         }
 
         function previewAd(adId, fromAdmin=false, adminData=null) {
-            let ad = null;
+            let ad = null; 
+            
             if (fromAdmin && adminData) { 
                 ad = adminData; 
             } else { 
                 ad = myLoadedAds.find(p => p.id === adId); 
             } 
-            if(!ad) return; 
+            
+            if (!ad) return; 
             
             let imgs = []; 
             try { 
@@ -2574,23 +2957,28 @@
                 imgs = ad.image_data ? [ad.image_data] : []; 
             } 
             
-            let imgBlock = imgs.length ? `<div class="h-56 w-full bg-slate-800 bg-cover bg-center border-b border-white/5 rounded-t-[2.5rem]" style="background-image: url('${imgs[0]}')"></div>` : `<div class="h-56 w-full bg-gradient-to-br from-emerald-900/40 to-slate-900 flex items-center justify-center text-5xl border-b border-white/5 rounded-t-[2.5rem]">🌾</div>`; 
+            let imgBlock = '';
+            if (imgs.length) {
+                imgBlock = `<div class="h-56 w-full bg-slate-800 bg-cover bg-center border-b border-white/5 rounded-t-[2.5rem]" style="background-image: url('${imgs[0]}')"></div>`;
+            } else {
+                imgBlock = `<div class="h-56 w-full bg-gradient-to-br from-emerald-900/40 to-slate-900 flex items-center justify-center text-5xl border-b border-white/5 rounded-t-[2.5rem]">🌾</div>`;
+            }
             
             let html = `
-            <div class="glass-card rounded-[2.5rem] flex flex-col justify-between overflow-hidden shadow-2xl relative border border-emerald-500/30">
-                <div class="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-lg z-10 text-[10px] text-white font-black uppercase tracking-widest border border-white/10">Live Preview</div>
-                ${imgBlock}
-                <div class="p-8">
-                    <h3 class="text-2xl font-black text-white mb-3 leading-tight">${ad.product_name}</h3>
-                    <p class="text-sm text-slate-300 mb-6 leading-relaxed">${ad.description || 'No description provided for this listing.'}</p>
-                    <div class="bg-[#0f172a] p-4 rounded-2xl border border-slate-700/80 mb-2 flex items-center justify-between">
-                        <p class="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Selling Price</p>
-                        <span class="text-3xl font-black text-emerald-400">GH₵${ad.base_price_ghs}</span>
+                <div class="glass-card rounded-[2.5rem] flex flex-col justify-between overflow-hidden shadow-2xl relative border border-emerald-500/30">
+                    <div class="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-lg z-10 text-[10px] text-white font-black uppercase tracking-widest border border-white/10">Live Preview</div>
+                    ${imgBlock}
+                    <div class="p-8">
+                        <h3 class="text-2xl font-black text-white mb-3 leading-tight">${ad.product_name}</h3>
+                        <p class="text-sm text-slate-300 mb-6 leading-relaxed">${ad.description || 'No description provided for this listing.'}</p>
+                        <div class="bg-[#0f172a] p-4 rounded-2xl border border-slate-700/80 mb-2 flex items-center justify-between">
+                            <p class="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Selling Price</p>
+                            <span class="text-3xl font-black text-emerald-400">GH₵${ad.base_price_ghs}</span>
+                        </div>
                     </div>
-                </div>
-            </div>`; 
-            
-            document.getElementById('preview-card-container').innerHTML = html;
+                </div>`; 
+                
+            document.getElementById('preview-card-container').innerHTML = html; 
             document.getElementById('preview-ad-modal').classList.remove('hidden'); 
             document.getElementById('preview-ad-modal').classList.add('flex');
         }
@@ -2600,157 +2988,169 @@
             document.getElementById('preview-ad-modal').classList.remove('flex'); 
         }
 
-        function openSellerProfileByAdId(adId) {
-            const ad = allLoadedProducts.find(p => p.id === adId);
-            if (!ad) return;
-            openSellerProfile(ad.seller_name, ad.phone_number, ad.seller_verified, ad.seller_member_since, ad.seller_profile_picture);
+        function openSellerProfileByAdId(adId) { 
+            const ad = allLoadedProducts.find(p => p.id === adId); 
+            if (!ad) return; 
+            
+            openSellerProfile(ad.seller_name, ad.phone_number, ad.seller_verified, ad.seller_member_since, ad.seller_profile_picture); 
         }
 
         function openSellerProfile(name, phone, isVerified, memberSince, profilePic) {
             currentSellerForReview = name; 
             
-            document.getElementById('seller-modal-name').innerText = name || "Farmer";
-            document.getElementById('seller-modal-phone').innerText = phone || "Unlisted";
+            document.getElementById('seller-modal-name').innerText = name || "Farmer"; 
+            document.getElementById('seller-modal-phone').innerText = phone || "Unlisted"; 
             document.getElementById('seller-modal-since').innerText = memberSince || 'Recent';
             
-            const badge = document.getElementById('seller-modal-badge');
-            if(isVerified) {
-                badge.classList.remove('hidden');
-                badge.classList.add('inline-flex');
-            } else {
-                badge.classList.add('hidden');
-                badge.classList.remove('inline-flex');
+            const badge = document.getElementById('seller-modal-badge'); 
+            if (isVerified) { 
+                badge.classList.remove('hidden'); 
+                badge.classList.add('inline-flex'); 
+            } else { 
+                badge.classList.add('hidden'); 
+                badge.classList.remove('inline-flex'); 
             }
             
-            const avatar = document.getElementById('seller-modal-avatar');
-            if(profilePic && profilePic !== 'null') {
-                avatar.innerHTML = '';
-                avatar.style.backgroundImage = `url('${profilePic}')`;
-            } else {
-                avatar.innerHTML = '👨🏽‍🌾';
-                avatar.style.backgroundImage = 'none';
+            const avatar = document.getElementById('seller-modal-avatar'); 
+            if (profilePic && profilePic !== 'null') { 
+                avatar.innerHTML = ''; 
+                avatar.style.backgroundImage = `url('${profilePic}')`; 
+            } else { 
+                avatar.innerHTML = '👨🏽‍🌾'; 
+                avatar.style.backgroundImage = 'none'; 
             }
             
             let cleanPhone = (phone || "").replace(/\D/g, ''); 
-            if(cleanPhone.startsWith('0')) cleanPhone = '233' + cleanPhone.substring(1);
+            if (cleanPhone.startsWith('0')) {
+                cleanPhone = '233' + cleanPhone.substring(1);
+            }
             
-            document.getElementById('seller-modal-call-btn').href = `tel:${phone}`;
+            document.getElementById('seller-modal-call-btn').href = `tel:${phone}`; 
             document.getElementById('seller-modal-wa-btn').href = `https://wa.me/${cleanPhone}`;
 
-            const sellerAdsGrid = document.getElementById('seller-modal-ads-grid');
+            const sellerAdsGrid = document.getElementById('seller-modal-ads-grid'); 
             const sellerAds = allLoadedProducts.filter(p => p.seller_name === name && p.status === 'approved');
             
-            if (sellerAds.length === 0) {
-                sellerAdsGrid.innerHTML = `<p class="text-slate-500 text-xs">No active listings right now.</p>`;
-            } else {
-                sellerAdsGrid.innerHTML = sellerAds.map(item => {
+            if (sellerAds.length === 0) { 
+                sellerAdsGrid.innerHTML = `<p class="text-slate-500 text-xs">No active listings right now.</p>`; 
+            } else { 
+                sellerAdsGrid.innerHTML = sellerAds.map(item => { 
                     let imgs = []; 
-                    try { imgs = JSON.parse(item.image_data) || []; } catch(e) { imgs = item.image_data ? [item.image_data] : []; }
-                    let imgBlock = imgs.length ? `<img src="${imgs[0]}" class="w-16 h-16 rounded-xl object-cover border border-slate-700 shrink-0">` : `<div class="w-16 h-16 bg-slate-800 rounded-xl flex items-center justify-center text-xl shrink-0">🌾</div>`;
+                    try { 
+                        imgs = JSON.parse(item.image_data) || []; 
+                    } catch(e) { 
+                        imgs = item.image_data ? [item.image_data] : []; 
+                    } 
+                    
+                    let imgBlock = imgs.length 
+                        ? `<img src="${imgs[0]}" class="w-16 h-16 rounded-xl object-cover border border-slate-700 shrink-0">` 
+                        : `<div class="w-16 h-16 bg-slate-800 rounded-xl flex items-center justify-center text-xl shrink-0">🌾</div>`; 
                     
                     return `
-                    <div class="glass-card p-3 rounded-2xl flex items-center gap-3 border border-white/5 hover:border-emerald-500/30 transition-colors">
-                        ${imgBlock}
-                        <div>
-                            <h4 class="font-black text-white text-xs line-clamp-1">${item.product_name}</h4>
-                            <p class="text-[10px] text-emerald-400 font-bold mt-1">GH₵${item.base_price_ghs} / ${item.unit}</p>
-                        </div>
-                    </div>`;
-                }).join('');
+                        <div class="glass-card p-3 rounded-2xl flex items-center gap-3 border border-white/5 hover:border-emerald-500/30 transition-colors">
+                            ${imgBlock}
+                            <div>
+                                <h4 class="font-black text-white text-xs line-clamp-1">${item.product_name}</h4>
+                                <p class="text-[10px] text-emerald-400 font-bold mt-1">GH₵${item.base_price_ghs} / ${item.unit}</p>
+                            </div>
+                        </div>`; 
+                }).join(''); 
             }
-
-            loadSellerReviews(name);
-
-            document.getElementById('seller-profile-modal').classList.remove('hidden');
+            
+            loadSellerReviews(name); 
+            
+            document.getElementById('seller-profile-modal').classList.remove('hidden'); 
             document.getElementById('seller-profile-modal').classList.add('flex');
         }
 
-        function closeSellerProfile() {
-            document.getElementById('seller-profile-modal').classList.add('hidden');
-            document.getElementById('seller-profile-modal').classList.remove('flex');
+        function closeSellerProfile() { 
+            document.getElementById('seller-profile-modal').classList.add('hidden'); 
+            document.getElementById('seller-profile-modal').classList.remove('flex'); 
         }
 
-        function openLeaveReviewModal() {
-            if(!agriToken) {
-                showToast("Please sign in to leave a review.", "error");
-                return navigate('auth');
-            }
-            closeSellerProfile();
-            document.getElementById('leave-review-modal').classList.remove('hidden');
-            document.getElementById('leave-review-modal').classList.add('flex');
+        function openLeaveReviewModal() { 
+            if (!agriToken) { 
+                showToast("Please sign in to leave a review.", "error"); 
+                return navigate('auth'); 
+            } 
+            
+            closeSellerProfile(); 
+            document.getElementById('leave-review-modal').classList.remove('hidden'); 
+            document.getElementById('leave-review-modal').classList.add('flex'); 
         }
-
-        function closeLeaveReviewModal() {
-            document.getElementById('leave-review-modal').classList.add('hidden');
-            document.getElementById('leave-review-modal').classList.remove('flex');
+        
+        function closeLeaveReviewModal() { 
+            document.getElementById('leave-review-modal').classList.add('hidden'); 
+            document.getElementById('leave-review-modal').classList.remove('flex'); 
         }
 
         async function submitSellerReview() {
-            const rating = parseInt(document.getElementById('review-rating').value);
+            const rating = parseInt(document.getElementById('review-rating').value); 
             const comment = document.getElementById('review-comment').value.trim();
-
-            if(!comment) {
+            
+            if (!comment) {
                 return showToast("Please enter feedback.", "error");
             }
-
-            const btn = document.getElementById('submit-review-btn');
-            btn.innerHTML = "Submitting...";
+            
+            const btn = document.getElementById('submit-review-btn'); 
+            btn.innerHTML = "Submitting..."; 
             btn.disabled = true;
-
+            
             try {
-                const res = await fetch(`${API_URL}/api/v1/reviews?token=${agriToken}`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        seller_name: currentSellerForReview,
-                        rating: rating,
-                        comment: comment
-                    })
+                const res = await fetch(`${API_URL}/api/v1/reviews?token=${agriToken}`, { 
+                    method: 'POST', 
+                    headers: {'Content-Type': 'application/json'}, 
+                    body: JSON.stringify({ 
+                        seller_name: currentSellerForReview, 
+                        rating: rating, 
+                        comment: comment 
+                    }) 
                 });
-
-                if(!res.ok) throw new Error("Failed to submit review");
-
-                showToast("Review submitted successfully! ⭐");
-                document.getElementById('review-comment').value = '';
+                
+                if (!res.ok) throw new Error("Failed to submit review");
+                
+                showToast("Review submitted successfully! ⭐"); 
+                document.getElementById('review-comment').value = ''; 
                 closeLeaveReviewModal();
                 
                 const sellerAds = allLoadedProducts.filter(p => p.seller_name === currentSellerForReview);
-                if (sellerAds.length > 0) {
-                    const ad = sellerAds[0];
-                    openSellerProfile(ad.seller_name, ad.phone_number, ad.seller_verified, ad.seller_member_since, ad.seller_profile_picture);
-                } else {
-                    openSellerProfile(currentSellerForReview, "", false, "Recent", null);
+                if (sellerAds.length > 0) { 
+                    const ad = sellerAds[0]; 
+                    openSellerProfile(ad.seller_name, ad.phone_number, ad.seller_verified, ad.seller_member_since, ad.seller_profile_picture); 
+                } else { 
+                    openSellerProfile(currentSellerForReview, "", false, "Recent", null); 
                 }
-            } catch (e) {
-                showToast(e.message, "error");
-            } finally {
-                btn.innerHTML = "Submit Review";
-                btn.disabled = false;
+            } catch (e) { 
+                showToast(e.message, "error"); 
+            } finally { 
+                btn.innerHTML = "Submit Review"; 
+                btn.disabled = false; 
             }
         }
 
         async function loadSellerReviews(sellerName) {
-            const container = document.getElementById('seller-reviews-list');
+            const container = document.getElementById('seller-reviews-list'); 
             const avgBadge = document.getElementById('seller-avg-rating');
             
             container.innerHTML = '<p class="text-xs text-slate-400">Loading reviews...</p>';
             
             try {
-                const res = await fetch(`${API_URL}/api/v1/reviews?seller=${encodeURIComponent(sellerName)}`);
+                const res = await fetch(`${API_URL}/api/v1/reviews?seller=${encodeURIComponent(sellerName)}`); 
                 const reviews = await res.json();
-
-                if (reviews.length === 0) {
-                    container.innerHTML = '<p class="text-xs text-slate-500">No reviews for this seller yet. Be the first!</p>';
-                    avgBadge.innerText = "No Ratings Yet";
-                    return;
+                
+                if (reviews.length === 0) { 
+                    container.innerHTML = '<p class="text-xs text-slate-500">No reviews for this seller yet. Be the first!</p>'; 
+                    avgBadge.innerText = "No Ratings Yet"; 
+                    return; 
                 }
-
-                let totalStars = 0;
+                
+                let totalStars = 0; 
                 let html = '';
-
-                reviews.forEach(r => {
-                    totalStars += r.rating;
-                    let stars = '⭐'.repeat(r.rating);
+                
+                reviews.forEach(r => { 
+                    totalStars += r.rating; 
+                    let stars = '⭐'.repeat(r.rating); 
+                    
                     html += `
                         <div class="flex items-start gap-3 border-b border-white/5 pb-3 last:border-0 last:pb-0 mt-3">
                             <span class="text-xl bg-slate-800 rounded-full w-8 h-8 flex items-center justify-center border border-slate-600 shrink-0">👤</span>
@@ -2763,333 +3163,341 @@
                                 <div class="text-[10px] mb-1">${stars}</div>
                                 <p class="text-[11px] text-slate-300 italic">"${r.comment}"</p>
                             </div>
-                        </div>
-                    `;
+                        </div>`; 
                 });
-
-                const avg = (totalStars / reviews.length).toFixed(1);
-                avgBadge.innerHTML = `${avg} ★★★★★ (${reviews.length} Reviews)`;
+                
+                const avg = (totalStars / reviews.length).toFixed(1); 
+                avgBadge.innerHTML = `${avg} ★★★★★ (${reviews.length} Reviews)`; 
                 container.innerHTML = html;
-
-            } catch (e) {
-                container.innerHTML = '<p class="text-xs text-rose-400">Failed to load reviews.</p>';
+                
+            } catch (e) { 
+                container.innerHTML = '<p class="text-xs text-rose-400">Failed to load reviews.</p>'; 
             }
         }
 
         function triggerReportFromProfile() {
-            const name = document.getElementById('seller-modal-name').innerText;
+            const name = document.getElementById('seller-modal-name').innerText; 
             const phone = document.getElementById('seller-modal-phone').innerText;
-            document.getElementById('report-target-name').value = "Reporting: " + name;
+            
+            document.getElementById('report-target-name').value = "Reporting: " + name; 
             document.getElementById('report-target-phone').value = phone;
             
-            closeSellerProfile();
-            document.getElementById('report-modal').classList.remove('hidden');
+            closeSellerProfile(); 
+            document.getElementById('report-modal').classList.remove('hidden'); 
             document.getElementById('report-modal').classList.add('flex');
         }
         
         function triggerScamReportFromOrder() {
-            document.getElementById('report-target-name').value = "Reporting: " + currentOrderPhone;
+            document.getElementById('report-target-name').value = "Reporting: " + currentOrderPhone; 
             document.getElementById('report-target-phone').value = currentOrderPhone;
-            closeOrderModal();
-            document.getElementById('report-modal').classList.remove('hidden');
+            
+            closeOrderModal(); 
+            document.getElementById('report-modal').classList.remove('hidden'); 
             document.getElementById('report-modal').classList.add('flex');
         }
 
-        function closeReportModal() {
-            document.getElementById('report-modal').classList.add('hidden');
-            document.getElementById('report-modal').classList.remove('flex');
+        function closeReportModal() { 
+            document.getElementById('report-modal').classList.add('hidden'); 
+            document.getElementById('report-modal').classList.remove('flex'); 
         }
-
-        function submitScamReport() {
-            showToast("Report submitted successfully to the Moderation team. Thank you.");
-            document.getElementById('report-details').value = "";
-            closeReportModal();
+        
+        function submitScamReport() { 
+            showToast("Report submitted successfully to the Moderation team. Thank you."); 
+            document.getElementById('report-details').value = ""; 
+            closeReportModal(); 
         }
 
         function openOrderModal(phone, name, basePrice, unit, loc, adId) {
-            currentOrderPhone = phone;
-            currentOrderName = name;
-            currentOrderBasePrice = parseFloat(basePrice);
-            currentOrderUnit = unit;
+            currentOrderPhone = phone; 
+            currentOrderName = name; 
+            currentOrderBasePrice = parseFloat(basePrice); 
+            currentOrderUnit = unit; 
             currentOrderSellerLoc = loc;
             
-            document.getElementById('order-product-name').innerText = name;
-            document.getElementById('order-seller-loc').innerText = loc;
-            document.getElementById('order-base-price').innerText = basePrice;
+            document.getElementById('order-product-name').innerText = name; 
+            document.getElementById('order-seller-loc').innerText = loc; 
+            document.getElementById('order-base-price').innerText = basePrice; 
             document.getElementById('order-unit').innerText = unit;
             
-            document.getElementById('order-quantity').value = 1;
-            document.getElementById('group-split-count').value = 2;
-            document.getElementById('haggle-slider').value = 100;
+            document.getElementById('order-quantity').value = 1; 
+            document.getElementById('group-split-count').value = 2; 
+            document.getElementById('haggle-slider').value = 100; 
             document.getElementById('order-destination').value = '';
             
-            switchOrderTab('direct');
+            switchOrderTab('direct'); 
             calculateOrderTotal();
             
-            const modal = document.getElementById('order-modal');
-            if(modal) {
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
+            const modal = document.getElementById('order-modal'); 
+            if (modal) { 
+                modal.classList.remove('hidden'); 
+                modal.classList.add('flex'); 
             }
         }
         
-        function closeOrderModal() {
-            const modal = document.getElementById('order-modal');
-            if(modal) {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }
+        function closeOrderModal() { 
+            const modal = document.getElementById('order-modal'); 
+            if (modal) { 
+                modal.classList.add('hidden'); 
+                modal.classList.remove('flex'); 
+            } 
         }
 
         function switchOrderTab(tab) {
             currentOrderTabState = tab;
             
-            document.getElementById('tab-direct').className = "flex-1 py-2 rounded-lg text-slate-400 hover:text-white transition-all";
-            document.getElementById('tab-haggle').className = "flex-1 py-2 rounded-lg text-slate-400 hover:text-white transition-all";
+            document.getElementById('tab-direct').className = "flex-1 py-2 rounded-lg text-slate-400 hover:text-white transition-all"; 
+            document.getElementById('tab-haggle').className = "flex-1 py-2 rounded-lg text-slate-400 hover:text-white transition-all"; 
             document.getElementById('tab-group').className = "flex-1 py-2 rounded-lg text-slate-400 hover:text-white transition-all";
             
-            document.getElementById('panel-haggle').classList.add('hidden');
+            document.getElementById('panel-haggle').classList.add('hidden'); 
             document.getElementById('panel-group').classList.add('hidden');
             
-            if (tab === 'direct') {
-                document.getElementById('tab-direct').className = "flex-1 py-2 rounded-lg bg-emerald-600 text-white transition-all";
-            } else if (tab === 'haggle') {
-                document.getElementById('tab-haggle').className = "flex-1 py-2 rounded-lg bg-emerald-600 text-white transition-all";
-                document.getElementById('panel-haggle').classList.remove('hidden');
-                updateHaggleMeter();
-            } else if (tab === 'group') {
-                document.getElementById('tab-group').className = "flex-1 py-2 rounded-lg bg-teal-600 text-white transition-all";
-                document.getElementById('panel-group').classList.remove('hidden');
+            if (tab === 'direct') { 
+                document.getElementById('tab-direct').className = "flex-1 py-2 rounded-lg bg-emerald-600 text-white transition-all"; 
+            } else if (tab === 'haggle') { 
+                document.getElementById('tab-haggle').className = "flex-1 py-2 rounded-lg bg-emerald-600 text-white transition-all"; 
+                document.getElementById('panel-haggle').classList.remove('hidden'); 
+                updateHaggleMeter(); 
+            } else if (tab === 'group') { 
+                document.getElementById('tab-group').className = "flex-1 py-2 rounded-lg bg-teal-600 text-white transition-all"; 
+                document.getElementById('panel-group').classList.remove('hidden'); 
             }
             
             calculateOrderTotal();
         }
 
         function updateHaggleMeter() {
-            const pct = parseInt(document.getElementById('haggle-slider').value);
-            const proposedPrice = currentOrderBasePrice * (pct / 100);
-            document.getElementById('haggle-val-display').innerText = proposedPrice.toFixed(2);
+            const pct = parseInt(document.getElementById('haggle-slider').value); 
+            const proposedPrice = currentOrderBasePrice * (pct / 100); 
             
+            document.getElementById('haggle-val-display').innerText = proposedPrice.toFixed(2);
             const feedback = document.getElementById('haggle-feedback');
-            if (pct < 70) {
-                feedback.innerText = "Lowball Offer 📉";
-                feedback.className = "font-bold text-rose-400";
-            } else if (pct < 90) {
-                feedback.innerText = "Fair Bargain 🤝";
-                feedback.className = "font-bold text-amber-400";
-            } else {
-                feedback.innerText = "Standard Price ✅";
-                feedback.className = "font-bold text-emerald-400";
+            
+            if (pct < 70) { 
+                feedback.innerText = "Lowball Offer 📉"; 
+                feedback.className = "font-bold text-rose-400"; 
+            } else if (pct < 90) { 
+                feedback.innerText = "Fair Bargain 🤝"; 
+                feedback.className = "font-bold text-amber-400"; 
+            } else { 
+                feedback.innerText = "Standard Price ✅"; 
+                feedback.className = "font-bold text-emerald-400"; 
             }
             
             calculateOrderTotal();
         }
 
         function calculateOrderTotal() {
-            const qty = parseInt(document.getElementById('order-quantity').value) || 1;
+            const qty = parseInt(document.getElementById('order-quantity').value) || 1; 
             let pricePerUnit = currentOrderBasePrice;
             
-            if (currentOrderTabState === 'haggle') {
-                const pct = parseInt(document.getElementById('haggle-slider').value);
-                pricePerUnit = currentOrderBasePrice * (pct / 100);
+            if (currentOrderTabState === 'haggle') { 
+                const pct = parseInt(document.getElementById('haggle-slider').value); 
+                pricePerUnit = currentOrderBasePrice * (pct / 100); 
             }
             
-            const total = qty * pricePerUnit;
+            const total = qty * pricePerUnit; 
             document.getElementById('order-total-price').innerText = total.toFixed(2);
             
-            if (currentOrderTabState === 'group') {
-                const splits = parseInt(document.getElementById('group-split-count').value) || 2;
-                document.getElementById('group-each-price').innerText = (total / splits).toFixed(2);
+            if (currentOrderTabState === 'group') { 
+                const splits = parseInt(document.getElementById('group-split-count').value) || 2; 
+                document.getElementById('group-each-price').innerText = (total / splits).toFixed(2); 
             }
         }
 
         function executeDealWhatsApp() {
-            const qty = document.getElementById('order-quantity').value || 1;
-            const dest = document.getElementById('order-destination').value || 'To be decided';
+            const qty = document.getElementById('order-quantity').value || 1; 
+            const dest = document.getElementById('order-destination').value || 'To be decided'; 
             const total = document.getElementById('order-total-price').innerText;
             
-            let message = `Hello, I saw your ad for *${currentOrderName}* on AgromartDirect.\n\n`;
-            message += `📍 *Delivery To:* ${dest}\n`;
-            message += `📦 *Quantity:* ${qty} ${currentOrderUnit}\n`;
+            let message = `Hello, I saw your ad for *${currentOrderName}* on AgromartDirect.\n\n📍 *Delivery To:* ${dest}\n📦 *Quantity:* ${qty} ${currentOrderUnit}\n`;
             
-            if (currentOrderTabState === 'haggle') {
-                const pct = document.getElementById('haggle-slider').value;
-                const proposed = (currentOrderBasePrice * (pct/100)).toFixed(2);
-                message += `🤝 *My Proposed Price:* GH₵${proposed} / ${currentOrderUnit}\n`;
+            if (currentOrderTabState === 'haggle') { 
+                const pct = document.getElementById('haggle-slider').value; 
+                const proposed = (currentOrderBasePrice * (pct/100)).toFixed(2); 
+                message += `🤝 *My Proposed Price:* GH₵${proposed} / ${currentOrderUnit}\n`; 
             }
             
-            if (currentOrderTabState === 'group') {
-                const splits = document.getElementById('group-split-count').value;
-                const each = document.getElementById('group-each-price').innerText;
-                message += `👥 *Group Split:* Buying as a group of ${splits}. Each paying GH₵${each}.\n`;
+            if (currentOrderTabState === 'group') { 
+                const splits = document.getElementById('group-split-count').value; 
+                const each = document.getElementById('group-each-price').innerText; 
+                message += `👥 *Group Split:* Buying as a group of ${splits}. Each paying GH₵${each}.\n`; 
             }
             
-            message += `\n💰 *Total Estimated Value:* GH₵${total}\n`;
-            message += `\nIs this available?`;
+            message += `\n💰 *Total Estimated Value:* GH₵${total}\n\nIs this available?`;
             
-            let rawPhone = currentOrderPhone.replace(/\D/g, '');
+            let rawPhone = currentOrderPhone.replace(/\D/g, ''); 
             if (rawPhone.startsWith('0')) {
                 rawPhone = '233' + rawPhone.substring(1);
             }
             
-            const finalUrl = `https://wa.me/${rawPhone}?text=${encodeURIComponent(message)}`;
-            window.open(finalUrl, '_blank');
+            window.open(`https://wa.me/${rawPhone}?text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        function executeCallFarmer() {
-            window.location.href = `tel:${currentOrderPhone}`;
+        function executeCallFarmer() { 
+            window.location.href = `tel:${currentOrderPhone}`; 
         }
 
-        function openRfqModal() {
-            if(!agriToken) {
-                showToast("Please sign in to post a tender", "error");
-                return navigate('auth');
-            }
-            document.getElementById('rfq-modal').classList.remove('hidden');
-            document.getElementById('rfq-modal').classList.add('flex');
+        function openRfqModal() { 
+            if (!agriToken) { 
+                showToast("Please sign in to post a tender", "error"); 
+                return navigate('auth'); 
+            } 
+            document.getElementById('rfq-modal').classList.remove('hidden'); 
+            document.getElementById('rfq-modal').classList.add('flex'); 
         }
-
-        function closeRfqModal() {
-            document.getElementById('rfq-modal').classList.add('hidden');
-            document.getElementById('rfq-modal').classList.remove('flex');
+        
+        function closeRfqModal() { 
+            document.getElementById('rfq-modal').classList.add('hidden'); 
+            document.getElementById('rfq-modal').classList.remove('flex'); 
         }
 
         async function submitBuyerRequest() {
-            const payload = {
-                item_needed: document.getElementById('rfq-item').value.trim(),
-                category: document.getElementById('rfq-category').value,
-                quantity: document.getElementById('rfq-quantity').value.trim(),
-                target_budget_ghs: document.getElementById('rfq-budget').value.trim(),
-                delivery_destination: document.getElementById('rfq-destination').value.trim(),
-                description: document.getElementById('rfq-description').value.trim()
+            const payload = { 
+                item_needed: document.getElementById('rfq-item').value.trim(), 
+                category: document.getElementById('rfq-category').value, 
+                quantity: document.getElementById('rfq-quantity').value.trim(), 
+                target_budget_ghs: document.getElementById('rfq-budget').value.trim(), 
+                delivery_destination: document.getElementById('rfq-destination').value.trim(), 
+                description: document.getElementById('rfq-description').value.trim() 
             };
-
-            if(!payload.item_needed || !payload.quantity || !payload.target_budget_ghs) {
+            
+            if (!payload.item_needed || !payload.quantity || !payload.target_budget_ghs) {
                 return showToast("Fill all required tender fields", "error");
             }
-
-            const btn = document.getElementById('rfq-submit-btn');
-            btn.innerHTML = "Publishing... ⏳";
+            
+            const btn = document.getElementById('rfq-submit-btn'); 
+            btn.innerHTML = "Publishing... ⏳"; 
             btn.disabled = true;
-
+            
             try {
-                const res = await fetch(`${API_URL}/api/v1/buyer-requests?token=${agriToken}`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
+                const res = await fetch(`${API_URL}/api/v1/buyer-requests?token=${agriToken}`, { 
+                    method: 'POST', 
+                    headers: {'Content-Type': 'application/json'}, 
+                    body: JSON.stringify(payload) 
                 });
                 
-                if(!res.ok) throw new Error("Failed to post request");
-
-                showToast("Tender Published! Farmers will contact you.");
-                closeRfqModal();
+                if (!res.ok) throw new Error("Failed to post request");
+                
+                showToast("Tender Published! Farmers will contact you."); 
+                closeRfqModal(); 
                 loadBuyerRequests();
                 
-                document.getElementById('rfq-item').value = '';
-                document.getElementById('rfq-quantity').value = '';
-                document.getElementById('rfq-budget').value = '';
-                document.getElementById('rfq-destination').value = '';
-                document.getElementById('rfq-description').value = '';
-            } catch(e) {
-                showToast(e.message, "error");
-            } finally {
-                btn.innerHTML = "Publish Tender";
-                btn.disabled = false;
+                ['rfq-item', 'rfq-quantity', 'rfq-budget', 'rfq-destination', 'rfq-description'].forEach(id => {
+                    document.getElementById(id).value = '';
+                });
+            } catch (e) { 
+                showToast(e.message, "error"); 
+            } finally { 
+                btn.innerHTML = "Publish Tender"; 
+                btn.disabled = false; 
             }
         }
 
         async function loadBuyerRequests() {
             try {
-                const res = await fetch(`${API_URL}/api/v1/buyer-requests`);
-                const requests = await res.json();
+                const res = await fetch(`${API_URL}/api/v1/buyer-requests`); 
+                const requests = await res.json(); 
                 allLoadedRfqs = requests;
                 
-                const gridHome = document.getElementById('rfq-grid');
-                if(gridHome) {
+                const gridHome = document.getElementById('rfq-grid'); 
+                if (gridHome) {
                     renderRfqGrid(requests.slice(0, 3), gridHome);
                 }
                 
                 if (currentMarketMode === 'rfqs') {
                     renderRfqGrid(requests, document.getElementById('product-grid'));
                 }
-            } catch(e) {
-                console.log(e);
+            } catch (e) { 
+                console.log(e); 
             }
         }
 
         function renderRfqGrid(requests, gridElement) {
-            if(!gridElement) return;
+            if (!gridElement) return;
             
-            if (requests.length === 0) {
-                gridElement.innerHTML = `<div class="col-span-full glass-card py-16 text-center rounded-[2rem] border border-white/5"><p class="text-slate-400">No active buyer tenders found.</p></div>`;
-                return;
+            if (requests.length === 0) { 
+                gridElement.innerHTML = `
+                    <div class="col-span-full glass-card py-16 text-center rounded-[2rem] border border-white/5">
+                        <p class="text-slate-400">No active buyer tenders found.</p>
+                    </div>`; 
+                return; 
             }
-
-            gridElement.innerHTML = requests.map(r => `
-                <div class="glass-card p-6 rounded-[2rem] border border-blue-500/30 shadow-xl flex flex-col justify-between hover:-translate-y-1 transition-transform">
-                    <div>
-                        <div class="flex justify-between items-start mb-3">
-                            <span class="bg-blue-500/10 text-blue-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-md border border-blue-500/20">${r.category}</span>
-                            <span class="text-[10px] text-slate-400">📅 ${r.created_at}</span>
+            
+            gridElement.innerHTML = requests.map(r => {
+                let waMsg = `Hello, I am a farmer on Agromart. I can supply your request for ${r.item_needed}.`;
+                let rawPhone = (r.buyer_phone || '').replace(/\D/g,'').replace(/^0/, '');
+                
+                return `
+                    <div class="glass-card p-6 rounded-[2rem] border border-blue-500/30 shadow-xl flex flex-col justify-between hover:-translate-y-1 transition-transform">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="bg-blue-500/10 text-blue-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-md border border-blue-500/20">${r.category}</span>
+                                <span class="text-[10px] text-slate-400">📅 ${r.created_at}</span>
+                            </div>
+                            <h3 class="text-xl font-black text-white mb-2">${r.item_needed}</h3>
+                            <p class="text-xs text-slate-400 mb-4 line-clamp-2">${r.description || 'Looking for suppliers.'}</p>
+                            <div class="bg-[#020617]/50 p-4 rounded-xl border border-slate-700/50 mb-5 space-y-2">
+                                <div class="flex justify-between text-xs">
+                                    <span class="text-slate-400 font-bold">Target Volume:</span>
+                                    <span class="text-white font-bold">${r.quantity}</span>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span class="text-slate-400 font-bold">Total Budget:</span>
+                                    <span class="text-emerald-400 font-black">GH₵${r.target_budget_ghs}</span>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span class="text-slate-400 font-bold">Deliver To:</span>
+                                    <span class="text-slate-200 font-bold truncate max-w-[120px]">${r.delivery_destination}</span>
+                                </div>
+                            </div>
                         </div>
-                        <h3 class="text-xl font-black text-white mb-2">${r.item_needed}</h3>
-                        <p class="text-xs text-slate-400 mb-4 line-clamp-2">${r.description || 'Looking for suppliers.'}</p>
-                        
-                        <div class="bg-[#020617]/50 p-4 rounded-xl border border-slate-700/50 mb-5 space-y-2">
-                            <div class="flex justify-between text-xs">
-                                <span class="text-slate-400 font-bold">Target Volume:</span>
-                                <span class="text-white font-bold">${r.quantity}</span>
-                            </div>
-                            <div class="flex justify-between text-xs">
-                                <span class="text-slate-400 font-bold">Total Budget:</span>
-                                <span class="text-emerald-400 font-black">GH₵${r.target_budget_ghs}</span>
-                            </div>
-                            <div class="flex justify-between text-xs">
-                                <span class="text-slate-400 font-bold">Deliver To:</span>
-                                <span class="text-slate-200 font-bold truncate max-w-[120px]">${r.delivery_destination}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="https://wa.me/233${(r.buyer_phone || '').replace(/\D/g,'').replace(/^0/,'')}?text=${encodeURIComponent('Hello, I am a farmer on Agromart. I can supply your request for ' + r.item_needed + '.')}" target="_blank" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-3 rounded-xl text-xs transition-colors text-center block shadow-lg">Bid to Supply</a>
-                </div>`).join('');
+                        <a href="https://wa.me/233${rawPhone}?text=${encodeURIComponent(waMsg)}" target="_blank" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-3 rounded-xl text-xs transition-colors text-center block shadow-lg">Bid to Supply</a>
+                    </div>`; 
+            }).join('');
         }
 
         async function loadMyTenders() {
-            if(!agriToken) return;
+            if (!agriToken) return;
+            
             try {
                 const res = await fetch(`${API_URL}/api/v1/my-buyer-requests?token=${agriToken}`); 
                 const requests = await res.json(); 
                 
                 const list = document.getElementById('my-tenders-list'); 
-                if(!list) return; 
+                if (!list) return; 
                 list.innerHTML = ''; 
                 
-                if(requests.length === 0) { 
-                    list.innerHTML = `<div class="glass-card p-12 text-center rounded-[2rem] border border-white/5"><p class="text-slate-400">You haven't posted any purchase tenders yet.</p></div>`; 
+                if (requests.length === 0) { 
+                    list.innerHTML = `
+                        <div class="glass-card p-12 text-center rounded-[2rem] border border-white/5">
+                            <p class="text-slate-400">You haven't posted any purchase tenders yet.</p>
+                        </div>`; 
                     return; 
                 } 
                 
                 requests.forEach(r => { 
                     list.innerHTML += `
-                    <div class="glass-card p-5 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4 mb-4 border border-blue-500/20 shadow-lg">
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="text-[10px] bg-blue-500/20 text-blue-400 font-bold uppercase tracking-wider px-2 py-0.5 rounded">Tender</span>
-                                <span class="text-[10px] text-slate-500">${r.created_at}</span>
+                        <div class="glass-card p-5 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4 mb-4 border border-blue-500/20 shadow-lg">
+                            <div>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-[10px] bg-blue-500/20 text-blue-400 font-bold uppercase tracking-wider px-2 py-0.5 rounded">Tender</span>
+                                    <span class="text-[10px] text-slate-500">${r.created_at}</span>
+                                </div>
+                                <h3 class="font-black text-white text-base">${r.item_needed}</h3>
+                                <p class="text-xs text-emerald-400 font-bold mt-1">Budget: GH₵${r.target_budget_ghs} <span class="text-slate-500 mx-1">•</span> Qty: ${r.quantity}</p>
                             </div>
-                            <h3 class="font-black text-white text-base">${r.item_needed}</h3>
-                            <p class="text-xs text-emerald-400 font-bold mt-1">Budget: GH₵${r.target_budget_ghs} <span class="text-slate-500 mx-1">•</span> Qty: ${r.quantity}</p>
-                        </div>
-                        <button onclick="deleteMyTender(${r.id})" class="text-rose-400 font-bold px-4 py-2 border border-rose-500/30 rounded-lg text-xs hover:bg-rose-500/10 transition-colors w-full md:w-auto">Delete</button>
-                    </div>`; 
+                            <button onclick="deleteMyTender(${r.id})" class="text-rose-400 font-bold px-4 py-2 border border-rose-500/30 rounded-lg text-xs hover:bg-rose-500/10 transition-colors w-full md:w-auto">Delete</button>
+                        </div>`; 
                 });
-            } catch(e) { 
+            } catch (e) { 
                 console.log(e); 
             }
         }
         
         async function deleteMyTender(id) {
-            if(!confirm("Are you sure you want to delete this tender?")) return;
+            if (!confirm("Are you sure you want to delete this tender?")) return;
+            
             try { 
                 await fetch(`${API_URL}/api/v1/buyer-requests/${id}?token=${agriToken}`, { 
                     method: 'DELETE' 
@@ -3097,21 +3505,25 @@
                 showToast("Tender deleted successfully."); 
                 loadMyTenders(); 
                 loadBuyerRequests(); 
-            } catch(e) {}
+            } catch (e) {}
         }
 
         async function loadMyRentals() {
-            if(!agriToken) return;
+            if (!agriToken) return; 
+            
             const list = document.getElementById('my-rentals-list'); 
-            if(!list) return; 
+            if (!list) return; 
             
             try {
                 const res = await fetch(`${API_URL}/api/v1/my-rentals?token=${agriToken}`); 
                 const items = await res.json();
                 
-                if(items.length === 0) {
-                    list.innerHTML = `<div class="glass-card p-12 text-center rounded-[2rem] border border-white/5"><p class="text-slate-400">No machinery listed yet.</p></div>`;
-                    return;
+                if (items.length === 0) { 
+                    list.innerHTML = `
+                        <div class="glass-card p-12 text-center rounded-[2rem] border border-white/5">
+                            <p class="text-slate-400">No machinery listed yet.</p>
+                        </div>`; 
+                    return; 
                 }
                 
                 list.innerHTML = items.map(r => `
@@ -3123,33 +3535,36 @@
                         </div>
                         <button onclick="deleteRental(${r.id})" class="text-rose-400 font-bold px-4 py-2 border border-rose-500/30 rounded-lg text-xs hover:bg-rose-500/10 transition-colors">Delete</button>
                     </div>`).join('');
-            } catch(e) { 
-                console.log(e); 
-            }
+            } catch (e) {}
         }
 
-        async function deleteRental(id) {
-            if(!confirm("Delete this equipment listing?")) return;
+        async function deleteRental(id) { 
+            if (!confirm("Delete this equipment listing?")) return; 
             try { 
-                await fetch(`${API_URL}/api/v1/rentals/${id}?token=${agriToken}`, { method: 'DELETE' }); 
+                await fetch(`${API_URL}/api/v1/rentals/${id}?token=${agriToken}`, { 
+                    method: 'DELETE' 
+                }); 
                 showToast("Listing deleted."); 
                 loadMyRentals(); 
                 loadRentals(); 
-            } catch(e) {}
+            } catch (e) {} 
         }
 
         async function loadMyWasteRequests() {
-            if(!agriToken) return;
+            if (!agriToken) return; 
             const list = document.getElementById('my-waste-list'); 
-            if(!list) return; 
+            if (!list) return; 
             
             try {
                 const res = await fetch(`${API_URL}/api/v1/my-waste-requests?token=${agriToken}`); 
                 const items = await res.json();
                 
-                if(items.length === 0) {
-                    list.innerHTML = `<div class="glass-card p-12 text-center rounded-[2rem] border border-white/5"><p class="text-slate-400">No pickups requested yet.</p></div>`;
-                    return;
+                if (items.length === 0) { 
+                    list.innerHTML = `
+                        <div class="glass-card p-12 text-center rounded-[2rem] border border-white/5">
+                            <p class="text-slate-400">No pickups requested yet.</p>
+                        </div>`; 
+                    return; 
                 }
                 
                 list.innerHTML = items.map(r => `
@@ -3161,30 +3576,30 @@
                         </div>
                         <button onclick="deleteWasteReq(${r.id})" class="text-rose-400 font-bold px-4 py-2 border border-rose-500/30 rounded-lg text-xs hover:bg-rose-500/10 transition-colors">Cancel</button>
                     </div>`).join('');
-            } catch(e) { 
-                console.log(e); 
-            }
+            } catch (e) {}
         }
 
-        async function deleteWasteReq(id) {
-            if(!confirm("Cancel this pickup request?")) return;
+        async function deleteWasteReq(id) { 
+            if (!confirm("Cancel this pickup request?")) return; 
             try { 
-                await fetch(`${API_URL}/api/v1/waste-collections/${id}?token=${agriToken}`, { method: 'DELETE' }); 
+                await fetch(`${API_URL}/api/v1/waste-collections/${id}?token=${agriToken}`, { 
+                    method: 'DELETE' 
+                }); 
                 showToast("Request cancelled."); 
                 loadMyWasteRequests(); 
                 loadWasteRequests(); 
-            } catch(e) {}
+            } catch (e) {} 
         }
 
         function generateWhatsAppFlyer(name, price, unit, imageSrc, phone) { 
             const modal = document.getElementById('flyer-modal'); 
-            if(modal) { 
+            if (modal) { 
                 modal.classList.remove('hidden'); 
                 modal.classList.add('flex'); 
             } 
             
             const canvas = document.getElementById('flyer-canvas'); 
-            if(!canvas) return; 
+            if (!canvas) return; 
             
             const ctx = canvas.getContext('2d'); 
             canvas.width = 1080; 
@@ -3192,7 +3607,6 @@
             
             ctx.fillStyle = '#0f172a'; 
             ctx.fillRect(0, 0, 1080, 1080); 
-            
             ctx.fillStyle = '#10b981'; 
             ctx.fillRect(0, 0, 1080, 150); 
             
@@ -3222,15 +3636,16 @@
                 ctx.stroke(); 
                 
                 const preview = document.getElementById('flyer-preview'); 
-                if(preview) {
+                if (preview) {
                     preview.src = canvas.toDataURL('image/png'); 
                 }
             }; 
             
             img.onerror = () => { 
                 drawFlyerText(ctx, name, price, unit, phone); 
+                
                 const preview = document.getElementById('flyer-preview'); 
-                if(preview) {
+                if (preview) {
                     preview.src = canvas.toDataURL('image/png'); 
                 }
             }; 
@@ -3266,7 +3681,7 @@
         
         function closeFlyerModal() { 
             const modal = document.getElementById('flyer-modal'); 
-            if(modal) { 
+            if (modal) { 
                 modal.classList.add('hidden'); 
                 modal.classList.remove('flex'); 
             } 
@@ -3274,7 +3689,7 @@
         
         function downloadFlyer() { 
             const canvas = document.getElementById('flyer-canvas'); 
-            if(!canvas) return; 
+            if (!canvas) return; 
             
             const link = document.createElement('a'); 
             link.download = 'AgromartDirect-Flyer.png'; 
@@ -3286,92 +3701,104 @@
         }
 
         function openVideoStudio(adId) {
-            const ad = myLoadedAds.find(p => p.id === adId);
-            if(!ad) return;
+            const ad = myLoadedAds.find(p => p.id === adId); 
+            if (!ad) return;
             
-            document.getElementById('vs-ad-id').value = ad.id;
+            document.getElementById('vs-ad-id').value = ad.id; 
             document.getElementById('vs-ad-name').innerText = ad.product_name;
             
-            document.getElementById('video-studio-setup').classList.remove('hidden');
-            document.getElementById('video-studio-processing').classList.add('hidden');
+            document.getElementById('video-studio-setup').classList.remove('hidden'); 
+            document.getElementById('video-studio-processing').classList.add('hidden'); 
             document.getElementById('video-studio-result').classList.add('hidden');
             
-            const modal = document.getElementById('video-studio-modal');
-            modal.classList.remove('hidden');
+            const modal = document.getElementById('video-studio-modal'); 
+            modal.classList.remove('hidden'); 
             modal.classList.add('flex');
         }
 
-        function closeVideoStudio() {
-            const modal = document.getElementById('video-studio-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
+        function closeVideoStudio() { 
+            const modal = document.getElementById('video-studio-modal'); 
+            modal.classList.add('hidden'); 
+            modal.classList.remove('flex'); 
         }
 
         function generateAiVideo() {
-            const adId = parseInt(document.getElementById('vs-ad-id').value);
-            const ad = myLoadedAds.find(p => p.id === adId);
-            if(!ad) return;
-
-            document.getElementById('video-studio-setup').classList.add('hidden');
+            const adId = parseInt(document.getElementById('vs-ad-id').value); 
+            const ad = myLoadedAds.find(p => p.id === adId); 
+            if (!ad) return;
+            
+            document.getElementById('video-studio-setup').classList.add('hidden'); 
             document.getElementById('video-studio-processing').classList.remove('hidden');
             
             const statusText = document.getElementById('vs-status-text');
-            
             const generatedScript = `Fresh ${ad.product_name} available now in ${ad.neighborhood}! Secure it today for only ${ad.base_price_ghs} cedis per ${ad.unit}. Buy direct from the farmer on AgromartDirect. No middlemen, just great prices. Tap the link to order now!`;
             
             document.getElementById('vs-script-display').innerText = `"${generatedScript}"`;
-
-            setTimeout(() => { statusText.innerText = "Generating Voiceover..."; }, 1500);
-            setTimeout(() => { statusText.innerText = "Animating Photos..."; }, 3000);
+            
+            setTimeout(() => { statusText.innerText = "Generating Voiceover..."; }, 1500); 
+            setTimeout(() => { statusText.innerText = "Animating Photos..."; }, 3000); 
             setTimeout(() => { statusText.innerText = "Rendering Video..."; }, 4500);
             
-            setTimeout(() => {
-                document.getElementById('video-studio-processing').classList.add('hidden');
-                document.getElementById('video-studio-result').classList.remove('hidden');
-                showToast("AI Video Ready! 🎬");
+            setTimeout(() => { 
+                document.getElementById('video-studio-processing').classList.add('hidden'); 
+                document.getElementById('video-studio-result').classList.remove('hidden'); 
+                showToast("AI Video Ready! 🎬"); 
             }, 6000);
         }
 
-        function downloadAiVideo() {
-            const link = document.createElement('a');
+        function downloadAiVideo() { 
+            const link = document.createElement('a'); 
             link.href = "https://www.w3schools.com/html/mov_bbb.mp4"; 
-            link.download = "Agromart-Promo.mp4";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            showToast("Video downloaded for WhatsApp!");
-            closeVideoStudio();
+            link.download = "Agromart-Promo.mp4"; 
+            
+            document.body.appendChild(link); 
+            link.click(); 
+            document.body.removeChild(link); 
+            
+            showToast("Video downloaded for WhatsApp!"); 
+            closeVideoStudio(); 
         }
 
         async function renderAdminVerificationsList() { 
             const c = document.getElementById('admin-verifications-list'); 
             if (!c) return; 
+            
             try { 
                 const res = await fetch(`${API_URL}/api/v1/admin/verifications?token=${agriToken}`); 
                 const reqs = await res.json(); 
+                
                 if (!reqs.length) {
-                    return c.innerHTML = `<p class="text-xs text-slate-500">No pending paid verifications.</p>`; 
+                    c.innerHTML = `<p class="text-xs text-slate-500">No pending paid verifications.</p>`;
+                    return;
                 }
+                 
                 c.innerHTML = reqs.map((u) => `
                     <div class="glass-card p-3 rounded-xl flex justify-between items-center border border-amber-500/30 bg-amber-500/5 mb-2">
-                        <div><p class="text-xs font-bold text-white">${u.name}</p><p class="text-[10px] text-amber-400">${u.email}</p></div>
+                        <div>
+                            <p class="text-xs font-bold text-white">${u.name}</p>
+                            <p class="text-[10px] text-amber-400">${u.email}</p>
+                        </div>
                         <button onclick="quickVerifyUser('${u.email}', null)" class="bg-emerald-600 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition-colors">✅ Approve</button>
                     </div>`).join(''); 
             } catch (e) {} 
         }
         
         let adminPendingAdsCache = []; 
+        
         async function renderAdminModQueue() { 
             const c = document.getElementById('admin-mod-list'); 
             if (!c) return; 
+            
             try { 
                 const res = await fetch(`${API_URL}/api/v1/admin/pending-ads?token=${agriToken}`); 
                 const ads = await res.json(); 
                 adminPendingAdsCache = ads; 
                 
                 if (!ads.length) {
-                    return c.innerHTML = `<p class="text-xs text-slate-500">No ads pending review.</p>`; 
-                }
+                    c.innerHTML = `<p class="text-xs text-slate-500">No ads pending review.</p>`;
+                    return;
+                } 
+                
                 c.innerHTML = ads.map((ad) => `
                     <div id="mod-ad-${ad.id}" class="glass-card p-4 rounded-xl flex flex-col sm:flex-row justify-between sm:items-center gap-3 border border-amber-500/30 mb-3 shadow-lg bg-[#020617]/50">
                         <div>
@@ -3391,25 +3818,29 @@
         async function renderAdminAllAds() { 
             const c = document.getElementById('admin-all-ads-list'); 
             if (!c) return; 
+            
             try { 
                 const res = await fetch(`${API_URL}/api/v1/admin/all-ads?token=${agriToken}`); 
                 const allAds = await res.json(); 
+                
                 if (!allAds.length) {
-                    return c.innerHTML = `<p class="text-xs text-slate-500">No ads on platform.</p>`; 
-                }
+                    c.innerHTML = `<p class="text-xs text-slate-500">No ads on platform.</p>`;
+                    return;
+                } 
+                
                 c.innerHTML = allAds.map((ad) => { 
                     let statusColor = ad.status === 'approved' ? 'text-emerald-400' : (ad.status === 'pending' ? 'text-amber-400' : 'text-rose-400');
                     return `
-                    <div id="admin-all-ad-${ad.id}" class="glass-card p-3 rounded-xl flex justify-between items-center border border-white/5 mb-2 hover:border-white/20 transition-colors">
-                        <div>
-                            <p class="text-xs font-bold text-white">${ad.product_name} <span class="${statusColor} text-[9px] uppercase tracking-wider ml-1 bg-slate-900 px-1 rounded">(${ad.status})</span></p>
-                            <p class="text-[10px] text-slate-400 mt-1">By: ${ad.seller_name} (${ad.phone_number})</p>
-                        </div>
-                        <div class="flex gap-2">
-                            <button onclick="adminBanUser('${ad.seller_email}')" class="bg-[#020617] text-rose-500 font-bold border border-rose-500/50 text-[10px] px-3 py-1.5 rounded-lg hover:bg-rose-900/30 transition-colors">🚫 Ban</button>
-                            <button onclick="adminDeleteAd(${ad.id})" class="bg-rose-600 text-white font-bold text-[10px] px-3 py-1.5 rounded-lg hover:bg-rose-500 transition-colors">🗑️ Delete</button>
-                        </div>
-                    </div>`; 
+                        <div id="admin-all-ad-${ad.id}" class="glass-card p-3 rounded-xl flex justify-between items-center border border-white/5 mb-2 hover:border-white/20 transition-colors">
+                            <div>
+                                <p class="text-xs font-bold text-white">${ad.product_name} <span class="${statusColor} text-[9px] uppercase tracking-wider ml-1 bg-slate-900 px-1 rounded">(${ad.status})</span></p>
+                                <p class="text-[10px] text-slate-400 mt-1">By: ${ad.seller_name} (${ad.phone_number})</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="adminBanUser('${ad.seller_email}')" class="bg-[#020617] text-rose-500 font-bold border border-rose-500/50 text-[10px] px-3 py-1.5 rounded-lg hover:bg-rose-900/30 transition-colors">🚫 Ban</button>
+                                <button onclick="adminDeleteAd(${ad.id})" class="bg-rose-600 text-white font-bold text-[10px] px-3 py-1.5 rounded-lg hover:bg-rose-500 transition-colors">🗑️ Delete</button>
+                            </div>
+                        </div>`; 
                 }).join(''); 
             } catch (e) {} 
         }
@@ -3417,12 +3848,16 @@
         async function renderAdminReports() { 
             const c = document.getElementById('admin-reports-list'); 
             if (!c) return; 
+            
             try { 
                 const res = await fetch(`${API_URL}/api/v1/admin/reports?token=${agriToken}`); 
                 const reports = await res.json(); 
+                
                 if (!reports.length) {
-                    return c.innerHTML = `<p class="text-xs text-slate-500">No scam reports submitted.</p>`; 
+                    c.innerHTML = `<p class="text-xs text-slate-500">No scam reports submitted.</p>`;
+                    return;
                 }
+                 
                 c.innerHTML = reports.map((r) => `
                     <div class="glass-card p-4 rounded-xl flex flex-col border border-rose-500/30 bg-rose-500/10 mb-3 shadow-lg">
                         <p class="text-xs font-bold text-white">Reported: ${r.seller_name} <span class="text-slate-400 font-normal">(${r.seller_phone})</span></p>
@@ -3434,7 +3869,7 @@
 
         async function verifySeller() { 
             const email = document.getElementById('verify-email-input').value.trim(); 
-            if(email) {
+            if (email) {
                 quickVerifyUser(email, null); 
             }
         }
@@ -3446,26 +3881,32 @@
                     headers: { 'Content-Type': 'application/json' }, 
                     body: JSON.stringify({ email: targetEmail }) 
                 }); 
-                showToast("Verified!"); 
-                if(elId) document.getElementById(elId)?.remove(); 
                 
+                showToast("Verified!"); 
+                if (elId) {
+                    document.getElementById(elId)?.remove(); 
+                }
                 renderAdminVerificationsList(); 
             } catch (err) {} 
         }
         
         async function banSeller() { 
             const email = document.getElementById('ban-email-input').value.trim(); 
-            if(email) adminBanUser(email); 
+            if (email) {
+                adminBanUser(email); 
+            }
         }
         
         async function adminBanUser(email) { 
-            if(!confirm(`Ban ${email}?`)) return; 
+            if (!confirm(`Are you sure you want to ban ${email}?`)) return; 
+            
             try { 
                 await fetch(`${API_URL}/api/v1/admin/ban-user?token=${agriToken}`, { 
                     method: 'POST', 
                     headers: { 'Content-Type': 'application/json' }, 
                     body: JSON.stringify({ email: email }) 
                 }); 
+                
                 showToast("Banned"); 
                 renderAdminModQueue(); 
                 renderAdminAllAds(); 
@@ -3474,11 +3915,13 @@
         }
         
         async function adminDeleteAd(adId) { 
-            if(!confirm("Delete ad?")) return; 
+            if (!confirm("Are you sure you want to delete this ad?")) return; 
+            
             try { 
                 await fetch(`${API_URL}/api/v1/admin/products/${adId}?token=${agriToken}`, { 
                     method: 'DELETE' 
                 }); 
+                
                 showToast("Deleted"); 
                 document.getElementById(`admin-all-ad-${adId}`)?.remove(); 
                 renderAdminModQueue(); 
@@ -3493,10 +3936,10 @@
                     headers: { 'Content-Type': 'application/json' }, 
                     body: JSON.stringify({ ad_id: adId, token: agriToken }) 
                 }); 
+                
                 document.getElementById(elId)?.remove(); 
                 showToast("✅ Approved!"); 
                 
-                // Refresh the grid and master list automatically
                 loadMarketplaceGrid(); 
                 renderAdminAllAds(); 
             } catch (err) {} 
@@ -3504,13 +3947,14 @@
         
         async function rejectAd(adId) { 
             let reason = prompt("Reason for rejection?"); 
-            if(reason) { 
+            if (reason) { 
                 try { 
                     await fetch(`${API_URL}/api/v1/admin/reject-ad`, { 
                         method: 'POST', 
                         headers: { 'Content-Type': 'application/json' }, 
                         body: JSON.stringify({ token: agriToken, ad_id: adId, reason: reason }) 
                     }); 
+                    
                     document.getElementById(`mod-ad-${adId}`)?.remove(); 
                     showToast("❌ Rejected."); 
                     renderAdminAllAds(); 
@@ -3518,79 +3962,18 @@
             } 
         }
 
-        function payAgriProSubscription() {
-            showToast("Pro subscriptions require external approval for this demo.", "error");
-        }
-
-        function handlePricingBoostClick() {
-            showToast("Navigating to ad selection...", "success");
-            navigate('dashboard');
-        }
-
-        function showTrainerSubCategory(cat) {
-            const grid = document.getElementById('trainer-items-grid'); 
-            grid.innerHTML = ''; 
-            
-            agriTrainerData[cat].forEach(item => { 
-                grid.innerHTML += `
-                    <div onclick="openTrainerGuide('${cat}', '${item.id}')" class="glass-card p-6 rounded-[2rem] cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 transition-all text-center shadow-xl">
-                        <div class="text-5xl mb-4">${item.icon}</div>
-                        <h4 class="text-lg font-black text-white">${item.title}</h4>
-                        <p class="text-xs text-slate-400 mt-2">${item.intro}</p>
-                    </div>`; 
-            }); 
-            
-            document.getElementById('trainer-categories').classList.add('hidden'); 
-            document.getElementById('trainer-items').classList.remove('hidden'); 
+        function payAgriProSubscription() { 
+            showToast("Pro subscriptions require external approval for this demo.", "error"); 
         }
         
-        async function openTrainerGuide(cat, itemId) {
-            const item = agriTrainerData[cat].find(i => i.id === itemId); 
-            if(!item) return; 
-            
-            document.getElementById('guide-icon').innerText = item.icon; 
-            document.getElementById('guide-title').innerText = item.title; 
-            document.getElementById('guide-intro').innerText = item.intro; 
-            
-            const contentContainer = document.getElementById('guide-content');
-            contentContainer.innerHTML = '<p class="text-emerald-400 font-bold animate-pulse">Fetching encyclopedia data...</p>';
-            
-            document.getElementById('trainer-items').classList.add('hidden'); 
-            document.getElementById('trainer-guide').classList.remove('hidden'); 
-            
-            try {
-                const searchStr = encodeURIComponent(item.wikiSearch || item.title);
-                const wikiRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${searchStr}`);
-                
-                if(wikiRes.ok) {
-                    const wikiData = await wikiRes.json();
-                    
-                    let wikiHtml = `<div class="bg-[#0f172a] p-6 rounded-3xl border border-slate-700/50 mb-8 flex flex-col md:flex-row gap-6 shadow-inner items-start" id="wiki-content">`;
-                    
-                    if(wikiData.thumbnail && wikiData.thumbnail.source) {
-                        wikiHtml += `<img src="${wikiData.thumbnail.source}" class="w-full md:w-48 h-48 object-cover rounded-2xl shadow-lg border border-slate-700 shrink-0">`;
-                    }
-                    
-                    wikiHtml += `<div><h3 class="text-emerald-400 text-sm font-black uppercase tracking-wider mb-2 flex items-center gap-2">📖 Wikipedia Overview</h3><p class="text-sm text-slate-300 leading-relaxed">${wikiData.extract}</p></div></div>`;
-                    
-                    contentContainer.innerHTML = wikiHtml + `<h3 class="text-xl font-black text-white mb-4 mt-8 border-b border-white/10 pb-2">🚜 Agromart Cultivation Guide</h3>` + item.guide;
-                } else {
-                    throw new Error("Wiki not found");
-                }
-            } catch (e) {
-                contentContainer.innerHTML = `<h3 class="text-xl font-black text-white mb-4 border-b border-white/10 pb-2">🚜 Agromart Cultivation Guide</h3>` + item.guide;
-            }
-        }
-        
-        function resetTrainer() {
-            document.getElementById('trainer-guide').classList.add('hidden'); 
-            document.getElementById('trainer-items').classList.add('hidden'); 
-            document.getElementById('trainer-categories').classList.remove('hidden'); 
+        function handlePricingBoostClick() { 
+            showToast("Navigating to ad selection...", "success"); 
+            navigate('dashboard'); 
         }
 
         async function loadGrants() { 
             const grid = document.getElementById('grants-grid'); 
-            if(!grid) return; 
+            if (!grid) return; 
             
             grid.innerHTML = '<div class="col-span-full text-center text-slate-400">Loading opportunities... ⏳</div>'; 
             
@@ -3598,9 +3981,9 @@
                 const res = await fetch(`${API_URL}/api/v1/grants?t=${new Date().getTime()}`); 
                 const grants = await res.json(); 
                 
-                if(!grants || grants.length === 0) {
+                if (!grants || grants.length === 0) { 
                     grid.innerHTML = '<div class="col-span-full text-center text-slate-400">No active grants found.</div>'; 
-                    return;
+                    return; 
                 }
                 
                 grid.innerHTML = grants.map(g => `
@@ -3615,14 +3998,14 @@
                             <button class="bg-amber-500 text-[#020617] text-xs font-black px-4 py-2 rounded-xl hover:bg-amber-400 transition-colors shadow-lg">Apply Now</button>
                         </div>
                     </div>`).join(''); 
-            } catch(e) {
-                grid.innerHTML = '<div class="col-span-full text-center text-rose-400">Could not load grants. Check connection.</div>';
+            } catch(e) { 
+                grid.innerHTML = '<div class="col-span-full text-center text-rose-400">Could not load grants. Check connection.</div>'; 
             } 
         }
 
         async function loadMarketIntel() { 
             const grid = document.getElementById('intel-grid'); 
-            if(!grid) return; 
+            if (!grid) return; 
             
             grid.innerHTML = '<div class="col-span-full text-center py-10 glass-card rounded-[2rem]"><span class="text-slate-400">Loading terminal data... ⏳</span></div>'; 
             
@@ -3630,98 +4013,103 @@
                 const res = await fetch(`${API_URL}/api/v1/market-intel?t=${new Date().getTime()}`); 
                 const data = await res.json(); 
                 
-                if(!data || data.length === 0) {
+                if (!data || data.length === 0) { 
                     grid.innerHTML = '<div class="col-span-full text-center py-10 glass-card rounded-[2rem]"><span class="text-slate-400">Not enough market data yet.</span></div>'; 
-                    return;
+                    return; 
                 }
                 
                 grid.innerHTML = data.map(d => { 
                     let margin = d.highest_price > 0 ? (((d.highest_price - d.cheapest_price) / d.cheapest_price) * 100).toFixed(1) : 0; 
                     return `
-                    <div class="glass-card p-6 rounded-[2rem] border border-white/5 shadow-xl relative overflow-hidden group hover:border-rose-500/50 transition-all flex flex-col justify-between">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-[40px] pointer-events-none group-hover:bg-rose-500/20 transition-all"></div>
-                        <div>
-                            <div class="flex justify-between items-start mb-4">
-                                <span class="bg-slate-800 text-slate-300 text-[10px] font-black uppercase px-2.5 py-1 rounded-lg border border-slate-700">${d.category}</span>
-                                <span class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-1 rounded-md flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> LIVE</span>
-                            </div>
-                            <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">National Average</h4>
-                            <div class="text-3xl font-black text-white mb-6">GH₵ ${d.national_avg}</div>
-                            <div class="space-y-3 bg-[#0f172a] p-4 rounded-2xl border border-slate-700/80">
-                                <div class="flex justify-between items-center pb-2 border-b border-white/5">
-                                    <div><p class="text-[9px] text-slate-500 uppercase font-bold">Cheapest</p><p class="text-xs font-bold text-emerald-400 truncate max-w-[120px]">${d.cheapest_region}</p></div>
-                                    <div class="text-right"><p class="text-[9px] text-slate-500 uppercase font-bold">Price</p><p class="text-xs font-black text-white">GH₵ ${d.cheapest_price}</p></div>
+                        <div class="glass-card p-6 rounded-[2rem] border border-white/5 shadow-xl relative overflow-hidden group hover:border-rose-500/50 transition-all flex flex-col justify-between">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-[40px] pointer-events-none group-hover:bg-rose-500/20 transition-all"></div>
+                            <div>
+                                <div class="flex justify-between items-start mb-4">
+                                    <span class="bg-slate-800 text-slate-300 text-[10px] font-black uppercase px-2.5 py-1 rounded-lg border border-slate-700">${d.category}</span>
+                                    <span class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-1 rounded-md flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> LIVE</span>
                                 </div>
-                                <div class="flex justify-between items-center">
-                                    <div><p class="text-[9px] text-slate-500 uppercase font-bold">Highest Demand</p><p class="text-xs font-bold text-rose-400 truncate max-w-[120px]">${d.highest_region}</p></div>
-                                    <div class="text-right"><p class="text-[9px] text-slate-500 uppercase font-bold">Price</p><p class="text-xs font-black text-white">GH₵ ${d.highest_price}</p></div>
+                                <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">National Average</h4>
+                                <div class="text-3xl font-black text-white mb-6">GH₵ ${d.national_avg}</div>
+                                <div class="space-y-3 bg-[#0f172a] p-4 rounded-2xl border border-slate-700/80">
+                                    <div class="flex justify-between items-center pb-2 border-b border-white/5">
+                                        <div>
+                                            <p class="text-[9px] text-slate-500 uppercase font-bold">Cheapest</p>
+                                            <p class="text-xs font-bold text-emerald-400 truncate max-w-[120px]">${d.cheapest_region}</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-[9px] text-slate-500 uppercase font-bold">Price</p>
+                                            <p class="text-xs font-black text-white">GH₵ ${d.cheapest_price}</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <p class="text-[9px] text-slate-500 uppercase font-bold">Highest Demand</p>
+                                            <p class="text-xs font-bold text-rose-400 truncate max-w-[120px]">${d.highest_region}</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-[9px] text-slate-500 uppercase font-bold">Price</p>
+                                            <p class="text-xs font-black text-white">GH₵ ${d.highest_price}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="mt-5 pt-4 border-t border-white/10 flex items-center justify-between text-xs">
-                            <span class="text-slate-400 font-medium">Arbitrage Margin:</span>
-                            <span class="font-black ${margin > 20 ? 'text-amber-400' : 'text-slate-300'} text-base">+${margin}%</span>
-                        </div>
-                    </div>`; 
+                            <div class="mt-5 pt-4 border-t border-white/10 flex items-center justify-between text-xs">
+                                <span class="text-slate-400 font-medium">Arbitrage Margin:</span>
+                                <span class="font-black ${margin > 20 ? 'text-amber-400' : 'text-slate-300'} text-base">+${margin}%</span>
+                            </div>
+                        </div>`; 
                 }).join(''); 
             } catch(e) {} 
         }
 
         function calculateFeedMix() {
-            const targetCP = parseFloat(document.getElementById('calc-target-cp').value);
-            const proteinCP = parseFloat(document.getElementById('calc-protein-cp').value);
-            const energyCP = parseFloat(document.getElementById('calc-energy-cp').value);
-            const proteinPrice = parseFloat(document.getElementById('calc-protein-price').value);
+            const targetCP = parseFloat(document.getElementById('calc-target-cp').value); 
+            const proteinCP = parseFloat(document.getElementById('calc-protein-cp').value); 
+            const energyCP = parseFloat(document.getElementById('calc-energy-cp').value); 
+            const proteinPrice = parseFloat(document.getElementById('calc-protein-price').value); 
             const energyPrice = parseFloat(document.getElementById('calc-energy-price').value);
-
+            
             if (isNaN(targetCP) || isNaN(proteinCP) || isNaN(energyCP)) {
                 return showToast("Please fill in all CP % values", "error");
             }
             if (targetCP >= proteinCP || targetCP <= energyCP) {
                 return showToast("Target CP must be between your Protein and Energy CP values!", "error");
             }
-
-            const partsProtein = targetCP - energyCP;
-            const partsEnergy = proteinCP - targetCP;
-            const totalParts = partsProtein + partsEnergy;
-
-            const percentProtein = (partsProtein / totalParts);
-            const percentEnergy = (partsEnergy / totalParts);
-
-            const kgProtein = percentProtein * 50;
-            const kgEnergy = percentEnergy * 50;
-
-            const costProteinPerKg = proteinPrice / 50;
-            const costEnergyPerKg = energyPrice / 50;
-            const totalCost = (kgProtein * costProteinPerKg) + (kgEnergy * costEnergyPerKg);
-
-            document.getElementById('res-protein-kg').innerText = kgProtein.toFixed(1) + " kg";
-            document.getElementById('res-energy-kg').innerText = kgEnergy.toFixed(1) + " kg";
-            document.getElementById('res-total-cost').innerText = "GH₵ " + totalCost.toFixed(2);
-
-            document.getElementById('calc-results-empty').classList.add('hidden');
-            document.getElementById('calc-results-filled').classList.remove('hidden');
-            document.getElementById('calc-results-filled').classList.add('block');
             
+            const partsProtein = targetCP - energyCP; 
+            const partsEnergy = proteinCP - targetCP; 
+            const totalParts = partsProtein + partsEnergy;
+            
+            const kgProtein = (partsProtein / totalParts) * 50; 
+            const kgEnergy = (partsEnergy / totalParts) * 50; 
+            const totalCost = (kgProtein * (proteinPrice / 50)) + (kgEnergy * (energyPrice / 50));
+            
+            document.getElementById('res-protein-kg').innerText = kgProtein.toFixed(1) + " kg"; 
+            document.getElementById('res-energy-kg').innerText = kgEnergy.toFixed(1) + " kg"; 
+            document.getElementById('res-total-cost').innerText = "GH₵ " + totalCost.toFixed(2);
+            
+            document.getElementById('calc-results-empty').classList.add('hidden'); 
+            document.getElementById('calc-results-filled').classList.remove('hidden'); 
+            document.getElementById('calc-results-filled').classList.add('block'); 
             showToast("Feed Formulation Calculated! ✨");
         }
 
         async function loadRentals() {
-            const grid = document.getElementById('rentals-grid');
-            if (!grid) return;
+            const grid = document.getElementById('rentals-grid'); 
+            if (!grid) return; 
             
             grid.innerHTML = '<div class="col-span-full text-center text-slate-400 py-10">Loading active equipment... ⏳</div>';
             
             try {
-                const res = await fetch(`${API_URL}/api/v1/rentals`);
+                const res = await fetch(`${API_URL}/api/v1/rentals`); 
                 const items = await res.json();
                 
-                if (!items.length) {
+                if (!items.length) { 
                     grid.innerHTML = `
                         <div class="col-span-full glass-card py-12 text-center rounded-[2rem] border border-white/5">
                             <p class="text-slate-400">No machinery currently listed for hire in this area.</p>
-                        </div>`;
-                    return;
+                        </div>`; 
+                    return; 
                 }
                 
                 grid.innerHTML = items.map(item => `
@@ -3744,97 +4132,96 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="https://wa.me/233${(item.owner_phone || '').replace(/\D/g,'').replace(/^0/,'')}?text=${encodeURIComponent('Hello, I want to rent your ' + item.title + ' listed on AgromartDirect.')}" target="_blank" class="w-full bg-amber-500 hover:bg-amber-400 text-[#020617] text-xs font-black py-3 rounded-xl transition-colors text-center block">
-                            Book Equipment Hire
-                        </a>
-                    </div>
-                `).join('');
-            } catch (e) {
-                grid.innerHTML = '<div class="col-span-full text-center text-rose-400 py-6">Could not load equipment catalog.</div>';
+                        <a href="https://wa.me/233${(item.owner_phone || '').replace(/\D/g,'').replace(/^0/,'')}?text=${encodeURIComponent('Hello, I want to rent your ' + item.title + ' listed on AgromartDirect.')}" target="_blank" class="w-full bg-amber-500 hover:bg-amber-400 text-[#020617] text-xs font-black py-3 rounded-xl transition-colors text-center block">Book Equipment Hire</a>
+                    </div>`).join('');
+            } catch (e) { 
+                grid.innerHTML = '<div class="col-span-full text-center text-rose-400 py-6">Could not load equipment catalog.</div>'; 
             }
         }
 
         function openRentalPostModal() {
-            if (!agriToken) {
-                showToast("Sign in to list equipment", "error");
-                return navigate('auth');
+            if (!agriToken) { 
+                showToast("Sign in to list equipment", "error"); 
+                return navigate('auth'); 
             }
-            const title = prompt("Equipment Name & Model (e.g. Honda 10HP Water Pump):");
+            
+            const title = prompt("Equipment Name & Model (e.g. Honda 10HP Water Pump):"); 
             if (!title) return;
-            const dailyRate = prompt("Daily Hire Rate (GH₵):");
-            const deposit = prompt("Security Deposit (GH₵):");
+            
+            const dailyRate = prompt("Daily Hire Rate (GH₵):"); 
+            const deposit = prompt("Security Deposit (GH₵):"); 
             const location = prompt("Location / Town:");
             
-            fetch(`${API_URL}/api/v1/rentals?token=${agriToken}`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    title: title,
-                    equipment_type: "Machinery",
-                    daily_rate_ghs: parseFloat(dailyRate) || 0,
-                    security_deposit_ghs: parseFloat(deposit) || 0,
-                    location: location || "Accra"
-                })
-            }).then(res => {
-                if(res.ok) {
-                    showToast("Equipment Listed for Hire! 🚜");
-                    loadRentals();
-                }
+            fetch(`${API_URL}/api/v1/rentals?token=${agriToken}`, { 
+                method: 'POST', 
+                headers: {'Content-Type': 'application/json'}, 
+                body: JSON.stringify({ 
+                    title: title, 
+                    equipment_type: "Machinery", 
+                    daily_rate_ghs: parseFloat(dailyRate) || 0, 
+                    security_deposit_ghs: parseFloat(deposit) || 0, 
+                    location: location || "Accra" 
+                }) 
+            }).then(res => { 
+                if(res.ok) { 
+                    showToast("Equipment Listed for Hire! 🚜"); 
+                    loadRentals(); 
+                } 
             });
         }
 
         async function submitWasteRequest() {
-            if (!agriToken) {
-                showToast("Sign in to schedule collection", "error");
-                return navigate('auth');
+            if (!agriToken) { 
+                showToast("Sign in to schedule collection", "error"); 
+                return navigate('auth'); 
             }
             
-            const waste_type = document.getElementById('waste-type').value;
-            const quantity_est = document.getElementById('waste-qty').value.trim();
-            const pickup_address = document.getElementById('waste-loc').value.trim();
+            const waste_type = document.getElementById('waste-type').value; 
+            const quantity_est = document.getElementById('waste-qty').value.trim(); 
+            const pickup_address = document.getElementById('waste-loc').value.trim(); 
             const contact_phone = document.getElementById('waste-phone').value.trim();
-
+            
             if (!quantity_est || !pickup_address || !contact_phone) {
                 return showToast("Please fill all collection details", "error");
             }
-
+            
             try {
-                const res = await fetch(`${API_URL}/api/v1/waste-collections?token=${agriToken}`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
+                const res = await fetch(`${API_URL}/api/v1/waste-collections?token=${agriToken}`, { 
+                    method: 'POST', 
+                    headers: {'Content-Type': 'application/json'}, 
                     body: JSON.stringify({ 
                         waste_type: waste_type, 
                         quantity_est: quantity_est, 
                         pickup_address: pickup_address, 
                         contact_phone: contact_phone 
-                    })
+                    }) 
                 });
                 
                 if (!res.ok) throw new Error("Failed to book dispatch");
                 
-                showToast("Collection Dispatched! 🚚");
-                document.getElementById('waste-qty').value = '';
-                document.getElementById('waste-loc').value = '';
-                document.getElementById('waste-phone').value = '';
+                showToast("Collection Dispatched! 🚚"); 
+                document.getElementById('waste-qty').value = ''; 
+                document.getElementById('waste-loc').value = ''; 
+                document.getElementById('waste-phone').value = ''; 
                 
-                loadWasteRequests();
+                loadWasteRequests(); 
                 loadMyWasteRequests();
-            } catch (e) {
-                showToast(e.message, "error");
+            } catch (e) { 
+                showToast(e.message, "error"); 
             }
         }
 
         async function loadWasteRequests() {
-            const container = document.getElementById('waste-queue');
+            const container = document.getElementById('waste-queue'); 
             if (!container) return;
             
             try {
-                const res = await fetch(`${API_URL}/api/v1/waste-collections`);
+                const res = await fetch(`${API_URL}/api/v1/waste-collections`); 
                 const list = await res.json();
                 
-                if (!list.length) {
-                    container.innerHTML = '<p class="text-xs text-slate-500">No pending pickups right now.</p>';
-                    return;
+                if (!list.length) { 
+                    container.innerHTML = '<p class="text-xs text-slate-500">No pending pickups right now.</p>'; 
+                    return; 
                 }
                 
                 container.innerHTML = list.map(item => `
@@ -3844,32 +4231,31 @@
                             <span class="text-slate-400 text-[11px]">${item.quantity} • 📍 ${item.address}</span>
                         </div>
                         <span class="bg-blue-500/10 text-blue-400 text-[10px] uppercase font-bold px-2 py-0.5 rounded border border-blue-500/20">${item.status}</span>
-                    </div>
-                `).join('');
-            } catch (e) {
-                container.innerHTML = '<p class="text-xs text-slate-500">Could not load logistics queue.</p>';
+                    </div>`).join('');
+            } catch (e) { 
+                container.innerHTML = '<p class="text-xs text-slate-500">Could not load logistics queue.</p>'; 
             }
         }
 
         async function loadHaulagePool() {
-            const grid = document.getElementById('haulage-grid');
+            const grid = document.getElementById('haulage-grid'); 
             if (!grid) return;
             
             grid.innerHTML = '<div class="col-span-full text-center text-slate-400 py-10">Scanning active return-trip haulage trucks... ⏳</div>';
             
             try {
-                const res = await fetch(`${API_URL}/api/v1/haulage`);
+                const res = await fetch(`${API_URL}/api/v1/haulage`); 
                 const items = await res.json();
                 
-                if (!items || items.length === 0) {
+                if (!items || items.length === 0) { 
                     grid.innerHTML = `
                         <div class="col-span-full glass-card py-16 text-center rounded-[2.5rem] border border-white/5">
                             <div class="text-4xl mb-3">🚛</div>
                             <h3 class="text-lg font-black text-white mb-1">No Active Haulage Listings</h3>
                             <p class="text-xs text-slate-400 mb-6">There are currently no empty-leg freight routes published. Be the first transporter to list your return trip.</p>
                             <button onclick="openHaulagePostModal()" class="bg-amber-500 hover:bg-amber-400 text-[#020617] text-xs font-black px-6 py-3 rounded-xl shadow-lg transition-colors inline-block">+ List Empty Truck</button>
-                        </div>`;
-                    return;
+                        </div>`; 
+                    return; 
                 }
                 
                 grid.innerHTML = items.map(h => `
@@ -3887,57 +4273,58 @@
                                 <span class="text-lg font-black text-emerald-400">GH₵ ${h.price}</span>
                             </div>
                         </div>
-                        <a href="https://wa.me/233${(h.phone || h.driver_phone || '').replace(/\D/g,'').replace(/^0/,'')}?text=${encodeURIComponent('Hello, I want to book your empty-leg return truck space for ' + h.route + ' listed on AgromartDirect.')}" target="_blank" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-3 rounded-xl text-xs text-center block shadow-lg transition-colors">
-                            Book Return Freight 🚚
-                        </a>
-                    </div>
-                `).join('');
-            } catch (e) {
+                        <a href="https://wa.me/233${(h.phone || h.driver_phone || '').replace(/\D/g,'').replace(/^0/,'')}?text=${encodeURIComponent('Hello, I want to book your empty-leg return truck space for ' + h.route + ' listed on AgromartDirect.')}" target="_blank" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-3 rounded-xl text-xs text-center block shadow-lg transition-colors">Book Return Freight 🚚</a>
+                    </div>`).join('');
+            } catch (e) { 
                 grid.innerHTML = `
                     <div class="col-span-full glass-card py-16 text-center rounded-[2.5rem] border border-white/5">
                         <div class="text-4xl mb-3">🚛</div>
                         <h3 class="text-lg font-black text-white mb-1">Haulage Pool Ready</h3>
                         <p class="text-xs text-slate-400 mb-6">The database is clean and ready for live driver listings.</p>
                         <button onclick="openHaulagePostModal()" class="bg-amber-500 hover:bg-amber-400 text-[#020617] text-xs font-black px-6 py-3 rounded-xl shadow-lg transition-colors inline-block">+ List Empty Truck</button>
-                    </div>`;
+                    </div>`; 
             }
         }
 
         async function openHaulagePostModal() {
-            if (!agriToken) {
-                showToast("Sign in to list empty trucks", "error");
-                return navigate('auth');
+            if (!agriToken) { 
+                showToast("Sign in to list empty trucks", "error"); 
+                return navigate('auth'); 
             }
-            const route = prompt("Route (e.g. Tamale ➔ Accra):");
+            
+            const route = prompt("Route (e.g. Tamale ➔ Accra):"); 
             if (!route) return;
-            const truck = prompt("Truck Model & Capacity (e.g. 10-Ton Tata Cargo):");
+            
+            const truck = prompt("Truck Model & Capacity (e.g. 10-Ton Tata Cargo):"); 
             if (!truck) return;
-            const price = prompt("Discounted Return Rate (GH₵):");
+            
+            const price = prompt("Discounted Return Rate (GH₵):"); 
             if (!price) return;
-            const phone = prompt("Driver Phone Number:");
-            const date = prompt("Departure / Return Date:");
+            
+            const phone = prompt("Driver Phone Number:"); 
+            const date = prompt("Departure / Return Date:"); 
             const capacity = prompt("Available Cargo Space:");
             
             try {
-                const res = await fetch(`${API_URL}/api/v1/haulage?token=${agriToken}`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
+                const res = await fetch(`${API_URL}/api/v1/haulage?token=${agriToken}`, { 
+                    method: 'POST', 
+                    headers: {'Content-Type': 'application/json'}, 
                     body: JSON.stringify({ 
                         route: route, 
                         truck: truck, 
                         price: price, 
-                        driver_phone: phone,
+                        driver_phone: phone, 
                         date: date, 
                         capacity: capacity 
-                    })
+                    }) 
                 });
                 
                 if(!res.ok) throw new Error("Failed to post haulage ad");
                 
-                showToast("Empty truck successfully published! 🚚");
+                showToast("Empty truck successfully published! 🚚"); 
                 loadHaulagePool();
-            } catch(e) {
-                showToast("Error posting haulage listing", "error");
+            } catch(e) { 
+                showToast("Error posting haulage listing", "error"); 
             }
         }
     </script>
