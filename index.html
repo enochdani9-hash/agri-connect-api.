@@ -1955,7 +1955,74 @@
                     "guide": "<h3>Housing</h3><p>Small wire cages. Protect from drafts and predators.</p><h3>Production</h3><p>Start laying at 6 weeks. Require 14-16 hours of light.</p><h3>Feeding</h3><p>High protein crumble. Cannot eat large pellets.</p>"
                 }
             ]
-        };// --- 17. AGRIDOCTOR AI SCANNER LOGIC ---
+        };// --- AGRI TRAINER FUNCTIONS ---
+        function showTrainerSubCategory(cat) {
+            const grid = document.getElementById('trainer-items-grid'); 
+            grid.innerHTML = ''; 
+            
+            agriTrainerData[cat].forEach(item => { 
+                grid.innerHTML += `
+                    <div onclick="openTrainerGuide('${cat}', '${item.id}')" class="glass-card p-6 rounded-[2rem] cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 transition-all text-center shadow-xl">
+                        <div class="text-5xl mb-4">${item.icon}</div>
+                        <h4 class="text-lg font-black text-white">${item.title}</h4>
+                        <p class="text-xs text-slate-400 mt-2">${item.intro}</p>
+                    </div>`; 
+            }); 
+            
+            document.getElementById('trainer-categories').classList.add('hidden'); 
+            document.getElementById('trainer-items').classList.remove('hidden'); 
+        }
+        
+        async function openTrainerGuide(cat, itemId) {
+            const item = agriTrainerData[cat].find(i => i.id === itemId); 
+            if (!item) return; 
+            
+            document.getElementById('guide-icon').innerText = item.icon; 
+            document.getElementById('guide-title').innerText = item.title; 
+            document.getElementById('guide-intro').innerText = item.intro; 
+            
+            const contentContainer = document.getElementById('guide-content');
+            contentContainer.innerHTML = '<p class="text-emerald-400 font-bold animate-pulse">Fetching encyclopedia data...</p>';
+            
+            document.getElementById('trainer-items').classList.add('hidden'); 
+            document.getElementById('trainer-guide').classList.remove('hidden'); 
+            
+            try {
+                const searchStr = encodeURIComponent(item.wikiSearch || item.title);
+                const wikiRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${searchStr}`);
+                
+                if (wikiRes.ok) {
+                    const wikiData = await wikiRes.json();
+                    
+                    let wikiHtml = `<div class="bg-[#0f172a] p-6 rounded-3xl border border-slate-700/50 mb-8 flex flex-col md:flex-row gap-6 shadow-inner items-start" id="wiki-content">`;
+                    
+                    if (wikiData.thumbnail && wikiData.thumbnail.source) {
+                        wikiHtml += `<img src="${wikiData.thumbnail.source}" class="w-full md:w-48 h-48 object-cover rounded-2xl shadow-lg border border-slate-700 shrink-0">`;
+                    }
+                    
+                    wikiHtml += `
+                        <div>
+                            <h3 class="text-emerald-400 text-sm font-black uppercase tracking-wider mb-2 flex items-center gap-2">📖 Wikipedia Overview</h3>
+                            <p class="text-sm text-slate-300 leading-relaxed">${wikiData.extract}</p>
+                        </div>
+                    </div>`;
+                    
+                    contentContainer.innerHTML = wikiHtml + `<h3 class="text-xl font-black text-white mb-4 mt-8 border-b border-white/10 pb-2">🚜 Agromart Cultivation Guide</h3>` + item.guide;
+                } else {
+                    throw new Error("Wiki not found");
+                }
+            } catch (e) {
+                contentContainer.innerHTML = `<h3 class="text-xl font-black text-white mb-4 border-b border-white/10 pb-2">🚜 Agromart Cultivation Guide</h3>` + item.guide;
+            }
+        }
+        
+        function resetTrainer() {
+            document.getElementById('trainer-guide').classList.add('hidden'); 
+            document.getElementById('trainer-items').classList.add('hidden'); 
+            document.getElementById('trainer-categories').classList.remove('hidden'); 
+        }
+
+        // --- AGRIDOCTOR AI SCANNER LOGIC ---
         let currentAgriDoctorImageBase64 = null;
 
         function handleAgriDoctorUpload(event) {
@@ -3752,74 +3819,386 @@
             } catch (e) {} 
         }
 
-        // --- AGRI TRAINER FUNCTIONS ---
-        function showTrainerSubCategory(cat) {
-            const grid = document.getElementById('trainer-items-grid'); 
-            grid.innerHTML = ''; 
+        function generateWhatsAppFlyer(name, price, unit, imageSrc, phone) { 
+            const modal = document.getElementById('flyer-modal'); 
+            if (modal) { 
+                modal.classList.remove('hidden'); 
+                modal.classList.add('flex'); 
+            } 
             
-            agriTrainerData[cat].forEach(item => { 
-                grid.innerHTML += `
-                    <div onclick="openTrainerGuide('${cat}', '${item.id}')" class="glass-card p-6 rounded-[2rem] cursor-pointer hover:border-emerald-500/50 hover:-translate-y-1 transition-all text-center shadow-xl">
-                        <div class="text-5xl mb-4">${item.icon}</div>
-                        <h4 class="text-lg font-black text-white">${item.title}</h4>
-                        <p class="text-xs text-slate-400 mt-2">${item.intro}</p>
-                    </div>`; 
-            }); 
+            const canvas = document.getElementById('flyer-canvas'); 
+            if (!canvas) return; 
             
-            document.getElementById('trainer-categories').classList.add('hidden'); 
-            document.getElementById('trainer-items').classList.remove('hidden'); 
+            const ctx = canvas.getContext('2d'); 
+            canvas.width = 1080; 
+            canvas.height = 1080; 
+            
+            ctx.fillStyle = '#0f172a'; 
+            ctx.fillRect(0, 0, 1080, 1080); 
+            ctx.fillStyle = '#10b981'; 
+            ctx.fillRect(0, 0, 1080, 150); 
+            
+            ctx.fillStyle = '#ffffff'; 
+            ctx.font = 'bold 65px sans-serif'; 
+            ctx.textAlign = 'center'; 
+            ctx.fillText('🌾 AgromartDirect Ghana', 540, 105); 
+            
+            const img = new Image(); 
+            img.crossOrigin = "Anonymous"; 
+            
+            img.onload = () => { 
+                drawFlyerText(ctx, name, price, unit, phone); 
+                
+                ctx.save(); 
+                ctx.beginPath(); 
+                ctx.arc(540, 480, 200, 0, Math.PI * 2, true); 
+                ctx.closePath(); 
+                ctx.clip(); 
+                ctx.drawImage(img, 340, 280, 400, 400); 
+                ctx.restore(); 
+                
+                ctx.beginPath(); 
+                ctx.arc(540, 480, 200, 0, Math.PI * 2, true); 
+                ctx.lineWidth = 15; 
+                ctx.strokeStyle = '#34d399'; 
+                ctx.stroke(); 
+                
+                const preview = document.getElementById('flyer-preview'); 
+                if (preview) {
+                    preview.src = canvas.toDataURL('image/png'); 
+                }
+            }; 
+            
+            img.onerror = () => { 
+                drawFlyerText(ctx, name, price, unit, phone); 
+                
+                const preview = document.getElementById('flyer-preview'); 
+                if (preview) {
+                    preview.src = canvas.toDataURL('image/png'); 
+                }
+            }; 
+            
+            img.src = (imageSrc && imageSrc.startsWith('http')) ? imageSrc : 'https://ui-avatars.com/api/?name=Agromart+Direct&background=020617&color=10b981&size=400'; 
         }
         
-        async function openTrainerGuide(cat, itemId) {
-            const item = agriTrainerData[cat].find(i => i.id === itemId); 
-            if (!item) return; 
+        function drawFlyerText(ctx, name, price, unit, phone) { 
+            ctx.fillStyle = '#ffffff'; 
+            ctx.font = 'bold 75px sans-serif'; 
+            ctx.textAlign = 'center'; 
+            ctx.fillText(name.toUpperCase(), 540, 240); 
             
-            document.getElementById('guide-icon').innerText = item.icon; 
-            document.getElementById('guide-title').innerText = item.title; 
-            document.getElementById('guide-intro').innerText = item.intro; 
+            ctx.fillStyle = '#34d399'; 
+            ctx.font = 'bold 110px sans-serif'; 
+            ctx.fillText(`GH₵ ${price}`, 540, 770); 
             
-            const contentContainer = document.getElementById('guide-content');
-            contentContainer.innerHTML = '<p class="text-emerald-400 font-bold animate-pulse">Fetching encyclopedia data...</p>';
+            ctx.fillStyle = '#94a3b8'; 
+            ctx.font = '40px sans-serif'; 
+            ctx.fillText(`per ${unit}`, 540, 830); 
             
-            document.getElementById('trainer-items').classList.add('hidden'); 
-            document.getElementById('trainer-guide').classList.remove('hidden'); 
+            ctx.fillStyle = '#ffffff'; 
+            ctx.font = 'bold 50px sans-serif'; 
+            ctx.fillText(`📞 WhatsApp/Call: ${phone}`, 540, 920); 
             
-            try {
-                const searchStr = encodeURIComponent(item.wikiSearch || item.title);
-                const wikiRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${searchStr}`);
+            ctx.fillStyle = '#1e293b'; 
+            ctx.fillRect(0, 960, 1080, 120); 
+            
+            ctx.fillStyle = '#cbd5e1'; 
+            ctx.font = '35px sans-serif'; 
+            ctx.fillText('Securely traded via AgromartDirect. Buy Direct.', 540, 1035); 
+        }
+        
+        function closeFlyerModal() { 
+            const modal = document.getElementById('flyer-modal'); 
+            if (modal) { 
+                modal.classList.add('hidden'); 
+                modal.classList.remove('flex'); 
+            } 
+        }
+        
+        function downloadFlyer() { 
+            const canvas = document.getElementById('flyer-canvas'); 
+            if (!canvas) return; 
+            
+            const link = document.createElement('a'); 
+            link.download = 'AgromartDirect-Flyer.png'; 
+            link.href = canvas.toDataURL('image/png'); 
+            link.click(); 
+            
+            showToast("Flyer Downloaded!"); 
+            closeFlyerModal(); 
+        }
+
+        function openVideoStudio(adId) {
+            const ad = myLoadedAds.find(p => p.id === adId); 
+            if (!ad) return;
+            
+            document.getElementById('vs-ad-id').value = ad.id; 
+            document.getElementById('vs-ad-name').innerText = ad.product_name;
+            
+            document.getElementById('video-studio-setup').classList.remove('hidden'); 
+            document.getElementById('video-studio-processing').classList.add('hidden'); 
+            document.getElementById('video-studio-result').classList.add('hidden');
+            
+            const modal = document.getElementById('video-studio-modal'); 
+            modal.classList.remove('hidden'); 
+            modal.classList.add('flex');
+        }
+
+        function closeVideoStudio() { 
+            const modal = document.getElementById('video-studio-modal'); 
+            modal.classList.add('hidden'); 
+            modal.classList.remove('flex'); 
+        }
+
+        function generateAiVideo() {
+            const adId = parseInt(document.getElementById('vs-ad-id').value); 
+            const ad = myLoadedAds.find(p => p.id === adId); 
+            if (!ad) return;
+            
+            document.getElementById('video-studio-setup').classList.add('hidden'); 
+            document.getElementById('video-studio-processing').classList.remove('hidden');
+            
+            const statusText = document.getElementById('vs-status-text');
+            const generatedScript = `Fresh ${ad.product_name} available now in ${ad.neighborhood}! Secure it today for only ${ad.base_price_ghs} cedis per ${ad.unit}. Buy direct from the farmer on AgromartDirect. No middlemen, just great prices. Tap the link to order now!`;
+            
+            document.getElementById('vs-script-display').innerText = `"${generatedScript}"`;
+            
+            setTimeout(() => { statusText.innerText = "Generating Voiceover..."; }, 1500); 
+            setTimeout(() => { statusText.innerText = "Animating Photos..."; }, 3000); 
+            setTimeout(() => { statusText.innerText = "Rendering Video..."; }, 4500);
+            
+            setTimeout(() => { 
+                document.getElementById('video-studio-processing').classList.add('hidden'); 
+                document.getElementById('video-studio-result').classList.remove('hidden'); 
+                showToast("AI Video Ready! 🎬"); 
+            }, 6000);
+        }
+
+        function downloadAiVideo() { 
+            const link = document.createElement('a'); 
+            link.href = "https://www.w3schools.com/html/mov_bbb.mp4"; 
+            link.download = "Agromart-Promo.mp4"; 
+            
+            document.body.appendChild(link); 
+            link.click(); 
+            document.body.removeChild(link); 
+            
+            showToast("Video downloaded for WhatsApp!"); 
+            closeVideoStudio(); 
+        }
+
+        async function renderAdminVerificationsList() { 
+            const c = document.getElementById('admin-verifications-list'); 
+            if (!c) return; 
+            
+            try { 
+                const res = await fetch(`${API_URL}/api/v1/admin/verifications?token=${agriToken}`); 
+                const reqs = await res.json(); 
                 
-                if (wikiRes.ok) {
-                    const wikiData = await wikiRes.json();
-                    
-                    let wikiHtml = `<div class="bg-[#0f172a] p-6 rounded-3xl border border-slate-700/50 mb-8 flex flex-col md:flex-row gap-6 shadow-inner items-start" id="wiki-content">`;
-                    
-                    if (wikiData.thumbnail && wikiData.thumbnail.source) {
-                        wikiHtml += `<img src="${wikiData.thumbnail.source}" class="w-full md:w-48 h-48 object-cover rounded-2xl shadow-lg border border-slate-700 shrink-0">`;
-                    }
-                    
-                    wikiHtml += `
-                        <div>
-                            <h3 class="text-emerald-400 text-sm font-black uppercase tracking-wider mb-2 flex items-center gap-2">📖 Wikipedia Overview</h3>
-                            <p class="text-sm text-slate-300 leading-relaxed">${wikiData.extract}</p>
-                        </div>
-                    </div>`;
-                    
-                    contentContainer.innerHTML = wikiHtml + `<h3 class="text-xl font-black text-white mb-4 mt-8 border-b border-white/10 pb-2">🚜 Agromart Cultivation Guide</h3>` + item.guide;
-                } else {
-                    throw new Error("Wiki not found");
+                if (!reqs.length) {
+                    c.innerHTML = `<p class="text-xs text-slate-500">No pending paid verifications.</p>`;
+                    return;
                 }
-            } catch (e) {
-                contentContainer.innerHTML = `<h3 class="text-xl font-black text-white mb-4 border-b border-white/10 pb-2">🚜 Agromart Cultivation Guide</h3>` + item.guide;
+                 
+                c.innerHTML = reqs.map((u) => `
+                    <div class="glass-card p-3 rounded-xl flex justify-between items-center border border-amber-500/30 bg-amber-500/5 mb-2">
+                        <div>
+                            <p class="text-xs font-bold text-white">${u.name}</p>
+                            <p class="text-[10px] text-amber-400">${u.email}</p>
+                        </div>
+                        <button onclick="quickVerifyUser('${u.email}', null)" class="bg-emerald-600 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition-colors">✅ Approve</button>
+                    </div>`).join(''); 
+            } catch (e) {} 
+        }
+        
+        let adminPendingAdsCache = []; 
+        
+        async function renderAdminModQueue() { 
+            const c = document.getElementById('admin-mod-list'); 
+            if (!c) return; 
+            
+            try { 
+                const res = await fetch(`${API_URL}/api/v1/admin/pending-ads?token=${agriToken}`); 
+                const ads = await res.json(); 
+                adminPendingAdsCache = ads; 
+                
+                if (!ads.length) {
+                    c.innerHTML = `<p class="text-xs text-slate-500">No ads pending review.</p>`;
+                    return;
+                } 
+                
+                c.innerHTML = ads.map((ad) => `
+                    <div id="mod-ad-${ad.id}" class="glass-card p-4 rounded-xl flex flex-col sm:flex-row justify-between sm:items-center gap-3 border border-amber-500/30 mb-3 shadow-lg bg-[#020617]/50">
+                        <div>
+                            <p class="text-sm font-black text-white">${ad.product_name}</p>
+                            <p class="text-xs text-emerald-400 font-bold mb-1">GH₵${ad.base_price_ghs}</p>
+                            <p class="text-[10px] text-slate-400">By: ${ad.seller_name}</p>
+                        </div>
+                        <div class="flex gap-2 items-center shrink-0">
+                            <button onclick="previewAd(${ad.id}, true, adminPendingAdsCache.find(a=>a.id===${ad.id}))" class="text-slate-300 font-bold text-xs px-3 py-2 border border-slate-500/50 rounded-lg hover:bg-slate-800 transition-colors">👁️ Preview</button>
+                            <button onclick="approveAd('mod-ad-${ad.id}', ${ad.id})" class="bg-emerald-600 text-white font-bold text-xs px-4 py-2 rounded-lg hover:bg-emerald-500 transition-colors">Approve</button>
+                            <button onclick="rejectAd(${ad.id})" class="bg-rose-600 text-white font-bold text-xs px-4 py-2 rounded-lg hover:bg-rose-500 transition-colors">Reject</button>
+                        </div>
+                    </div>`).join(''); 
+            } catch (e) {} 
+        }
+
+        async function renderAdminAllAds() { 
+            const c = document.getElementById('admin-all-ads-list'); 
+            if (!c) return; 
+            
+            try { 
+                const res = await fetch(`${API_URL}/api/v1/admin/all-ads?token=${agriToken}`); 
+                const allAds = await res.json(); 
+                
+                if (!allAds.length) {
+                    c.innerHTML = `<p class="text-xs text-slate-500">No ads on platform.</p>`;
+                    return;
+                } 
+                
+                c.innerHTML = allAds.map((ad) => { 
+                    let statusColor = ad.status === 'approved' ? 'text-emerald-400' : (ad.status === 'pending' ? 'text-amber-400' : 'text-rose-400');
+                    return `
+                        <div id="admin-all-ad-${ad.id}" class="glass-card p-3 rounded-xl flex justify-between items-center border border-white/5 mb-2 hover:border-white/20 transition-colors">
+                            <div>
+                                <p class="text-xs font-bold text-white">${ad.product_name} <span class="${statusColor} text-[9px] uppercase tracking-wider ml-1 bg-slate-900 px-1 rounded">(${ad.status})</span></p>
+                                <p class="text-[10px] text-slate-400 mt-1">By: ${ad.seller_name} (${ad.phone_number})</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="adminBanUser('${ad.seller_email}')" class="bg-[#020617] text-rose-500 font-bold border border-rose-500/50 text-[10px] px-3 py-1.5 rounded-lg hover:bg-rose-900/30 transition-colors">🚫 Ban</button>
+                                <button onclick="adminDeleteAd(${ad.id})" class="bg-rose-600 text-white font-bold text-[10px] px-3 py-1.5 rounded-lg hover:bg-rose-500 transition-colors">🗑️ Delete</button>
+                            </div>
+                        </div>`; 
+                }).join(''); 
+            } catch (e) {} 
+        }
+        
+        async function renderAdminReports() { 
+            const c = document.getElementById('admin-reports-list'); 
+            if (!c) return; 
+            
+            try { 
+                const res = await fetch(`${API_URL}/api/v1/admin/reports?token=${agriToken}`); 
+                const reports = await res.json(); 
+                
+                if (!reports.length) {
+                    c.innerHTML = `<p class="text-xs text-slate-500">No scam reports submitted.</p>`;
+                    return;
+                }
+                 
+                c.innerHTML = reports.map((r) => `
+                    <div class="glass-card p-4 rounded-xl flex flex-col border border-rose-500/30 bg-rose-500/10 mb-3 shadow-lg">
+                        <p class="text-xs font-bold text-white">Reported: ${r.seller_name} <span class="text-slate-400 font-normal">(${r.seller_phone})</span></p>
+                        <p class="text-[11px] text-rose-400 mt-2 italic">"${r.reason}"</p>
+                        <p class="text-[9px] text-slate-500 mt-2 text-right">${r.time}</p>
+                    </div>`).join(''); 
+            } catch(e){} 
+        }
+
+        async function verifySeller() { 
+            const email = document.getElementById('verify-email-input').value.trim(); 
+            if (email) {
+                quickVerifyUser(email, null); 
             }
         }
         
-        function resetTrainer() {
-            document.getElementById('trainer-guide').classList.add('hidden'); 
-            document.getElementById('trainer-items').classList.add('hidden'); 
-            document.getElementById('trainer-categories').classList.remove('hidden'); 
+        async function quickVerifyUser(targetEmail, elId) { 
+            try { 
+                await fetch(`${API_URL}/api/v1/admin/verify?token=${agriToken}`, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify({ email: targetEmail }) 
+                }); 
+                
+                showToast("Verified!"); 
+                if (elId) {
+                    document.getElementById(elId)?.remove(); 
+                }
+                renderAdminVerificationsList(); 
+            } catch (err) {} 
+        }
+        
+        async function banSeller() { 
+            const email = document.getElementById('ban-email-input').value.trim(); 
+            if (email) {
+                adminBanUser(email); 
+            }
+        }
+        
+        async function adminBanUser(email) { 
+            if (!confirm(`Are you sure you want to ban ${email}?`)) return; 
+            
+            try { 
+                await fetch(`${API_URL}/api/v1/admin/ban-user?token=${agriToken}`, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify({ email: email }) 
+                }); 
+                
+                showToast("Banned"); 
+                renderAdminModQueue(); 
+                renderAdminAllAds(); 
+                loadMarketplaceGrid(); 
+            } catch (err) {} 
+        }
+        
+        async function adminDeleteAd(adId) { 
+            if (!confirm("Are you sure you want to delete this ad?")) return; 
+            
+            try { 
+                await fetch(`${API_URL}/api/v1/admin/products/${adId}?token=${agriToken}`, { 
+                    method: 'DELETE' 
+                }); 
+                
+                showToast("Deleted"); 
+                document.getElementById(`admin-all-ad-${adId}`)?.remove(); 
+                renderAdminModQueue(); 
+                loadMyAds(); 
+            } catch (err) {} 
+        }
+        
+        async function approveAd(elId, adId) { 
+            try { 
+                await fetch(`${API_URL}/api/v1/admin/approve-ad`, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify({ ad_id: adId, token: agriToken }) 
+                }); 
+                
+                document.getElementById(elId)?.remove(); 
+                showToast("✅ Approved!"); 
+                
+                loadMarketplaceGrid(); 
+                renderAdminAllAds(); 
+            } catch (err) {} 
+        }
+        
+        async function rejectAd(adId) { 
+            let reason = prompt("Reason for rejection?"); 
+            if (reason) { 
+                try { 
+                    await fetch(`${API_URL}/api/v1/admin/reject-ad`, { 
+                        method: 'POST', 
+                        headers: { 'Content-Type': 'application/json' }, 
+                        body: JSON.stringify({ token: agriToken, ad_id: adId, reason: reason }) 
+                    }); 
+                    
+                    document.getElementById(`mod-ad-${adId}`)?.remove(); 
+                    showToast("❌ Rejected."); 
+                    renderAdminAllAds(); 
+                } catch(e){} 
+            } 
         }
 
-        // --- PLATFORM TOOLS & EXTRAS ---
+        function payAgriProSubscription() { 
+            showToast("Pro subscriptions require external approval for this demo.", "error"); 
+        }
+        
+        function handlePricingBoostClick() { 
+            showToast("Navigating to ad selection...", "success"); 
+            navigate('dashboard'); 
+        }
+
         async function loadGrants() { 
             const grid = document.getElementById('grants-grid'); 
             if (!grid) return; 
@@ -3909,6 +4288,38 @@
                         </div>`; 
                 }).join(''); 
             } catch(e) {} 
+        }
+
+        function calculateFeedMix() {
+            const targetCP = parseFloat(document.getElementById('calc-target-cp').value); 
+            const proteinCP = parseFloat(document.getElementById('calc-protein-cp').value); 
+            const energyCP = parseFloat(document.getElementById('calc-energy-cp').value); 
+            const proteinPrice = parseFloat(document.getElementById('calc-protein-price').value); 
+            const energyPrice = parseFloat(document.getElementById('calc-energy-price').value);
+            
+            if (isNaN(targetCP) || isNaN(proteinCP) || isNaN(energyCP)) {
+                return showToast("Please fill in all CP % values", "error");
+            }
+            if (targetCP >= proteinCP || targetCP <= energyCP) {
+                return showToast("Target CP must be between your Protein and Energy CP values!", "error");
+            }
+            
+            const partsProtein = targetCP - energyCP; 
+            const partsEnergy = proteinCP - targetCP; 
+            const totalParts = partsProtein + partsEnergy;
+            
+            const kgProtein = (partsProtein / totalParts) * 50; 
+            const kgEnergy = (partsEnergy / totalParts) * 50; 
+            const totalCost = (kgProtein * (proteinPrice / 50)) + (kgEnergy * (energyPrice / 50));
+            
+            document.getElementById('res-protein-kg').innerText = kgProtein.toFixed(1) + " kg"; 
+            document.getElementById('res-energy-kg').innerText = kgEnergy.toFixed(1) + " kg"; 
+            document.getElementById('res-total-cost').innerText = "GH₵ " + totalCost.toFixed(2);
+            
+            document.getElementById('calc-results-empty').classList.add('hidden'); 
+            document.getElementById('calc-results-filled').classList.remove('hidden'); 
+            document.getElementById('calc-results-filled').classList.add('block'); 
+            showToast("Feed Formulation Calculated! ✨");
         }
 
         async function loadRentals() {
