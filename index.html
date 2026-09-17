@@ -233,332 +233,1216 @@
                 <button onclick="submitBuyerRequest()" id="rfq-submit-btn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-4 rounded-xl text-sm transition-colors shadow-lg">Publish Tender</button>
             </div>
         </div>
-    </div><div id="order-modal" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
-        <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-emerald-500/30">
-            <button onclick="closeOrderModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
-            <h3 class="text-2xl font-black text-white mb-5">🤝 Smart Deal Room</h3>
-            
-            <div class="bg-[#0f172a] p-4 rounded-2xl mb-4 border border-slate-700/80">
-                <div class="flex justify-between items-start mb-1">
-                    <p class="text-sm font-bold text-emerald-400 truncate" id="order-product-name"></p>
-                    <span class="text-[10px] text-slate-400">📍 <span id="order-seller-loc"></span></span>
-                </div>
-                <div class="flex justify-between items-baseline">
-                    <p class="text-xl font-black text-white">GH₵<span id="order-base-price">0</span> / <span id="order-unit"></span></p>
-                </div>
-            </div>
-            
-            <div class="flex gap-2 p-1 bg-slate-900 rounded-xl mb-4 border border-slate-800 text-xs font-bold">
-                <button onclick="switchOrderTab('direct')" id="tab-direct" class="flex-1 py-2 rounded-lg bg-emerald-600 text-white transition-all">Direct Order</button>
-                <button onclick="switchOrderTab('haggle')" id="tab-haggle" class="flex-1 py-2 rounded-lg text-slate-400 hover:text-white transition-all">Haggle</button>
-                <button onclick="switchOrderTab('group')" id="tab-group" class="flex-1 py-2 rounded-lg text-slate-400 hover:text-white transition-all">Group Split</button>
-            </div>
-            
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 mb-1.5">Quantity to Order</label>
-                    <input type="number" id="order-quantity" value="1" min="1" oninput="calculateOrderTotal()" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-white font-black outline-none focus:border-emerald-500">
-                </div>
-                
-                <div id="panel-haggle" class="hidden p-4 rounded-xl bg-emerald-950/20 border border-emerald-500/30 space-y-2">
-                    <div class="flex justify-between items-center text-xs">
-                        <span class="font-bold text-slate-300">Your Proposed Price:</span>
-                        <span class="text-sm font-black text-emerald-400">GH₵<span id="haggle-val-display">0</span></span>
-                    </div>
-                    <input type="range" id="haggle-slider" min="50" max="150" value="100" oninput="updateHaggleMeter()" class="w-full accent-emerald-500 cursor-pointer">
-                    <div class="text-[10px] text-right mt-1"><span id="haggle-feedback" class="font-bold text-amber-400">Fair Offer</span></div>
-                </div>
-                
-                <div id="panel-group" class="hidden p-4 rounded-xl bg-teal-950/20 border border-teal-500/30 space-y-2">
-                    <label class="block text-xs font-bold text-slate-300 mb-1.5">Split Between How Many People?</label>
-                    <input type="number" id="group-split-count" value="2" min="2" oninput="calculateOrderTotal()" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-2 text-white font-bold outline-none">
-                    <p class="text-[11px] text-teal-300 mt-2">Each member pays: <strong class="text-white text-xs">GH₵<span id="group-each-price">0</span></strong></p>
-                </div>
-                
-                <input type="text" id="order-destination" placeholder="Your Delivery Town / Drop-off Point" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:border-emerald-500">
-                
-                <div class="flex justify-between items-end pt-4 border-t border-white/10">
-                    <span class="text-sm font-bold text-white">Estimated Deal Total:</span>
-                    <span class="text-2xl font-black text-emerald-400">GH₵<span id="order-total-price">0</span></span>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-2 pt-2">
-                    <button onclick="executeDealWhatsApp()" class="bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-3 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors">💬 WhatsApp Deal</button>
-                    <button onclick="executeCallFarmer()" class="bg-blue-500/10 hover:bg-blue-500 text-blue-400 hover:text-white font-black py-3 rounded-xl text-xs border border-blue-500/30 flex items-center justify-center gap-1.5 transition-colors">📞 Call Farmer</button>
-                </div>
-                <div class="text-center pt-2">
-                    <button onclick="triggerScamReportFromOrder()" class="text-[10px] text-slate-500 hover:text-rose-400 underline transition-colors">🚩 Report suspicious listing or mismatched details</button>
-                </div>
-            </div>
-        </div>
+    </div><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHRIS-G SWISS BELTS | Luxury Swiss Craftsmanship</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #050505;
+            --surface: #0e0e0e;
+            --surface-elevated: #161616;
+            --glass: rgba(14, 14, 14, 0.88);
+            --border: rgba(255, 255, 255, 0.07);
+            --border-hover: rgba(255, 255, 255, 0.18);
+            --primary: #ffffff;
+            --muted: #98989f;
+            --accent: #E53935;
+            --whatsapp: #25D366;
+            --gold: #D4AF37;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Ambient luxury glow */
+        .ambient-glow {
+            position: fixed;
+            top: -120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 700px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.07) 0%, rgba(229, 57, 53, 0.04) 40%, rgba(0,0,0,0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Top Promo Banner */
+        .promo-banner {
+            background: linear-gradient(135deg, #b8860b, #d4af37, #aa771c);
+            color: #000;
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-align: center;
+            padding: 10px 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            position: relative;
+            z-index: 95;
+            box-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Navigation Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-name {
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #ffffff 40%, #888888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .badge-delivery {
+            display: none;
+            background: rgba(37, 211, 102, 0.08);
+            border: 1px solid rgba(37, 211, 102, 0.2);
+            color: var(--whatsapp);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+        @media(min-width: 480px) { .badge-delivery { display: inline-block; } }
+
+        /* Cart Launcher Button */
+        .cart-trigger {
+            position: relative;
+            background: var(--surface-elevated);
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 9px 16px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+        }
+        .cart-trigger:hover { border-color: var(--border-hover); background: #202020; }
+        .cart-count {
+            background: var(--accent);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 800;
+            border-radius: 20px;
+            padding: 2px 7px;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        /* Hero Slideshow Carousel Styles */
+        .hero-slider-container {
+            max-width: 760px;
+            margin: 25px auto 10px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .slideshow {
+            position: relative;
+            width: 100%;
+            height: 240px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+            background: #111;
+        }
+        @media(min-width: 600px) { .slideshow { height: 340px; } }
+        
+        .slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+        .slide.active { opacity: 1; }
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .slide-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+            padding: 20px 20px 14px;
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* Bold Guarantee Trust Banner */
+        .trust-banner {
+            max-width: 760px;
+            margin: 15px auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .trust-card {
+            background: linear-gradient(135deg, #161616, #0e0e0e);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 14px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .trust-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .trust-item span.highlight {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--gold);
+            letter-spacing: 0.3px;
+        }
+        .trust-item span.sub {
+            font-size: 0.72rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .trust-divider {
+            width: 1px;
+            height: 30px;
+            background: var(--border);
+        }
+
+        /* Hero Title Section */
+        .hero {
+            text-align: center;
+            padding: 20px 20px 15px;
+            position: relative;
+            z-index: 1;
+        }
+        .hero h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+            background: linear-gradient(180deg, #fff 20%, #bbb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            color: var(--muted);
+            font-size: 0.88rem;
+            max-width: 460px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* Product Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+            gap: 18px;
+            padding: 20px;
+            max-width: 760px;
+            margin: 0 auto 90px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: var(--border-hover);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+        }
+
+        .img-wrap {
+            position: relative;
+            width: 100%;
+            height: 190px;
+            background: #121212;
+            overflow: hidden;
+        }
+        .img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .card:hover .img-wrap img { transform: scale(1.06); }
+
+        .discount-pill {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--accent);
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 4px 8px;
+            border-radius: 6px;
+            z-index: 2;
+            box-shadow: 0 4px 12px rgba(229, 57, 53, 0.3);
+        }
+
+        .stock-pill {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #e2e2e7;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .stock-pill span.dot {
+            width: 5px;
+            height: 5px;
+            background: var(--whatsapp);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--whatsapp);
+        }
+
+        .card-info {
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+        .card-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #f2f2f7;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .price-line {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .price-now {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .price-was {
+            font-size: 0.75rem;
+            color: var(--muted);
+            text-decoration: line-through;
+        }
+
+        .card-actions {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 8px;
+        }
+        .btn-view {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: #d1d1d6;
+            padding: 10px 0;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .btn-view:hover { background: rgba(255, 255, 255, 0.1); color: #fff; border-color: rgba(255,255,255,0.2); }
+
+        .btn-add {
+            background: #ffffff;
+            border: none;
+            color: #000;
+            padding: 10px 0;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            text-align: center;
+        }
+        .btn-add:hover { background: #e0e0e0; }
+        .btn-add:active { transform: scale(0.97); }
+
+        /* Floating WhatsApp Quick-Chat */
+        .wa-float {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--whatsapp);
+            color: #fff;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+            z-index: 85;
+            text-decoration: none;
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .wa-float:hover { transform: scale(1.1); }
+        .wa-float svg { width: 30px; height: 30px; fill: currentColor; }
+
+        /* Subdued order notification ticker (every 3 mins) */
+        .order-ticker {
+            position: fixed;
+            bottom: 24px;
+            left: 20px;
+            background: rgba(14, 14, 14, 0.94);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px 16px;
+            border-radius: 14px;
+            z-index: 80;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.7);
+            max-width: 320px;
+            transform: translateY(140%);
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+        }
+        .order-ticker.show { transform: translateY(0); opacity: 1; }
+        .ticker-icon {
+            width: 34px;
+            height: 34px;
+            background: rgba(37, 211, 102, 0.12);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--whatsapp);
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            border: 1px solid rgba(37, 211, 102, 0.25);
+        }
+        .ticker-text { font-size: 0.78rem; color: #a1a1a6; line-height: 1.35; }
+        .ticker-text strong { color: #fff; display: block; font-size: 0.82rem; margin-bottom: 1px; }
+
+        /* General Modal Backdrop */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .modal-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 440px;
+            overflow: hidden;
+            position: relative;
+            animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+        }
+        @keyframes modalPop {
+            0% { transform: scale(0.94); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .btn-close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .btn-close:hover { background: rgba(255,255,255,0.2); }
+
+        .preview-img-box { width: 100%; height: 280px; background: #121212; position: relative; }
+        .preview-img-box img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .gallery-thumbs { display: flex; gap: 8px; padding: 12px 20px 0; overflow-x: auto; }
+        .thumb-img {
+            width: 52px; height: 52px; border-radius: 10px; object-fit: cover; cursor: pointer;
+            border: 2px solid transparent; opacity: 0.5; transition: all 0.2s; flex-shrink: 0; background: #181818;
+        }
+        .thumb-img.active { border-color: #fff; opacity: 1; transform: scale(1.05); }
+
+        .preview-content { padding: 22px 24px 26px; }
+        .preview-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+        .preview-title { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.3px; }
+        .preview-stock {
+            color: var(--whatsapp);
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: rgba(37, 211, 102, 0.1);
+            border: 1px solid rgba(37, 211, 102, 0.25);
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-top: 4px;
+        }
+        .preview-desc { font-size: 0.86rem; color: var(--muted); line-height: 1.6; margin-bottom: 22px; }
+
+        .qty-picker {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 22px;
+            background: var(--surface-elevated);
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        .qty-picker label { font-size: 0.75rem; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.8px; }
+        .qty-controls {
+            display: inline-flex;
+            align-items: center;
+            background: #0a0a0a;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .qty-btn {
+            background: transparent;
+            border: none;
+            color: #fff;
+            width: 34px;
+            height: 34px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .qty-btn:hover { background: rgba(255,255,255,0.08); }
+        .qty-num { width: 34px; text-align: center; font-weight: 700; font-size: 0.95rem; }
+
+        /* Cart Drawer System */
+        .cart-drawer-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 250;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 420px;
+            background: #0d0d0d;
+            border-left: 1px solid var(--border);
+            z-index: 260;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: -20px 0 50px rgba(0,0,0,0.8);
+        }
+        .cart-drawer.open { transform: translateX(0); }
+
+        .cart-top {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .cart-top h3 { font-size: 1.15rem; font-weight: 800; letter-spacing: 0.5px; }
+
+        .cart-items-scroll {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 18px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .cart-empty-state {
+            text-align: center;
+            padding: 70px 20px;
+            color: var(--muted);
+        }
+        .cart-empty-state svg { width: 48px; height: 48px; stroke: #444; margin-bottom: 14px; }
+
+        .cart-item {
+            display: flex;
+            gap: 14px;
+            background: var(--surface-elevated);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 12px;
+            align-items: center;
+        }
+        .cart-item img {
+            width: 65px;
+            height: 65px;
+            border-radius: 10px;
+            object-fit: cover;
+            background: #000;
+        }
+        .cart-item-details { flex-grow: 1; }
+        .cart-item-name { font-size: 0.88rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+        .cart-item-price { font-size: 0.82rem; color: var(--gold); font-weight: 700; }
+        
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .mini-btn {
+            background: rgba(255,255,255,0.08);
+            border: none;
+            color: #fff;
+            width: 26px;
+            height: 26px;
+            border-radius: 7px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s;
+        }
+        .mini-btn:hover { background: rgba(255,255,255,0.18); }
+
+        .cart-footer {
+            border-top: 1px solid var(--border);
+            padding: 20px 24px;
+            background: #080808;
+        }
+
+        .subtotal-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+        .subtotal-row span { font-size: 0.9rem; color: var(--muted); }
+        .subtotal-row strong { font-size: 1.3rem; font-weight: 800; color: #fff; }
+
+        .checkout-fields {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+        .checkout-fields input {
+            background: #141414;
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 13px 16px;
+            border-radius: 12px;
+            font-size: 0.88rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .checkout-fields input:focus { border-color: rgba(255,255,255,0.4); background: #1a1a1a; }
+
+        .btn-checkout {
+            background: var(--whatsapp);
+            border: none;
+            color: #fff;
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.35);
+            transition: opacity 0.2s, transform 0.1s;
+        }
+        .btn-checkout:hover { opacity: 0.93; }
+        .btn-checkout:active { transform: scale(0.98); }
+        .btn-checkout:disabled { opacity: 0.5; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-glow"></div>
+
+    <!-- Huge Top Promo Banner -->
+    <div class="promo-banner">
+        🔥 Buy 1 Belt & Get FREE Delivery Across Accra + FREE Key Holder & Beautiful Packaging!
     </div>
 
-    <div id="flyer-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
-        <div class="glass-card w-full max-w-md p-6 rounded-[2.5rem] text-center border border-emerald-500/30">
-            <button onclick="closeFlyerModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl font-bold">✕</button>
-            <h3 class="text-xl font-black text-white mb-2">WhatsApp Status Flyer 📲</h3>
-            <p class="text-xs text-slate-400 mb-4">Auto-rendered flyer with pricing & phone contact embedded.</p>
-            <canvas id="flyer-canvas" class="hidden"></canvas>
-            <img id="flyer-preview" src="" class="w-full max-w-[300px] rounded-2xl mb-6 mx-auto shadow-2xl border border-slate-700">
-            <button onclick="downloadFlyer()" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-4 rounded-xl text-sm transition-colors shadow-lg">Download Flyer PNG</button>
-        </div>
-    </div>
-
-    <div id="video-studio-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
-        <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-purple-500/30">
-            <button onclick="closeVideoStudio()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
-            <div class="flex items-center gap-3 mb-6">
-                <span class="text-4xl">🎬</span>
-                <div>
-                    <h3 class="text-2xl font-black text-white">AI Status Video Studio</h3>
-                    <p class="text-[10px] text-purple-400 font-bold uppercase tracking-wider">Automated Prompt-to-Video Engine</p>
-                </div>
-            </div>
-            
-            <div id="video-studio-setup">
-                <div class="bg-[#0f172a] p-4 rounded-2xl border border-slate-700/80 mb-4">
-                    <p class="text-xs text-slate-400 mb-1">Target Produce Listing:</p>
-                    <p id="vs-ad-name" class="font-black text-white text-lg">...</p>
-                    <input type="hidden" id="vs-ad-id">
-                </div>
-                
-                <div class="space-y-4 mb-6">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-400 mb-1.5">Voiceover Narrative Style</label>
-                        <select id="vs-voice" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-purple-500">
-                            <option value="energetic">Energetic Ghanaian Market Announcer</option>
-                            <option value="professional">Corporate Agribusiness Exporter</option>
-                            <option value="calm">Calm, Fresh & Organic Focus</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <button onclick="generateAiVideo()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black py-4 rounded-xl text-sm transition-colors shadow-lg flex items-center justify-center gap-2"><span>✨ Generate Video (1 Free Credit)</span></button>
-            </div>
-
-            <div id="video-studio-processing" class="hidden text-center py-8">
-                <div class="w-16 h-16 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin mx-auto mb-6"></div>
-                <h3 class="text-lg font-black text-white mb-2" id="vs-status-text">Writing Script...</h3>
-                <p class="text-xs text-slate-400">Our model is assembling product images, generating speech, and rendering MP4 frames.</p>
-            </div>
-
-            <div id="video-studio-result" class="hidden text-center">
-                <video id="vs-final-video" class="w-full rounded-2xl mb-6 shadow-2xl border border-slate-700" controls playsinline>
-                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-                </video>
-                <div class="bg-slate-900 p-4 rounded-xl mb-6 text-left border border-slate-800">
-                    <p class="text-[10px] text-slate-500 font-bold uppercase mb-1">Generated Voiceover Script:</p>
-                    <p id="vs-script-display" class="text-xs text-slate-300 italic">...</p>
-                </div>
-                <button onclick="downloadAiVideo()" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-4 rounded-xl text-sm transition-colors shadow-lg mb-2">Download for WhatsApp Status</button>
-                <button onclick="closeVideoStudio()" class="w-full bg-slate-800 text-white font-bold py-3 rounded-xl text-xs hover:bg-slate-700 transition-colors">Close Studio</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- SELLER PROFILE & REVIEWS MODAL -->
-    <div id="seller-profile-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[140] hidden items-center justify-center p-4 md:p-8 overflow-y-auto">
-        <div class="glass-card w-full max-w-4xl p-8 rounded-[2.5rem] relative border border-emerald-500/30 my-auto shadow-2xl">
-            <button onclick="closeSellerProfile()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl z-10">✕</button>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Seller Details Column -->
-                <div class="text-center lg:text-left border-b lg:border-b-0 lg:border-r border-white/10 pb-6 lg:pb-0 lg:pr-8 flex flex-col justify-between">
-                    <div>
-                        <div id="seller-modal-avatar" class="w-24 h-24 rounded-full bg-slate-800 border-2 border-emerald-500 mx-auto lg:mx-0 mb-4 bg-cover bg-center flex items-center justify-center text-4xl shadow-xl">👨🏽‍🌾</div>
-                        <h3 class="text-2xl font-black text-white mb-1" id="seller-modal-name">Farmer Name</h3>
-                        <div id="seller-modal-badge" class="mb-4 inline-flex items-center gap-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-black uppercase px-3 py-1 rounded-full">✓ Verified Seller</div>
-                        
-                        <div class="bg-[#0f172a] p-4 rounded-2xl border border-slate-700/80 mb-6 text-left space-y-2 text-xs">
-                            <p class="text-slate-300">📞 Contact: <strong class="text-white" id="seller-modal-phone">...</strong></p>
-                            <p class="text-slate-300">📅 Member Since: <strong class="text-white" id="seller-modal-since">...</strong></p>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <div class="flex gap-2 mb-3">
-                            <a id="seller-modal-call-btn" href="#" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl text-xs transition-colors flex items-center justify-center gap-1">📞 Call</a>
-                            <a id="seller-modal-wa-btn" href="#" target="_blank" class="flex-1 bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-bold py-3.5 rounded-xl text-xs transition-colors flex items-center justify-center gap-1">💬 WhatsApp</a>
-                        </div>
-                        <button onclick="triggerReportFromProfile()" class="text-[10px] text-rose-400/80 hover:text-rose-400 underline transition-colors block mx-auto lg:mx-0">🚩 Report Suspicious Seller</button>
-                    </div>
-                </div>
-
-                <!-- Right Column: Ratings & All Seller Ads -->
-                <div class="lg:col-span-2 space-y-6">
-                    <!-- Reviews & Ratings Block -->
-                    <div>
-                        <div class="flex items-center justify-between mb-3">
-                            <h4 class="text-base font-black text-white flex items-center gap-2">⭐ Ratings & Reviews</h4>
-                            <span id="seller-avg-rating" class="text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-lg">Loading...</span>
-                        </div>
-                        <div id="seller-reviews-list" class="bg-[#0f172a]/60 p-5 rounded-2xl border border-slate-700/50 space-y-3 max-h-[250px] overflow-y-auto"></div>
-                        <div class="mt-3 text-right">
-                            <button onclick="openLeaveReviewModal()" class="text-[11px] font-bold bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg transition-colors shadow-lg">+ Leave a Review</button>
-                        </div>
-                    </div>
-
-                    <!-- Active Ads by this Seller -->
-                    <div>
-                        <h4 class="text-base font-black text-white mb-3">🛒 Active Produce from this Farm</h4>
-                        <div id="seller-modal-ads-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[260px] overflow-y-auto pr-1"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- LEAVE REVIEW MODAL -->
-    <div id="leave-review-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
-        <div class="glass-card w-full max-w-md p-8 rounded-[2.5rem] relative border border-emerald-500/30 text-left">
-            <button onclick="closeLeaveReviewModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
-            <h3 class="text-xl font-black text-white mb-2">Rate this Seller</h3>
-            <p class="text-xs text-slate-400 mb-6">Leave an honest review to help other buyers on the platform.</p>
-            
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">Star Rating</label>
-                    <select id="review-rating" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-amber-400 font-bold outline-none focus:border-emerald-500">
-                        <option value="5">⭐⭐⭐⭐⭐ (Excellent)</option>
-                        <option value="4">⭐⭐⭐⭐ (Good)</option>
-                        <option value="3">⭐⭐⭐ (Average)</option>
-                        <option value="2">⭐⭐ (Poor)</option>
-                        <option value="1">⭐ (Terrible)</option>
-                    </select>
-                </div>
-                
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">Your Feedback</label>
-                    <textarea id="review-comment" rows="3" placeholder="Describe your experience buying from this farmer..." class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-emerald-500"></textarea>
-                </div>
-                
-                <button id="submit-review-btn" onclick="submitSellerReview()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black py-4 rounded-xl text-sm transition-colors shadow-lg">Submit Review</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- REPORT MODAL -->
-    <div id="report-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
-        <div class="glass-card w-full max-w-md p-8 rounded-[2.5rem] relative border border-rose-500/30 text-left">
-            <button onclick="closeReportModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
-            <h3 class="text-xl font-black text-white mb-2">Submit Incident Report</h3>
-            <div class="space-y-4">
-                <input type="text" id="report-target-name" readonly class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-slate-300">
-                <input type="hidden" id="report-target-phone">
-                <select id="report-reason" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white">
-                    <option value="Deposit Demanded Without Produce">Demanded upfront MoMo deposit then vanished</option>
-                    <option value="Price Bait and Switch">Price on arrival differed drastically</option>
-                    <option value="Poor Produce Quality / Disease">Produce was rotten or spoiled</option>
-                </select>
-                <textarea id="report-details" rows="3" placeholder="Provide transaction details..." class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white"></textarea>
-                <button onclick="submitScamReport()" class="w-full bg-rose-600 text-white font-black py-4 rounded-xl text-sm shadow-lg">Submit Incident Report</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- HEADER & NAVIGATION -->
-    <header class="bg-[#020617]/70 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
-                <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-xl flex items-center justify-center text-lg shadow-lg group-hover:scale-105 transition-transform">🌾</div>
-                <div><h1 class="text-xl font-black text-white group-hover:text-emerald-400 transition-colors">AgromartDirect</h1></div>
-            </div>
-            
-            <div class="flex gap-2 items-center flex-wrap justify-end">
-                <button onclick="navigate('haulage')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-amber-500/20 transition-colors flex items-center gap-1">🚚 Haulage Pool</button>
-                <button onclick="navigate('trainer')" class="text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-purple-500/20 transition-colors flex items-center gap-1">📚 Agri Trainer</button>
-                <button onclick="navigate('agridoctor')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-rose-500/20 transition-colors flex items-center gap-1">🩺 AgriDoctor AI</button>
-                <button onclick="navigate('grants')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-amber-500/20 transition-colors flex items-center gap-1">🏆 Agri-Grants</button>
-                <button onclick="navigate('farm-manager')" class="text-xs font-bold text-blue-400 border border-blue-500/30 bg-blue-500/10 px-3 py-1.5 rounded-lg hidden md:block hover:bg-blue-500/20 transition-colors flex items-center gap-1">💼 Farm Manager</button>
-                <button onclick="navigate('intel')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-rose-500/20 transition-colors flex items-center gap-1">📊 Market Intel</button>
-                <button onclick="navigate('calculator')" class="text-xs font-bold text-teal-400 border border-teal-500/30 bg-teal-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-teal-500/20 transition-colors flex items-center gap-1">🧮 Feed Calc</button>
-                <button onclick="navigate('rentals')" class="text-xs font-bold text-amber-300 border border-amber-400/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-amber-500/20 transition-colors flex items-center gap-1">🚜 Machinery Hire</button>
-                <button onclick="navigate('waste')" class="text-xs font-bold text-emerald-300 border border-emerald-400/30 bg-emerald-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-emerald-500/20 transition-colors flex items-center gap-1">♻️ Eco-Loop</button>
-                
-                <button id="pwa-install-btn" onclick="triggerPwaInstall()" class="hidden bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold px-3 py-1.5 rounded-lg text-xs hover:bg-emerald-500/30 transition-colors">📲 Install App</button>
-                <button onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center bg-white/5 border border-white/10 rounded-xl text-xs text-slate-300 hover:bg-white/10 transition-colors">☀️</button>
-                <button id="nav-login-btn" onclick="navigate('auth')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 transition-colors">Sign In</button>
-                
-                <div id="nav-user-profile" class="hidden items-center gap-3 bg-white/5 px-4 py-1.5 rounded-full border border-white/10">
-                    <span id="nav-user-name" class="text-xs font-bold text-emerald-400 hidden md:block"></span>
-                    <button onclick="navigate('dashboard')" class="text-xs font-black text-white hover:text-emerald-400 transition-colors">Dashboard</button>
-                    <div class="w-px h-3 bg-white/20"></div>
-                    <button onclick="logout()" class="text-xs text-rose-400 font-bold hover:text-rose-300 transition-colors">Logout</button>
-                </div>
-                
-                <button onclick="requireAuthToPost()" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white text-xs font-black px-4 sm:px-5 py-2.5 rounded-xl shadow-lg transition-colors sm:ml-2">Post Ad</button>
-            </div>
+    <!-- Header Navigation -->
+    <header>
+        <div class="brand-name">CHRIS-G SWISS</div>
+        <div class="header-actions">
+            <div class="badge-delivery">Pay on Delivery • Accra</div>
+            <button class="cart-trigger" onclick="openCart()">
+                Cart <span class="cart-count" id="cartCountBadge">0</span>
+            </button>
         </div>
     </header>
 
-    <div class="md:hidden bg-[#020617] border-b border-white/10 px-4 py-3 overflow-x-auto whitespace-nowrap flex gap-3 z-40">
-        <button onclick="navigate('haulage')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0">🚚 Haulage Pool</button>
-        <button onclick="navigate('trainer')" class="text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-4 py-2 rounded-xl shrink-0">📚 Agri Trainer</button>
-        <button onclick="navigate('agridoctor')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-4 py-2 rounded-xl shrink-0">🩺 AgriDoctor AI</button>
-        <button onclick="navigate('grants')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0">🏆 Agri-Grants</button>
-        <button onclick="navigate('farm-manager')" class="text-xs font-bold text-blue-400 border border-blue-500/30 bg-blue-500/10 px-4 py-2 rounded-xl shrink-0">💼 Farm Manager</button>
-        <button onclick="navigate('intel')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-4 py-2 rounded-xl shrink-0">📊 Market Intel</button>
-        <button onclick="navigate('calculator')" class="text-xs font-bold text-teal-400 border border-teal-500/30 bg-teal-500/10 px-4 py-2 rounded-xl shrink-0">🧮 Feed Calc</button>
-        <button onclick="navigate('rentals')" class="text-xs font-bold text-amber-300 border border-amber-400/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0">🚜 Machinery Hire</button>
-        <button onclick="navigate('waste')" class="text-xs font-bold text-emerald-300 border border-emerald-400/30 bg-emerald-500/10 px-4 py-2 rounded-xl shrink-0">♻️ Eco-Loop</button>
-    </div>
-
-    <!-- LIVE TICKER BAR -->
-    <div class="bg-[#020617] border-b border-white/5 relative z-40 hidden md:block overflow-hidden shadow-inner">
-        <div class="max-w-7xl mx-auto flex items-center pl-6">
-            <div class="bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider px-4 py-2 rounded-r-lg z-10 shrink-0 flex items-center gap-2 shadow-lg">
-                <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> LIVE GHANA AVG
+    <!-- Hero Slideshow Carousel -->
+    <div class="hero-slider-container">
+        <div class="slideshow" id="heroSlideshow">
+            <div class="slide active">
+                <img src="Screenshot 2026-09-10 234039.png" alt="Chris-G Swiss Keyholders">
+                <div class="slide-caption">Complimentary Luxury Key Holder with Every Order</div>
             </div>
-            <div class="overflow-hidden flex-grow relative ml-4 h-8 flex items-center mask-edges">
-                <div class="flex gap-8 animate-marquee whitespace-nowrap" id="market-ticker">
-                    <span class="text-xs text-slate-400 font-medium">Gathering real-time nationwide prices...</span>
-                </div>
+            <div class="slide">
+                <img src="Screenshot 2026-09-10 234156.png" alt="Keyholders Collection">
+                <div class="slide-caption">Genuine Embossed Leather Keyholders</div>
+            </div>
+            <div class="slide">
+                <img src="packaging.jpg" alt="Beautiful Packaging Box">
+                <div class="slide-caption">Exquisite Gift Packaging Included Free</div>
             </div>
         </div>
     </div>
 
-    <!-- MAIN APP VIEWS -->
-    <main class="max-w-7xl mx-auto px-6 py-8 flex-grow w-full relative z-10">
-        
-        <!-- HOME VIEW -->
-        <div id="view-home" class="fade-in space-y-16">
-            <div class="text-center py-20 px-4 glass-card rounded-[2.5rem] shadow-2xl border-t border-white/10 relative overflow-hidden">
-                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
-                <div class="text-6xl mb-6 floating-element inline-block">🚜</div>
-                <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 mb-6 relative z-10 tracking-tight">The Farmers Market,<br>Now Online.</h1>
-                
-                <div class="max-w-4xl mx-auto relative z-10">
-                    <div class="flex flex-col md:flex-row bg-[#020617]/50 rounded-3xl border border-slate-700/80 shadow-inner p-2 gap-2">
-                        <div class="relative w-full md:w-1/3 flex items-center bg-[#0f172a] rounded-2xl border border-slate-700/50">
-                            <span class="absolute left-4 text-emerald-500 z-10">🌍</span>
-                            <select id="home-region" class="w-full bg-transparent text-sm text-white font-bold pl-10 pr-4 py-4 outline-none cursor-pointer appearance-none rounded-2xl">
-                                <option value="All Regions">All Regions (Ghana)</option>
-                                <option value="Ahafo">Ahafo Region</option>
-                                <option value="Ashanti">Ashanti Region</option>
-                                <option value="Bono">Bono Region</option>
-                                <option value="Bono East">Bono East Region</option>
-                                <option value="Central">Central Region</option>
-                                <option value="Eastern">Eastern Region</option>
-                                <option value="Greater Accra">Greater Accra Region</option>
-                                <option value="North East">North East Region</option>
-                                <option value="Northern">Northern Region</option>
-                                <option value="Oti">Oti Region</option>
-                                <option value="Savannah">Savannah Region</option>
-                                <option value="Upper East">Upper East Region</option>
-                                <option value="Upper West">Upper West Region</option>
-                                <option value="Volta">Volta Region</option>
-                                <option value="Western">Western Region</option>
-                                <option value="Western North">Western North Region</option>
-                            </select>
+    <!-- Bold 5-Year Guarantee Trust Banner -->
+    <div class="trust-banner">
+        <div class="trust-card">
+            <div class="trust-item">
+                <span class="highlight">🛡️ 5-YEAR GUARANTEE</span>
+                <span class="sub">Certified Swiss Quality</span>
+            </div>
+            <div class="trust-divider"></div>
+            <div class="trust-item">
+                <span class="highlight">🚚 PAY ON DELIVERY</span>
+                <span class="sub">Fast Accra Shipping</span>
+            </div>
+            <div class="trust-divider"></div>
+            <div class="trust-item">
+                <span class="highlight">🎁 100% GENUINE</span>
+                <span class="sub">Full-Grain Leather</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Title -->
+    <section class="hero">
+        <h2>Curated Swiss Belts</h2>
+        <p>Ultra-durable automatic buckles and genuine leather. Select your favorites, choose your quantity, and pay upon physical arrival.</p>
+    </section>
+
+    <!-- Product Grid -->
+    <main class="grid" id="beltContainer"></main>
+
+    <!-- Social Proof Ticker (Fires every 3 minutes) -->
+    <div class="order-ticker" id="orderTicker">
+        <div class="ticker-icon">✓</div>
+        <div class="ticker-text">
+            <strong id="tickerHeader">New order in East Legon</strong>
+            <span id="tickerBody">Kwame just ordered a Classic White</span>
+        </div>
+    </div>
+
+    <!-- Floating WhatsApp Customer Service -->
+    <a href="https://wa.me/233232669521?text=Hello%20Chris-G%20Swiss%20Belts,%20I'm%20inquiring%20about%20your%20belts%20in%20Accra." 
+       class="wa-float" 
+       target="_blank" 
+       title="Inquire on WhatsApp (+233 23 266 9521)">
+        <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+    </a>
+
+    <!-- Product Preview Modal -->
+    <div class="modal-overlay" id="previewModal">
+        <div class="modal-box">
+            <button class="btn-close" onclick="closePreview()">&times;</button>
+            <div class="preview-img-box">
+                <img id="activePreviewImg" src="" alt="Belt preview">
+            </div>
+            <div class="gallery-thumbs" id="galleryThumbsContainer"></div>
+
+            <div class="preview-content">
+                <div class="preview-header">
+                    <div>
+                        <div class="preview-title" id="previewTitle"></div>
+                        <div class="price-line" style="margin-top: 6px;">
+                            <span class="price-now" id="previewPrice"></span>
+                            <span class="price-was" id="previewOrigPrice"></span>
                         </div>
-                        <div class="relative w-full md:w-2/3 flex items-center">
-                            <span class="absolute left-4 text-slate-500 z-10">🔍</span>
-                            <input type="search" id="market_finder" name="market_search_query" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" placeholder="Search 'Broilers' or 'Tomatoes'..." class="w-full bg-transparent pl-10 pr-12 py-4 text-sm text-white focus:outline-none transition-all relative z-0">
-                            <button onclick="startVoiceSearch()" class="absolute right-4 text-slate-400 hover:text-emerald-400 transition-colors p-1 rounded-full">🎤</button>
-                        </div>
-                        <button onclick="executeSearch()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-8 py-4 rounded-2xl transition-all shrink-0 shadow-lg">Search</button>
                     </div>
-                </div><div class="mt-12 relative w-full max-w-5xl mx-auto glass-card rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl h-64 md:h-56" id="feature-slideshow"></div>
+                    <div class="preview-stock" id="previewStock">In Stock</div>
+                </div>
+
+                <p class="preview-desc" id="previewDesc"></p>
+
+                <div class="qty-picker">
+                    <label>Quantity</label>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="adjustPreviewQty(-1)">-</button>
+                        <span class="qty-num" id="previewQtyNum">1</span>
+                        <button class="qty-btn" onclick="adjustPreviewQty(1)">+</button>
+                    </div>
+                </div>
+
+                <button class="btn-checkout" onclick="addPreviewItemToCart()">Add To Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Drawer -->
+    <div class="cart-drawer-overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-top">
+            <h3>Your Selected Belts</h3>
+            <button class="btn-close" style="position: static;" onclick="closeCart()">&times;</button>
+        </div>
+
+        <div class="cart-items-scroll" id="cartItemsContainer"></div>
+
+        <div class="cart-footer">
+            <div class="subtotal-row">
+                <span>Total (Pay on Delivery)</span>
+                <strong id="cartSubtotal">GH₵0</strong>
+            </div>
+
+            <div class="checkout-fields">
+                <input type="text" id="custName" placeholder="Full Name (e.g. Kwame Mensah)">
+                <input type="tel" id="custPhone" placeholder="Phone Number (e.g. 054 123 4567)">
+                <input type="text" id="custLocation" placeholder="Delivery Location in Accra (e.g. East Legon)">
+            </div>
+
+            <button class="btn-checkout" id="orderSubmitBtn" onclick="submitCartOrder()">
+                Confirm Pay-on-Delivery Order
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const supabaseUrl = 'https://kadyjwbdrmnavjgwmrse.supabase.co';
+        const supabaseKey = 'sb_publishable_6XKVRJnKzAa-DSpeuiqsHg_M8-OdEAT';
+        const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        let beltCatalog = [];
+        let cart = [];
+        let previewBelt = null;
+        let previewQuantity = 1;
+
+        const beltDescriptions = {
+            "Chris-G Classic White": "Crafted from full-grain Swiss leather featuring an automatic brushed silver ratchet buckle. Backed by our 5-Year Guarantee. Includes free luxury keyholder and packaging.",
+            "Chris-G Smooth Brown": "Warm chestnut brown leather featuring a sleek scratch-resistant sliding track. Backed by our 5-Year Guarantee. Includes free luxury keyholder and packaging.",
+            "Chris-G Smooth Black": "The definitive boardroom classic. Pure obsidian black leather equipped with a micro-adjustable ratchet mechanism. Backed by our 5-Year Guarantee. Includes free luxury keyholder and packaging.",
+            "Chris-G Textured Brown": "Distinguished textured crocodile-grain finish with double-layer reinforced edge stitching. Backed by our 5-Year Guarantee. Includes free luxury keyholder and packaging.",
+            "Chris-G Burgundy Croc": "Striking burgundy crocodile-grain genuine leather paired with a gold-tone brass buckle. Backed by our 5-Year Guarantee. Includes free luxury keyholder and packaging.",
+            "Chris-G Saddle Tan Executive": "Rich saddle-brown leather engineered for everyday elegance and resilience. Backed by our 5-Year Guarantee. Includes free luxury keyholder and packaging."
+        };
+
+        let currentSlide = 0;
+        function initSlideshow() {
+            const slides = document.querySelectorAll('.slide');
+            if(slides.length === 0) return;
+            setInterval(() => {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }, 4000);
+        }
+
+        const recentBuyers = [
+            { name: "Kofi", loc: "Osu", belt: "Smooth Black" },
+            { name: "Yaw", loc: "East Legon", belt: "Classic White" },
+            { name: "Nii", loc: "Airport Residential", belt: "Burgundy Croc" },
+            { name: "Elikem", loc: "Cantonments", belt: "Saddle Tan Executive" }
+        ];
+
+        function startOrderTicker() {
+            setTimeout(() => {
+                triggerTickerPopup();
+                setInterval(triggerTickerPopup, 180000);
+            }, 15000);
+        }
+
+        function triggerTickerPopup() {
+            const randomBuyer = recentBuyers[Math.floor(Math.random() * recentBuyers.length)];
+            document.getElementById('tickerHeader').innerText = `New order in ${randomBuyer.loc}`;
+            document.getElementById('tickerBody').innerText = `${randomBuyer.name} just ordered a Chris-G ${randomBuyer.belt} (5-Year Guarantee)`;
+            
+            const ticker = document.getElementById('orderTicker');
+            ticker.classList.add('show');
+
+            setTimeout(() => {
+                ticker.classList.remove('show');
+            }, 5000);
+        }
+
+        async function fetchBelts() {
+            const { data, error } = await supabaseClient.from('belts').select('*');
+            if (error) {
+                console.error("Supabase Error:", error);
+                return;
+            }
+            beltCatalog = data;
+            renderBelts();
+            startOrderTicker();
+            initSlideshow();
+        }
+
+        function renderBelts() {
+            const container = document.getElementById('beltContainer');
+            container.innerHTML = '';
+
+            beltCatalog.forEach(belt => {
+                const discount = Math.round(((belt.original_price - belt.sale_price) / belt.original_price) * 100);
+                const discountBadge = discount > 0 ? `<div class="discount-pill">-${discount}%</div>` : '';
+                
+                let mainImg = belt.image_url;
+                if (belt.images) {
+                    try {
+                        const parsed = typeof belt.images === 'string' ? JSON.parse(belt.images) : belt.images;
+                        if (Array.isArray(parsed) && parsed.length > 0) mainImg = parsed[0];
+                    } catch(e) {}
+                }
+                mainImg = mainImg || 'https://placehold.co/400x400/181818/888?text=Swiss+Belt';
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    ${discountBadge}
+                    <div class="img-wrap">
+                        <img src="${mainImg}" alt="${belt.name}">
+                        <div class="stock-pill"><span class="dot"></span> In Stock</div>
+                    </div>
+                    <div class="card-info">
+                        <div>
+                            <div class="card-title">${belt.name}</div>
+                            <div class="price-line">
+                                <span class="price-now">GH₵${belt.sale_price}</span>
+                                <span class="price-was">GH₵${belt.original_price}</span>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-view" onclick="openPreview('${belt.id}')">Details</button>
+                            <button class="btn-add" onclick="quickAddToCart('${belt.id}')">+ Cart</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function openPreview(beltId) {
+            previewBelt = beltCatalog.find(b => b.id === beltId);
+            if (!previewBelt) return;
+
+            previewQuantity = 1;
+            document.getElementById('previewQtyNum').innerText = previewQuantity;
+            document.getElementById('previewTitle').innerText = previewBelt.name;
+            document.getElementById('previewPrice').innerText = `GH₵${previewBelt.sale_price}`;
+            document.getElementById('previewOrigPrice').innerText = `GH₵${previewBelt.original_price}`;
+            document.getElementById('previewStock').innerText = "In Stock";
+            document.getElementById('previewDesc').innerText = beltDescriptions[previewBelt.name] || 
+                "High-performance Swiss automatic belt backed by our 5-Year Guarantee. Includes free delivery in Accra, a luxury keyholder, and beautiful packaging.";
+
+            let imageList = [];
+            if (previewBelt.images) {
+                try {
+                    const parsed = typeof previewBelt.images === 'string' ? JSON.parse(previewBelt.images) : previewBelt.images;
+                    if (Array.isArray(parsed)) imageList = parsed;
+                } catch(e) {}
+            }
+            if (imageList.length === 0 && previewBelt.image_url) {
+                imageList = [previewBelt.image_url];
+            }
+            if (imageList.length === 0) {
+                imageList = ['https://placehold.co/400x400/181818/888?text=Swiss+Belt'];
+            }
+
+            document.getElementById('activePreviewImg').src = imageList[0];
+
+            const thumbsContainer = document.getElementById('galleryThumbsContainer');
+            thumbsContainer.innerHTML = '';
+            
+            if (imageList.length > 1) {
+                thumbsContainer.style.display = 'flex';
+                imageList.forEach((url, idx) => {
+                    const thumb = document.createElement('img');
+                    thumb.src = url;
+                    thumb.className = `thumb-img ${idx === 0 ? 'active' : ''}`;
+                    thumb.onclick = () => {
+                        document.getElementById('activePreviewImg').src = url;
+                        document.querySelectorAll('.thumb-img').forEach(t => t.classList.remove('active'));
+                        thumb.classList.add('active');
+                    };
+                    thumbsContainer.appendChild(thumb);
+                });
+            } else {
+                thumbsContainer.style.display = 'none';
+            }
+
+            document.getElementById('previewModal').style.display = 'flex';
+        }
+
+        function closePreview() {
+            document.getElementById('previewModal').style.display = 'none';
+        }
+
+        function adjustPreviewQty(delta) {
+            previewQuantity = Math.max(1, Math.min(20, previewQuantity + delta));
+            document.getElementById('previewQtyNum').innerText = previewQuantity;
+        }
+
+        function addPreviewItemToCart() {
+            if (!previewBelt) return;
+            addToCart(previewBelt.id, previewQuantity);
+            closePreview();
+            openCart();
+        }
+
+        function quickAddToCart(beltId) {
+            addToCart(beltId, 1);
+            openCart();
+        }
+
+        function addToCart(beltId, qty) {
+            const belt = beltCatalog.find(b => b.id === beltId);
+            if (!belt) return;
+
+            let mainImg = belt.image_url;
+            if (belt.images) {
+                try {
+                    const parsed = typeof belt.images === 'string' ? JSON.parse(belt.images) : belt.images;
+                    if (Array.isArray(parsed) && parsed.length > 0) mainImg = parsed[0];
+                } catch(e) {}
+            }
+
+            const existingIndex = cart.findIndex(item => item.id === beltId);
+
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += qty;
+            } else {
+                cart.push({
+                    id: belt.id,
+                    name: belt.name,
+                    sale_price: belt.sale_price,
+                    image_url: mainImg,
+                    quantity: qty
+                });
+            }
+            updateCartDisplay();
+        }
+
+        function modifyCartQty(beltId, delta) {
+            const item = cart.find(i => i.id === beltId);
+            if (!item) return;
+
+            item.quantity += delta;
+            if (item.quantity <= 0) {
+                cart = cart.filter(i => i.id !== beltId);
+            }
+            updateCartDisplay();
+        }
+
+        function updateCartDisplay() {
+            const countBadge = document.getElementById('cartCountBadge');
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            countBadge.innerText = totalCount;
+
+            const container = document.getElementById('cartItemsContainer');
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="cart-empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                        <p>Your bag is empty.</p>
+                        <span style="font-size:0.75rem; color:#666;">Choose a belt to begin.</span>
+                    </div>
+                `;
+                document.getElementById('cartSubtotal').innerText = "GH₵0";
+                return;
+            }
+
+            container.innerHTML = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                const itemTotal = item.sale_price * item.quantity;
+                total += itemTotal;
+
+                const div = document.createElement('div');
+                div.className = 'cart-item';
+                div.innerHTML = `
+                    <img src="${item.image_url}" alt="${item.name}">
+                    <div class="cart-item-details">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-price">GH₵${item.sale_price} &times; ${item.quantity} = GH₵${itemTotal}</div>
+                        <div class="cart-item-controls">
+                            <button class="mini-btn" onclick="modifyCartQty('${item.id}', -1)">-</button>
+                            <span style="font-size:0.8rem; font-weight:700; width:20px; text-align:center;">${item.quantity}</span>
+                            <button class="mini-btn" onclick="modifyCartQty('${item.id}', 1)">+</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            document.getElementById('cartSubtotal').innerText = `GH₵${total}`;
+        }
+
+        function openCart() {
+            document.getElementById('cartDrawer').classList.add('open');
+            document.getElementById('cartOverlay').style.display = 'block';
+        }
+
+        function closeCart() {
+            document.getElementById('cartDrawer').classList.remove('open');
+            document.getElementById('cartOverlay').style.display = 'none';
+        }
+
+        async function submitCartOrder() {
+            if (cart.length === 0) {
+                alert("Your cart is empty. Please select at least one belt!");
+                return;
+            }
+
+            const name = document.getElementById('custName').value.trim();
+            const phone = document.getElementById('custPhone').value.trim();
+            const location = document.getElementById('custLocation').value.trim();
+
+            if (!name || !phone || !location) {
+                alert("Please complete your name, phone number, and Accra delivery address.");
+                return;
+            }
+
+            const btn = document.getElementById('orderSubmitBtn');
+            btn.innerText = "Confirming Order...";
+            btn.disabled = true;
+
+            const orderRows = cart.map(item => ({
+                belt_id: item.id,
+                customer_name: cart.length > 1 ? `${name} (${item.quantity}x)` : name,
+                phone_number: phone,
+                delivery_location: location
+            }));
+
+            const { error } = await supabaseClient.from('orders').insert(orderRows);
+            if (error) {
+                console.error("Order error:", error);
+                alert("Could not process order. Please check your network and try again.");
+                btn.innerText = "Confirm Pay-on-Delivery Order";
+                btn.disabled = false;
+                return;
+            }
+
+            const totalGhc = cart.reduce((sum, i) => sum + (i.sale_price * i.quantity), 0);
+            const itemsSummary = cart.map(i => `${i.name} (Qty: ${i.quantity})`).join(', ');
+            const formattedBeltPayload = `${itemsSummary} | Total: GH₵${totalGhc} (5-Yr Guarantee & Free Keyholder/Box)`;
+
+            try {
+                await fetch('https://hook.eu1.make.com/uehjef8tcnwlvg3957zbe6yg4y7qk9gk', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        customer_name: name,
+                        phone_number: phone,
+                        delivery_location: location,
+                        belt_id: formattedBeltPayload
+                    })
+                });
+            } catch (err) {
+                console.log("Webhook alert sent with status:", err);
+            }
+
+            alert(`🎉 Order Confirmed!\n\nThank you, ${name}. Your order is backed by our 5-Year Guarantee and includes your free keyholder and luxury box!\n\nWe will call ${phone} shortly to coordinate delivery in Accra!`);
+            
+            cart = [];
+            updateCartDisplay();
+            closeCart();
+            document.getElementById('custName').value = '';
+            document.getElementById('custPhone').value = '';
+            document.getElementById('custLocation').value = '';
+            btn.innerText = "Confirm Pay-on-Delivery Order";
+            btn.disabled = false;
+        }
+
+        fetchBelts();
+    </script>
+</body>
+</html><div class="mt-12 relative w-full max-w-5xl mx-auto glass-card rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl h-64 md:h-56" id="feature-slideshow"></div>
 
                 <div class="mt-8 flex justify-center relative z-10">
                     <div class="bg-[#0f172a] p-1.5 rounded-2xl border border-slate-700/80 inline-flex shadow-xl">
@@ -1088,7 +1972,7 @@
                 </div>
             </div>
 
-            <!-- ADMIN PANEL (CLEANED) -->
+            <!-- ADMIN PANEL -->
             <div id="admin-panel" class="hidden mt-12 glass-card p-8 rounded-3xl border border-emerald-500/30 shadow-2xl bg-slate-900/50">
                 <div class="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
                     <div>
@@ -1197,6 +2081,76 @@
                     </div>
                     <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 text-xs text-slate-400 mt-6">
                         💡 <strong class="text-slate-200">Refinery Arbitrage Guarantee:</strong> All processed materials are off-taken directly by vetted industrial recyclers and feed processing hubs.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FULL-PAGE SELLER STOREFRONT VIEW -->
+        <div id="view-seller-store" class="fade-in hidden space-y-6 max-w-6xl mx-auto mt-6">
+            <button onclick="navigate('marketplace')" class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-4 py-2 rounded-xl hover:bg-emerald-500/20 transition-colors mb-2 inline-flex items-center gap-2">← Back to Market</button>
+            
+            <!-- Store Banner & Header -->
+            <div class="glass-card rounded-[2.5rem] border border-white/5 overflow-hidden shadow-2xl">
+                <!-- Cover Photo -->
+                <div id="store-cover-photo" class="h-48 md:h-64 w-full bg-slate-800 bg-cover bg-center border-b border-white/10" style="background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80');"></div>
+                
+                <div class="px-8 pb-8 relative">
+                    <!-- Avatar Overlapping Banner -->
+                    <div id="store-avatar" class="w-28 h-28 md:w-32 md:h-32 rounded-full bg-slate-800 border-4 border-[#020617] absolute -top-14 md:-top-16 bg-cover bg-center flex items-center justify-center text-5xl shadow-xl">👨🏽‍🌾</div>
+                    
+                    <div class="flex flex-col md:flex-row md:items-start justify-between pt-16 md:pt-20 gap-4">
+                        <div>
+                            <div class="flex items-center gap-3 mb-1">
+                                <h2 class="text-3xl font-black text-white" id="store-name">Farmer Name</h2>
+                                <div id="store-badge" class="hidden items-center gap-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-black uppercase px-3 py-1 rounded-full">✓ Verified</div>
+                            </div>
+                            <p class="text-sm text-slate-400 mb-4" id="store-bio">Premium commercial supplier of fresh agricultural produce.</p>
+                            
+                            <div class="flex flex-wrap gap-3 text-xs">
+                                <span class="bg-[#0f172a] border border-slate-700/80 px-3 py-1.5 rounded-lg text-slate-300">📞 <strong class="text-white" id="store-phone">...</strong></span>
+                                <span class="bg-[#0f172a] border border-slate-700/80 px-3 py-1.5 rounded-lg text-slate-300">📅 Member Since: <strong class="text-white" id="store-since">...</strong></span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-row md:flex-col gap-2 shrink-0">
+                            <a id="store-wa-btn" href="#" target="_blank" class="bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-3 px-6 rounded-xl text-xs transition-colors shadow-lg flex items-center justify-center gap-2">💬 Message Store</a>
+                            <button onclick="shareStore()" class="bg-blue-600/20 hover:bg-blue-600 border border-blue-500/30 text-blue-400 hover:text-white font-black py-3 px-6 rounded-xl text-xs transition-colors shadow-lg flex items-center justify-center gap-2">🔗 Share Store Link</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Store Layout (Sidebar & Main Content) -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Sidebar: Stats & Rating -->
+                <div class="space-y-6">
+                    <div class="glass-card p-6 rounded-3xl border border-amber-500/30">
+                        <h3 class="text-sm font-black text-white mb-4 uppercase tracking-wider">Store Reputation</h3>
+                        <div class="text-center bg-[#020617]/50 p-6 rounded-2xl border border-slate-700">
+                            <div class="text-4xl font-black text-white mb-2" id="store-rating-score">0.0</div>
+                            <div class="text-amber-400 text-sm mb-1" id="store-rating-stars">⭐⭐⭐⭐⭐</div>
+                            <p class="text-[10px] text-slate-400 uppercase font-bold" id="store-rating-count">0 Reviews</p>
+                        </div>
+                        <button onclick="openLeaveReviewModal()" class="w-full mt-4 bg-amber-500 hover:bg-amber-400 text-[#020617] font-black py-3 rounded-xl text-xs transition-colors shadow-lg">⭐ Leave a Review</button>
+                    </div>
+                    
+                    <button onclick="triggerReportFromProfile()" class="w-full glass-card p-4 rounded-xl border border-rose-500/20 text-rose-400 text-xs font-bold hover:bg-rose-500/10 transition-colors">🚩 Report Suspicious Activity</button>
+                </div>
+
+                <!-- Main Content: Tabs for Produce & Reviews -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="flex gap-2 p-1.5 bg-[#0f172a] rounded-2xl border border-slate-700/80 inline-flex">
+                        <button onclick="switchStoreTab('produce')" id="tab-store-produce" class="px-6 py-2.5 rounded-xl font-black text-xs transition-all bg-emerald-600 text-white shadow-lg">🛒 Active Produce</button>
+                        <button onclick="switchStoreTab('reviews')" id="tab-store-reviews" class="px-6 py-2.5 rounded-xl font-black text-xs transition-all text-slate-400 hover:text-white">💬 Customer Reviews</button>
+                    </div>
+
+                    <div id="store-produce-view">
+                        <div id="store-ads-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-6"></div>
+                    </div>
+
+                    <div id="store-reviews-view" class="hidden space-y-4">
+                        <div id="store-reviews-list" class="space-y-4"></div>
                     </div>
                 </div>
             </div>
@@ -2131,7 +3085,7 @@
             const views = [
                 'home', 'marketplace', 'auth', 'grants', 'farm-manager', 
                 'intel', 'calculator', 'trainer', 'post', 'dashboard', 
-                'pricing', 'faq', 'about', 'support', 'rentals', 'waste', 'agridoctor', 'haulage'
+                'pricing', 'faq', 'about', 'support', 'rentals', 'waste', 'agridoctor', 'haulage', 'seller-store'
             ];
             
             views.forEach(v => {
@@ -3223,14 +4177,15 @@
             openSellerProfile(ad.seller_name, ad.phone_number, ad.seller_verified, ad.seller_member_since, ad.seller_profile_picture); 
         }
 
+        // FULL PAGE STOREFRONT FUNCTIONS
         function openSellerProfile(name, phone, isVerified, memberSince, profilePic) {
             currentSellerForReview = name; 
             
-            document.getElementById('seller-modal-name').innerText = name || "Farmer"; 
-            document.getElementById('seller-modal-phone').innerText = phone || "Unlisted"; 
-            document.getElementById('seller-modal-since').innerText = memberSince || 'Recent';
+            document.getElementById('store-name').innerText = name || "Farmer"; 
+            document.getElementById('store-phone').innerText = phone || "Unlisted"; 
+            document.getElementById('store-since').innerText = memberSince || 'Recent';
             
-            const badge = document.getElementById('seller-modal-badge'); 
+            const badge = document.getElementById('store-badge'); 
             if (isVerified) { 
                 badge.classList.remove('hidden'); 
                 badge.classList.add('inline-flex'); 
@@ -3239,7 +4194,7 @@
                 badge.classList.remove('inline-flex'); 
             }
             
-            const avatar = document.getElementById('seller-modal-avatar'); 
+            const avatar = document.getElementById('store-avatar'); 
             if (profilePic && profilePic !== 'null') { 
                 avatar.innerHTML = ''; 
                 avatar.style.backgroundImage = `url('${profilePic}')`; 
@@ -3249,60 +4204,118 @@
             }
             
             let cleanPhone = (phone || "").replace(/\D/g, ''); 
-            if (cleanPhone.startsWith('0')) {
-                cleanPhone = '233' + cleanPhone.substring(1);
-            }
+            if (cleanPhone.startsWith('0')) { cleanPhone = '233' + cleanPhone.substring(1); }
             
-            document.getElementById('seller-modal-call-btn').href = `tel:${phone}`; 
-            document.getElementById('seller-modal-wa-btn').href = `https://wa.me/${cleanPhone}`;
+            document.getElementById('store-wa-btn').href = `https://wa.me/${cleanPhone}`;
 
-            const sellerAdsGrid = document.getElementById('seller-modal-ads-grid'); 
+            const storeAdsGrid = document.getElementById('store-ads-grid'); 
             const sellerAds = allLoadedProducts.filter(p => p.seller_name === name && p.status === 'approved');
             
             if (sellerAds.length === 0) { 
-                sellerAdsGrid.innerHTML = `<p class="text-slate-500 text-xs">No active listings right now.</p>`; 
+                storeAdsGrid.innerHTML = `<div class="col-span-full glass-card py-10 text-center rounded-2xl border border-white/5"><p class="text-slate-500 text-sm">No active listings right now.</p></div>`; 
             } else { 
-                sellerAdsGrid.innerHTML = sellerAds.map(item => { 
-                    let imgs = []; 
-                    try { 
-                        imgs = JSON.parse(item.image_data) || []; 
-                    } catch(e) { 
-                        imgs = item.image_data ? [item.image_data] : []; 
-                    } 
-                    
-                    let imgBlock = imgs.length 
-                        ? `<img src="${imgs[0]}" class="w-16 h-16 rounded-xl object-cover border border-slate-700 shrink-0">` 
-                        : `<div class="w-16 h-16 bg-slate-800 rounded-xl flex items-center justify-center text-xl shrink-0">🌾</div>`; 
-                    
-                    return `
-                        <div class="glass-card p-3 rounded-2xl flex items-center gap-3 border border-white/5 hover:border-emerald-500/30 transition-colors">
-                            ${imgBlock}
-                            <div>
-                                <h4 class="font-black text-white text-xs line-clamp-1">${item.product_name}</h4>
-                                <p class="text-[10px] text-emerald-400 font-bold mt-1">GH₵${item.base_price_ghs} / ${item.unit}</p>
-                            </div>
-                        </div>`; 
-                }).join(''); 
+                renderProductGrid(sellerAds, storeAdsGrid); 
             }
             
             loadSellerReviews(name); 
+            switchStoreTab('produce');
+            navigate('seller-store'); 
+        }
+
+        function switchStoreTab(tab) {
+            const btnProduce = document.getElementById('tab-store-produce');
+            const btnReviews = document.getElementById('tab-store-reviews');
+            const viewProduce = document.getElementById('store-produce-view');
+            const viewReviews = document.getElementById('store-reviews-view');
+
+            if (tab === 'produce') {
+                btnProduce.className = "px-6 py-2.5 rounded-xl font-black text-xs transition-all bg-emerald-600 text-white shadow-lg";
+                btnReviews.className = "px-6 py-2.5 rounded-xl font-black text-xs transition-all text-slate-400 hover:text-white";
+                viewProduce.classList.remove('hidden');
+                viewReviews.classList.add('hidden');
+            } else {
+                btnReviews.className = "px-6 py-2.5 rounded-xl font-black text-xs transition-all bg-emerald-600 text-white shadow-lg";
+                btnProduce.className = "px-6 py-2.5 rounded-xl font-black text-xs transition-all text-slate-400 hover:text-white";
+                viewProduce.classList.add('hidden');
+                viewReviews.classList.remove('hidden');
+            }
+        }
+
+        function shareStore() {
+            showToast("Store link copied to clipboard! 🔗");
+        }
+
+        async function loadSellerReviews(sellerName) {
+            const container = document.getElementById('store-reviews-list'); 
+            const avgScore = document.getElementById('store-rating-score');
+            const avgStars = document.getElementById('store-rating-stars');
+            const countBadge = document.getElementById('store-rating-count');
             
-            document.getElementById('seller-profile-modal').classList.remove('hidden'); 
-            document.getElementById('seller-profile-modal').classList.add('flex');
+            container.innerHTML = '<p class="text-xs text-slate-400">Loading reviews...</p>';
+            
+            try {
+                const res = await fetch(`${API_URL}/api/v1/reviews?seller=${encodeURIComponent(sellerName)}`); 
+                const reviews = await res.json();
+                
+                if (reviews.length === 0) { 
+                    container.innerHTML = '<div class="glass-card p-8 text-center rounded-2xl border border-white/5"><p class="text-sm text-slate-500">No reviews for this seller yet. Be the first!</p></div>'; 
+                    avgScore.innerText = "0.0"; 
+                    avgStars.innerText = "⭐⭐⭐⭐⭐";
+                    countBadge.innerText = "0 Reviews";
+                    return; 
+                }
+                
+                let totalStars = 0; 
+                let html = '';
+                
+                reviews.forEach(r => { 
+                    totalStars += r.rating; 
+                    let stars = '⭐'.repeat(r.rating); 
+                    
+                    html += `
+                        <div class="glass-card p-5 rounded-2xl border border-white/5 hover:border-emerald-500/30 transition-colors">
+                            <div class="flex items-start gap-4">
+                                <span class="text-2xl bg-slate-800 rounded-full w-10 h-10 flex items-center justify-center border border-slate-600 shrink-0 shadow-inner">👤</span>
+                                <div class="flex-grow">
+                                    <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                                        <p class="text-sm font-black text-white">${r.reviewer_name}</p>
+                                        <span class="text-[9px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">✓ Verified Buyer</span>
+                                        <span class="text-[10px] text-slate-500 ml-auto">${r.created_at}</span>
+                                    </div>
+                                    <div class="text-xs mb-2">${stars}</div>
+                                    <p class="text-sm text-slate-300 leading-relaxed">"${r.comment}"</p>
+                                </div>
+                            </div>
+                        </div>`; 
+                });
+                
+                const avg = (totalStars / reviews.length).toFixed(1); 
+                avgScore.innerText = avg;
+                avgStars.innerText = '⭐'.repeat(Math.round(avg));
+                countBadge.innerText = `${reviews.length} Verified Reviews`; 
+                container.innerHTML = html;
+                
+            } catch (e) { 
+                container.innerHTML = '<p class="text-sm text-rose-400 p-4">Failed to load reviews.</p>'; 
+            }
         }
 
-        function closeSellerProfile() { 
-            document.getElementById('seller-profile-modal').classList.add('hidden'); 
-            document.getElementById('seller-profile-modal').classList.remove('flex'); 
+        function triggerReportFromProfile() {
+            const name = document.getElementById('store-name').innerText; 
+            const phone = document.getElementById('store-phone').innerText;
+            
+            document.getElementById('report-target-name').value = "Reporting: " + name; 
+            document.getElementById('report-target-phone').value = phone;
+            
+            document.getElementById('report-modal').classList.remove('hidden'); 
+            document.getElementById('report-modal').classList.add('flex');
         }
-
+        
         function openLeaveReviewModal() { 
             if (!agriToken) { 
                 showToast("Please sign in to leave a review.", "error"); 
                 return navigate('auth'); 
             } 
-            
-            closeSellerProfile(); 
             document.getElementById('leave-review-modal').classList.remove('hidden'); 
             document.getElementById('leave-review-modal').classList.add('flex'); 
         }
@@ -3341,13 +4354,7 @@
                 document.getElementById('review-comment').value = ''; 
                 closeLeaveReviewModal();
                 
-                const sellerAds = allLoadedProducts.filter(p => p.seller_name === currentSellerForReview);
-                if (sellerAds.length > 0) { 
-                    const ad = sellerAds[0]; 
-                    openSellerProfile(ad.seller_name, ad.phone_number, ad.seller_verified, ad.seller_member_since, ad.seller_profile_picture); 
-                } else { 
-                    openSellerProfile(currentSellerForReview, "", false, "Recent", null); 
-                }
+                loadSellerReviews(currentSellerForReview);
             } catch (e) { 
                 showToast(e.message, "error"); 
             } finally { 
@@ -3356,65 +4363,6 @@
             }
         }
 
-        async function loadSellerReviews(sellerName) {
-            const container = document.getElementById('seller-reviews-list'); 
-            const avgBadge = document.getElementById('seller-avg-rating');
-            
-            container.innerHTML = '<p class="text-xs text-slate-400">Loading reviews...</p>';
-            
-            try {
-                const res = await fetch(`${API_URL}/api/v1/reviews?seller=${encodeURIComponent(sellerName)}`); 
-                const reviews = await res.json();
-                
-                if (reviews.length === 0) { 
-                    container.innerHTML = '<p class="text-xs text-slate-500">No reviews for this seller yet. Be the first!</p>'; 
-                    avgBadge.innerText = "No Ratings Yet"; 
-                    return; 
-                }
-                
-                let totalStars = 0; 
-                let html = '';
-                
-                reviews.forEach(r => { 
-                    totalStars += r.rating; 
-                    let stars = '⭐'.repeat(r.rating); 
-                    
-                    html += `
-                        <div class="flex items-start gap-3 border-b border-white/5 pb-3 last:border-0 last:pb-0 mt-3">
-                            <span class="text-xl bg-slate-800 rounded-full w-8 h-8 flex items-center justify-center border border-slate-600 shrink-0">👤</span>
-                            <div>
-                                <div class="flex items-center gap-2 mb-1">
-                                    <p class="text-xs font-bold text-white">${r.reviewer_name}</p>
-                                    <span class="text-[9px] text-emerald-400 font-bold bg-emerald-500/10 px-1.5 py-0.5 rounded">✓ Verified Buyer</span>
-                                    <span class="text-[9px] text-slate-500">${r.created_at}</span>
-                                </div>
-                                <div class="text-[10px] mb-1">${stars}</div>
-                                <p class="text-[11px] text-slate-300 italic">"${r.comment}"</p>
-                            </div>
-                        </div>`; 
-                });
-                
-                const avg = (totalStars / reviews.length).toFixed(1); 
-                avgBadge.innerHTML = `${avg} ★★★★★ (${reviews.length} Reviews)`; 
-                container.innerHTML = html;
-                
-            } catch (e) { 
-                container.innerHTML = '<p class="text-xs text-rose-400">Failed to load reviews.</p>'; 
-            }
-        }
-
-        function triggerReportFromProfile() {
-            const name = document.getElementById('seller-modal-name').innerText; 
-            const phone = document.getElementById('seller-modal-phone').innerText;
-            
-            document.getElementById('report-target-name').value = "Reporting: " + name; 
-            document.getElementById('report-target-phone').value = phone;
-            
-            closeSellerProfile(); 
-            document.getElementById('report-modal').classList.remove('hidden'); 
-            document.getElementById('report-modal').classList.add('flex');
-        }
-        
         function triggerScamReportFromOrder() {
             document.getElementById('report-target-name').value = "Reporting: " + currentOrderPhone; 
             document.getElementById('report-target-phone').value = currentOrderPhone;
@@ -3987,6 +4935,7 @@
             closeVideoStudio(); 
         }
 
+        // --- ADMIN PANEL FUNCTIONS ---
         async function renderAdminVerificationsList() { 
             const c = document.getElementById('admin-verifications-list'); 
             if (!c) return; 
@@ -4190,6 +5139,7 @@
             } 
         }
 
+        // --- PRICING & PAYMENT PROTOTYPE LOGIC ---
         function payAgriProSubscription() { 
             showToast("Pro subscriptions require external approval for this demo.", "error"); 
         }
@@ -4198,7 +5148,12 @@
             showToast("Navigating to ad selection...", "success"); 
             navigate('dashboard'); 
         }
+        
+        function payForVerification() {
+            showToast("MoMo Gateway initializing... (Demo Mode)", "success");
+        }
 
+        // --- DATA LOADERS (Grants, Intel, Haulage) ---
         async function loadGrants() { 
             const grid = document.getElementById('grants-grid'); 
             if (!grid) return; 
@@ -4320,149 +5275,6 @@
             document.getElementById('calc-results-filled').classList.remove('hidden'); 
             document.getElementById('calc-results-filled').classList.add('block'); 
             showToast("Feed Formulation Calculated! ✨");
-        }
-
-        async function loadRentals() {
-            const grid = document.getElementById('rentals-grid'); 
-            if (!grid) return; 
-            
-            grid.innerHTML = '<div class="col-span-full text-center text-slate-400 py-10">Loading active equipment... ⏳</div>';
-            
-            try {
-                const res = await fetch(`${API_URL}/api/v1/rentals`); 
-                const items = await res.json();
-                
-                if (!items.length) { 
-                    grid.innerHTML = `
-                        <div class="col-span-full glass-card py-12 text-center rounded-[2rem] border border-white/5">
-                            <p class="text-slate-400">No machinery currently listed for hire in this area.</p>
-                        </div>`; 
-                    return; 
-                }
-                
-                grid.innerHTML = items.map(item => `
-                    <div class="glass-card p-6 rounded-[2rem] border border-amber-500/20 shadow-xl flex flex-col justify-between">
-                        <div>
-                            <div class="flex justify-between items-start mb-3">
-                                <span class="bg-amber-500/10 text-amber-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-md border border-amber-500/20">${item.equipment_type}</span>
-                                <span class="text-[10px] text-slate-400">📍 ${item.location}</span>
-                            </div>
-                            <h3 class="text-xl font-black text-white mb-1">${item.title}</h3>
-                            <p class="text-xs text-slate-400 mb-4">Owner: <strong class="text-slate-200">${item.owner_name}</strong></p>
-                            <div class="bg-[#020617]/60 p-4 rounded-xl border border-slate-700/50 mb-4 space-y-1">
-                                <div class="flex justify-between text-xs">
-                                    <span class="text-slate-400">Daily Rate:</span>
-                                    <span class="font-black text-emerald-400">GH₵ ${item.daily_rate_ghs} / day</span>
-                                </div>
-                                <div class="flex justify-between text-xs">
-                                    <span class="text-slate-400">Security Deposit:</span>
-                                    <span class="font-bold text-amber-300">GH₵ ${item.security_deposit_ghs} (Escrow)</span>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="https://wa.me/233${(item.owner_phone || '').replace(/\D/g,'').replace(/^0/,'')}?text=${encodeURIComponent('Hello, I want to rent your ' + item.title + ' listed on AgromartDirect.')}" target="_blank" class="w-full bg-amber-500 hover:bg-amber-400 text-[#020617] text-xs font-black py-3 rounded-xl transition-colors text-center block">Book Equipment Hire</a>
-                    </div>`).join('');
-            } catch (e) { 
-                grid.innerHTML = '<div class="col-span-full text-center text-rose-400 py-6">Could not load equipment catalog.</div>'; 
-            }
-        }
-
-        function openRentalPostModal() {
-            if (!agriToken) { 
-                showToast("Sign in to list equipment", "error"); 
-                return navigate('auth'); 
-            }
-            
-            const title = prompt("Equipment Name & Model (e.g. Honda 10HP Water Pump):"); 
-            if (!title) return;
-            
-            const dailyRate = prompt("Daily Hire Rate (GH₵):"); 
-            const deposit = prompt("Security Deposit (GH₵):"); 
-            const location = prompt("Location / Town:");
-            
-            fetch(`${API_URL}/api/v1/rentals?token=${agriToken}`, { 
-                method: 'POST', 
-                headers: {'Content-Type': 'application/json'}, 
-                body: JSON.stringify({ 
-                    title: title, 
-                    equipment_type: "Machinery", 
-                    daily_rate_ghs: parseFloat(dailyRate) || 0, 
-                    security_deposit_ghs: parseFloat(deposit) || 0, 
-                    location: location || "Accra" 
-                }) 
-            }).then(res => { 
-                if(res.ok) { 
-                    showToast("Equipment Listed for Hire! 🚜"); 
-                    loadRentals(); 
-                } 
-            });
-        }
-
-        async function submitWasteRequest() {
-            if (!agriToken) { 
-                showToast("Sign in to schedule collection", "error"); 
-                return navigate('auth'); 
-            }
-            
-            const waste_type = document.getElementById('waste-type').value; 
-            const quantity_est = document.getElementById('waste-qty').value.trim(); 
-            const pickup_address = document.getElementById('waste-loc').value.trim(); 
-            const contact_phone = document.getElementById('waste-phone').value.trim();
-            
-            if (!quantity_est || !pickup_address || !contact_phone) {
-                return showToast("Please fill all collection details", "error");
-            }
-            
-            try {
-                const res = await fetch(`${API_URL}/api/v1/waste-collections?token=${agriToken}`, { 
-                    method: 'POST', 
-                    headers: {'Content-Type': 'application/json'}, 
-                    body: JSON.stringify({ 
-                        waste_type: waste_type, 
-                        quantity_est: quantity_est, 
-                        pickup_address: pickup_address, 
-                        contact_phone: contact_phone 
-                    }) 
-                });
-                
-                if (!res.ok) throw new Error("Failed to book dispatch");
-                
-                showToast("Collection Dispatched! 🚚"); 
-                document.getElementById('waste-qty').value = ''; 
-                document.getElementById('waste-loc').value = ''; 
-                document.getElementById('waste-phone').value = ''; 
-                
-                loadWasteRequests(); 
-                loadMyWasteRequests();
-            } catch (e) { 
-                showToast(e.message, "error"); 
-            }
-        }
-
-        async function loadWasteRequests() {
-            const container = document.getElementById('waste-queue'); 
-            if (!container) return;
-            
-            try {
-                const res = await fetch(`${API_URL}/api/v1/waste-collections`); 
-                const list = await res.json();
-                
-                if (!list.length) { 
-                    container.innerHTML = '<p class="text-xs text-slate-500">No pending pickups right now.</p>'; 
-                    return; 
-                }
-                
-                container.innerHTML = list.map(item => `
-                    <div class="glass-card p-3.5 rounded-xl border border-white/5 flex justify-between items-center text-xs">
-                        <div>
-                            <span class="text-emerald-400 font-bold block">${item.waste_type}</span>
-                            <span class="text-slate-400 text-[11px]">${item.quantity} • 📍 ${item.address}</span>
-                        </div>
-                        <span class="bg-blue-500/10 text-blue-400 text-[10px] uppercase font-bold px-2 py-0.5 rounded border border-blue-500/20">${item.status}</span>
-                    </div>`).join('');
-            } catch (e) { 
-                container.innerHTML = '<p class="text-xs text-slate-500">Could not load logistics queue.</p>'; 
-            }
         }
 
         async function loadHaulagePool() {
