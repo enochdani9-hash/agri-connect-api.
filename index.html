@@ -120,14 +120,24 @@
         body.sunlight-mode #wiki-content p { color: #334155; }
         body.sunlight-mode #wiki-content b { color: #020617; }
         body.sunlight-mode .guide-content p, body.sunlight-mode .guide-content ul { color: #334155; }
+
+        /* Mobile Touch & Scroll Fixes */
+        input, select, textarea, button, a {
+            touch-action: manipulation;
+        }
+        .scroll-touch { -webkit-overflow-scrolling: touch; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body id="app-body" class="bg-[#020617] text-slate-100 font-sans min-h-screen flex flex-col transition-colors duration-500 overflow-x-hidden relative">
     
-    <!-- Animated Mesh Gradient Background -->
-    <div class="fixed top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-emerald-600/10 mix-blend-screen filter blur-[100px] animate-blob pointer-events-none z-0"></div>
-    <div class="fixed top-[20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-blue-600/10 mix-blend-screen filter blur-[100px] animate-blob animation-delay-2000 pointer-events-none z-0"></div>
-    <div class="fixed bottom-[-20%] left-[20%] w-[60vw] h-[60vw] rounded-full bg-teal-600/10 mix-blend-screen filter blur-[120px] animate-blob animation-delay-4000 pointer-events-none z-0"></div>
+    <!-- FIX: Safe Background Animation Container (Prevents touch blocking) -->
+    <div class="fixed inset-0 z-[-10] pointer-events-none overflow-hidden">
+        <div class="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-emerald-600/10 mix-blend-screen filter blur-[100px] animate-blob"></div>
+        <div class="absolute top-[20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-blue-600/10 mix-blend-screen filter blur-[100px] animate-blob animation-delay-2000"></div>
+        <div class="absolute bottom-[-20%] left-[20%] w-[60vw] h-[60vw] rounded-full bg-teal-600/10 mix-blend-screen filter blur-[120px] animate-blob animation-delay-4000"></div>
+    </div>
     
     <div id="toast-container" class="fixed bottom-6 right-6 z-[200] flex flex-col gap-3 pointer-events-none"></div>
 
@@ -290,22 +300,20 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div id="flyer-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
+    </div><div id="flyer-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-8 rounded-[3rem] text-center border border-emerald-500/30 shadow-[0_0_40px_rgba(16,185,129,0.15)] relative">
-            <button onclick="closeFlyerModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl font-bold">✕</button>
+            <button onclick="closeFlyerModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl font-bold cursor-pointer">✕</button>
             <h3 class="text-2xl font-black text-white mb-2 tracking-tight">WhatsApp Status Flyer 📲</h3>
             <p class="text-sm text-slate-400 mb-6 font-medium">Auto-rendered flyer with pricing & phone contact embedded.</p>
             <canvas id="flyer-canvas" class="hidden"></canvas>
             <img id="flyer-preview" src="" class="w-full max-w-[300px] rounded-[2rem] mb-8 mx-auto shadow-2xl border border-slate-700/50">
-            <button onclick="downloadFlyer()" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-4.5 rounded-2xl text-sm transition-all shadow-[0_0_15px_rgba(37,211,102,0.3)] hover:-translate-y-0.5 tracking-wide">Download Flyer PNG</button>
+            <button onclick="downloadFlyer()" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-4.5 rounded-2xl text-sm transition-all shadow-[0_0_15px_rgba(37,211,102,0.3)] hover:-translate-y-0.5 tracking-wide cursor-pointer">Download Flyer PNG</button>
         </div>
     </div>
 
     <div id="video-studio-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-10 rounded-[3rem] relative border border-purple-500/30 shadow-[0_0_40px_rgba(168,85,247,0.15)]">
-            <button onclick="closeVideoStudio()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl">✕</button>
+            <button onclick="closeVideoStudio()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl cursor-pointer">✕</button>
             <div class="flex items-center gap-4 mb-8">
                 <span class="text-5xl drop-shadow-[0_0_15px_rgba(168,85,247,0.4)]">🎬</span>
                 <div>
@@ -324,7 +332,7 @@
                 <div class="space-y-5 mb-8">
                     <div>
                         <label class="block text-xs font-black text-slate-400 mb-2 uppercase tracking-widest">Voiceover Narrative Style</label>
-                        <select id="vs-voice" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-white text-sm font-medium outline-none focus:border-purple-500 shadow-inner transition-colors">
+                        <select id="vs-voice" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-white text-sm font-medium outline-none focus:border-purple-500 shadow-inner transition-colors cursor-pointer">
                             <option value="energetic">Energetic Ghanaian Market Announcer</option>
                             <option value="professional">Corporate Agribusiness Exporter</option>
                             <option value="calm">Calm, Fresh & Organic Focus</option>
@@ -332,7 +340,7 @@
                     </div>
                 </div>
                 
-                <button onclick="generateAiVideo()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black py-4.5 rounded-2xl text-sm transition-all shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:-translate-y-0.5 flex items-center justify-center gap-2 tracking-wide"><span>✨ Generate Video (1 Free Credit)</span></button>
+                <button onclick="generateAiVideo()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black py-4.5 rounded-2xl text-sm transition-all shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:-translate-y-0.5 flex items-center justify-center gap-2 tracking-wide cursor-pointer"><span>✨ Generate Video (1 Free Credit)</span></button>
             </div>
 
             <div id="video-studio-processing" class="hidden text-center py-10">
@@ -349,8 +357,8 @@
                     <p class="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-2">Generated Voiceover Script:</p>
                     <p id="vs-script-display" class="text-sm text-slate-300 italic font-medium leading-relaxed">...</p>
                 </div>
-                <button onclick="downloadAiVideo()" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-4.5 rounded-2xl text-sm transition-all shadow-[0_0_15px_rgba(37,211,102,0.3)] hover:-translate-y-0.5 mb-3 tracking-wide">Download for WhatsApp Status</button>
-                <button onclick="closeVideoStudio()" class="w-full bg-[#020617]/50 border border-white/10 hover:bg-slate-800 text-white font-black py-4 rounded-2xl text-sm transition-colors">Close Studio</button>
+                <button onclick="downloadAiVideo()" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-4.5 rounded-2xl text-sm transition-all shadow-[0_0_15px_rgba(37,211,102,0.3)] hover:-translate-y-0.5 mb-3 tracking-wide cursor-pointer">Download for WhatsApp Status</button>
+                <button onclick="closeVideoStudio()" class="w-full bg-[#020617]/50 border border-white/10 hover:bg-slate-800 text-white font-black py-4 rounded-2xl text-sm transition-colors cursor-pointer">Close Studio</button>
             </div>
         </div>
     </div>
@@ -358,7 +366,7 @@
     <!-- LEAVE REVIEW MODAL -->
     <div id="leave-review-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-10 rounded-[3rem] relative border border-emerald-500/30 text-left shadow-[0_0_40px_rgba(16,185,129,0.15)]">
-            <button onclick="closeLeaveReviewModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl">✕</button>
+            <button onclick="closeLeaveReviewModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl cursor-pointer">✕</button>
             <h3 class="text-3xl font-black text-white mb-2 tracking-tight">Rate this Seller</h3>
             <p class="text-sm text-slate-400 mb-8 font-medium">Leave an honest review to help other buyers on the platform.</p>
             
@@ -376,10 +384,10 @@
                 
                 <div>
                     <label class="block text-xs font-black text-slate-400 mb-3 uppercase tracking-widest">Your Feedback</label>
-                    <textarea id="review-comment" rows="4" placeholder="Describe your experience buying from this farmer..." class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-sm font-medium text-white outline-none focus:border-emerald-500 shadow-inner transition-colors"></textarea>
+                    <textarea id="review-comment" rows="4" placeholder="Describe your experience buying from this farmer..." class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-sm font-medium text-white outline-none focus:border-emerald-500 shadow-inner transition-colors cursor-text"></textarea>
                 </div>
                 
-                <button id="submit-review-btn" onclick="submitSellerReview()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-4.5 rounded-2xl text-base transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:-translate-y-0.5 tracking-wide">Submit Review</button>
+                <button id="submit-review-btn" onclick="submitSellerReview()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-4.5 rounded-2xl text-base transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:-translate-y-0.5 tracking-wide cursor-pointer">Submit Review</button>
             </div>
         </div>
     </div>
@@ -387,7 +395,7 @@
     <!-- REPORT MODAL -->
     <div id="report-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-10 rounded-[3rem] relative border border-rose-500/30 text-left shadow-[0_0_40px_rgba(225,29,72,0.15)]">
-            <button onclick="closeReportModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl">✕</button>
+            <button onclick="closeReportModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl cursor-pointer">✕</button>
             <h3 class="text-3xl font-black text-white mb-2 tracking-tight">Submit Incident Report</h3>
             <p class="text-sm text-slate-400 mb-8 font-medium">Help keep the Agromart community safe.</p>
             <div class="space-y-5">
@@ -398,8 +406,8 @@
                     <option value="Price Bait and Switch">Price on arrival differed drastically</option>
                     <option value="Poor Produce Quality / Disease">Produce was rotten or spoiled</option>
                 </select>
-                <textarea id="report-details" rows="4" placeholder="Provide transaction details..." class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-sm font-medium text-white shadow-inner focus:border-rose-500 outline-none transition-colors"></textarea>
-                <button onclick="submitScamReport()" class="w-full bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-black py-4.5 rounded-2xl text-sm shadow-[0_0_20px_rgba(225,29,72,0.3)] transition-all hover:-translate-y-0.5 tracking-wide mt-2">Submit Incident Report</button>
+                <textarea id="report-details" rows="4" placeholder="Provide transaction details..." class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-sm font-medium text-white shadow-inner focus:border-rose-500 outline-none transition-colors cursor-text"></textarea>
+                <button onclick="submitScamReport()" class="w-full bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-black py-4.5 rounded-2xl text-sm shadow-[0_0_20px_rgba(225,29,72,0.3)] transition-all hover:-translate-y-0.5 tracking-wide mt-2 cursor-pointer">Submit Incident Report</button>
             </div>
         </div>
     </div>
@@ -407,7 +415,7 @@
     <!-- COMMUNITY POST MODAL (THE FARMER'S LOUNGE) -->
     <div id="community-post-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-10 rounded-[3rem] relative border border-emerald-500/30 text-left shadow-[0_0_40px_rgba(16,185,129,0.15)]">
-            <button onclick="closeCommunityPostModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl">✕</button>
+            <button onclick="closeCommunityPostModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl cursor-pointer">✕</button>
             <h3 class="text-3xl font-black text-white mb-2 tracking-tight">🗣️ Post to Farmer's Lounge</h3>
             <p class="text-sm text-slate-400 mb-8 font-medium">Share updates, ask for advice, or warn nearby farmers about pests and diseases.</p>
             <div class="space-y-5">
@@ -417,14 +425,14 @@
                     <option value="Question">❓ Question & Advice</option>
                     <option value="Success">🏆 Harvest Success</option>
                 </select>
-                <textarea id="community-post-content" placeholder="What's happening on the farm?" rows="5" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-sm font-medium text-white shadow-inner focus:border-emerald-500 outline-none transition-colors"></textarea>
-                <button onclick="submitCommunityPost()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-4.5 rounded-2xl text-sm shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all hover:-translate-y-0.5 tracking-wide mt-2">Publish to Feed</button>
+                <textarea id="community-post-content" placeholder="What's happening on the farm?" rows="5" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-sm font-medium text-white shadow-inner focus:border-emerald-500 outline-none transition-colors cursor-text"></textarea>
+                <button onclick="submitCommunityPost()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-4.5 rounded-2xl text-sm shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all hover:-translate-y-0.5 tracking-wide mt-2 cursor-pointer">Publish to Feed</button>
             </div>
         </div>
     </div>
 
     <!-- HEADER & NAVIGATION -->
-    <header class="bg-[#020617]/70 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-50 transition-all">
+    <header class="bg-[#020617]/70 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-[100] transition-all">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
                 <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-xl flex items-center justify-center text-lg shadow-[0_0_15px_rgba(16,185,129,0.5)] group-hover:scale-105 group-hover:shadow-[0_0_25px_rgba(16,185,129,0.8)] transition-all">🌾</div>
@@ -432,48 +440,45 @@
             </div>
             
             <div class="flex gap-2 items-center flex-wrap justify-end">
-                <!-- NEW: Farmer's Lounge Button -->
-                <button onclick="navigate('community')" class="text-xs font-black text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 rounded-xl hidden lg:flex items-center gap-1 hover:-translate-y-0.5 transition-all shadow-inner tracking-widest uppercase">🗣️ Lounge</button>
+                <button onclick="navigate('community')" class="text-xs font-black text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 rounded-xl hidden lg:flex items-center gap-1 hover:-translate-y-0.5 transition-all shadow-inner tracking-widest uppercase cursor-pointer">🗣️ Lounge</button>
                 
-                <button onclick="navigate('haulage')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-amber-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5">🚚 Haulage</button>
-                <button onclick="navigate('trainer')" class="text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-purple-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5">📚 Trainer</button>
-                <button onclick="navigate('agridoctor')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-rose-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5">🩺 AI Scan</button>
-                <button onclick="navigate('grants')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-amber-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5">🏆 Grants</button>
-                <button onclick="navigate('farm-manager')" class="text-xs font-bold text-blue-400 border border-blue-500/30 bg-blue-500/10 px-3 py-1.5 rounded-lg hidden md:block hover:bg-blue-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5">💼 Manager</button>
-                <button onclick="navigate('intel')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-rose-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5">📊 Intel</button>
-                <button onclick="navigate('calculator')" class="text-xs font-bold text-teal-400 border border-teal-500/30 bg-teal-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-teal-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5">🧮 Calc</button>
-                <button onclick="navigate('rentals')" class="text-xs font-bold text-amber-300 border border-amber-400/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-amber-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5">🚜 Rentals</button>
-                <button onclick="navigate('waste')" class="text-xs font-bold text-emerald-300 border border-emerald-400/30 bg-emerald-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-emerald-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5">♻️ Eco</button>
+                <button onclick="navigate('haulage')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-amber-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">🚚 Haulage</button>
+                <button onclick="navigate('trainer')" class="text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-purple-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">📚 Trainer</button>
+                <button onclick="navigate('agridoctor')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-rose-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">🩺 AI Scan</button>
+                <button onclick="navigate('grants')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-amber-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">🏆 Grants</button>
+                <button onclick="navigate('farm-manager')" class="text-xs font-bold text-blue-400 border border-blue-500/30 bg-blue-500/10 px-3 py-1.5 rounded-lg hidden md:block hover:bg-blue-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">💼 Manager</button>
+                <button onclick="navigate('intel')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-rose-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">📊 Intel</button>
+                <button onclick="navigate('calculator')" class="text-xs font-bold text-teal-400 border border-teal-500/30 bg-teal-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-teal-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">🧮 Calc</button>
+                <button onclick="navigate('rentals')" class="text-xs font-bold text-amber-300 border border-amber-400/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-amber-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">🚜 Rentals</button>
+                <button onclick="navigate('waste')" class="text-xs font-bold text-emerald-300 border border-emerald-400/30 bg-emerald-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-emerald-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">♻️ Eco</button>
                 
-                <button id="pwa-install-btn" onclick="triggerPwaInstall()" class="hidden bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold px-3 py-1.5 rounded-lg text-xs hover:bg-emerald-500/30 transition-colors hover:shadow-[0_0_15px_rgba(16,185,129,0.3)]">📲 App</button>
-                <button onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center glass-card rounded-xl text-xs text-slate-300 hover:text-amber-400 transition-colors">☀️</button>
-                <button id="nav-login-btn" onclick="navigate('auth')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 transition-colors ml-1">Sign In</button>
+                <button id="pwa-install-btn" onclick="triggerPwaInstall()" class="hidden bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold px-3 py-1.5 rounded-lg text-xs hover:bg-emerald-500/30 transition-colors hover:shadow-[0_0_15px_rgba(16,185,129,0.3)] cursor-pointer">📲 App</button>
+                <button onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center glass-card rounded-xl text-xs text-slate-300 hover:text-amber-400 transition-colors cursor-pointer">☀️</button>
+                <button id="nav-login-btn" onclick="navigate('auth')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 transition-colors ml-1 cursor-pointer">Sign In</button>
                 
                 <div id="nav-user-profile" class="hidden items-center gap-3 bg-white/5 px-4 py-1.5 rounded-full border border-white/10 shadow-inner">
                     <span id="nav-user-name" class="text-xs font-bold text-emerald-400 hidden md:block"></span>
-                    <button onclick="navigate('dashboard')" class="text-xs font-black text-white hover:text-emerald-400 transition-colors">Dashboard</button>
+                    <button onclick="navigate('dashboard')" class="text-xs font-black text-white hover:text-emerald-400 transition-colors cursor-pointer">Dashboard</button>
                     <div class="w-px h-3 bg-white/20"></div>
-                    <button onclick="logout()" class="text-xs text-rose-400 font-bold hover:text-rose-300 transition-colors">Logout</button>
+                    <button onclick="logout()" class="text-xs text-rose-400 font-bold hover:text-rose-300 transition-colors cursor-pointer">Logout</button>
                 </div>
                 
-                <button onclick="requireAuthToPost()" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white text-xs font-black px-4 sm:px-5 py-2.5 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.4)] hover:shadow-[0_0_25px_rgba(16,185,129,0.6)] transition-all sm:ml-2 hover:-translate-y-0.5">Post Ad</button>
+                <button onclick="requireAuthToPost()" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white text-xs font-black px-4 sm:px-5 py-2.5 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.4)] hover:shadow-[0_0_25px_rgba(16,185,129,0.6)] transition-all sm:ml-2 hover:-translate-y-0.5 cursor-pointer">Post Ad</button>
             </div>
         </div>
     </header>
 
-    <div class="md:hidden glass-card border-b border-white/5 px-4 py-3 overflow-x-auto whitespace-nowrap flex gap-3 z-40">
-        <!-- NEW: Farmer's Lounge Mobile Button -->
-        <button onclick="navigate('community')" class="text-xs font-black text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest">🗣️ Lounge</button>
-        
-        <button onclick="navigate('haulage')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0">🚚 Haulage Pool</button>
-        <button onclick="navigate('trainer')" class="text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-4 py-2 rounded-xl shrink-0">📚 Agri Trainer</button>
-        <button onclick="navigate('agridoctor')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-4 py-2 rounded-xl shrink-0">🩺 AgriDoctor AI</button>
-        <button onclick="navigate('grants')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0">🏆 Agri-Grants</button>
-        <button onclick="navigate('farm-manager')" class="text-xs font-bold text-blue-400 border border-blue-500/30 bg-blue-500/10 px-4 py-2 rounded-xl shrink-0">💼 Farm Manager</button>
-        <button onclick="navigate('intel')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-4 py-2 rounded-xl shrink-0">📊 Market Intel</button>
-        <button onclick="navigate('calculator')" class="text-xs font-bold text-teal-400 border border-teal-500/30 bg-teal-500/10 px-4 py-2 rounded-xl shrink-0">🧮 Feed Calc</button>
-        <button onclick="navigate('rentals')" class="text-xs font-bold text-amber-300 border border-amber-400/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0">🚜 Machinery Hire</button>
-        <button onclick="navigate('waste')" class="text-xs font-bold text-emerald-300 border border-emerald-400/30 bg-emerald-500/10 px-4 py-2 rounded-xl shrink-0">♻️ Eco-Loop</button>
+    <div class="md:hidden glass-card border-b border-white/5 px-4 py-3 overflow-x-auto whitespace-nowrap flex gap-3 z-[100] relative scroll-touch hide-scrollbar">
+        <button onclick="navigate('community')" class="text-xs font-black text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest cursor-pointer">🗣️ Lounge</button>
+        <button onclick="navigate('haulage')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">🚚 Haulage Pool</button>
+        <button onclick="navigate('trainer')" class="text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">📚 Agri Trainer</button>
+        <button onclick="navigate('agridoctor')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">🩺 AgriDoctor AI</button>
+        <button onclick="navigate('grants')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">🏆 Agri-Grants</button>
+        <button onclick="navigate('farm-manager')" class="text-xs font-bold text-blue-400 border border-blue-500/30 bg-blue-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">💼 Farm Manager</button>
+        <button onclick="navigate('intel')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">📊 Market Intel</button>
+        <button onclick="navigate('calculator')" class="text-xs font-bold text-teal-400 border border-teal-500/30 bg-teal-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">🧮 Feed Calc</button>
+        <button onclick="navigate('rentals')" class="text-xs font-bold text-amber-300 border border-amber-400/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">🚜 Machinery Hire</button>
+        <button onclick="navigate('waste')" class="text-xs font-bold text-emerald-300 border border-emerald-400/30 bg-emerald-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">♻️ Eco-Loop</button>
     </div>
 
     <!-- LIVE TICKER BAR -->
@@ -488,23 +493,21 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- MAIN APP VIEWS -->
+    </div><!-- MAIN APP VIEWS -->
     <main class="max-w-7xl mx-auto px-6 py-8 flex-grow w-full relative z-10">
         
         <!-- HOME VIEW -->
-        <div id="view-home" class="fade-in space-y-16">
+        <div id="view-home" class="fade-in space-y-16 relative z-30">
             <div class="text-center py-24 px-4 glass-card rounded-[3rem] shadow-2xl relative overflow-hidden group">
                 <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none group-hover:opacity-10 transition-opacity"></div>
                 <div class="text-6xl mb-8 animate-float inline-block drop-shadow-2xl">🚜</div>
                 <h1 class="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-slate-200 to-slate-500 mb-6 relative z-10 tracking-tight leading-tight">The Farmers Market,<br>Now Online.</h1>
                 
-                <div class="max-w-4xl mx-auto relative z-10 mt-10">
+                <div class="max-w-4xl mx-auto relative z-20 mt-10">
                     <div class="flex flex-col md:flex-row glass-card rounded-3xl p-2 gap-2 shadow-[0_0_30px_rgba(16,185,129,0.1)]">
                         <div class="relative w-full md:w-1/3 flex items-center bg-[#020617]/50 rounded-2xl border border-slate-700/50 hover:border-emerald-500/30 transition-colors">
                             <span class="absolute left-4 text-emerald-500 z-10">🌍</span>
-                            <select id="home-region" class="w-full bg-transparent text-sm text-white font-bold pl-10 pr-4 py-4 outline-none cursor-pointer appearance-none rounded-2xl">
+                            <select id="home-region" class="w-full bg-transparent text-sm text-white font-bold pl-10 pr-4 py-4 outline-none cursor-pointer appearance-none rounded-2xl relative z-20">
                                 <option value="All Regions">All Regions (Ghana)</option>
                                 <option value="Ahafo">Ahafo Region</option>
                                 <option value="Ashanti">Ashanti Region</option>
@@ -526,37 +529,39 @@
                         </div>
                         <div class="relative w-full md:w-2/3 flex items-center bg-[#020617]/30 rounded-2xl border border-slate-700/30 hover:border-emerald-500/30 transition-colors">
                             <span class="absolute left-4 text-slate-500 z-10">🔍</span>
-                            <input type="search" id="market_finder" name="market_search_query" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" placeholder="Search 'Broilers' or 'Tomatoes'..." class="w-full bg-transparent pl-10 pr-12 py-4 text-sm text-white focus:outline-none transition-all relative z-0 placeholder-slate-500 font-medium">
-                            <button onclick="startVoiceSearch()" class="absolute right-4 text-slate-400 hover:text-emerald-400 transition-colors p-1 rounded-full bg-[#0f172a] shadow-inner">🎤</button>
+                            <input type="search" id="market_finder" name="market_search_query" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" placeholder="Search 'Broilers' or 'Tomatoes'..." class="w-full bg-transparent pl-10 pr-12 py-4 text-sm text-white focus:outline-none transition-all relative z-20 placeholder-slate-500 font-medium">
+                            <button onclick="startVoiceSearch()" class="absolute right-4 text-slate-400 hover:text-emerald-400 transition-colors p-1 rounded-full bg-[#0f172a] shadow-inner cursor-pointer z-30">🎤</button>
                         </div>
-                        <button onclick="executeSearch()" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black px-10 py-4 rounded-2xl transition-all shrink-0 shadow-[0_0_15px_rgba(16,185,129,0.4)] hover:shadow-[0_0_25px_rgba(16,185,129,0.6)] hover:-translate-y-0.5 tracking-wide">Search</button>
+                        <button onclick="executeSearch()" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black px-10 py-4 rounded-2xl transition-all shrink-0 shadow-[0_0_15px_rgba(16,185,129,0.4)] hover:shadow-[0_0_25px_rgba(16,185,129,0.6)] hover:-translate-y-0.5 tracking-wide cursor-pointer z-20">Search</button>
                     </div>
-                </div><div class="mt-12 relative w-full max-w-5xl mx-auto glass-card rounded-[3rem] border border-white/5 overflow-hidden shadow-2xl h-64 md:h-56 group" id="feature-slideshow"></div>
+                </div>
 
-                <div class="mt-10 flex justify-center relative z-10">
+                <div class="mt-12 relative w-full max-w-5xl mx-auto glass-card rounded-[3rem] border border-white/5 overflow-hidden shadow-2xl h-64 md:h-56 group cursor-pointer" id="feature-slideshow"></div>
+
+                <div class="mt-10 flex justify-center relative z-20">
                     <div class="bg-[#020617]/60 p-1.5 rounded-2xl border border-slate-700/50 inline-flex shadow-xl backdrop-blur-md">
-                        <button onclick="switchMarketplaceTab('ads')" id="btn-tab-ads" class="px-8 py-3.5 rounded-xl font-black text-sm transition-all bg-emerald-600 text-white shadow-[0_0_15px_rgba(16,185,129,0.3)]">🌾 Available Produce (Ads)</button>
-                        <button onclick="switchMarketplaceTab('rfqs')" id="btn-tab-rfqs" class="px-8 py-3.5 rounded-xl font-black text-sm transition-all text-slate-400 hover:text-white flex items-center gap-1.5">📢 Buyer Tenders (RFQs)</button>
+                        <button onclick="switchMarketplaceTab('ads')" id="btn-tab-ads" class="px-8 py-3.5 rounded-xl font-black text-sm transition-all bg-emerald-600 text-white shadow-[0_0_15px_rgba(16,185,129,0.3)] cursor-pointer">🌾 Available Produce (Ads)</button>
+                        <button onclick="switchMarketplaceTab('rfqs')" id="btn-tab-rfqs" class="px-8 py-3.5 rounded-xl font-black text-sm transition-all text-slate-400 hover:text-white flex items-center gap-1.5 cursor-pointer">📢 Buyer Tenders (RFQs)</button>
                     </div>
                 </div>
             </div>
 
-            <div id="home-rfq-container" class="hidden">
+            <div id="home-rfq-container" class="hidden relative z-30">
                 <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
                     <div>
                         <h3 class="text-3xl font-black text-white tracking-tight flex items-center gap-3">📢 Commercial Buyer Tenders</h3>
                         <p class="text-sm text-slate-400 mt-1 font-medium">Fulfill bulk orders directly from aggregators and hotels.</p>
                     </div>
-                    <button onclick="openRfqModal()" class="bg-blue-600 hover:bg-blue-500 text-white font-black text-sm px-8 py-4 rounded-2xl transition-all shadow-[0_0_15px_rgba(37,99,235,0.4)] flex items-center gap-2 shrink-0 hover:-translate-y-0.5 tracking-wide">+ Post Purchase Tender</button>
+                    <button onclick="openRfqModal()" class="bg-blue-600 hover:bg-blue-500 text-white font-black text-sm px-8 py-4 rounded-2xl transition-all shadow-[0_0_15px_rgba(37,99,235,0.4)] flex items-center gap-2 shrink-0 hover:-translate-y-0.5 tracking-wide cursor-pointer">+ Post Purchase Tender</button>
                 </div>
                 <div id="rfq-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
             </div>
 
-            <div id="home-ads-container">
+            <div id="home-ads-container" class="relative z-30">
                 <div class="mt-16">
                     <div class="flex items-center justify-between mb-8">
                         <h3 class="text-3xl font-black text-white tracking-tight flex items-center gap-3">🔥 Trending Nationwide</h3>
-                        <button onclick="navigate('marketplace')" class="text-xs font-black text-emerald-400 hover:text-emerald-300 tracking-widest uppercase bg-emerald-500/10 px-5 py-2.5 rounded-xl transition-colors border border-emerald-500/20 shadow-inner">View All →</button>
+                        <button onclick="navigate('marketplace')" class="text-xs font-black text-emerald-400 hover:text-emerald-300 tracking-widest uppercase bg-emerald-500/10 px-5 py-2.5 rounded-xl transition-colors border border-emerald-500/20 shadow-inner cursor-pointer">View All →</button>
                     </div>
                     <div id="trending-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
                 </div>
@@ -618,7 +623,7 @@
                 </div>
             </div>
 
-            <div class="mt-24 glass-card p-12 md:p-16 rounded-[3rem] relative overflow-hidden border border-emerald-500/20 bg-gradient-to-br from-[#020617]/80 to-emerald-950/30">
+            <div class="mt-24 glass-card p-12 md:p-16 rounded-[3rem] relative overflow-hidden border border-emerald-500/20 bg-gradient-to-br from-[#020617]/80 to-emerald-950/30 relative z-30">
                 <div class="absolute top-0 right-0 w-[40vw] h-[40vw] bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none"></div>
                 <div class="text-center relative z-10">
                     <span class="text-6xl mb-6 block animate-float">🤝</span>
@@ -627,51 +632,49 @@
                         AgromartDirect is on a mission to completely digitize the agricultural supply chain in Ghana. By eliminating the middleman, we are increasing farmer profits and bringing cheaper, fresher food to consumers nationwide. 
                     </p>
                     <div class="flex flex-col md:flex-row items-center justify-center gap-5">
-                        <a href="mailto:agriconnect886@gmail.com" class="glass-card hover:bg-white/5 text-white font-black py-4.5 px-8 rounded-2xl transition-all border border-white/10 flex items-center justify-center gap-3 shadow-lg hover:-translate-y-0.5 text-sm tracking-wide w-full md:w-auto">✉️ agriconnect886@gmail.com</a>
-                        <a href="https://wa.me/233245641480" target="_blank" class="bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-[#020617] font-black py-4.5 px-8 rounded-2xl transition-all border border-[#25D366]/30 flex items-center justify-center gap-3 shadow-[0_0_15px_rgba(37,211,102,0.15)] hover:shadow-[0_0_25px_rgba(37,211,102,0.4)] hover:-translate-y-0.5 text-sm tracking-wide w-full md:w-auto">📞 +233 245 641 480</a>
+                        <a href="mailto:agriconnect886@gmail.com" class="glass-card hover:bg-white/5 text-white font-black py-4.5 px-8 rounded-2xl transition-all border border-white/10 flex items-center justify-center gap-3 shadow-lg hover:-translate-y-0.5 text-sm tracking-wide w-full md:w-auto cursor-pointer">✉️ agriconnect886@gmail.com</a>
+                        <a href="https://wa.me/233245641480" target="_blank" class="bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-[#020617] font-black py-4.5 px-8 rounded-2xl transition-all border border-[#25D366]/30 flex items-center justify-center gap-3 shadow-[0_0_15px_rgba(37,211,102,0.15)] hover:shadow-[0_0_25px_rgba(37,211,102,0.4)] hover:-translate-y-0.5 text-sm tracking-wide w-full md:w-auto cursor-pointer">📞 +233 245 641 480</a>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- NEW: FARMER'S LOUNGE (COMMUNITY FEED) VIEW -->
-        <div id="view-community" class="fade-in hidden max-w-5xl mx-auto space-y-8 mt-8">
+        <div id="view-community" class="fade-in hidden max-w-5xl mx-auto space-y-8 mt-8 relative z-30">
             <div class="glass-card p-10 md:p-12 rounded-[3rem] border border-emerald-500/30 relative overflow-hidden shadow-[0_0_40px_rgba(16,185,129,0.15)] flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="absolute top-[-50px] right-[-50px] w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
                 <div class="relative z-10 text-center md:text-left">
                     <h2 class="text-4xl font-black text-white flex items-center justify-center md:justify-start gap-4 tracking-tight">🗣️ The Farmer's Lounge</h2>
                     <p class="text-slate-400 text-base mt-3 font-medium max-w-2xl">Join the largest digital agribusiness community in Ghana. Ask questions, share harvest success, and get real-time pest alerts.</p>
                 </div>
-                <button onclick="openCommunityPostModal()" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black px-10 py-5 rounded-2xl shadow-[0_0_20px_rgba(16,185,129,0.4)] transition-all shrink-0 hover:-translate-y-1 tracking-wide relative z-10 w-full md:w-auto text-lg">
+                <button onclick="openCommunityPostModal()" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black px-10 py-5 rounded-2xl shadow-[0_0_20px_rgba(16,185,129,0.4)] transition-all shrink-0 hover:-translate-y-1 tracking-wide relative z-10 w-full md:w-auto text-lg cursor-pointer">
                     + New Post
                 </button>
             </div>
 
             <!-- Feed Filters -->
-            <div class="flex gap-4 overflow-x-auto pb-4 hide-scrollbar">
-                <button onclick="filterCommunity('All')" id="btn-comm-all" class="bg-emerald-600 text-white px-8 py-3.5 rounded-2xl font-black text-sm shadow-[0_0_15px_rgba(16,185,129,0.4)] shrink-0 transition-colors border border-transparent">🌍 All Posts</button>
-                <button onclick="filterCommunity('Alert')" id="btn-comm-alert" class="bg-[#0f172a]/80 hover:bg-[#1e293b] text-rose-400 border border-slate-700/80 px-8 py-3.5 rounded-2xl font-black text-sm transition-colors shrink-0 shadow-inner">🚨 Pest Alerts</button>
-                <button onclick="filterCommunity('Question')" id="btn-comm-question" class="bg-[#0f172a]/80 hover:bg-[#1e293b] text-blue-400 border border-slate-700/80 px-8 py-3.5 rounded-2xl font-black text-sm transition-colors shrink-0 shadow-inner">❓ Questions</button>
-                <button onclick="filterCommunity('Success')" id="btn-comm-success" class="bg-[#0f172a]/80 hover:bg-[#1e293b] text-amber-400 border border-slate-700/80 px-8 py-3.5 rounded-2xl font-black text-sm transition-colors shrink-0 shadow-inner">🏆 Success</button>
+            <div class="flex gap-4 overflow-x-auto pb-4 hide-scrollbar scroll-touch relative z-40">
+                <button onclick="filterCommunity('All')" id="btn-comm-all" class="bg-emerald-600 text-white px-8 py-3.5 rounded-2xl font-black text-sm shadow-[0_0_15px_rgba(16,185,129,0.4)] shrink-0 transition-colors border border-transparent cursor-pointer">🌍 All Posts</button>
+                <button onclick="filterCommunity('Alert')" id="btn-comm-alert" class="bg-[#0f172a]/80 hover:bg-[#1e293b] text-rose-400 border border-slate-700/80 px-8 py-3.5 rounded-2xl font-black text-sm transition-colors shrink-0 shadow-inner cursor-pointer">🚨 Pest Alerts</button>
+                <button onclick="filterCommunity('Question')" id="btn-comm-question" class="bg-[#0f172a]/80 hover:bg-[#1e293b] text-blue-400 border border-slate-700/80 px-8 py-3.5 rounded-2xl font-black text-sm transition-colors shrink-0 shadow-inner cursor-pointer">❓ Questions</button>
+                <button onclick="filterCommunity('Success')" id="btn-comm-success" class="bg-[#0f172a]/80 hover:bg-[#1e293b] text-amber-400 border border-slate-700/80 px-8 py-3.5 rounded-2xl font-black text-sm transition-colors shrink-0 shadow-inner cursor-pointer">🏆 Success</button>
             </div>
 
             <!-- The Feed -->
-            <div id="community-feed" class="space-y-6">
+            <div id="community-feed" class="space-y-6 relative z-40">
                 <!-- Posts injected by JavaScript -->
             </div>
-        </div>
-
-        <!-- MARKETPLACE VIEW -->
-        <div id="view-marketplace" class="fade-in hidden space-y-8">
+        </div><!-- MARKETPLACE VIEW -->
+        <div id="view-marketplace" class="fade-in hidden space-y-8 relative z-30">
             <div class="flex flex-col md:flex-row md:items-center justify-between glass-card p-6 md:p-8 rounded-[2.5rem] gap-5 shadow-lg">
                 <div class="flex items-center gap-5">
                     <h2 class="text-3xl font-black text-white tracking-tight" id="market-title">Market Catalog</h2>
                     <div class="bg-[#020617]/60 p-2 rounded-2xl inline-flex border border-slate-700/50 shadow-inner">
-                        <button onclick="setMarketplaceMode('ads')" id="mode-ads-btn" class="px-5 py-2 rounded-xl text-sm font-black bg-emerald-600 text-white transition-colors shadow-md">Ads</button>
-                        <button onclick="setMarketplaceMode('rfqs')" id="mode-rfqs-btn" class="px-5 py-2 rounded-xl text-sm font-black text-slate-400 hover:text-white transition-colors">Tenders</button>
+                        <button onclick="setMarketplaceMode('ads')" id="mode-ads-btn" class="px-5 py-2 rounded-xl text-sm font-black bg-emerald-600 text-white transition-colors shadow-md cursor-pointer">Ads</button>
+                        <button onclick="setMarketplaceMode('rfqs')" id="mode-rfqs-btn" class="px-5 py-2 rounded-xl text-sm font-black text-slate-400 hover:text-white transition-colors cursor-pointer">Tenders</button>
                     </div>
                 </div>
-                <div class="flex gap-4 flex-wrap items-center">
+                <div class="flex gap-4 flex-wrap items-center relative z-40">
                     <select id="market-region-filter" onchange="executeFilters()" class="bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-6 py-4 text-sm font-bold text-white outline-none focus:border-emerald-500 cursor-pointer shadow-inner transition-colors">
                         <option value="All Regions">All Regions (Ghana)</option>
                         <option value="Ahafo">Ahafo Region</option>
@@ -696,21 +699,21 @@
                         <option value="price_asc">Price: Low to High</option>
                         <option value="price_desc">Price: High to Low</option>
                     </select>
-                    <button onclick="navigate('home')" class="text-sm font-black tracking-widest uppercase text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-6 py-4 rounded-2xl hover:bg-emerald-500/20 transition-colors shadow-inner">← Back</button>
+                    <button onclick="navigate('home')" class="text-sm font-black tracking-widest uppercase text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-6 py-4 rounded-2xl hover:bg-emerald-500/20 transition-colors shadow-inner cursor-pointer">← Back</button>
                 </div>
             </div>
-            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
+            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 relative z-40"></div>
         </div>
 
         <!-- AGRI TRAINER VIEW -->
-        <div id="view-trainer" class="fade-in hidden space-y-8">
-            <div class="text-center mb-14">
+        <div id="view-trainer" class="fade-in hidden space-y-8 relative z-30">
+            <div class="text-center mb-14 relative z-40">
                 <div class="w-24 h-24 bg-purple-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto mb-8 border border-purple-500/20 shadow-[0_0_40px_rgba(168,85,247,0.15)]">📚</div>
                 <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight">Agri Trainer Hub</h2>
                 <p class="text-slate-400 text-lg max-w-2xl mx-auto mt-4 font-medium">Select a category to view detailed, step-by-step guides on commercial farming.</p>
             </div>
             
-            <div id="trainer-categories" class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
+            <div id="trainer-categories" class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto relative z-40">
                 <div onclick="showTrainerSubCategory('crops')" class="glass-card p-12 md:p-16 rounded-[3rem] cursor-pointer text-center group border border-emerald-500/20 shadow-[0_0_30px_rgba(16,185,129,0.05)] hover:shadow-[0_0_40px_rgba(16,185,129,0.15)] hover:-translate-y-2 transition-all">
                     <div class="text-8xl md:text-9xl mb-10 group-hover:scale-110 transition-transform duration-500 drop-shadow-xl">🌾</div>
                     <h3 class="text-3xl md:text-4xl font-black text-white mb-3 group-hover:text-emerald-400 transition-colors tracking-tight">Learn to Grow Crops</h3>
@@ -721,14 +724,14 @@
                 </div>
             </div>
 
-            <div id="trainer-items" class="hidden">
-                <button onclick="resetTrainer()" class="text-emerald-400 text-sm font-black mb-10 hover:text-emerald-300 transition-colors flex items-center gap-2 bg-emerald-500/10 px-6 py-3 rounded-2xl border border-emerald-500/20 w-fit tracking-wide shadow-inner">← Back to Categories</button>
+            <div id="trainer-items" class="hidden relative z-40">
+                <button onclick="resetTrainer()" class="text-emerald-400 text-sm font-black mb-10 hover:text-emerald-300 transition-colors flex items-center gap-2 bg-emerald-500/10 px-6 py-3 rounded-2xl border border-emerald-500/20 w-fit tracking-wide shadow-inner cursor-pointer">← Back to Categories</button>
                 <div id="trainer-items-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
             </div>
 
-            <div id="trainer-guide" class="hidden glass-card p-10 md:p-16 rounded-[3rem] border border-emerald-500/30 shadow-[0_0_50px_rgba(0,0,0,0.4)] relative overflow-hidden">
+            <div id="trainer-guide" class="hidden glass-card p-10 md:p-16 rounded-[3rem] border border-emerald-500/30 shadow-[0_0_50px_rgba(0,0,0,0.4)] relative overflow-hidden z-40">
                 <div class="absolute top-0 right-0 w-[40vw] h-[40vw] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none"></div>
-                <button onclick="document.getElementById('trainer-guide').classList.add('hidden'); document.getElementById('trainer-items').classList.remove('hidden');" class="text-emerald-400 text-sm font-black mb-12 hover:text-emerald-300 transition-colors relative z-10 flex items-center gap-2 bg-emerald-500/10 px-6 py-3 rounded-2xl border border-emerald-500/20 w-fit shadow-inner">← Back to Selection</button>
+                <button onclick="document.getElementById('trainer-guide').classList.add('hidden'); document.getElementById('trainer-items').classList.remove('hidden');" class="text-emerald-400 text-sm font-black mb-12 hover:text-emerald-300 transition-colors relative z-10 flex items-center gap-2 bg-emerald-500/10 px-6 py-3 rounded-2xl border border-emerald-500/20 w-fit shadow-inner cursor-pointer">← Back to Selection</button>
                 
                 <div class="flex flex-col md:flex-row items-start md:items-center gap-10 mb-12 relative z-10 border-b border-white/10 pb-12">
                     <div id="guide-icon" class="text-8xl glass-card p-8 rounded-[3rem] shadow-inner border border-white/5"></div>
@@ -740,47 +743,47 @@
                 
                 <div id="guide-content" class="guide-content relative z-10 max-w-4xl text-lg md:text-xl"></div>
             </div>
-        </div><!-- FARM MANAGER VIEW -->
-        <div id="view-farm-manager" class="fade-in hidden space-y-8">
+        </div>
+
+        <!-- FARM MANAGER VIEW -->
+        <div id="view-farm-manager" class="fade-in hidden space-y-8 relative z-30">
             <div class="flex flex-col md:flex-row md:items-center justify-between glass-card p-10 rounded-[3rem] border border-blue-500/30 gap-8 shadow-[0_0_40px_rgba(59,130,246,0.15)] relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
                 <div class="relative z-10">
                     <h2 class="text-4xl font-black text-white flex items-center gap-4 tracking-tight">💼 Farm Manager Dashboard</h2>
                     <p class="text-base text-slate-400 mt-3 font-medium max-w-xl">Track flock cycles, log expenses, and auto-list inventory upon harvest.</p>
                 </div>
-                <button onclick="openBatchModal()" class="bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-500 hover:to-indigo-400 text-white text-sm font-black px-10 py-5 rounded-2xl shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all whitespace-nowrap hover:-translate-y-1 relative z-10 tracking-wide">
+                <button onclick="openBatchModal()" class="bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-500 hover:to-indigo-400 text-white text-sm font-black px-10 py-5 rounded-2xl shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all whitespace-nowrap hover:-translate-y-1 relative z-10 tracking-wide cursor-pointer">
                     + Start New Batch
                 </button>
             </div>
             
-            <div id="farm-batches-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-        </div>
-
-        <!-- MARKET INTEL VIEW -->
-        <div id="view-intel" class="fade-in hidden space-y-8">
-            <div class="text-center space-y-4 mb-14">
+            <div id="farm-batches-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-40"></div>
+        </div><!-- MARKET INTEL VIEW -->
+        <div id="view-intel" class="fade-in hidden space-y-8 relative z-30">
+            <div class="text-center space-y-4 mb-14 relative z-40">
                 <div class="w-24 h-24 bg-rose-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-rose-500/20 shadow-[0_0_40px_rgba(244,63,94,0.15)] mb-8">📊</div>
                 <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight">Market Intelligence</h2>
                 <p class="text-slate-400 text-lg max-w-3xl mx-auto font-medium">Live regional price indexes and arbitrage tracking. See where it's cheapest to buy and most profitable to sell based on real-time platform data.</p>
             </div>
-            <div id="intel-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
+            <div id="intel-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 relative z-40"></div>
         </div>
 
         <!-- FEED CALCULATOR VIEW -->
-        <div id="view-calculator" class="fade-in hidden space-y-8">
-            <div class="text-center space-y-4 mb-14">
+        <div id="view-calculator" class="fade-in hidden space-y-8 relative z-30">
+            <div class="text-center space-y-4 mb-14 relative z-40">
                 <div class="w-24 h-24 bg-teal-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-teal-500/20 shadow-[0_0_40px_rgba(20,184,166,0.15)] mb-8">🧮</div>
                 <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight">Precision Feed Calculator</h2>
                 <p class="text-slate-400 text-lg max-w-3xl mx-auto font-medium">Use the Pearson Square method to instantly calculate the exact mix ratio and cost of formulating your own poultry or livestock feed.</p>
             </div>
             
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto relative z-40">
                 <div class="glass-card p-10 md:p-14 rounded-[3rem] border border-teal-500/30 shadow-[0_0_40px_rgba(20,184,166,0.15)]">
                     <h3 class="text-3xl font-black text-teal-400 mb-10 flex items-center gap-4 tracking-tight">1. Set Your Targets</h3>
                     <div class="space-y-8">
                         <div class="bg-[#020617]/50 p-8 rounded-[2rem] border border-slate-700/80 shadow-inner">
                             <label class="block text-sm font-black text-white mb-4 uppercase tracking-widest">Target Crude Protein (CP %)</label>
-                            <input type="number" id="calc-target-cp" value="22" class="w-full bg-[#0f172a] border border-slate-600 rounded-2xl px-6 py-5 text-2xl font-black text-teal-400 outline-none focus:border-teal-500 shadow-inner transition-colors">
+                            <input type="number" id="calc-target-cp" value="22" class="w-full bg-[#0f172a] border border-slate-600 rounded-2xl px-6 py-5 text-2xl font-black text-teal-400 outline-none focus:border-teal-500 shadow-inner transition-colors cursor-text">
                         </div>
 
                         <div class="bg-[#020617]/50 p-8 rounded-[2rem] border border-slate-700/80 space-y-6 shadow-inner">
@@ -788,11 +791,11 @@
                             <div class="grid grid-cols-2 gap-6">
                                 <div>
                                     <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest block mb-3">CP (%)</label>
-                                    <input type="number" id="calc-protein-cp" value="44" class="w-full bg-[#0f172a] border border-slate-600 rounded-2xl px-6 py-4 text-base font-bold text-white outline-none focus:border-emerald-500 transition-colors shadow-inner">
+                                    <input type="number" id="calc-protein-cp" value="44" class="w-full bg-[#0f172a] border border-slate-600 rounded-2xl px-6 py-4 text-base font-bold text-white outline-none focus:border-emerald-500 transition-colors shadow-inner cursor-text">
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest block mb-3">Price / 50kg</label>
-                                    <input type="number" id="calc-protein-price" value="350" class="w-full bg-[#0f172a] border border-slate-600 rounded-2xl px-6 py-4 text-base font-bold text-white outline-none focus:border-emerald-500 transition-colors shadow-inner">
+                                    <input type="number" id="calc-protein-price" value="350" class="w-full bg-[#0f172a] border border-slate-600 rounded-2xl px-6 py-4 text-base font-bold text-white outline-none focus:border-emerald-500 transition-colors shadow-inner cursor-text">
                                 </div>
                             </div>
                         </div>
@@ -802,27 +805,27 @@
                             <div class="grid grid-cols-2 gap-6">
                                 <div>
                                     <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest block mb-3">CP (%)</label>
-                                    <input type="number" id="calc-energy-cp" value="8" class="w-full bg-[#0f172a] border border-slate-600 rounded-2xl px-6 py-4 text-base font-bold text-white outline-none focus:border-amber-500 transition-colors shadow-inner">
+                                    <input type="number" id="calc-energy-cp" value="8" class="w-full bg-[#0f172a] border border-slate-600 rounded-2xl px-6 py-4 text-base font-bold text-white outline-none focus:border-amber-500 transition-colors shadow-inner cursor-text">
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest block mb-3">Price / 50kg</label>
-                                    <input type="number" id="calc-energy-price" value="200" class="w-full bg-[#0f172a] border border-slate-600 rounded-2xl px-6 py-4 text-base font-bold text-white outline-none focus:border-amber-500 transition-colors shadow-inner">
+                                    <input type="number" id="calc-energy-price" value="200" class="w-full bg-[#0f172a] border border-slate-600 rounded-2xl px-6 py-4 text-base font-bold text-white outline-none focus:border-amber-500 transition-colors shadow-inner cursor-text">
                                 </div>
                             </div>
                         </div>
-                        <button onclick="calculateFeedMix()" class="w-full bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-black py-6 rounded-2xl text-base transition-all shadow-[0_0_20px_rgba(20,184,166,0.4)] hover:shadow-[0_0_30px_rgba(20,184,166,0.6)] hover:-translate-y-1 tracking-wide mt-4">Calculate Mix Ratio ✨</button>
+                        <button onclick="calculateFeedMix()" class="w-full bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-black py-6 rounded-2xl text-base transition-all shadow-[0_0_20px_rgba(20,184,166,0.4)] hover:shadow-[0_0_30px_rgba(20,184,166,0.6)] hover:-translate-y-1 tracking-wide mt-4 cursor-pointer">Calculate Mix Ratio ✨</button>
                     </div>
                 </div>
 
-                <div class="glass-card p-10 md:p-14 rounded-[3rem] border border-white/5 relative overflow-hidden flex flex-col justify-center shadow-2xl">
+                <div class="glass-card p-10 md:p-14 rounded-[3rem] border border-white/5 relative overflow-hidden flex flex-col justify-center shadow-2xl z-40">
                     <div class="absolute top-[-50px] right-[-50px] w-80 h-80 bg-teal-500/10 rounded-full blur-[100px] pointer-events-none"></div>
                     <h3 class="text-3xl font-black text-white mb-10 z-10 tracking-tight">2. Your Custom Formulation</h3>
                     
-                    <div id="calc-results-empty" class="text-center py-24 text-slate-500 text-base font-medium">
+                    <div id="calc-results-empty" class="text-center py-24 text-slate-500 text-base font-medium relative z-10">
                         Enter your targets and hit calculate to generate your formulation.
                     </div>
                     
-                    <div id="calc-results-filled" class="hidden space-y-10 z-10">
+                    <div id="calc-results-filled" class="hidden space-y-10 z-10 relative">
                         <div class="bg-slate-900/80 p-10 rounded-[2rem] border border-slate-700/80 shadow-inner">
                             <h4 class="text-sm font-black uppercase tracking-widest text-slate-400 mb-6">To make one standard <span class="text-white">50kg</span> bag, mix:</h4>
                             <div class="flex justify-between items-center mb-5">
@@ -842,34 +845,34 @@
                             </div>
                         </div>
                         
-                        <button onclick="navigate('marketplace')" class="w-full bg-[#0f172a] hover:bg-slate-800 border border-slate-700/50 text-white font-black py-5 rounded-2xl text-sm transition-colors shadow-inner mt-6 tracking-wide hover:-translate-y-0.5">🛒 Buy Ingredients on Market</button>
+                        <button onclick="navigate('marketplace')" class="w-full bg-[#0f172a] hover:bg-slate-800 border border-slate-700/50 text-white font-black py-5 rounded-2xl text-sm transition-colors shadow-inner mt-6 tracking-wide hover:-translate-y-0.5 cursor-pointer">🛒 Buy Ingredients on Market</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- GRANTS VIEW -->
-        <div id="view-grants" class="fade-in hidden space-y-8">
-            <div class="text-center space-y-4 mb-14">
+        <div id="view-grants" class="fade-in hidden space-y-8 relative z-30">
+            <div class="text-center space-y-4 mb-14 relative z-40">
                 <div class="w-24 h-24 bg-amber-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-amber-500/20 shadow-[0_0_40px_rgba(245,158,11,0.15)] mb-8">🏆</div>
                 <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight">Agri-Finance & Grants</h2>
                 <p class="text-slate-400 text-lg max-w-3xl mx-auto font-medium">Our automated system scans MoFA, USAID, and NGO portals daily to bring you the latest funding opportunities and loans.</p>
             </div>
-            <div id="grants-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            <div id="grants-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-40"></div>
         </div>
 
         <!-- AGRIDOCTOR AI SCANNER VIEW -->
-        <div id="view-agridoctor" class="fade-in hidden max-w-5xl mx-auto mt-6 space-y-8">
-            <div class="text-center space-y-4 mb-14">
+        <div id="view-agridoctor" class="fade-in hidden max-w-5xl mx-auto mt-6 space-y-8 relative z-30">
+            <div class="text-center space-y-4 mb-14 relative z-40">
                 <div class="w-24 h-24 bg-rose-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-rose-500/20 shadow-[0_0_40px_rgba(244,63,94,0.15)] mb-8">🩺</div>
                 <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight">AgriDoctor AI</h2>
                 <p class="text-slate-400 text-lg max-w-3xl mx-auto font-medium">Upload a photo of a diseased crop leaf or sick livestock. Our AI will diagnose the issue and provide an instant treatment plan.</p>
             </div>
 
-            <div class="glass-card p-12 md:p-16 rounded-[3rem] border border-rose-500/30 shadow-[0_0_50px_rgba(244,63,94,0.15)] relative overflow-hidden">
+            <div class="glass-card p-12 md:p-16 rounded-[3rem] border border-rose-500/30 shadow-[0_0_50px_rgba(244,63,94,0.15)] relative overflow-hidden z-40">
                 <div class="absolute top-[-80px] right-[-80px] w-80 h-80 bg-rose-500/10 rounded-full blur-[100px] pointer-events-none"></div>
                 
-                <div id="agridoctor-upload-state" class="text-center">
+                <div id="agridoctor-upload-state" class="text-center relative z-40">
                     <div class="w-full h-96 bg-[#020617]/50 border-2 border-dashed border-rose-500/40 rounded-[3rem] flex flex-col items-center justify-center cursor-pointer hover:border-rose-400 hover:bg-rose-500/5 transition-all group relative overflow-hidden shadow-inner" onclick="document.getElementById('agridoctor-file').click()">
                         <img id="agridoctor-preview" src="" class="hidden absolute inset-0 w-full h-full object-cover opacity-60 z-0 mix-blend-screen">
                         <div class="z-10 relative">
@@ -879,16 +882,16 @@
                         </div>
                     </div>
                     <input type="file" id="agridoctor-file" accept="image/*" capture="environment" class="hidden" onchange="handleAgriDoctorUpload(event)">
-                    <button id="agridoctor-analyze-btn" onclick="processAgriDoctor()" class="hidden w-full mt-10 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-black py-6 rounded-2xl text-lg transition-all shadow-[0_0_20px_rgba(244,63,94,0.4)] hover:shadow-[0_0_30px_rgba(244,63,94,0.6)] relative z-10 hover:-translate-y-1 tracking-wide">Analyze Image 🔍</button>
+                    <button id="agridoctor-analyze-btn" onclick="processAgriDoctor()" class="hidden w-full mt-10 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-black py-6 rounded-2xl text-lg transition-all shadow-[0_0_20px_rgba(244,63,94,0.4)] hover:shadow-[0_0_30px_rgba(244,63,94,0.6)] relative z-10 hover:-translate-y-1 tracking-wide cursor-pointer">Analyze Image 🔍</button>
                 </div>
 
-                <div id="agridoctor-processing-state" class="hidden text-center py-24 relative z-10">
+                <div id="agridoctor-processing-state" class="hidden text-center py-24 relative z-40">
                     <div class="w-24 h-24 border-[5px] border-rose-500/30 border-t-rose-500 rounded-full animate-spin mx-auto mb-10 shadow-[0_0_40px_rgba(244,63,94,0.3)]"></div>
                     <h3 class="text-4xl font-black text-white mb-4 tracking-tight">Analyzing Biomarkers...</h3>
                     <p class="text-base text-slate-400 font-medium max-w-md mx-auto">Cross-referencing with local Ghanaian pathology databases...</p>
                 </div>
 
-                <div id="agridoctor-result-state" class="hidden relative z-10">
+                <div id="agridoctor-result-state" class="hidden relative z-40">
                     <div class="bg-[#0f172a]/90 border border-rose-500/30 rounded-[3rem] p-10 md:p-14 mb-10 shadow-inner">
                         <div class="flex flex-col md:flex-row items-start md:items-center gap-8 mb-8 border-b border-white/10 pb-8">
                             <span class="text-7xl drop-shadow-[0_0_20px_rgba(244,63,94,0.3)]" id="diag-icon">🦠</span>
@@ -912,226 +915,49 @@
                     </div>
                     
                     <div class="flex flex-col sm:flex-row gap-5">
-                        <button onclick="resetAgriDoctor()" class="flex-1 bg-[#0f172a] hover:bg-slate-800 border border-slate-700/50 text-white font-black py-5 rounded-2xl transition-all shadow-inner text-sm tracking-wide hover:-translate-y-0.5">Scan Another</button>
-                        <button onclick="navigate('marketplace')" class="flex-1 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-black py-5 rounded-2xl transition-all shadow-[0_0_20px_rgba(244,63,94,0.4)] text-sm tracking-wide hover:-translate-y-0.5">Buy Treatment on Market</button>
-                    </div>
-                </div>
-            </div>
-        </div><!-- FARM MANAGER VIEW -->
-        <div id="view-farm-manager" class="fade-in hidden space-y-8">
-            <div class="flex flex-col md:flex-row md:items-center justify-between glass-card p-10 rounded-[3rem] border border-blue-500/30 gap-8 shadow-[0_0_40px_rgba(59,130,246,0.15)] relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
-                <div class="relative z-10">
-                    <h2 class="text-4xl font-black text-white flex items-center gap-4 tracking-tight">💼 Farm Manager Dashboard</h2>
-                    <p class="text-base text-slate-400 mt-3 font-medium max-w-xl">Track flock cycles, log expenses, and auto-list inventory upon harvest.</p>
-                </div>
-                <button onclick="openBatchModal()" class="bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-500 hover:to-indigo-400 text-white text-sm font-black px-10 py-5 rounded-2xl shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all whitespace-nowrap hover:-translate-y-1 relative z-10 tracking-wide">
-                    + Start New Batch
-                </button>
-            </div>
-            
-            <div id="farm-batches-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-        </div>
-
-        <!-- MARKET INTEL VIEW -->
-        <div id="view-intel" class="fade-in hidden space-y-8">
-            <div class="text-center space-y-4 mb-14">
-                <div class="w-24 h-24 bg-rose-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-rose-500/20 shadow-[0_0_40px_rgba(244,63,94,0.15)] mb-8">📊</div>
-                <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight">Market Intelligence</h2>
-                <p class="text-slate-400 text-lg max-w-3xl mx-auto font-medium">Live regional price indexes and arbitrage tracking. See where it's cheapest to buy and most profitable to sell based on real-time platform data.</p>
-            </div>
-            <div id="intel-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
-        </div>
-
-        <!-- FEED CALCULATOR VIEW -->
-        <div id="view-calculator" class="fade-in hidden space-y-8">
-            <div class="text-center space-y-4 mb-14">
-                <div class="w-24 h-24 bg-teal-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-teal-500/20 shadow-[0_0_40px_rgba(20,184,166,0.15)] mb-8">🧮</div>
-                <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight">Precision Feed Calculator</h2>
-                <p class="text-slate-400 text-lg max-w-3xl mx-auto font-medium">Use the Pearson Square method to instantly calculate the exact mix ratio and cost of formulating your own poultry or livestock feed.</p>
-            </div>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-                <div class="glass-card p-10 md:p-14 rounded-[3rem] border border-teal-500/30 shadow-[0_0_40px_rgba(20,184,166,0.15)]">
-                    <h3 class="text-3xl font-black text-teal-400 mb-10 flex items-center gap-4 tracking-tight">1. Set Your Targets</h3>
-                    <div class="space-y-8">
-                        <div class="bg-[#020617]/50 p-8 rounded-[2rem] border border-slate-700/80 shadow-inner">
-                            <label class="block text-sm font-black text-white mb-4 uppercase tracking-widest">Target Crude Protein (CP %)</label>
-                            <input type="number" id="calc-target-cp" value="22" class="w-full bg-[#0f172a] border border-slate-600 rounded-2xl px-6 py-5 text-2xl font-black text-teal-400 outline-none focus:border-teal-500 shadow-inner transition-colors">
-                        </div>
-
-                        <div class="bg-[#020617]/50 p-8 rounded-[2rem] border border-slate-700/80 space-y-6 shadow-inner">
-                            <label class="block text-sm font-black text-emerald-400 uppercase tracking-widest">Protein Source (e.g., Soya)</label>
-                            <div class="grid grid-cols-2 gap-6">
-                                <div>
-                                    <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest block mb-3">CP (%)</label>
-                                    <input type="number" id="calc-protein-cp" value="44" class="w-full bg-[#0f172a] border border-slate-600 rounded-2xl px-6 py-4 text-base font-bold text-white outline-none focus:border-emerald-500 transition-colors shadow-inner">
-                                </div>
-                                <div>
-                                    <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest block mb-3">Price / 50kg</label>
-                                    <input type="number" id="calc-protein-price" value="350" class="w-full bg-[#0f172a] border border-slate-600 rounded-2xl px-6 py-4 text-base font-bold text-white outline-none focus:border-emerald-500 transition-colors shadow-inner">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-[#020617]/50 p-8 rounded-[2rem] border border-slate-700/80 space-y-6 shadow-inner">
-                            <label class="block text-sm font-black text-amber-400 uppercase tracking-widest">Energy Source (e.g., Maize)</label>
-                            <div class="grid grid-cols-2 gap-6">
-                                <div>
-                                    <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest block mb-3">CP (%)</label>
-                                    <input type="number" id="calc-energy-cp" value="8" class="w-full bg-[#0f172a] border border-slate-600 rounded-2xl px-6 py-4 text-base font-bold text-white outline-none focus:border-amber-500 transition-colors shadow-inner">
-                                </div>
-                                <div>
-                                    <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest block mb-3">Price / 50kg</label>
-                                    <input type="number" id="calc-energy-price" value="200" class="w-full bg-[#0f172a] border border-slate-600 rounded-2xl px-6 py-4 text-base font-bold text-white outline-none focus:border-amber-500 transition-colors shadow-inner">
-                                </div>
-                            </div>
-                        </div>
-                        <button onclick="calculateFeedMix()" class="w-full bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-black py-6 rounded-2xl text-base transition-all shadow-[0_0_20px_rgba(20,184,166,0.4)] hover:shadow-[0_0_30px_rgba(20,184,166,0.6)] hover:-translate-y-1 tracking-wide mt-4">Calculate Mix Ratio ✨</button>
-                    </div>
-                </div>
-
-                <div class="glass-card p-10 md:p-14 rounded-[3rem] border border-white/5 relative overflow-hidden flex flex-col justify-center shadow-2xl">
-                    <div class="absolute top-[-50px] right-[-50px] w-80 h-80 bg-teal-500/10 rounded-full blur-[100px] pointer-events-none"></div>
-                    <h3 class="text-3xl font-black text-white mb-10 z-10 tracking-tight">2. Your Custom Formulation</h3>
-                    
-                    <div id="calc-results-empty" class="text-center py-24 text-slate-500 text-base font-medium">
-                        Enter your targets and hit calculate to generate your formulation.
-                    </div>
-                    
-                    <div id="calc-results-filled" class="hidden space-y-10 z-10">
-                        <div class="bg-slate-900/80 p-10 rounded-[2rem] border border-slate-700/80 shadow-inner">
-                            <h4 class="text-sm font-black uppercase tracking-widest text-slate-400 mb-6">To make one standard <span class="text-white">50kg</span> bag, mix:</h4>
-                            <div class="flex justify-between items-center mb-5">
-                                <span class="text-lg font-bold text-emerald-400">Protein Source:</span>
-                                <span class="text-4xl font-black text-white tracking-tight" id="res-protein-kg">0 kg</span>
-                            </div>
-                            <div class="flex justify-between items-center pb-5 border-b border-white/10">
-                                <span class="text-lg font-bold text-amber-400">Energy Source:</span>
-                                <span class="text-4xl font-black text-white tracking-tight" id="res-energy-kg">0 kg</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-teal-950/40 p-10 rounded-[2rem] border border-teal-500/40 shadow-[0_0_30px_rgba(20,184,166,0.1)]">
-                            <h4 class="text-sm font-black uppercase tracking-widest text-teal-400 mb-4">Estimated Cost Per Bag</h4>
-                            <div class="flex items-baseline gap-3">
-                                <span class="text-6xl font-black text-white tracking-tight" id="res-total-cost">GH₵ 0.00</span>
-                            </div>
-                        </div>
-                        
-                        <button onclick="navigate('marketplace')" class="w-full bg-[#0f172a] hover:bg-slate-800 border border-slate-700/50 text-white font-black py-5 rounded-2xl text-sm transition-colors shadow-inner mt-6 tracking-wide hover:-translate-y-0.5">🛒 Buy Ingredients on Market</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- GRANTS VIEW -->
-        <div id="view-grants" class="fade-in hidden space-y-8">
-            <div class="text-center space-y-4 mb-14">
-                <div class="w-24 h-24 bg-amber-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-amber-500/20 shadow-[0_0_40px_rgba(245,158,11,0.15)] mb-8">🏆</div>
-                <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight">Agri-Finance & Grants</h2>
-                <p class="text-slate-400 text-lg max-w-3xl mx-auto font-medium">Our automated system scans MoFA, USAID, and NGO portals daily to bring you the latest funding opportunities and loans.</p>
-            </div>
-            <div id="grants-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-        </div>
-
-        <!-- AGRIDOCTOR AI SCANNER VIEW -->
-        <div id="view-agridoctor" class="fade-in hidden max-w-5xl mx-auto mt-6 space-y-8">
-            <div class="text-center space-y-4 mb-14">
-                <div class="w-24 h-24 bg-rose-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-rose-500/20 shadow-[0_0_40px_rgba(244,63,94,0.15)] mb-8">🩺</div>
-                <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight">AgriDoctor AI</h2>
-                <p class="text-slate-400 text-lg max-w-3xl mx-auto font-medium">Upload a photo of a diseased crop leaf or sick livestock. Our AI will diagnose the issue and provide an instant treatment plan.</p>
-            </div>
-
-            <div class="glass-card p-12 md:p-16 rounded-[3rem] border border-rose-500/30 shadow-[0_0_50px_rgba(244,63,94,0.15)] relative overflow-hidden">
-                <div class="absolute top-[-80px] right-[-80px] w-80 h-80 bg-rose-500/10 rounded-full blur-[100px] pointer-events-none"></div>
-                
-                <div id="agridoctor-upload-state" class="text-center">
-                    <div class="w-full h-96 bg-[#020617]/50 border-2 border-dashed border-rose-500/40 rounded-[3rem] flex flex-col items-center justify-center cursor-pointer hover:border-rose-400 hover:bg-rose-500/5 transition-all group relative overflow-hidden shadow-inner" onclick="document.getElementById('agridoctor-file').click()">
-                        <img id="agridoctor-preview" src="" class="hidden absolute inset-0 w-full h-full object-cover opacity-60 z-0 mix-blend-screen">
-                        <div class="z-10 relative">
-                            <span class="text-7xl mb-8 block group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl">📸</span>
-                            <span class="text-2xl text-white font-black block tracking-tight">Tap to Scan Photo</span>
-                            <span class="text-slate-400 text-sm mt-3 block font-bold uppercase tracking-widest">Supports leaves, fruits, and livestock</span>
-                        </div>
-                    </div>
-                    <input type="file" id="agridoctor-file" accept="image/*" capture="environment" class="hidden" onchange="handleAgriDoctorUpload(event)">
-                    <button id="agridoctor-analyze-btn" onclick="processAgriDoctor()" class="hidden w-full mt-10 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-black py-6 rounded-2xl text-lg transition-all shadow-[0_0_20px_rgba(244,63,94,0.4)] hover:shadow-[0_0_30px_rgba(244,63,94,0.6)] relative z-10 hover:-translate-y-1 tracking-wide">Analyze Image 🔍</button>
-                </div>
-
-                <div id="agridoctor-processing-state" class="hidden text-center py-24 relative z-10">
-                    <div class="w-24 h-24 border-[5px] border-rose-500/30 border-t-rose-500 rounded-full animate-spin mx-auto mb-10 shadow-[0_0_40px_rgba(244,63,94,0.3)]"></div>
-                    <h3 class="text-4xl font-black text-white mb-4 tracking-tight">Analyzing Biomarkers...</h3>
-                    <p class="text-base text-slate-400 font-medium max-w-md mx-auto">Cross-referencing with local Ghanaian pathology databases...</p>
-                </div>
-
-                <div id="agridoctor-result-state" class="hidden relative z-10">
-                    <div class="bg-[#0f172a]/90 border border-rose-500/30 rounded-[3rem] p-10 md:p-14 mb-10 shadow-inner">
-                        <div class="flex flex-col md:flex-row items-start md:items-center gap-8 mb-8 border-b border-white/10 pb-8">
-                            <span class="text-7xl drop-shadow-[0_0_20px_rgba(244,63,94,0.3)]" id="diag-icon">🦠</span>
-                            <div>
-                                <h4 class="text-sm text-rose-400 font-black uppercase tracking-widest mb-2">Detected Pathogen</h4>
-                                <h3 class="text-4xl font-black text-white tracking-tight" id="diag-title">...</h3>
-                            </div>
-                        </div>
-                        <p class="text-lg text-slate-300 mb-10 leading-relaxed font-medium" id="diag-desc">...</p>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-[#020617]/60 p-8 rounded-3xl border border-emerald-500/30 shadow-inner">
-                                <h4 class="text-xs font-black text-emerald-400 mb-4 uppercase tracking-widest flex items-center gap-3">🌱 Organic / Home Remedy</h4>
-                                <p class="text-base text-slate-300 leading-relaxed font-medium" id="diag-organic">...</p>
-                            </div>
-                            <div class="bg-[#020617]/60 p-8 rounded-3xl border border-amber-500/30 shadow-inner">
-                                <h4 class="text-xs font-black text-amber-400 mb-4 uppercase tracking-widest flex items-center gap-3">🧪 Chemical Intervention</h4>
-                                <p class="text-base text-slate-300 leading-relaxed font-medium" id="diag-chemical">...</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex flex-col sm:flex-row gap-5">
-                        <button onclick="resetAgriDoctor()" class="flex-1 bg-[#0f172a] hover:bg-slate-800 border border-slate-700/50 text-white font-black py-5 rounded-2xl transition-all shadow-inner text-sm tracking-wide hover:-translate-y-0.5">Scan Another</button>
-                        <button onclick="navigate('marketplace')" class="flex-1 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-black py-5 rounded-2xl transition-all shadow-[0_0_20px_rgba(244,63,94,0.4)] text-sm tracking-wide hover:-translate-y-0.5">Buy Treatment on Market</button>
+                        <button onclick="resetAgriDoctor()" class="flex-1 bg-[#0f172a] hover:bg-slate-800 border border-slate-700/50 text-white font-black py-5 rounded-2xl transition-all shadow-inner text-sm tracking-wide hover:-translate-y-0.5 cursor-pointer">Scan Another</button>
+                        <button onclick="navigate('marketplace')" class="flex-1 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-black py-5 rounded-2xl transition-all shadow-[0_0_20px_rgba(244,63,94,0.4)] text-sm tracking-wide hover:-translate-y-0.5 cursor-pointer">Buy Treatment on Market</button>
                     </div>
                 </div>
             </div>
         </div><!-- HAULAGE POOL VIEW -->
-        <div id="view-haulage" class="fade-in hidden space-y-8">
+        <div id="view-haulage" class="fade-in hidden space-y-8 relative z-30">
             <div class="flex flex-col md:flex-row md:items-center justify-between glass-card p-10 rounded-[3rem] border border-amber-500/30 gap-8 shadow-[0_0_40px_rgba(245,158,11,0.15)] relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-80 h-80 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none"></div>
                 <div class="relative z-10">
                     <h2 class="text-4xl font-black text-white flex items-center gap-4 tracking-tight">🚚 Haulage Pool & Empty-Leg Freight</h2>
                     <p class="text-base text-slate-400 mt-3 font-medium max-w-2xl">Book cheap return-trip truck space or list your empty haulage truck returning from deliveries.</p>
                 </div>
-                <button onclick="openHaulagePostModal()" class="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-[#020617] text-sm font-black px-10 py-5 rounded-2xl shadow-[0_0_20px_rgba(245,158,11,0.4)] transition-all whitespace-nowrap hover:-translate-y-1 tracking-wide relative z-10">
+                <button onclick="openHaulagePostModal()" class="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-[#020617] text-sm font-black px-10 py-5 rounded-2xl shadow-[0_0_20px_rgba(245,158,11,0.4)] transition-all whitespace-nowrap hover:-translate-y-1 tracking-wide relative z-10 cursor-pointer">
                     + List Empty Truck
                 </button>
             </div>
-            <div id="haulage-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
+            <div id="haulage-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 relative z-40"></div>
         </div>
 
         <!-- POST AD VIEW -->
-        <div id="view-post" class="fade-in hidden max-w-4xl mx-auto mt-8">
-            <div class="flex items-center gap-5 mb-10">
+        <div id="view-post" class="fade-in hidden max-w-4xl mx-auto mt-8 relative z-30">
+            <div class="flex items-center gap-5 mb-10 relative z-40">
                 <div class="w-16 h-16 bg-emerald-500/20 rounded-[1.5rem] flex items-center justify-center text-3xl text-emerald-400 border border-emerald-500/30 shadow-[0_0_30px_rgba(16,185,129,0.2)]">📢</div>
                 <h2 class="text-5xl font-black text-white tracking-tight">Post a Seller Ad</h2>
             </div>
-            <div class="glass-card p-12 md:p-16 rounded-[3rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] space-y-10 relative overflow-hidden border border-emerald-500/20">
+            <div class="glass-card p-12 md:p-16 rounded-[3rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] space-y-10 relative overflow-hidden border border-emerald-500/20 relative z-40">
                 <div class="absolute top-[-80px] left-[-80px] w-80 h-80 bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none"></div>
                 
-                <div class="relative z-10">
+                <div class="relative z-40">
                     <label class="block text-sm font-black text-slate-400 mb-5 uppercase tracking-widest">Product Photos (Select Multiple)</label>
                     <div id="image-preview" class="w-full h-64 bg-[#020617]/50 border-2 border-dashed border-slate-700/80 rounded-[2.5rem] flex flex-col items-center justify-center cursor-pointer hover:border-emerald-500 hover:bg-emerald-500/5 transition-all overflow-hidden group shadow-inner" onclick="document.getElementById('post-image').click()">
                         <span id="upload-text" class="text-slate-400 text-base font-black text-center px-4 group-hover:text-emerald-400 transition-colors">Click to upload high-quality photos</span>
                     </div>
                     <input type="file" id="post-image" accept="image/*" multiple class="hidden" onchange="handleImageUpload(event)">
                 </div>
-                <div class="space-y-8 relative z-10">
-                    <input type="text" id="post-name" placeholder="Headline (e.g. 50 Crates of Large Eggs)" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-8 py-6 text-base font-bold text-white outline-none focus:border-emerald-500 transition-colors shadow-inner">
-                    <div class="relative">
-                        <textarea id="post-description" placeholder="Describe your product... (e.g. Farm location, organic feed used)" rows="5" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-8 py-6 text-base font-bold text-white outline-none focus:border-emerald-500 transition-colors shadow-inner"></textarea>
-                        <button onclick="autoWriteDescription()" class="absolute bottom-6 right-6 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white text-xs font-black px-5 py-3 rounded-xl shadow-lg transition-colors tracking-wide">✨ Auto-Write</button>
+                <div class="space-y-8 relative z-40">
+                    <input type="text" id="post-name" placeholder="Headline (e.g. 50 Crates of Large Eggs)" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-8 py-6 text-base font-bold text-white outline-none focus:border-emerald-500 transition-colors shadow-inner cursor-text">
+                    <div class="relative z-50">
+                        <textarea id="post-description" placeholder="Describe your product... (e.g. Farm location, organic feed used)" rows="5" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-8 py-6 text-base font-bold text-white outline-none focus:border-emerald-500 transition-colors shadow-inner cursor-text"></textarea>
+                        <button onclick="autoWriteDescription()" class="absolute bottom-6 right-6 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white text-xs font-black px-5 py-3 rounded-xl shadow-lg transition-colors tracking-wide cursor-pointer">✨ Auto-Write</button>
                     </div>
-                    <input type="text" id="post-delivery" placeholder="Delivery Details (e.g., Free delivery in Accra)" class="w-full bg-[#0f172a] border border-slate-700/80 rounded-[2rem] px-8 py-6 text-base font-bold text-amber-100 outline-none focus:border-emerald-500 transition-colors shadow-inner">
+                    <input type="text" id="post-delivery" placeholder="Delivery Details (e.g., Free delivery in Accra)" class="w-full bg-[#0f172a] border border-slate-700/80 rounded-[2rem] px-8 py-6 text-base font-bold text-amber-100 outline-none focus:border-emerald-500 transition-colors shadow-inner cursor-text">
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <select id="post-category" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-8 py-6 text-sm font-black text-white outline-none focus:border-emerald-500 appearance-none cursor-pointer transition-colors shadow-inner">
@@ -1146,13 +972,13 @@
                             <option value="Pets">Pets</option>
                             <option value="Vaccines & Feed">Vaccines & Feed</option>
                         </select>
-                        <input type="text" id="post-unit" placeholder="Unit (e.g. per crate)" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-8 py-6 text-sm font-bold text-white outline-none focus:border-emerald-500 transition-colors shadow-inner">
+                        <input type="text" id="post-unit" placeholder="Unit (e.g. per crate)" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-8 py-6 text-sm font-bold text-white outline-none focus:border-emerald-500 transition-colors shadow-inner cursor-text">
                     </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="relative">
                             <span class="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500 font-black text-lg">GH₵</span>
-                            <input type="text" id="post-price" placeholder="Price" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] pl-20 pr-8 py-6 text-lg font-black text-white outline-none focus:border-emerald-500 transition-colors shadow-inner">
+                            <input type="text" id="post-price" placeholder="Price" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] pl-20 pr-8 py-6 text-lg font-black text-white outline-none focus:border-emerald-500 transition-colors shadow-inner cursor-text">
                         </div>
                         <div class="flex flex-col md:flex-row gap-4">
                             <select id="post-region" class="w-full md:w-1/2 bg-[#0f172a] border border-slate-700/80 rounded-[2rem] px-6 py-6 text-sm text-white outline-none focus:border-emerald-500 cursor-pointer font-bold shadow-inner transition-colors">
@@ -1175,23 +1001,23 @@
                             </select>
                             <div class="relative w-full md:w-1/2">
                                 <span class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 text-sm">📍</span>
-                                <input type="text" id="post-town" placeholder="Town/City" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] pl-12 pr-6 py-6 text-sm font-bold text-white outline-none focus:border-emerald-500 transition-colors shadow-inner">
+                                <input type="text" id="post-town" placeholder="Town/City" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] pl-12 pr-6 py-6 text-sm font-bold text-white outline-none focus:border-emerald-500 transition-colors shadow-inner cursor-text">
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="pt-10 border-t border-white/10 relative z-10">
-                    <button id="submit-ad-btn" onclick="submitAd()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-6 rounded-[2rem] text-lg transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:shadow-[0_0_40px_rgba(16,185,129,0.6)] hover:-translate-y-1 tracking-wide">🚀 Submit Ad For Review</button>
+                <div class="pt-10 border-t border-white/10 relative z-40">
+                    <button id="submit-ad-btn" onclick="submitAd()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-6 rounded-[2rem] text-lg transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:shadow-[0_0_40px_rgba(16,185,129,0.6)] hover:-translate-y-1 tracking-wide cursor-pointer">🚀 Submit Ad For Review</button>
                 </div>
             </div>
         </div>
 
         <!-- DASHBOARD VIEW -->
-        <div id="view-dashboard" class="fade-in hidden max-w-6xl mx-auto mt-8 space-y-10">
+        <div id="view-dashboard" class="fade-in hidden max-w-6xl mx-auto mt-8 space-y-10 relative z-30">
             <div class="glass-card p-12 md:p-16 rounded-[3rem] relative overflow-hidden flex flex-col md:flex-row items-center gap-12 shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-emerald-500/30">
                 <div class="absolute top-[-80px] right-[-80px] w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none"></div>
                 
-                <div class="relative w-40 h-40 shrink-0 z-10 group cursor-pointer" onclick="document.getElementById('profile-pic-upload').click()">
+                <div class="relative w-40 h-40 shrink-0 z-40 group cursor-pointer" onclick="document.getElementById('profile-pic-upload').click()">
                     <div id="my-profile-avatar" class="w-full h-full bg-slate-800 rounded-[2.5rem] flex items-center justify-center text-6xl border-4 border-slate-700 shadow-2xl overflow-hidden bg-cover bg-center group-hover:border-emerald-500 transition-colors">👨🏽‍🌾</div>
                     <div class="absolute inset-0 bg-black/70 rounded-[2.5rem] flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
                         <span class="text-3xl mb-2">📷</span>
@@ -1200,7 +1026,7 @@
                     <input type="file" id="profile-pic-upload" accept="image/*" class="hidden" onchange="uploadProfilePicture(event)">
                 </div>
 
-                <div class="flex-grow text-center md:text-left z-10 w-full">
+                <div class="flex-grow text-center md:text-left z-40 w-full">
                     <div class="flex flex-col md:flex-row md:items-center gap-5 mb-4">
                         <h2 class="text-5xl font-black text-white tracking-tight" id="my-profile-name">Loading...</h2>
                         <span id="my-profile-badge" class="hidden bg-emerald-500/10 border border-emerald-500/40 text-emerald-400 text-sm font-black uppercase tracking-wider px-5 py-2 rounded-full items-center gap-2 mx-auto md:mx-0 w-fit shadow-inner">
@@ -1217,22 +1043,22 @@
                             <p class="text-base font-black text-rose-400 mb-1">Account Unverified</p>
                             <p class="text-xs font-medium text-slate-300">Apply for a Verified Seller badge to build buyer trust and unlock priority support.</p>
                         </div>
-                        <button onclick="payForVerification()" class="bg-rose-600 hover:bg-rose-500 text-white text-sm font-black px-8 py-4 rounded-xl shadow-[0_0_20px_rgba(225,29,72,0.4)] transition-all shrink-0 hover:-translate-y-0.5 tracking-wide">
+                        <button onclick="payForVerification()" class="bg-rose-600 hover:bg-rose-500 text-white text-sm font-black px-8 py-4 rounded-xl shadow-[0_0_20px_rgba(225,29,72,0.4)] transition-all shrink-0 hover:-translate-y-0.5 tracking-wide cursor-pointer">
                             Verify Now (GH₵ 5)
                         </button>
                     </div>
                 </div>
-                <div class="flex flex-col gap-4 shrink-0 z-10 w-full md:w-auto">
-                    <button onclick="navigate('post')" class="w-full md:w-auto bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black px-10 py-5 rounded-2xl text-base transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:-translate-y-1 tracking-wide">
+                <div class="flex flex-col gap-4 shrink-0 z-40 w-full md:w-auto">
+                    <button onclick="navigate('post')" class="w-full md:w-auto bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black px-10 py-5 rounded-2xl text-base transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:-translate-y-1 tracking-wide cursor-pointer">
                         + Post Seller Ad
                     </button>
-                    <button onclick="openRfqModal()" class="w-full md:w-auto bg-[#0f172a] hover:bg-slate-800 border border-blue-500/40 text-blue-400 hover:text-blue-300 font-black px-10 py-5 rounded-2xl text-base transition-all shadow-lg hover:-translate-y-1 tracking-wide">
+                    <button onclick="openRfqModal()" class="w-full md:w-auto bg-[#0f172a] hover:bg-slate-800 border border-blue-500/40 text-blue-400 hover:text-blue-300 font-black px-10 py-5 rounded-2xl text-base transition-all shadow-lg hover:-translate-y-1 tracking-wide cursor-pointer">
                         📢 Post Buyer Tender
                     </button>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-40">
                 <div>
                     <div class="flex items-center justify-between mb-6 glass-card p-8 rounded-[2.5rem] border border-white/5 shadow-md">
                         <h2 class="text-3xl font-black text-white tracking-tight">My Ads</h2>
@@ -1247,7 +1073,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-12">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-12 relative z-40">
                 <div>
                     <div class="flex items-center justify-between mb-6 glass-card p-8 rounded-[2.5rem] border border-amber-500/30 bg-amber-500/5 shadow-md">
                         <h2 class="text-3xl font-black text-white tracking-tight">My Machinery Rentals</h2>
@@ -1260,10 +1086,8 @@
                     </div>
                     <div id="my-waste-list" class="grid grid-cols-1 gap-6"></div>
                 </div>
-            </div>
-
-            <!-- ADMIN PANEL -->
-            <div id="admin-panel" class="hidden mt-20 glass-card p-12 md:p-16 rounded-[3rem] border border-emerald-500/40 shadow-[0_0_60px_rgba(16,185,129,0.15)] bg-slate-900/80 relative overflow-hidden">
+            </div><!-- ADMIN PANEL -->
+            <div id="admin-panel" class="hidden mt-20 glass-card p-12 md:p-16 rounded-[3rem] border border-emerald-500/40 shadow-[0_0_60px_rgba(16,185,129,0.15)] bg-slate-900/80 relative overflow-hidden z-40">
                 <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
                 <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-12 border-b border-white/10 pb-8 relative z-10 gap-5">
                     <div>
@@ -1283,16 +1107,16 @@
                         <div class="pt-8 border-t border-white/10 bg-[#020617]/50 p-8 rounded-3xl shadow-inner">
                             <label class="block text-sm font-black text-slate-300 mb-4 uppercase tracking-widest">Manual Verification (Override)</label>
                             <div class="flex flex-col sm:flex-row gap-4">
-                                <input type="email" id="verify-email-input" placeholder="Farmer's Email Address" class="w-full bg-[#0f172a] border border-slate-700 rounded-2xl px-6 py-4 text-base font-medium text-white outline-none focus:border-emerald-500 transition-colors shadow-inner">
-                                <button onclick="verifySeller()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-10 py-4 rounded-2xl shrink-0 transition-colors shadow-[0_0_20px_rgba(16,185,129,0.3)] tracking-wide">Verify</button>
+                                <input type="email" id="verify-email-input" placeholder="Farmer's Email Address" class="w-full bg-[#0f172a] border border-slate-700 rounded-2xl px-6 py-4 text-base font-medium text-white outline-none focus:border-emerald-500 transition-colors shadow-inner cursor-text">
+                                <button onclick="verifySeller()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-10 py-4 rounded-2xl shrink-0 transition-colors shadow-[0_0_20px_rgba(16,185,129,0.3)] tracking-wide cursor-pointer">Verify</button>
                             </div>
                         </div>
 
                         <div class="pt-8 mt-10 bg-rose-950/20 p-8 rounded-3xl border border-rose-500/20 shadow-inner">
                             <label class="block text-sm font-black text-rose-400 mb-4 uppercase tracking-widest">Permanent Ban (Revoke Access)</label>
                             <div class="flex flex-col sm:flex-row gap-4">
-                                <input type="email" id="ban-email-input" placeholder="Farmer's Email Address" class="w-full bg-[#0f172a] border border-slate-700 rounded-2xl px-6 py-4 text-base font-medium text-white outline-none focus:border-rose-500 transition-colors shadow-inner">
-                                <button onclick="banSeller()" class="bg-rose-600 hover:bg-rose-500 text-white font-black px-10 py-4 rounded-2xl shrink-0 transition-colors shadow-[0_0_20px_rgba(225,29,72,0.3)] tracking-wide">Ban</button>
+                                <input type="email" id="ban-email-input" placeholder="Farmer's Email Address" class="w-full bg-[#0f172a] border border-slate-700 rounded-2xl px-6 py-4 text-base font-medium text-white outline-none focus:border-rose-500 transition-colors shadow-inner cursor-text">
+                                <button onclick="banSeller()" class="bg-rose-600 hover:bg-rose-500 text-white font-black px-10 py-4 rounded-2xl shrink-0 transition-colors shadow-[0_0_20px_rgba(225,29,72,0.3)] tracking-wide cursor-pointer">Ban</button>
                             </div>
                         </div>
                     </div>
@@ -1300,47 +1124,47 @@
                     <div>
                         <div class="mb-12">
                             <h4 class="text-sm font-black uppercase tracking-widest text-slate-300 mb-5 bg-white/5 inline-block px-4 py-1.5 rounded-lg border border-white/10">Ad Moderation Queue</h4>
-                            <div id="admin-mod-list" class="space-y-4 max-h-[600px] overflow-y-auto pr-4"></div>
+                            <div id="admin-mod-list" class="space-y-4 max-h-[600px] overflow-y-auto pr-4 scroll-touch"></div>
                         </div>
                         
                         <div class="mt-12 border-t border-white/10 pt-10">
                             <h4 class="text-sm font-black uppercase tracking-widest text-rose-400 mb-5 bg-rose-500/10 inline-block px-4 py-1.5 rounded-lg border border-rose-500/20">🚩 Scam Reports</h4>
-                            <div id="admin-reports-list" class="space-y-4 max-h-80 overflow-y-auto pr-4"></div>
+                            <div id="admin-reports-list" class="space-y-4 max-h-80 overflow-y-auto pr-4 scroll-touch"></div>
                         </div>
                     </div>
                 </div>
 
                 <div class="mt-14 border-t border-white/10 pt-10 relative z-10">
                     <h4 class="text-sm font-black uppercase tracking-widest text-blue-400 mb-5 bg-blue-500/10 inline-block px-4 py-1.5 rounded-lg border border-blue-500/20">Master Ad Directory (All Listings)</h4>
-                    <div id="admin-all-ads-list" class="space-y-4 max-h-[500px] overflow-y-auto pr-4"></div>
+                    <div id="admin-all-ads-list" class="space-y-4 max-h-[500px] overflow-y-auto pr-4 scroll-touch"></div>
                 </div>
             </div>
         </div>
 
         <!-- RENTALS VIEW -->
-        <div id="view-rentals" class="fade-in hidden space-y-8">
+        <div id="view-rentals" class="fade-in hidden space-y-8 relative z-30">
             <div class="flex flex-col md:flex-row md:items-center justify-between glass-card p-10 rounded-[3rem] border border-amber-500/30 gap-8 shadow-[0_0_40px_rgba(245,158,11,0.15)] relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-80 h-80 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none"></div>
                 <div class="relative z-10">
                     <h2 class="text-4xl font-black text-white flex items-center gap-4 tracking-tight">🚜 Heavy Equipment Rentals</h2>
                     <p class="text-base text-slate-400 mt-3 font-medium max-w-2xl">Rent idle tillers, generators, threshers, and pumps locally with escrow-backed deposits.</p>
                 </div>
-                <button onclick="openRentalPostModal()" class="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-[#020617] text-sm font-black px-10 py-5 rounded-2xl shadow-[0_0_20px_rgba(245,158,11,0.4)] transition-all whitespace-nowrap hover:-translate-y-1 tracking-wide relative z-10">
+                <button onclick="openRentalPostModal()" class="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-[#020617] text-sm font-black px-10 py-5 rounded-2xl shadow-[0_0_20px_rgba(245,158,11,0.4)] transition-all whitespace-nowrap hover:-translate-y-1 tracking-wide relative z-10 cursor-pointer">
                     + List Your Equipment
                 </button>
             </div>
-            <div id="rentals-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
+            <div id="rentals-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 relative z-40"></div>
         </div>
 
         <!-- ECO-LOOP LOGISTICS VIEW -->
-        <div id="view-waste" class="fade-in hidden space-y-8">
-            <div class="text-center space-y-4 mb-14">
+        <div id="view-waste" class="fade-in hidden space-y-8 relative z-30">
+            <div class="text-center space-y-4 mb-14 relative z-40">
                 <div class="w-24 h-24 bg-emerald-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-emerald-500/20 shadow-[0_0_40px_rgba(16,185,129,0.15)] mb-8">♻️</div>
                 <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight">Eco-Loop Logistics</h2>
                 <p class="text-slate-400 text-lg max-w-3xl mx-auto font-medium">Monetize commercial waste and agricultural by-products. Request bulk collection for used cooking oil, spent grain, cocoa pods, and biomass.</p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto relative z-40">
                 <div class="glass-card p-12 md:p-16 rounded-[3rem] border border-emerald-500/30 shadow-[0_0_50px_rgba(16,185,129,0.15)] space-y-8">
                     <h3 class="text-3xl font-black text-emerald-400 mb-6 tracking-tight">Request Reverse Pickup</h3>
                     <div>
@@ -1355,24 +1179,26 @@
                     </div>
                     <div>
                         <label class="text-sm text-slate-400 font-black uppercase tracking-widest">Estimated Volume / Weight</label>
-                        <input type="text" id="waste-qty" placeholder="e.g. 5 Drums (1000L) or 3 Tons" class="w-full bg-[#020617]/80 border border-slate-700 rounded-[2rem] px-6 py-5 text-base font-medium text-white mt-3 shadow-inner focus:border-emerald-500 outline-none transition-colors">
+                        <input type="text" id="waste-qty" placeholder="e.g. 5 Drums (1000L) or 3 Tons" class="w-full bg-[#020617]/80 border border-slate-700 rounded-[2rem] px-6 py-5 text-base font-medium text-white mt-3 shadow-inner focus:border-emerald-500 outline-none transition-colors cursor-text">
                     </div>
                     <div>
                         <label class="text-sm text-slate-400 font-black uppercase tracking-widest">Pickup Location & Business Name</label>
-                        <input type="text" id="waste-loc" placeholder="e.g. Papa's Kitchen, Spintex Road, Accra" class="w-full bg-[#020617]/80 border border-slate-700 rounded-[2rem] px-6 py-5 text-base font-medium text-white mt-3 shadow-inner focus:border-emerald-500 outline-none transition-colors">
+                        <input type="text" id="waste-loc" placeholder="e.g. Papa's Kitchen, Spintex Road, Accra" class="w-full bg-[#020617]/80 border border-slate-700 rounded-[2rem] px-6 py-5 text-base font-medium text-white mt-3 shadow-inner focus:border-emerald-500 outline-none transition-colors cursor-text">
                     </div>
                     <div>
                         <label class="text-sm text-slate-400 font-black uppercase tracking-widest">Dispatch Contact Phone</label>
-                        <input type="tel" id="waste-phone" placeholder="e.g. 0244123456" class="w-full bg-[#020617]/80 border border-slate-700 rounded-[2rem] px-6 py-5 text-base font-medium text-white mt-3 shadow-inner focus:border-emerald-500 outline-none transition-colors">
+                        <input type="tel" id="waste-phone" placeholder="e.g. 0244123456" class="w-full bg-[#020617]/80 border border-slate-700 rounded-[2rem] px-6 py-5 text-base font-medium text-white mt-3 shadow-inner focus:border-emerald-500 outline-none transition-colors cursor-text">
                     </div>
-                    <button onclick="submitWasteRequest()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-6 rounded-[2rem] text-lg transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:shadow-[0_0_40px_rgba(16,185,129,0.6)] hover:-translate-y-1 tracking-wide mt-6">Schedule Collector Dispatch 🚚</button>
+                    <button onclick="submitWasteRequest()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-6 rounded-[2rem] text-lg transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:shadow-[0_0_40px_rgba(16,185,129,0.6)] hover:-translate-y-1 tracking-wide mt-6 cursor-pointer">
+                        Schedule Collector Dispatch 🚚
+                    </button>
                 </div>
 
                 <div class="glass-card p-12 md:p-16 rounded-[3rem] border border-white/5 flex flex-col justify-between shadow-2xl bg-gradient-to-br from-[#020617]/50 to-slate-900/50">
                     <div>
                         <h3 class="text-3xl font-black text-white mb-4 tracking-tight">Active Commercial Pickups</h3>
                         <p class="text-base text-slate-400 mb-8 font-medium">Live queue of commercial waste routes available for registered drivers and aggregators.</p>
-                        <div id="waste-queue" class="space-y-5 max-h-[500px] overflow-y-auto pr-4"></div>
+                        <div id="waste-queue" class="space-y-5 max-h-[500px] overflow-y-auto pr-4 scroll-touch"></div>
                     </div>
                     <div class="p-8 rounded-3xl bg-[#020617]/80 border border-slate-700/80 text-base text-slate-400 mt-10 shadow-inner font-medium">
                         💡 <strong class="text-slate-200">Refinery Arbitrage Guarantee:</strong> All processed materials are off-taken directly by vetted industrial recyclers and feed processing hubs.
@@ -1382,11 +1208,13 @@
         </div>
 
         <!-- FULL-PAGE SELLER STOREFRONT VIEW -->
-        <div id="view-seller-store" class="fade-in hidden space-y-8 max-w-6xl mx-auto mt-6">
-            <button onclick="navigate('marketplace')" class="text-xs font-black tracking-widest uppercase text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-6 py-3.5 rounded-xl hover:bg-emerald-500/20 transition-colors mb-3 inline-flex items-center gap-2 shadow-inner">← Back to Market</button>
+        <div id="view-seller-store" class="fade-in hidden space-y-8 max-w-6xl mx-auto mt-6 relative z-30">
+            <button onclick="navigate('marketplace')" class="text-xs font-black tracking-widest uppercase text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-6 py-3.5 rounded-xl hover:bg-emerald-500/20 transition-colors mb-3 inline-flex items-center gap-2 shadow-inner cursor-pointer relative z-40">
+                ← Back to Market
+            </button>
             
             <!-- Store Banner & Header -->
-            <div class="glass-card rounded-[3rem] border border-white/5 overflow-hidden shadow-2xl">
+            <div class="glass-card rounded-[3rem] border border-white/5 overflow-hidden shadow-2xl relative z-40">
                 <!-- Cover Photo -->
                 <div id="store-cover-photo" class="h-64 md:h-96 w-full bg-slate-800 bg-cover bg-center border-b border-white/10" style="background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80');"></div>
                 
@@ -1411,15 +1239,13 @@
                         </div>
                         
                         <div class="flex flex-col sm:flex-row md:flex-col gap-4 shrink-0 w-full md:w-auto">
-                            <a id="store-wa-btn" href="#" target="_blank" class="w-full md:w-auto bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-5 px-10 rounded-2xl text-base transition-all shadow-[0_0_20px_rgba(37,211,102,0.3)] hover:shadow-[0_0_30px_rgba(37,211,102,0.5)] flex items-center justify-center gap-3 hover:-translate-y-1 tracking-wide">💬 Message Store</a>
-                            <button onclick="shareStore()" class="w-full md:w-auto bg-[#0f172a] hover:bg-slate-800 border border-blue-500/30 text-blue-400 hover:text-blue-300 font-black py-5 px-10 rounded-2xl text-base transition-colors shadow-inner flex items-center justify-center gap-3 tracking-wide">🔗 Share Store Link</button>
+                            <a id="store-wa-btn" href="#" target="_blank" class="w-full md:w-auto bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-5 px-10 rounded-2xl text-base transition-all shadow-[0_0_20px_rgba(37,211,102,0.3)] hover:shadow-[0_0_30px_rgba(37,211,102,0.5)] flex items-center justify-center gap-3 hover:-translate-y-1 tracking-wide cursor-pointer">💬 Message Store</a>
+                            <button onclick="shareStore()" class="w-full md:w-auto bg-[#0f172a] hover:bg-slate-800 border border-blue-500/30 text-blue-400 hover:text-blue-300 font-black py-5 px-10 rounded-2xl text-base transition-colors shadow-inner flex items-center justify-center gap-3 tracking-wide cursor-pointer">🔗 Share Store Link</button>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Store Layout (Sidebar & Main Content) -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            </div><!-- Store Layout (Sidebar & Main Content) -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 relative z-40">
                 <!-- Sidebar: Stats & Rating -->
                 <div class="space-y-8">
                     <div class="glass-card p-10 rounded-[3rem] border border-amber-500/20 shadow-[0_0_40px_rgba(245,158,11,0.05)] bg-amber-500/5">
@@ -1429,17 +1255,17 @@
                             <div class="text-amber-400 text-2xl mb-3 tracking-widest" id="store-rating-stars">⭐⭐⭐⭐⭐</div>
                             <p class="text-xs text-slate-400 uppercase font-black tracking-widest" id="store-rating-count">0 Reviews</p>
                         </div>
-                        <button onclick="openLeaveReviewModal()" class="w-full mt-8 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-[#020617] font-black py-5 rounded-2xl text-base transition-all shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] hover:-translate-y-1 tracking-wide">⭐ Leave a Review</button>
+                        <button onclick="openLeaveReviewModal()" class="w-full mt-8 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-[#020617] font-black py-5 rounded-2xl text-base transition-all shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] hover:-translate-y-1 tracking-wide cursor-pointer">⭐ Leave a Review</button>
                     </div>
                     
-                    <button onclick="triggerReportFromProfile()" class="w-full glass-card p-6 rounded-[2rem] border border-rose-500/20 text-rose-400 text-sm font-black uppercase tracking-widest hover:bg-rose-500/10 transition-colors shadow-sm">🚩 Report Suspicious Activity</button>
+                    <button onclick="triggerReportFromProfile()" class="w-full glass-card p-6 rounded-[2rem] border border-rose-500/20 text-rose-400 text-sm font-black uppercase tracking-widest hover:bg-rose-500/10 transition-colors shadow-sm cursor-pointer">🚩 Report Suspicious Activity</button>
                 </div>
 
                 <!-- Main Content: Tabs for Produce & Reviews -->
                 <div class="lg:col-span-2 space-y-10">
                     <div class="flex gap-2 p-2.5 bg-[#020617]/60 rounded-2xl border border-slate-700/50 inline-flex shadow-inner backdrop-blur-md">
-                        <button onclick="switchStoreTab('produce')" id="tab-store-produce" class="px-10 py-4 rounded-xl font-black text-sm transition-all bg-emerald-600 text-white shadow-[0_0_20px_rgba(16,185,129,0.3)]">🛒 Active Produce</button>
-                        <button onclick="switchStoreTab('reviews')" id="tab-store-reviews" class="px-10 py-4 rounded-xl font-black text-sm transition-all text-slate-400 hover:text-white">💬 Customer Reviews</button>
+                        <button onclick="switchStoreTab('produce')" id="tab-store-produce" class="px-10 py-4 rounded-xl font-black text-sm transition-all bg-emerald-600 text-white shadow-[0_0_20px_rgba(16,185,129,0.3)] cursor-pointer">🛒 Active Produce</button>
+                        <button onclick="switchStoreTab('reviews')" id="tab-store-reviews" class="px-10 py-4 rounded-xl font-black text-sm transition-all text-slate-400 hover:text-white cursor-pointer">💬 Customer Reviews</button>
                     </div>
 
                     <div id="store-produce-view">
@@ -1454,76 +1280,76 @@
         </div>
 
         <!-- AUTH VIEW -->
-        <div id="view-auth" class="fade-in hidden max-w-md mx-auto mt-16">
+        <div id="view-auth" class="fade-in hidden max-w-md mx-auto mt-16 relative z-30">
             <div class="glass-card p-12 md:p-14 rounded-[3rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
                 <div class="absolute top-[-50px] right-[-50px] w-48 h-48 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
                 
-                <div id="login-box" class="relative z-10">
+                <div id="login-box" class="relative z-40">
                     <h2 class="text-4xl font-black text-white text-center mb-10 tracking-tight">Welcome Back</h2>
                     <div class="space-y-6">
-                        <input type="email" id="login-email" placeholder="Email" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner">
+                        <input type="email" id="login-email" placeholder="Email" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner cursor-text">
                         <div class="relative">
-                            <input type="password" id="login-password" placeholder="Password" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner pr-14">
-                            <button onclick="togglePassword('login-password')" class="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-400 text-xl transition-colors">👁️</button>
+                            <input type="password" id="login-password" placeholder="Password" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner pr-14 cursor-text">
+                            <button onclick="togglePassword('login-password')" class="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-400 text-xl transition-colors cursor-pointer">👁️</button>
                         </div>
                         <div class="text-right">
-                            <button onclick="toggleAuthBox('forgot-password')" class="text-[11px] text-slate-400 hover:text-emerald-400 font-black uppercase tracking-widest transition-colors">Forgot Password?</button>
+                            <button onclick="toggleAuthBox('forgot-password')" class="text-[11px] text-slate-400 hover:text-emerald-400 font-black uppercase tracking-widest transition-colors cursor-pointer">Forgot Password?</button>
                         </div>
-                        <button onclick="loginUser()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-5 rounded-[2rem] text-base transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:-translate-y-1 tracking-wide mt-4">Sign In</button>
+                        <button onclick="loginUser()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-5 rounded-[2rem] text-base transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:-translate-y-1 tracking-wide mt-4 cursor-pointer">Sign In</button>
                     </div>
                     <div class="my-8 flex items-center justify-between"><hr class="w-full border-slate-700/50"><span class="px-5 text-[10px] text-slate-500 font-black uppercase tracking-widest">OR</span><hr class="w-full border-slate-700/50"></div>
-                    <div id="google-signin-btn-login" class="flex justify-center w-full mb-8"></div>
-                    <p class="text-sm text-slate-400 text-center mt-10 font-medium">Don't have an account? <button onclick="toggleAuthBox('signup')" class="text-emerald-400 font-black hover:text-emerald-300 transition-colors">Sign Up</button></p>
+                    <div id="google-signin-btn-login" class="flex justify-center w-full mb-8 cursor-pointer"></div>
+                    <p class="text-sm text-slate-400 text-center mt-10 font-medium">Don't have an account? <button onclick="toggleAuthBox('signup')" class="text-emerald-400 font-black hover:text-emerald-300 transition-colors cursor-pointer">Sign Up</button></p>
                 </div>
                 
-                <div id="signup-box" class="hidden relative z-10">
+                <div id="signup-box" class="hidden relative z-40">
                     <h2 class="text-4xl font-black text-white text-center mb-10 tracking-tight">Create Account</h2>
                     <div class="space-y-6">
-                        <input type="text" id="su-name" placeholder="Full Name" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner">
-                        <input type="email" id="su-email" placeholder="Email Address" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner">
+                        <input type="text" id="su-name" placeholder="Full Name" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner cursor-text">
+                        <input type="email" id="su-email" placeholder="Email Address" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner cursor-text">
                         <div class="grid grid-cols-3 gap-4">
-                            <input type="number" id="su-age" placeholder="Age" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner col-span-1">
-                            <input type="tel" id="su-phone" placeholder="Phone Number" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner col-span-2">
+                            <input type="number" id="su-age" placeholder="Age" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner col-span-1 cursor-text">
+                            <input type="tel" id="su-phone" placeholder="Phone Number" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner col-span-2 cursor-text">
                         </div>
                         <div class="relative">
-                            <input type="password" id="su-password" placeholder="Create Password" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner pr-14">
-                            <button onclick="togglePassword('su-password')" class="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-400 text-xl transition-colors">👁️</button>
+                            <input type="password" id="su-password" placeholder="Create Password" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner pr-14 cursor-text">
+                            <button onclick="togglePassword('su-password')" class="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-400 text-xl transition-colors cursor-pointer">👁️</button>
                         </div>
-                        <button onclick="signupUser()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-5 rounded-[2rem] text-base transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:-translate-y-1 tracking-wide mt-4">Create Account</button>
+                        <button onclick="signupUser()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-5 rounded-[2rem] text-base transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:-translate-y-1 tracking-wide mt-4 cursor-pointer">Create Account</button>
                     </div>
                     <div class="my-8 flex items-center justify-between"><hr class="w-full border-slate-700/50"><span class="px-5 text-[10px] text-slate-500 font-black uppercase tracking-widest">OR</span><hr class="w-full border-slate-700/50"></div>
-                    <div id="google-signin-btn-signup" class="flex justify-center w-full mb-8"></div>
-                    <p class="text-sm text-slate-400 text-center mt-10 font-medium">Already have an account? <button onclick="toggleAuthBox('login')" class="text-emerald-400 font-black hover:text-emerald-300 transition-colors">Sign In</button></p>
+                    <div id="google-signin-btn-signup" class="flex justify-center w-full mb-8 cursor-pointer"></div>
+                    <p class="text-sm text-slate-400 text-center mt-10 font-medium">Already have an account? <button onclick="toggleAuthBox('login')" class="text-emerald-400 font-black hover:text-emerald-300 transition-colors cursor-pointer">Sign In</button></p>
                 </div>
                 
-                <div id="forgot-password-box" class="hidden relative z-10">
+                <div id="forgot-password-box" class="hidden relative z-40">
                     <h2 class="text-4xl font-black text-white text-center mb-4 tracking-tight">Reset Password</h2>
                     <p class="text-base text-slate-400 text-center mb-10 font-medium">Enter your phone number to receive a reset code via WhatsApp.</p>
                     <div id="fp-step-1" class="space-y-6">
-                        <input type="tel" id="fp-phone" placeholder="Registered Phone Number" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner">
-                        <button onclick="requestPasswordReset()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-black py-5 rounded-[2rem] text-base transition-all shadow-lg hover:-translate-y-1 tracking-wide">Send WhatsApp Code</button>
+                        <input type="tel" id="fp-phone" placeholder="Registered Phone Number" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner cursor-text">
+                        <button onclick="requestPasswordReset()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-black py-5 rounded-[2rem] text-base transition-all shadow-lg hover:-translate-y-1 tracking-wide cursor-pointer">Send WhatsApp Code</button>
                     </div>
                     <div id="fp-step-2" class="space-y-6 hidden mt-8 border-t border-slate-700/50 pt-8">
-                        <input type="text" id="fp-code" placeholder="Enter 5-Digit Code" class="w-full bg-[#020617]/80 border border-emerald-500/50 rounded-[2rem] px-6 py-5 text-2xl text-white focus:border-emerald-400 outline-none tracking-[0.5em] text-center font-black shadow-inner transition-colors">
+                        <input type="text" id="fp-code" placeholder="Enter 5-Digit Code" class="w-full bg-[#020617]/80 border border-emerald-500/50 rounded-[2rem] px-6 py-5 text-2xl text-white focus:border-emerald-400 outline-none tracking-[0.5em] text-center font-black shadow-inner transition-colors cursor-text">
                         <div class="relative">
-                            <input type="password" id="fp-new-password" placeholder="New Password" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner pr-14">
-                            <button onclick="togglePassword('fp-new-password')" class="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-400 text-xl transition-colors">👁️</button>
+                            <input type="password" id="fp-new-password" placeholder="New Password" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner pr-14 cursor-text">
+                            <button onclick="togglePassword('fp-new-password')" class="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-400 text-xl transition-colors cursor-pointer">👁️</button>
                         </div>
-                        <button onclick="confirmPasswordReset()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-5 rounded-[2rem] text-base transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:-translate-y-1 tracking-wide mt-4">Set New Password</button>
+                        <button onclick="confirmPasswordReset()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-5 rounded-[2rem] text-base transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:-translate-y-1 tracking-wide mt-4 cursor-pointer">Set New Password</button>
                     </div>
-                    <p class="text-sm text-slate-400 text-center mt-10 font-medium">Remember your password? <button onclick="toggleAuthBox('login')" class="text-emerald-400 font-black hover:text-emerald-300 transition-colors">Back to Login</button></p>
+                    <p class="text-sm text-slate-400 text-center mt-10 font-medium">Remember your password? <button onclick="toggleAuthBox('login')" class="text-emerald-400 font-black hover:text-emerald-300 transition-colors cursor-pointer">Back to Login</button></p>
                 </div>
             </div>
         </div>
 
         <!-- PRICING VIEW -->
-        <div id="view-pricing" class="fade-in hidden max-w-7xl mx-auto mt-16 space-y-10">
-            <div class="text-center space-y-5 mb-16">
+        <div id="view-pricing" class="fade-in hidden max-w-7xl mx-auto mt-16 space-y-10 relative z-30">
+            <div class="text-center space-y-5 mb-16 relative z-40">
                 <h2 class="text-5xl md:text-7xl font-black text-white tracking-tight">Boost Your Sales</h2>
                 <p class="text-slate-400 text-lg max-w-2xl mx-auto font-medium">Standard listings are free forever. Boost your visibility and sell faster with our premium features powered by Mobile Money.</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 items-center relative z-40">
                 <div class="glass-card p-12 rounded-[3rem] flex flex-col border border-white/5 shadow-xl hover:border-emerald-500/20 transition-all h-full">
                     <h3 class="text-3xl font-black text-slate-300 mb-4 tracking-tight">Standard</h3>
                     <div class="mb-10"><span class="text-6xl font-black text-white tracking-tight">GH₵ 0</span><span class="text-slate-500 text-base font-bold"> / forever</span></div>
@@ -1533,7 +1359,7 @@
                         <li class="flex gap-4"><span class="text-emerald-500 font-black text-lg">✓</span> Direct WhatsApp Deal Room</li>
                         <li class="flex gap-4"><span class="text-emerald-500 font-black text-lg">✓</span> Auto-expires in 30 days</li>
                     </ul>
-                    <button onclick="navigate('post')" class="w-full bg-white/5 hover:bg-white/10 text-white font-black py-5 rounded-2xl transition-all border border-white/10 shadow-inner tracking-wide text-lg">Post Free Ad</button>
+                    <button onclick="navigate('post')" class="w-full bg-white/5 hover:bg-white/10 text-white font-black py-5 rounded-2xl transition-all border border-white/10 shadow-inner tracking-wide text-lg cursor-pointer">Post Free Ad</button>
                 </div>
                 
                 <div class="glass-card p-14 rounded-[3rem] flex flex-col border-[3px] border-emerald-500 relative transform md:-translate-y-8 shadow-[0_0_50px_rgba(16,185,129,0.2)] bg-gradient-to-b from-[#020617] to-emerald-950/20 h-[105%]">
@@ -1546,7 +1372,7 @@
                         <li class="flex gap-4"><span class="text-emerald-400 font-black text-lg">✓</span> Highlighted card border</li>
                         <li class="flex gap-4"><span class="text-emerald-400 font-black text-lg">✓</span> 1x Telegram broadcast</li>
                     </ul>
-                    <button onclick="handlePricingBoostClick()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-6 rounded-[2rem] transition-all shadow-[0_0_30px_rgba(16,185,129,0.4)] hover:-translate-y-1 tracking-wide text-lg">Boost an Ad (MoMo)</button>
+                    <button onclick="handlePricingBoostClick()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-6 rounded-[2rem] transition-all shadow-[0_0_30px_rgba(16,185,129,0.4)] hover:-translate-y-1 tracking-wide text-lg cursor-pointer">Boost an Ad (MoMo)</button>
                 </div>
                 
                 <div class="glass-card p-12 rounded-[3rem] flex flex-col border border-amber-500/30 bg-amber-500/5 shadow-[0_0_40px_rgba(245,158,11,0.05)] hover:border-amber-500/50 transition-all h-full">
@@ -1558,16 +1384,16 @@
                         <li class="flex gap-4"><span class="text-amber-500 font-black text-lg">✓</span> Instant SMS lead alerts</li>
                         <li class="flex gap-4"><span class="text-amber-500 font-black text-lg">✓</span> Auto-renewing listings</li>
                     </ul>
-                    <button onclick="payAgriProSubscription()" class="w-full bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-[#020617] font-black py-5 rounded-2xl transition-all border border-amber-500/40 shadow-lg tracking-wide hover:-translate-y-1 text-lg">Upgrade to Pro (MoMo)</button>
+                    <button onclick="payAgriProSubscription()" class="w-full bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-[#020617] font-black py-5 rounded-2xl transition-all border border-amber-500/40 shadow-lg tracking-wide hover:-translate-y-1 text-lg cursor-pointer">Upgrade to Pro (MoMo)</button>
                 </div>
             </div>
         </div>
 
-        <div id="view-faq" class="fade-in hidden max-w-5xl mx-auto mt-16 space-y-10">
-            <div class="text-center space-y-5 mb-16">
+        <div id="view-faq" class="fade-in hidden max-w-5xl mx-auto mt-16 space-y-10 relative z-30">
+            <div class="text-center space-y-5 mb-16 relative z-40">
                 <h2 class="text-5xl md:text-6xl font-black text-white tracking-tight">Frequently Asked Questions</h2>
             </div>
-            <div class="space-y-8">
+            <div class="space-y-8 relative z-40">
                 <div class="glass-card rounded-[2.5rem] p-10 border border-white/5 hover:border-white/10 transition-colors shadow-lg">
                     <h4 class="text-white font-black text-xl mb-4">Is it free to sell?</h4>
                     <p class="text-slate-400 text-lg font-medium leading-relaxed">Yes! You can post up to 3 standard listings completely free of charge.</p>
@@ -1579,25 +1405,25 @@
             </div>
         </div>
         
-        <div id="view-about" class="fade-in hidden max-w-5xl mx-auto mt-16">
-            <div class="glass-card p-16 md:p-24 rounded-[4rem] shadow-[0_0_60px_rgba(0,0,0,0.3)] text-center relative overflow-hidden border border-emerald-500/20">
+        <div id="view-about" class="fade-in hidden max-w-5xl mx-auto mt-16 relative z-30">
+            <div class="glass-card p-16 md:p-24 rounded-[4rem] shadow-[0_0_60px_rgba(0,0,0,0.3)] text-center relative overflow-hidden border border-emerald-500/20 z-40">
                 <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
                 <h2 class="text-6xl md:text-7xl font-black text-white mb-10 tracking-tight relative z-10">About AgromartDirect</h2>
                 <p class="text-slate-300 text-xl md:text-2xl leading-relaxed font-medium relative z-10 max-w-3xl mx-auto">We are digitizing the agricultural supply chain in Ghana. Fair prices for farmers, fresh produce for buyers.</p>
             </div>
         </div>
 
-        <div id="view-support" class="fade-in hidden max-w-3xl mx-auto mt-16">
-            <div class="glass-card p-16 rounded-[4rem] shadow-[0_0_50px_rgba(0,0,0,0.3)] text-center border border-white/5">
+        <div id="view-support" class="fade-in hidden max-w-3xl mx-auto mt-16 relative z-30">
+            <div class="glass-card p-16 rounded-[4rem] shadow-[0_0_50px_rgba(0,0,0,0.3)] text-center border border-white/5 z-40 relative">
                 <h2 class="text-5xl font-black text-white mb-8 tracking-tight">Customer Support</h2>
                 <p class="text-slate-400 mb-10 font-medium text-lg">Need help with an order or a listing? Give us a call.</p>
-                <a href="tel:0245641480" class="inline-block bg-[#0f172a] hover:bg-slate-800 border border-slate-700/80 text-white font-black py-6 px-12 rounded-[2rem] transition-all shadow-lg hover:-translate-y-1 tracking-wide text-xl">Call 024 564 1480</a>
+                <a href="tel:0245641480" class="inline-block bg-[#0f172a] hover:bg-slate-800 border border-slate-700/80 text-white font-black py-6 px-12 rounded-[2rem] transition-all shadow-lg hover:-translate-y-1 tracking-wide text-xl cursor-pointer">Call 024 564 1480</a>
             </div>
         </div>
 
     </main>
 
-    <footer class="mt-auto border-t border-white/10 bg-[#020617]/90 backdrop-blur-xl py-12 text-center text-sm text-slate-500 relative z-20">
+    <footer class="mt-auto border-t border-white/10 bg-[#020617]/90 backdrop-blur-xl py-12 text-center text-sm text-slate-500 relative z-50">
         <div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row items-center justify-between gap-10">
             <div class="flex items-center gap-4">
                 <span class="text-emerald-500 text-4xl filter drop-shadow-md">🌾</span>
@@ -1607,9 +1433,9 @@
                 </div>
             </div>
             <div class="flex flex-wrap justify-center gap-10 text-base font-black tracking-wide text-slate-400">
-                <button onclick="navigate('pricing')" class="hover:text-emerald-400 transition-colors">Pricing</button>
-                <button onclick="navigate('trainer')" class="hover:text-emerald-400 transition-colors">Agri Trainer</button>
-                <button onclick="navigate('support')" class="hover:text-emerald-400 transition-colors">Support</button>
+                <button onclick="navigate('pricing')" class="hover:text-emerald-400 transition-colors cursor-pointer">Pricing</button>
+                <button onclick="navigate('trainer')" class="hover:text-emerald-400 transition-colors cursor-pointer">Agri Trainer</button>
+                <button onclick="navigate('support')" class="hover:text-emerald-400 transition-colors cursor-pointer">Support</button>
             </div>
             <p class="text-sm text-slate-600 font-bold tracking-wide text-center md:text-right leading-relaxed">© 2026 AgromartDirect Ghana.<br>All rights reserved.</p>
         </div>
@@ -1944,7 +1770,7 @@
                             </div>
                         </div>
                     </div>
-                    <button onclick="deleteBatch(${b.id})" class="w-full bg-[#0f172a] hover:bg-rose-600 border border-slate-700 hover:border-rose-500 text-slate-300 hover:text-white font-black py-4 rounded-2xl text-sm transition-colors shadow-lg tracking-wide relative z-10">End Batch / Harvest</button>
+                    <button onclick="deleteBatch(${b.id})" class="w-full bg-[#0f172a] hover:bg-rose-600 border border-slate-700 hover:border-rose-500 text-slate-300 hover:text-white font-black py-4 rounded-2xl text-sm transition-colors shadow-lg tracking-wide relative z-10 cursor-pointer">End Batch / Harvest</button>
                 </div>
             `).join('');
         }
