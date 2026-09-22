@@ -134,7 +134,7 @@
         body.mode-portal-select .pro-only { display: none !important; }
     </style>
 </head>
-<body id="app-body" class="bg-[#020617] text-slate-100 font-sans min-h-screen flex flex-col transition-colors duration-500 overflow-x-hidden relative">
+<body id="app-body" class="bg-[#020617] text-slate-100 font-sans min-h-screen flex flex-col transition-colors duration-500 overflow-x-hidden relative mode-portal-select">
     
     <!-- FIX: Safe Background Animation Container (Prevents touch blocking) -->
     <div class="fixed inset-0 z-[-10] pointer-events-none overflow-hidden">
@@ -2430,15 +2430,10 @@
                 }
             }
             
-            // Check Preferred Portal & Initialize Correct Mode
-            const savedPortal = localStorage.getItem('preferred_portal');
-            if (savedPortal === 'everyday') {
-                selectPortal('everyday');
-            } else if (savedPortal === 'agro') {
-                selectPortal('agro');
-            } else {
-                navigate('portal-select');
-            }
+            // Always show the Portal Selector on app load/refresh
+            document.body.classList.remove('mode-everyday', 'mode-agro');
+            document.body.classList.add('mode-portal-select');
+            navigate('portal-select');
         });
 
         function setupUserProfile(data) {
@@ -4641,6 +4636,12 @@
         }
 
         // --- FARMER'S LOUNGE (COMMUNITY) LOGIC ---
+        let loungePosts = [
+            { id: 1, author: "Kwame (Verified Farm)", type: "Alert", content: "Armyworms spotted in the Ashanti region! Spray your maize fields immediately before they spread.", time: "2 hours ago", likes: 14, comments: 5 },
+            { id: 2, author: "Ama Yaa", type: "Success", content: "Just completed my first 1,000 broiler harvest using the Pearson Square feed calc. Saved so much money on feed!", time: "5 hours ago", likes: 32, comments: 12 },
+            { id: 3, author: "Sulemana", type: "Question", content: "What is the current farm gate price for a 50kg bag of soybeans in Tamale?", time: "1 day ago", likes: 4, comments: 8 }
+        ];
+
         function filterCommunity(type) {
             const feed = document.getElementById('community-feed');
             if (!feed) return;
@@ -4649,24 +4650,60 @@
             const buttons = ['all', 'alert', 'question', 'success'];
             buttons.forEach(b => {
                 const btn = document.getElementById('btn-comm-' + b);
-                if (btn) {
-                    btn.className = "bg-[#0f172a]/80 hover:bg-[#1e293b] text-slate-400 border border-slate-700/80 px-8 py-3.5 rounded-2xl font-black text-sm transition-colors shrink-0 shadow-inner cursor-pointer";
-                }
+                if (btn) btn.className = "bg-[#0f172a]/80 hover:bg-[#1e293b] text-slate-400 border border-slate-700/80 px-8 py-3.5 rounded-2xl font-black text-sm transition-colors shrink-0 shadow-inner cursor-pointer";
             });
             
             // Highlight the active button
             const activeBtn = document.getElementById('btn-comm-' + type.toLowerCase());
-            if (activeBtn) {
-                activeBtn.className = "bg-emerald-600 text-white px-8 py-3.5 rounded-2xl font-black text-sm shadow-[0_0_15px_rgba(16,185,129,0.4)] shrink-0 transition-colors border border-transparent cursor-pointer";
-            }
+            if (activeBtn) activeBtn.className = "bg-emerald-600 text-white px-8 py-3.5 rounded-2xl font-black text-sm shadow-[0_0_15px_rgba(16,185,129,0.4)] shrink-0 transition-colors border border-transparent cursor-pointer";
             
-            // Show feed state
-            feed.innerHTML = `
-                <div class="glass-card p-8 rounded-[2rem] border border-white/5 shadow-lg text-center">
-                    <p class="text-slate-400 font-medium">Filtering feed for: <span class="text-emerald-400 font-bold">${type}</span>. Connect to backend to sync live posts.</p>
-                </div>`;
-                
-            showToast(`Filtering feed: ${type}`);
+            // Filter the posts
+            let filtered = loungePosts;
+            if (type !== 'All') {
+                filtered = loungePosts.filter(p => p.type === type);
+            }
+
+            // Render the feed
+            if (filtered.length === 0) {
+                feed.innerHTML = `
+                    <div class="glass-card p-8 rounded-[2rem] border border-white/5 shadow-lg text-center">
+                        <p class="text-slate-400 font-medium">No posts found for this category yet.</p>
+                    </div>`;
+            } else {
+                feed.innerHTML = filtered.map(post => {
+                    let badgeColor = post.type === 'Alert' ? 'text-rose-400 bg-rose-500/10 border-rose-500/20' :
+                                     post.type === 'Success' ? 'text-amber-400 bg-amber-500/10 border-amber-500/20' :
+                                     post.type === 'Question' ? 'text-blue-400 bg-blue-500/10 border-blue-500/20' :
+                                     'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
+
+                    let icon = post.type === 'Alert' ? '🚨' :
+                               post.type === 'Success' ? '🏆' :
+                               post.type === 'Question' ? '❓' : '💬';
+
+                    return `
+                        <div class="glass-card p-6 md:p-8 rounded-[2rem] border border-white/5 shadow-lg hover:border-emerald-500/30 transition-colors">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center text-lg border border-slate-600">👤</div>
+                                    <div>
+                                        <p class="text-sm font-black text-white">${post.author}</p>
+                                        <p class="text-[10px] text-slate-500 font-bold">${post.time}</p>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border shadow-inner ${badgeColor}">${icon} ${post.type}</span>
+                            </div>
+                            <p class="text-slate-300 text-sm md:text-base leading-relaxed font-medium mb-6">${post.content}</p>
+                            <div class="flex items-center gap-6 border-t border-white/10 pt-4">
+                                <button class="flex items-center gap-2 text-slate-400 hover:text-emerald-400 text-xs font-bold transition-colors cursor-pointer">
+                                    👍 ${post.likes} Likes
+                                </button>
+                                <button class="flex items-center gap-2 text-slate-400 hover:text-blue-400 text-xs font-bold transition-colors cursor-pointer">
+                                    💬 ${post.comments} Comments
+                                </button>
+                            </div>
+                        </div>`;
+                }).join('');
+            }
         }
 
         function openCommunityPostModal() {
@@ -4685,12 +4722,27 @@
 
         function submitCommunityPost() {
             const content = document.getElementById('community-post-content').value.trim();
+            const type = document.getElementById('community-post-type').value;
+
             if(!content) return showToast("Please write a post first!", "error");
-            
+
+            const newPost = {
+                id: Date.now(),
+                author: currentUserEmail ? currentUserEmail.split('@')[0] : "Me (Farmer)",
+                type: type,
+                content: content,
+                time: "Just now",
+                likes: 0,
+                comments: 0
+            };
+
+            // Add the new post to the top of the feed array
+            loungePosts.unshift(newPost);
+
             showToast("Post submitted to the Lounge! 🗣️");
             document.getElementById('community-post-content').value = "";
             closeCommunityPostModal();
-            filterCommunity('All');
+            filterCommunity('All'); // Refresh the feed to show the new post
         }
     </script>
 </body>
