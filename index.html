@@ -180,9 +180,7 @@
             <button onclick="closePreviewModal()" class="absolute -top-12 right-0 text-white font-black text-lg bg-slate-800 hover:bg-rose-500 rounded-full w-8 h-8 flex items-center justify-center shadow-lg transition-colors">✕</button>
             <div id="preview-card-container"></div>
         </div>
-    </div>
-
-    <div id="batch-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[120] hidden items-center justify-center p-4">
+    </div><div id="batch-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[120] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-8 rounded-[2.5rem] relative border border-blue-500/30">
             <button onclick="closeBatchModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
             <h3 class="text-xl font-black text-white mb-2">Initialize Production Batch</h3>
@@ -300,20 +298,22 @@
                 </div>
             </div>
         </div>
-    </div><div id="flyer-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
+    </div>
+
+    <div id="flyer-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-8 rounded-[3rem] text-center border border-emerald-500/30 shadow-[0_0_40px_rgba(16,185,129,0.15)] relative">
-            <button onclick="closeFlyerModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl font-bold cursor-pointer">✕</button>
+            <button onclick="closeFlyerModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl font-bold">✕</button>
             <h3 class="text-2xl font-black text-white mb-2 tracking-tight">WhatsApp Status Flyer 📲</h3>
             <p class="text-sm text-slate-400 mb-6 font-medium">Auto-rendered flyer with pricing & phone contact embedded.</p>
             <canvas id="flyer-canvas" class="hidden"></canvas>
             <img id="flyer-preview" src="" class="w-full max-w-[300px] rounded-[2rem] mb-8 mx-auto shadow-2xl border border-slate-700/50">
-            <button onclick="downloadFlyer()" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-4.5 rounded-2xl text-sm transition-all shadow-[0_0_15px_rgba(37,211,102,0.3)] hover:-translate-y-0.5 tracking-wide cursor-pointer">Download Flyer PNG</button>
+            <button onclick="downloadFlyer()" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-4.5 rounded-2xl text-sm transition-all shadow-[0_0_15px_rgba(37,211,102,0.3)] hover:-translate-y-0.5 tracking-wide">Download Flyer PNG</button>
         </div>
     </div>
 
     <div id="video-studio-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-10 rounded-[3rem] relative border border-purple-500/30 shadow-[0_0_40px_rgba(168,85,247,0.15)]">
-            <button onclick="closeVideoStudio()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl cursor-pointer">✕</button>
+            <button onclick="closeVideoStudio()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl">✕</button>
             <div class="flex items-center gap-4 mb-8">
                 <span class="text-5xl drop-shadow-[0_0_15px_rgba(168,85,247,0.4)]">🎬</span>
                 <div>
@@ -332,7 +332,7 @@
                 <div class="space-y-5 mb-8">
                     <div>
                         <label class="block text-xs font-black text-slate-400 mb-2 uppercase tracking-widest">Voiceover Narrative Style</label>
-                        <select id="vs-voice" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-white text-sm font-medium outline-none focus:border-purple-500 shadow-inner transition-colors cursor-pointer">
+                        <select id="vs-voice" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-white text-sm font-medium outline-none focus:border-purple-500 shadow-inner transition-colors">
                             <option value="energetic">Energetic Ghanaian Market Announcer</option>
                             <option value="professional">Corporate Agribusiness Exporter</option>
                             <option value="calm">Calm, Fresh & Organic Focus</option>
@@ -340,7 +340,7 @@
                     </div>
                 </div>
                 
-                <button onclick="generateAiVideo()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black py-4.5 rounded-2xl text-sm transition-all shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:-translate-y-0.5 flex items-center justify-center gap-2 tracking-wide cursor-pointer"><span>✨ Generate Video (1 Free Credit)</span></button>
+                <button onclick="generateAiVideo()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black py-4.5 rounded-2xl text-sm transition-all shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:-translate-y-0.5 flex items-center justify-center gap-2 tracking-wide"><span>✨ Generate Video (1 Free Credit)</span></button>
             </div>
 
             <div id="video-studio-processing" class="hidden text-center py-10">
@@ -357,8 +357,8 @@
                     <p class="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-2">Generated Voiceover Script:</p>
                     <p id="vs-script-display" class="text-sm text-slate-300 italic font-medium leading-relaxed">...</p>
                 </div>
-                <button onclick="downloadAiVideo()" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-4.5 rounded-2xl text-sm transition-all shadow-[0_0_15px_rgba(37,211,102,0.3)] hover:-translate-y-0.5 mb-3 tracking-wide cursor-pointer">Download for WhatsApp Status</button>
-                <button onclick="closeVideoStudio()" class="w-full bg-[#020617]/50 border border-white/10 hover:bg-slate-800 text-white font-black py-4 rounded-2xl text-sm transition-colors cursor-pointer">Close Studio</button>
+                <button onclick="downloadAiVideo()" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-4.5 rounded-2xl text-sm transition-all shadow-[0_0_15px_rgba(37,211,102,0.3)] hover:-translate-y-0.5 mb-3 tracking-wide">Download for WhatsApp Status</button>
+                <button onclick="closeVideoStudio()" class="w-full bg-[#020617]/50 border border-white/10 hover:bg-slate-800 text-white font-black py-4 rounded-2xl text-sm transition-colors">Close Studio</button>
             </div>
         </div>
     </div>
@@ -366,7 +366,7 @@
     <!-- LEAVE REVIEW MODAL -->
     <div id="leave-review-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-10 rounded-[3rem] relative border border-emerald-500/30 text-left shadow-[0_0_40px_rgba(16,185,129,0.15)]">
-            <button onclick="closeLeaveReviewModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl cursor-pointer">✕</button>
+            <button onclick="closeLeaveReviewModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl">✕</button>
             <h3 class="text-3xl font-black text-white mb-2 tracking-tight">Rate this Seller</h3>
             <p class="text-sm text-slate-400 mb-8 font-medium">Leave an honest review to help other buyers on the platform.</p>
             
@@ -384,10 +384,10 @@
                 
                 <div>
                     <label class="block text-xs font-black text-slate-400 mb-3 uppercase tracking-widest">Your Feedback</label>
-                    <textarea id="review-comment" rows="4" placeholder="Describe your experience buying from this farmer..." class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-sm font-medium text-white outline-none focus:border-emerald-500 shadow-inner transition-colors cursor-text"></textarea>
+                    <textarea id="review-comment" rows="4" placeholder="Describe your experience buying from this farmer..." class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-sm font-medium text-white outline-none focus:border-emerald-500 shadow-inner transition-colors"></textarea>
                 </div>
                 
-                <button id="submit-review-btn" onclick="submitSellerReview()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-4.5 rounded-2xl text-base transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:-translate-y-0.5 tracking-wide cursor-pointer">Submit Review</button>
+                <button id="submit-review-btn" onclick="submitSellerReview()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-4.5 rounded-2xl text-base transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:-translate-y-0.5 tracking-wide">Submit Review</button>
             </div>
         </div>
     </div>
@@ -395,7 +395,7 @@
     <!-- REPORT MODAL -->
     <div id="report-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-10 rounded-[3rem] relative border border-rose-500/30 text-left shadow-[0_0_40px_rgba(225,29,72,0.15)]">
-            <button onclick="closeReportModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl cursor-pointer">✕</button>
+            <button onclick="closeReportModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl">✕</button>
             <h3 class="text-3xl font-black text-white mb-2 tracking-tight">Submit Incident Report</h3>
             <p class="text-sm text-slate-400 mb-8 font-medium">Help keep the Agromart community safe.</p>
             <div class="space-y-5">
@@ -406,8 +406,8 @@
                     <option value="Price Bait and Switch">Price on arrival differed drastically</option>
                     <option value="Poor Produce Quality / Disease">Produce was rotten or spoiled</option>
                 </select>
-                <textarea id="report-details" rows="4" placeholder="Provide transaction details..." class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-sm font-medium text-white shadow-inner focus:border-rose-500 outline-none transition-colors cursor-text"></textarea>
-                <button onclick="submitScamReport()" class="w-full bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-black py-4.5 rounded-2xl text-sm shadow-[0_0_20px_rgba(225,29,72,0.3)] transition-all hover:-translate-y-0.5 tracking-wide mt-2 cursor-pointer">Submit Incident Report</button>
+                <textarea id="report-details" rows="4" placeholder="Provide transaction details..." class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-sm font-medium text-white shadow-inner focus:border-rose-500 outline-none transition-colors"></textarea>
+                <button onclick="submitScamReport()" class="w-full bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-black py-4.5 rounded-2xl text-sm shadow-[0_0_20px_rgba(225,29,72,0.3)] transition-all hover:-translate-y-0.5 tracking-wide mt-2">Submit Incident Report</button>
             </div>
         </div>
     </div>
@@ -415,7 +415,7 @@
     <!-- COMMUNITY POST MODAL (THE FARMER'S LOUNGE) -->
     <div id="community-post-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-10 rounded-[3rem] relative border border-emerald-500/30 text-left shadow-[0_0_40px_rgba(16,185,129,0.15)]">
-            <button onclick="closeCommunityPostModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl cursor-pointer">✕</button>
+            <button onclick="closeCommunityPostModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl">✕</button>
             <h3 class="text-3xl font-black text-white mb-2 tracking-tight">🗣️ Post to Farmer's Lounge</h3>
             <p class="text-sm text-slate-400 mb-8 font-medium">Share updates, ask for advice, or warn nearby farmers about pests and diseases.</p>
             <div class="space-y-5">
@@ -425,14 +425,14 @@
                     <option value="Question">❓ Question & Advice</option>
                     <option value="Success">🏆 Harvest Success</option>
                 </select>
-                <textarea id="community-post-content" placeholder="What's happening on the farm?" rows="5" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-sm font-medium text-white shadow-inner focus:border-emerald-500 outline-none transition-colors cursor-text"></textarea>
-                <button onclick="submitCommunityPost()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-4.5 rounded-2xl text-sm shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all hover:-translate-y-0.5 tracking-wide mt-2 cursor-pointer">Publish to Feed</button>
+                <textarea id="community-post-content" placeholder="What's happening on the farm?" rows="5" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-sm font-medium text-white shadow-inner focus:border-emerald-500 outline-none transition-colors"></textarea>
+                <button onclick="submitCommunityPost()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-4.5 rounded-2xl text-sm shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all hover:-translate-y-0.5 tracking-wide mt-2">Publish to Feed</button>
             </div>
         </div>
     </div>
 
     <!-- HEADER & NAVIGATION -->
-    <header class="bg-[#020617]/70 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-[100] transition-all">
+    <header class="bg-[#020617]/70 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-50 transition-all">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
                 <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-xl flex items-center justify-center text-lg shadow-[0_0_15px_rgba(16,185,129,0.5)] group-hover:scale-105 group-hover:shadow-[0_0_25px_rgba(16,185,129,0.8)] transition-all">🌾</div>
@@ -440,45 +440,48 @@
             </div>
             
             <div class="flex gap-2 items-center flex-wrap justify-end">
-                <button onclick="navigate('community')" class="text-xs font-black text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 rounded-xl hidden lg:flex items-center gap-1 hover:-translate-y-0.5 transition-all shadow-inner tracking-widest uppercase cursor-pointer">🗣️ Lounge</button>
+                <!-- NEW: Farmer's Lounge Button -->
+                <button onclick="navigate('community')" class="text-xs font-black text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 rounded-xl hidden lg:flex items-center gap-1 hover:-translate-y-0.5 transition-all shadow-inner tracking-widest uppercase">🗣️ Lounge</button>
                 
-                <button onclick="navigate('haulage')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-amber-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">🚚 Haulage</button>
-                <button onclick="navigate('trainer')" class="text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-purple-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">📚 Trainer</button>
-                <button onclick="navigate('agridoctor')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-rose-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">🩺 AI Scan</button>
-                <button onclick="navigate('grants')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-amber-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">🏆 Grants</button>
-                <button onclick="navigate('farm-manager')" class="text-xs font-bold text-blue-400 border border-blue-500/30 bg-blue-500/10 px-3 py-1.5 rounded-lg hidden md:block hover:bg-blue-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">💼 Manager</button>
-                <button onclick="navigate('intel')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-rose-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">📊 Intel</button>
-                <button onclick="navigate('calculator')" class="text-xs font-bold text-teal-400 border border-teal-500/30 bg-teal-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-teal-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">🧮 Calc</button>
-                <button onclick="navigate('rentals')" class="text-xs font-bold text-amber-300 border border-amber-400/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-amber-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">🚜 Rentals</button>
-                <button onclick="navigate('waste')" class="text-xs font-bold text-emerald-300 border border-emerald-400/30 bg-emerald-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-emerald-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">♻️ Eco</button>
+                <button onclick="navigate('haulage')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-amber-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5">🚚 Haulage</button>
+                <button onclick="navigate('trainer')" class="text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-purple-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5">📚 Trainer</button>
+                <button onclick="navigate('agridoctor')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-rose-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5">🩺 AI Scan</button>
+                <button onclick="navigate('grants')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-amber-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5">🏆 Grants</button>
+                <button onclick="navigate('farm-manager')" class="text-xs font-bold text-blue-400 border border-blue-500/30 bg-blue-500/10 px-3 py-1.5 rounded-lg hidden md:block hover:bg-blue-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5">💼 Manager</button>
+                <button onclick="navigate('intel')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-rose-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5">📊 Intel</button>
+                <button onclick="navigate('calculator')" class="text-xs font-bold text-teal-400 border border-teal-500/30 bg-teal-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-teal-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5">🧮 Calc</button>
+                <button onclick="navigate('rentals')" class="text-xs font-bold text-amber-300 border border-amber-400/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-amber-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5">🚜 Rentals</button>
+                <button onclick="navigate('waste')" class="text-xs font-bold text-emerald-300 border border-emerald-400/30 bg-emerald-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-emerald-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5">♻️ Eco</button>
                 
-                <button id="pwa-install-btn" onclick="triggerPwaInstall()" class="hidden bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold px-3 py-1.5 rounded-lg text-xs hover:bg-emerald-500/30 transition-colors hover:shadow-[0_0_15px_rgba(16,185,129,0.3)] cursor-pointer">📲 App</button>
-                <button onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center glass-card rounded-xl text-xs text-slate-300 hover:text-amber-400 transition-colors cursor-pointer">☀️</button>
-                <button id="nav-login-btn" onclick="navigate('auth')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 transition-colors ml-1 cursor-pointer">Sign In</button>
+                <button id="pwa-install-btn" onclick="triggerPwaInstall()" class="hidden bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold px-3 py-1.5 rounded-lg text-xs hover:bg-emerald-500/30 transition-colors hover:shadow-[0_0_15px_rgba(16,185,129,0.3)]">📲 App</button>
+                <button onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center glass-card rounded-xl text-xs text-slate-300 hover:text-amber-400 transition-colors">☀️</button>
+                <button id="nav-login-btn" onclick="navigate('auth')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 transition-colors ml-1">Sign In</button>
                 
                 <div id="nav-user-profile" class="hidden items-center gap-3 bg-white/5 px-4 py-1.5 rounded-full border border-white/10 shadow-inner">
                     <span id="nav-user-name" class="text-xs font-bold text-emerald-400 hidden md:block"></span>
-                    <button onclick="navigate('dashboard')" class="text-xs font-black text-white hover:text-emerald-400 transition-colors cursor-pointer">Dashboard</button>
+                    <button onclick="navigate('dashboard')" class="text-xs font-black text-white hover:text-emerald-400 transition-colors">Dashboard</button>
                     <div class="w-px h-3 bg-white/20"></div>
-                    <button onclick="logout()" class="text-xs text-rose-400 font-bold hover:text-rose-300 transition-colors cursor-pointer">Logout</button>
+                    <button onclick="logout()" class="text-xs text-rose-400 font-bold hover:text-rose-300 transition-colors">Logout</button>
                 </div>
                 
-                <button onclick="requireAuthToPost()" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white text-xs font-black px-4 sm:px-5 py-2.5 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.4)] hover:shadow-[0_0_25px_rgba(16,185,129,0.6)] transition-all sm:ml-2 hover:-translate-y-0.5 cursor-pointer">Post Ad</button>
+                <button onclick="requireAuthToPost()" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white text-xs font-black px-4 sm:px-5 py-2.5 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.4)] hover:shadow-[0_0_25px_rgba(16,185,129,0.6)] transition-all sm:ml-2 hover:-translate-y-0.5">Post Ad</button>
             </div>
         </div>
     </header>
 
-    <div class="md:hidden glass-card border-b border-white/5 px-4 py-3 overflow-x-auto whitespace-nowrap flex gap-3 z-[100] relative scroll-touch hide-scrollbar">
-        <button onclick="navigate('community')" class="text-xs font-black text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest cursor-pointer">🗣️ Lounge</button>
-        <button onclick="navigate('haulage')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">🚚 Haulage Pool</button>
-        <button onclick="navigate('trainer')" class="text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">📚 Agri Trainer</button>
-        <button onclick="navigate('agridoctor')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">🩺 AgriDoctor AI</button>
-        <button onclick="navigate('grants')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">🏆 Agri-Grants</button>
-        <button onclick="navigate('farm-manager')" class="text-xs font-bold text-blue-400 border border-blue-500/30 bg-blue-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">💼 Farm Manager</button>
-        <button onclick="navigate('intel')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">📊 Market Intel</button>
-        <button onclick="navigate('calculator')" class="text-xs font-bold text-teal-400 border border-teal-500/30 bg-teal-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">🧮 Feed Calc</button>
-        <button onclick="navigate('rentals')" class="text-xs font-bold text-amber-300 border border-amber-400/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">🚜 Machinery Hire</button>
-        <button onclick="navigate('waste')" class="text-xs font-bold text-emerald-300 border border-emerald-400/30 bg-emerald-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">♻️ Eco-Loop</button>
+    <div class="md:hidden glass-card border-b border-white/5 px-4 py-3 overflow-x-auto whitespace-nowrap flex gap-3 z-40">
+        <!-- NEW: Farmer's Lounge Mobile Button -->
+        <button onclick="navigate('community')" class="text-xs font-black text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest">🗣️ Lounge</button>
+        
+        <button onclick="navigate('haulage')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0">🚚 Haulage Pool</button>
+        <button onclick="navigate('trainer')" class="text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-4 py-2 rounded-xl shrink-0">📚 Agri Trainer</button>
+        <button onclick="navigate('agridoctor')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-4 py-2 rounded-xl shrink-0">🩺 AgriDoctor AI</button>
+        <button onclick="navigate('grants')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0">🏆 Agri-Grants</button>
+        <button onclick="navigate('farm-manager')" class="text-xs font-bold text-blue-400 border border-blue-500/30 bg-blue-500/10 px-4 py-2 rounded-xl shrink-0">💼 Farm Manager</button>
+        <button onclick="navigate('intel')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-4 py-2 rounded-xl shrink-0">📊 Market Intel</button>
+        <button onclick="navigate('calculator')" class="text-xs font-bold text-teal-400 border border-teal-500/30 bg-teal-500/10 px-4 py-2 rounded-xl shrink-0">🧮 Feed Calc</button>
+        <button onclick="navigate('rentals')" class="text-xs font-bold text-amber-300 border border-amber-400/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0">🚜 Machinery Hire</button>
+        <button onclick="navigate('waste')" class="text-xs font-bold text-emerald-300 border border-emerald-400/30 bg-emerald-500/10 px-4 py-2 rounded-xl shrink-0">♻️ Eco-Loop</button>
     </div>
 
     <!-- LIVE TICKER BAR -->
@@ -494,10 +497,10 @@
             </div>
         </div>
     </div><!-- MAIN APP VIEWS -->
-    <main class="max-w-7xl mx-auto px-6 py-8 flex-grow w-full relative z-10">
+    <main class="max-w-7xl mx-auto px-6 py-8 flex-grow w-full relative z-30">
         
         <!-- HOME VIEW -->
-        <div id="view-home" class="fade-in space-y-16 relative z-30">
+        <div id="view-home" class="fade-in space-y-16 relative z-40">
             <div class="text-center py-24 px-4 glass-card rounded-[3rem] shadow-2xl relative overflow-hidden group">
                 <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none group-hover:opacity-10 transition-opacity"></div>
                 <div class="text-6xl mb-8 animate-float inline-block drop-shadow-2xl">🚜</div>
@@ -546,7 +549,7 @@
                 </div>
             </div>
 
-            <div id="home-rfq-container" class="hidden relative z-30">
+            <div id="home-rfq-container" class="hidden relative z-40">
                 <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
                     <div>
                         <h3 class="text-3xl font-black text-white tracking-tight flex items-center gap-3">📢 Commercial Buyer Tenders</h3>
@@ -557,7 +560,7 @@
                 <div id="rfq-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
             </div>
 
-            <div id="home-ads-container" class="relative z-30">
+            <div id="home-ads-container" class="relative z-40">
                 <div class="mt-16">
                     <div class="flex items-center justify-between mb-8">
                         <h3 class="text-3xl font-black text-white tracking-tight flex items-center gap-3">🔥 Trending Nationwide</h3>
@@ -623,7 +626,7 @@
                 </div>
             </div>
 
-            <div class="mt-24 glass-card p-12 md:p-16 rounded-[3rem] relative overflow-hidden border border-emerald-500/20 bg-gradient-to-br from-[#020617]/80 to-emerald-950/30 relative z-30">
+            <div class="mt-24 glass-card p-12 md:p-16 rounded-[3rem] relative overflow-hidden border border-emerald-500/20 bg-gradient-to-br from-[#020617]/80 to-emerald-950/30 relative z-40">
                 <div class="absolute top-0 right-0 w-[40vw] h-[40vw] bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none"></div>
                 <div class="text-center relative z-10">
                     <span class="text-6xl mb-6 block animate-float">🤝</span>
@@ -941,7 +944,7 @@
                 <div class="w-16 h-16 bg-emerald-500/20 rounded-[1.5rem] flex items-center justify-center text-3xl text-emerald-400 border border-emerald-500/30 shadow-[0_0_30px_rgba(16,185,129,0.2)]">📢</div>
                 <h2 class="text-5xl font-black text-white tracking-tight">Post a Seller Ad</h2>
             </div>
-            <div class="glass-card p-12 md:p-16 rounded-[3rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] space-y-10 relative overflow-hidden border border-emerald-500/20 relative z-40">
+            <div class="glass-card p-12 md:p-16 rounded-[3rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] space-y-10 relative overflow-hidden border border-emerald-500/20 z-40">
                 <div class="absolute top-[-80px] left-[-80px] w-80 h-80 bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none"></div>
                 
                 <div class="relative z-40">
@@ -2222,7 +2225,7 @@
             const views = [
                 'home', 'marketplace', 'auth', 'grants', 'farm-manager', 
                 'intel', 'calculator', 'trainer', 'post', 'dashboard', 
-                'pricing', 'faq', 'about', 'support', 'rentals', 'waste', 'agridoctor', 'haulage', 'seller-store'
+                'pricing', 'faq', 'about', 'support', 'rentals', 'waste', 'agridoctor', 'haulage', 'seller-store', 'community'
             ];
             
             views.forEach(v => {
@@ -4617,6 +4620,59 @@
             } catch (e) { 
                 container.innerHTML = '<p class="text-sm font-bold text-slate-500">Could not load logistics queue.</p>'; 
             }
+        }
+
+        // --- FARMER'S LOUNGE (COMMUNITY) LOGIC ---
+        function filterCommunity(type) {
+            const feed = document.getElementById('community-feed');
+            if (!feed) return;
+            
+            // Reset all buttons to default styling
+            const buttons = ['all', 'alert', 'question', 'success'];
+            buttons.forEach(b => {
+                const btn = document.getElementById('btn-comm-' + b);
+                if (btn) {
+                    btn.className = "bg-[#0f172a]/80 hover:bg-[#1e293b] text-slate-400 border border-slate-700/80 px-8 py-3.5 rounded-2xl font-black text-sm transition-colors shrink-0 shadow-inner cursor-pointer";
+                }
+            });
+            
+            // Highlight the active button
+            const activeBtn = document.getElementById('btn-comm-' + type.toLowerCase());
+            if (activeBtn) {
+                activeBtn.className = "bg-emerald-600 text-white px-8 py-3.5 rounded-2xl font-black text-sm shadow-[0_0_15px_rgba(16,185,129,0.4)] shrink-0 transition-colors border border-transparent cursor-pointer";
+            }
+            
+            // Show feed state
+            feed.innerHTML = `
+                <div class="glass-card p-8 rounded-[2rem] border border-white/5 shadow-lg text-center">
+                    <p class="text-slate-400 font-medium">Filtering feed for: <span class="text-emerald-400 font-bold">${type}</span>. Connect to backend to sync live posts.</p>
+                </div>`;
+                
+            showToast(`Filtering feed: ${type}`);
+        }
+
+        function openCommunityPostModal() {
+            if (!agriToken) {
+                showToast("Please sign in to post", "error");
+                return navigate('auth');
+            }
+            document.getElementById('community-post-modal').classList.remove('hidden');
+            document.getElementById('community-post-modal').classList.add('flex');
+        }
+
+        function closeCommunityPostModal() {
+            document.getElementById('community-post-modal').classList.add('hidden');
+            document.getElementById('community-post-modal').classList.remove('flex');
+        }
+
+        function submitCommunityPost() {
+            const content = document.getElementById('community-post-content').value.trim();
+            if(!content) return showToast("Please write a post first!", "error");
+            
+            showToast("Post submitted to the Lounge! 🗣️");
+            document.getElementById('community-post-content').value = "";
+            closeCommunityPostModal();
+            filterCommunity('All');
         }
     </script>
 </body>
