@@ -57,7 +57,7 @@
         ::-webkit-scrollbar-thumb { background: rgba(16, 185, 129, 0.5); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: rgba(16, 185, 129, 0.8); }
         
-        /* Advanced Glassmorphism - OPTIMIZED FOR ANDROID */
+        /* Advanced Glassmorphism - Lag Fixed for Android */
         .glass-card { 
             background: rgba(15, 23, 42, 0.4); 
             backdrop-filter: blur(8px); 
@@ -241,6 +241,179 @@
         </div>
     </div>
 
+    <div id="order-modal" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
+        <div class="glass-card w-full max-w-lg p-8 md:p-10 rounded-[3rem] relative border border-emerald-500/30 shadow-[0_0_40px_rgba(16,185,129,0.15)]">
+            <button onclick="closeOrderModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl cursor-pointer">✕</button>
+            <h3 class="text-3xl font-black text-white mb-6 tracking-tight">🤝 Smart Deal Room</h3>
+            
+            <div class="bg-[#0f172a]/80 p-5 rounded-2xl mb-6 border border-slate-700/80 shadow-inner">
+                <div class="flex justify-between items-start mb-2">
+                    <p class="text-base font-black text-emerald-400 truncate" id="order-product-name"></p>
+                    <span class="text-xs text-slate-400 font-bold bg-[#020617]/50 px-2.5 py-1 rounded-lg">📍 <span id="order-seller-loc"></span></span>
+                </div>
+                <div class="flex justify-between items-baseline">
+                    <p class="text-3xl font-black text-white tracking-tight">GH₵<span id="order-base-price">0</span> <span class="text-sm text-slate-400 uppercase tracking-widest">/ <span id="order-unit"></span></span></p>
+                </div>
+            </div>
+            
+            <div class="flex gap-2 p-1.5 bg-[#020617]/60 rounded-2xl mb-6 border border-slate-700/50 shadow-inner">
+                <button onclick="switchOrderTab('direct')" id="tab-direct" class="flex-1 py-3 rounded-xl text-sm font-black bg-emerald-600 text-white shadow-[0_0_15px_rgba(16,185,129,0.3)] transition-all cursor-pointer">Direct Order</button>
+                <button onclick="switchOrderTab('haggle')" id="tab-haggle" class="flex-1 py-3 rounded-xl text-sm font-black text-slate-400 hover:text-white transition-all cursor-pointer">Haggle</button>
+                <button onclick="switchOrderTab('group')" id="tab-group" class="flex-1 py-3 rounded-xl text-sm font-black text-slate-400 hover:text-white transition-all cursor-pointer">Group Split</button>
+            </div>
+            
+            <div class="space-y-5">
+                <div>
+                    <label class="block text-xs font-black text-slate-400 mb-2 uppercase tracking-widest">Quantity to Order</label>
+                    <input type="number" id="order-quantity" value="1" min="1" oninput="calculateOrderTotal()" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-white font-black text-lg outline-none focus:border-emerald-500 shadow-inner transition-colors cursor-text">
+                </div>
+                
+                <div id="panel-haggle" class="hidden p-5 rounded-2xl bg-emerald-950/20 border border-emerald-500/30 space-y-4 shadow-inner">
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="font-black text-slate-300">Your Proposed Price:</span>
+                        <span class="text-2xl font-black text-emerald-400 tracking-tight">GH₵<span id="haggle-val-display">0</span></span>
+                    </div>
+                    <input type="range" id="haggle-slider" min="50" max="150" value="100" oninput="updateHaggleMeter()" class="w-full accent-emerald-500 cursor-pointer">
+                    <div class="text-xs text-right mt-1"><span id="haggle-feedback" class="font-black text-amber-400 tracking-wider">Fair Offer</span></div>
+                </div>
+                
+                <div id="panel-group" class="hidden p-5 rounded-2xl bg-teal-950/20 border border-teal-500/30 space-y-3 shadow-inner">
+                    <label class="block text-xs font-black text-slate-300 mb-2 uppercase tracking-widest">Split Between How Many People?</label>
+                    <input type="number" id="group-split-count" value="2" min="2" oninput="calculateOrderTotal()" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-3 text-white font-black outline-none shadow-inner cursor-text">
+                    <p class="text-xs text-teal-300 mt-2 font-medium">Each member pays: <strong class="text-white text-sm font-black tracking-wide">GH₵<span id="group-each-price">0</span></strong></p>
+                </div>
+                
+                <input type="text" id="order-destination" placeholder="Your Delivery Town / Drop-off Point" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-sm font-medium text-white outline-none focus:border-emerald-500 shadow-inner transition-colors cursor-text">
+                
+                <div class="flex justify-between items-end pt-5 border-t border-white/10">
+                    <span class="text-sm font-black text-slate-300 uppercase tracking-widest">Estimated Deal Total:</span>
+                    <span class="text-4xl font-black text-emerald-400 tracking-tight">GH₵<span id="order-total-price">0</span></span>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3 pt-3">
+                    <button onclick="executeDealWhatsApp()" class="bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-4 rounded-2xl text-sm flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(37,211,102,0.3)] hover:-translate-y-0.5 tracking-wide cursor-pointer">💬 WhatsApp Deal</button>
+                    <button onclick="executeCallFarmer()" class="bg-[#0f172a] hover:bg-slate-800 text-blue-400 hover:text-blue-300 font-black py-4 rounded-2xl text-sm border border-blue-500/30 flex items-center justify-center gap-2 transition-all shadow-inner hover:-translate-y-0.5 tracking-wide cursor-pointer">📞 Call Farmer</button>
+                </div>
+                <div class="text-center pt-3">
+                    <button onclick="triggerScamReportFromOrder()" class="text-[11px] text-slate-500 hover:text-rose-400 underline transition-colors font-bold tracking-wider cursor-pointer">🚩 Report suspicious listing or mismatched details</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="flyer-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md p-8 rounded-[3rem] text-center border border-emerald-500/30 shadow-[0_0_40px_rgba(16,185,129,0.15)] relative">
+            <button onclick="closeFlyerModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl font-bold cursor-pointer">✕</button>
+            <h3 class="text-2xl font-black text-white mb-2 tracking-tight">WhatsApp Status Flyer 📲</h3>
+            <p class="text-sm text-slate-400 mb-6 font-medium">Auto-rendered flyer with pricing & phone contact embedded.</p>
+            <canvas id="flyer-canvas" class="hidden"></canvas>
+            <img id="flyer-preview" src="" class="w-full max-w-[300px] rounded-[2rem] mb-8 mx-auto shadow-2xl border border-slate-700/50">
+            <button onclick="downloadFlyer()" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-4.5 rounded-2xl text-sm transition-all shadow-[0_0_15px_rgba(37,211,102,0.3)] hover:-translate-y-0.5 tracking-wide cursor-pointer">Download Flyer PNG</button>
+        </div>
+    </div>
+
+    <div id="video-studio-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
+        <div class="glass-card w-full max-w-lg p-10 rounded-[3rem] relative border border-purple-500/30 shadow-[0_0_40px_rgba(168,85,247,0.15)]">
+            <button onclick="closeVideoStudio()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl cursor-pointer">✕</button>
+            <div class="flex items-center gap-4 mb-8">
+                <span class="text-5xl drop-shadow-[0_0_15px_rgba(168,85,247,0.4)]">🎬</span>
+                <div>
+                    <h3 class="text-3xl font-black text-white tracking-tight">AI Status Studio</h3>
+                    <p class="text-[10px] text-purple-400 font-black uppercase tracking-widest mt-1">Automated Prompt-to-Video Engine</p>
+                </div>
+            </div>
+            
+            <div id="video-studio-setup">
+                <div class="bg-[#0f172a]/80 p-5 rounded-2xl border border-slate-700/80 mb-6 shadow-inner">
+                    <p class="text-xs text-slate-400 mb-1 font-black uppercase tracking-widest">Target Produce Listing:</p>
+                    <p id="vs-ad-name" class="font-black text-white text-xl tracking-tight">...</p>
+                    <input type="hidden" id="vs-ad-id">
+                </div>
+                
+                <div class="space-y-5 mb-8">
+                    <div>
+                        <label class="block text-xs font-black text-slate-400 mb-2 uppercase tracking-widest">Voiceover Narrative Style</label>
+                        <select id="vs-voice" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-white text-sm font-medium outline-none focus:border-purple-500 shadow-inner transition-colors cursor-pointer">
+                            <option value="energetic">Energetic Ghanaian Market Announcer</option>
+                            <option value="professional">Corporate Agribusiness Exporter</option>
+                            <option value="calm">Calm, Fresh & Organic Focus</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button onclick="generateAiVideo()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black py-4.5 rounded-2xl text-sm transition-all shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:-translate-y-0.5 flex items-center justify-center gap-2 tracking-wide cursor-pointer"><span>✨ Generate Video (1 Free Credit)</span></button>
+            </div>
+
+            <div id="video-studio-processing" class="hidden text-center py-10">
+                <div class="w-20 h-20 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin mx-auto mb-8 shadow-[0_0_20px_rgba(168,85,247,0.3)]"></div>
+                <h3 class="text-2xl font-black text-white mb-2 tracking-tight" id="vs-status-text">Writing Script...</h3>
+                <p class="text-sm text-slate-400 font-medium max-w-sm mx-auto">Our model is assembling product images, generating speech, and rendering MP4 frames.</p>
+            </div>
+
+            <div id="video-studio-result" class="hidden text-center">
+                <video id="vs-final-video" class="w-full rounded-[2rem] mb-6 shadow-[0_0_30px_rgba(0,0,0,0.5)] border border-slate-700/80" controls playsinline>
+                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                </video>
+                <div class="bg-[#0f172a] p-5 rounded-2xl mb-6 text-left border border-slate-700/50 shadow-inner">
+                    <p class="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-2">Generated Voiceover Script:</p>
+                    <p id="vs-script-display" class="text-sm text-slate-300 italic font-medium leading-relaxed">...</p>
+                </div>
+                <button onclick="downloadAiVideo()" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-4.5 rounded-2xl text-sm transition-all shadow-[0_0_15px_rgba(37,211,102,0.3)] hover:-translate-y-0.5 mb-3 tracking-wide cursor-pointer">Download for WhatsApp Status</button>
+                <button onclick="closeVideoStudio()" class="w-full bg-[#020617]/50 border border-white/10 hover:bg-slate-800 text-white font-black py-4 rounded-2xl text-sm transition-colors cursor-pointer">Close Studio</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LEAVE REVIEW MODAL -->
+    <div id="leave-review-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md p-10 rounded-[3rem] relative border border-emerald-500/30 text-left shadow-[0_0_40px_rgba(16,185,129,0.15)]">
+            <button onclick="closeLeaveReviewModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl cursor-pointer">✕</button>
+            <h3 class="text-3xl font-black text-white mb-2 tracking-tight">Rate this Seller</h3>
+            <p class="text-sm text-slate-400 mb-8 font-medium">Leave an honest review to help other buyers on the platform.</p>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-xs font-black text-slate-400 mb-3 uppercase tracking-widest">Star Rating</label>
+                    <select id="review-rating" class="w-full bg-[#0f172a] border border-slate-700/80 rounded-2xl px-5 py-4 text-sm text-amber-400 font-black outline-none focus:border-emerald-500 shadow-inner transition-colors cursor-pointer">
+                        <option value="5">⭐⭐⭐⭐⭐ (Excellent)</option>
+                        <option value="4">⭐⭐⭐⭐ (Good)</option>
+                        <option value="3">⭐⭐⭐ (Average)</option>
+                        <option value="2">⭐⭐ (Poor)</option>
+                        <option value="1">⭐ (Terrible)</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-xs font-black text-slate-400 mb-3 uppercase tracking-widest">Your Feedback</label>
+                    <textarea id="review-comment" rows="4" placeholder="Describe your experience buying from this farmer..." class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-sm font-medium text-white outline-none focus:border-emerald-500 shadow-inner transition-colors cursor-text"></textarea>
+                </div>
+                
+                <button id="submit-review-btn" onclick="submitSellerReview()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-4.5 rounded-2xl text-base transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:-translate-y-0.5 tracking-wide cursor-pointer">Submit Review</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- REPORT MODAL -->
+    <div id="report-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md p-10 rounded-[3rem] relative border border-rose-500/30 text-left shadow-[0_0_40px_rgba(225,29,72,0.15)]">
+            <button onclick="closeReportModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl cursor-pointer">✕</button>
+            <h3 class="text-3xl font-black text-white mb-2 tracking-tight">Submit Incident Report</h3>
+            <p class="text-sm text-slate-400 mb-8 font-medium">Help keep the Agromart community safe.</p>
+            <div class="space-y-5">
+                <input type="text" id="report-target-name" readonly class="w-full bg-[#020617]/50 border border-slate-700/50 rounded-2xl px-5 py-4 text-sm font-bold text-rose-300 shadow-inner">
+                <input type="hidden" id="report-target-phone">
+                <select id="report-reason" class="w-full bg-[#0f172a] border border-slate-700/80 rounded-2xl px-5 py-4 text-sm font-medium text-white shadow-inner focus:border-rose-500 outline-none transition-colors cursor-pointer">
+                    <option value="Deposit Demanded Without Produce">Demanded upfront MoMo deposit then vanished</option>
+                    <option value="Price Bait and Switch">Price on arrival differed drastically</option>
+                    <option value="Poor Produce Quality / Disease">Produce was rotten or spoiled</option>
+                </select>
+                <textarea id="report-details" rows="4" placeholder="Provide transaction details..." class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-sm font-medium text-white shadow-inner focus:border-rose-500 outline-none transition-colors cursor-text"></textarea>
+                <button onclick="submitScamReport()" class="w-full bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-black py-4.5 rounded-2xl text-sm shadow-[0_0_20px_rgba(225,29,72,0.3)] transition-all hover:-translate-y-0.5 tracking-wide mt-2 cursor-pointer">Submit Incident Report</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- COMMUNITY POST MODAL (THE FARMER'S LOUNGE) -->
     <div id="community-post-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-10 rounded-[3rem] relative border border-emerald-500/30 text-left shadow-[0_0_40px_rgba(16,185,129,0.15)]">
             <button onclick="closeCommunityPostModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl cursor-pointer">✕</button>
@@ -700,9 +873,9 @@
                 <div class="absolute top-0 right-0 w-48 md:w-80 h-48 md:h-80 bg-blue-500/10 rounded-full blur-[60px] md:blur-[100px] pointer-events-none"></div>
                 <div class="relative z-10">
                     <h2 class="text-2xl md:text-4xl font-black text-white flex items-center gap-3 md:gap-4 tracking-tight">💼 Farm Manager Dashboard</h2>
-                    <p class="text-xs md:text-base text-slate-400 mt-2 md:mt-3 font-medium max-w-xl">Track flock cycles, log expenses, and auto-list inventory upon harvest.</p>
+                    <p class="text-xs md:text-sm text-slate-400 mt-2 md:mt-3 font-medium max-w-xl">Track flock cycles, log expenses, and auto-list inventory upon harvest.</p>
                 </div>
-                <button onclick="openBatchModal()" class="bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-500 hover:to-indigo-400 text-white text-xs md:text-sm font-black px-6 md:px-10 py-3.5 md:py-5 rounded-xl md:rounded-2xl shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all whitespace-nowrap hover:-translate-y-1 relative z-10 tracking-wide cursor-pointer">
+                <button onclick="openBatchModal()" class="bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-500 hover:to-indigo-400 text-white text-xs md:text-sm font-black px-6 md:px-8 py-3.5 md:py-4 rounded-xl md:rounded-2xl shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all whitespace-nowrap hover:-translate-y-1 relative z-10 tracking-wide cursor-pointer">
                     + Start New Batch
                 </button>
             </div>
@@ -715,7 +888,7 @@
             <div class="text-center space-y-3 md:space-y-4 mb-10 md:mb-14 relative z-40">
                 <div class="w-16 h-16 md:w-24 md:h-24 bg-rose-500/10 rounded-2xl md:rounded-[2rem] flex items-center justify-center text-3xl md:text-5xl mx-auto border border-rose-500/20 shadow-[0_0_40px_rgba(244,63,94,0.15)] mb-4 md:mb-8">📊</div>
                 <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">Market Intelligence</h2>
-                <p class="text-slate-400 text-xs md:text-lg max-w-2xl md:max-w-3xl mx-auto font-medium px-4 md:px-0">Live regional price indexes and arbitrage tracking. See where it's cheapest to buy and most profitable to sell based on real-time platform data.</p>
+                <p class="text-slate-400 text-xs md:text-sm max-w-2xl md:max-w-3xl mx-auto font-medium px-4 md:px-0">Live regional price indexes and arbitrage tracking. See where it's cheapest to buy and most profitable to sell based on real-time platform data.</p>
             </div>
             <div id="intel-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-8 relative z-40"></div>
         </div>
@@ -725,7 +898,7 @@
             <div class="text-center space-y-3 md:space-y-4 mb-10 md:mb-14 relative z-40">
                 <div class="w-16 h-16 md:w-24 md:h-24 bg-teal-500/10 rounded-2xl md:rounded-[2rem] flex items-center justify-center text-3xl md:text-5xl mx-auto border border-teal-500/20 shadow-[0_0_40px_rgba(20,184,166,0.15)] mb-4 md:mb-8">🧮</div>
                 <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">Precision Feed Calculator</h2>
-                <p class="text-slate-400 text-xs md:text-lg max-w-2xl md:max-w-3xl mx-auto font-medium px-4 md:px-0">Use the Pearson Square method to instantly calculate the exact mix ratio and cost of formulating your own poultry or livestock feed.</p>
+                <p class="text-slate-400 text-xs md:text-sm max-w-2xl md:max-w-3xl mx-auto font-medium px-4 md:px-0">Use the Pearson Square method to instantly calculate the exact mix ratio and cost of formulating your own poultry or livestock feed.</p>
             </div>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 max-w-6xl mx-auto relative z-40">
@@ -764,12 +937,12 @@
                                 </div>
                             </div>
                         </div>
-                        <button onclick="calculateFeedMix()" class="w-full bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-black py-4 md:py-6 rounded-xl md:rounded-2xl text-xs md:text-base transition-all shadow-[0_0_20px_rgba(20,184,166,0.4)] hover:shadow-[0_0_30px_rgba(20,184,166,0.6)] hover:-translate-y-0.5 tracking-wide mt-4 cursor-pointer">Calculate Mix Ratio ✨</button>
+                        <button onclick="calculateFeedMix()" class="w-full bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-black py-4 md:py-6 rounded-xl md:rounded-2xl text-xs md:text-base transition-all shadow-[0_0_20px_rgba(20,184,166,0.4)] hover:shadow-[0_0_30px_rgba(20,184,166,0.6)] hover:-translate-y-0.5 md:hover:-translate-y-1 tracking-wide mt-4 cursor-pointer">Calculate Mix Ratio ✨</button>
                     </div>
                 </div>
 
-                <div class="glass-card p-6 md:p-12 rounded-2xl md:rounded-[3rem] border border-white/5 relative overflow-hidden flex flex-col justify-center shadow-xl z-40">
-                    <div class="absolute top-[-40px] right-[-40px] w-48 md:w-80 h-48 md:h-80 bg-teal-500/10 rounded-full blur-[60px] md:blur-[100px] pointer-events-none"></div>
+                <div class="glass-card p-6 md:p-14 rounded-2xl md:rounded-[3rem] border border-white/5 relative overflow-hidden flex flex-col justify-center shadow-xl md:shadow-2xl z-40">
+                    <div class="absolute top-[-40px] md:top-[-50px] right-[-40px] md:right-[-50px] w-48 md:w-80 h-48 md:h-80 bg-teal-500/10 rounded-full blur-[60px] md:blur-[100px] pointer-events-none"></div>
                     <h3 class="text-2xl md:text-3xl font-black text-white mb-6 md:mb-10 z-10 tracking-tight">2. Your Custom Formulation</h3>
                     
                     <div id="calc-results-empty" class="text-center py-12 md:py-24 text-slate-500 text-xs md:text-base font-medium relative z-10">
@@ -807,15 +980,15 @@
             <div class="text-center space-y-3 md:space-y-4 mb-10 md:mb-14 relative z-40">
                 <div class="w-16 h-16 md:w-24 md:h-24 bg-amber-500/10 rounded-2xl md:rounded-[2rem] flex items-center justify-center text-3xl md:text-5xl mx-auto border border-amber-500/20 shadow-[0_0_40px_rgba(245,158,11,0.15)] mb-4 md:mb-8">🏆</div>
                 <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">Agri-Finance & Grants</h2>
-                <p class="text-slate-400 text-xs md:text-lg max-w-2xl md:max-w-3xl mx-auto font-medium px-4 md:px-0">Our automated system scans MoFA, USAID, and NGO portals daily to bring you the latest funding opportunities and loans.</p>
+                <p class="text-slate-400 text-xs md:text-sm max-w-2xl md:max-w-3xl mx-auto font-medium px-4 md:px-0">Our automated system scans MoFA, USAID, and NGO portals daily to bring you the latest funding opportunities and loans.</p>
             </div>
             <div id="grants-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8 relative z-40"></div>
         </div><!-- AGRIDOCTOR AI SCANNER VIEW -->
-        <div id="view-agridoctor" class="fade-in hidden max-w-5xl mx-auto mt-6 space-y-6 md:space-y-8 relative z-30">
+        <div id="view-agridoctor" class="fade-in hidden max-w-5xl mx-auto mt-6 md:mt-8 space-y-6 md:space-y-8 relative z-30">
             <div class="text-center space-y-3 md:space-y-4 mb-10 md:mb-14 relative z-40">
                 <div class="w-16 h-16 md:w-24 md:h-24 bg-rose-500/10 rounded-2xl md:rounded-[2rem] flex items-center justify-center text-3xl md:text-5xl mx-auto border border-rose-500/20 shadow-[0_0_40px_rgba(244,63,94,0.15)] mb-4 md:mb-8">🩺</div>
                 <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight">AgriDoctor AI</h2>
-                <p class="text-slate-400 text-xs md:text-lg max-w-2xl md:max-w-3xl mx-auto font-medium px-4 md:px-0">Upload a photo of a diseased crop leaf or sick livestock. Our AI will diagnose the issue and provide an instant treatment plan.</p>
+                <p class="text-slate-400 text-xs md:text-sm max-w-2xl md:max-w-3xl mx-auto font-medium px-4 md:px-0">Upload a photo of a diseased crop leaf or sick livestock. Our AI will diagnose the issue and provide an instant treatment plan.</p>
             </div>
 
             <div class="glass-card p-6 md:p-12 rounded-2xl md:rounded-[3rem] border border-rose-500/30 shadow-[0_0_50px_rgba(244,63,94,0.15)] relative overflow-hidden z-40">
@@ -831,7 +1004,7 @@
                         </div>
                     </div>
                     <input type="file" id="agridoctor-file" accept="image/*" capture="environment" class="hidden" onchange="handleAgriDoctorUpload(event)">
-                    <button id="agridoctor-analyze-btn" onclick="processAgriDoctor()" class="hidden w-full mt-6 md:mt-10 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-black py-4 md:py-6 rounded-xl md:rounded-2xl text-sm md:text-lg transition-all shadow-[0_0_20px_rgba(244,63,94,0.4)] hover:shadow-[0_0_30px_rgba(244,63,94,0.6)] relative z-10 hover:-translate-y-1 tracking-wide cursor-pointer">Analyze Image 🔍</button>
+                    <button id="agridoctor-analyze-btn" onclick="processAgriDoctor()" class="hidden w-full mt-6 md:mt-10 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-black py-4 md:py-6 rounded-xl md:rounded-2xl text-sm md:text-lg transition-all shadow-[0_0_20px_rgba(244,63,94,0.4)] hover:shadow-[0_0_30px_rgba(244,63,94,0.6)] relative z-10 hover:-translate-y-0.5 md:hover:-translate-y-1 tracking-wide cursor-pointer">Analyze Image 🔍</button>
                 </div>
 
                 <div id="agridoctor-processing-state" class="hidden text-center py-16 md:py-24 relative z-40">
@@ -877,9 +1050,9 @@
                 <div class="absolute top-0 right-0 w-48 md:w-80 h-48 md:h-80 bg-amber-500/10 rounded-full blur-[60px] md:blur-[100px] pointer-events-none"></div>
                 <div class="relative z-10">
                     <h2 class="text-2xl md:text-4xl font-black text-white flex items-center gap-3 md:gap-4 tracking-tight">🚚 Haulage Pool & Empty-Leg Freight</h2>
-                    <p class="text-xs md:text-base text-slate-400 mt-2 md:mt-3 font-medium max-w-xl md:max-w-2xl">Book cheap return-trip truck space or list your empty haulage truck returning from deliveries.</p>
+                    <p class="text-xs md:text-sm text-slate-400 mt-2 md:mt-3 font-medium max-w-xl md:max-w-2xl">Book cheap return-trip truck space or list your empty haulage truck returning from deliveries.</p>
                 </div>
-                <button onclick="openHaulagePostModal()" class="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-[#020617] text-xs md:text-sm font-black px-6 md:px-10 py-3.5 md:py-5 rounded-xl md:rounded-2xl shadow-[0_0_20px_rgba(245,158,11,0.4)] transition-all whitespace-nowrap hover:-translate-y-1 tracking-wide relative z-10 cursor-pointer">
+                <button onclick="openHaulagePostModal()" class="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-[#020617] text-xs md:text-sm font-black px-6 md:px-10 py-3.5 md:py-5 rounded-xl md:rounded-2xl shadow-[0_0_20px_rgba(245,158,11,0.4)] transition-all whitespace-nowrap hover:-translate-y-0.5 md:hover:-translate-y-1 tracking-wide relative z-10 cursor-pointer">
                     + List Empty Truck
                 </button>
             </div>
@@ -948,7 +1121,7 @@
                                 <option value="Upper West">Upper West Region</option>
                                 <option value="Volta">Volta Region</option>
                                 <option value="Western">Western Region</option>
-                                <option value="Western North">Western North</option>
+                                <option value="Western North">Western North Region</option>
                             </select>
                             <div class="relative w-full md:w-1/2">
                                 <span class="absolute left-4 md:left-5 top-1/2 -translate-y-1/2 text-slate-500 text-[10px] md:text-sm">📍</span>
@@ -958,7 +1131,7 @@
                     </div>
                 </div>
                 <div class="pt-6 md:pt-10 border-t border-white/10 relative z-40">
-                    <button id="submit-ad-btn" onclick="submitAd()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-4 md:py-6 rounded-xl md:rounded-[2rem] text-sm md:text-lg transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:shadow-[0_0_40px_rgba(16,185,129,0.6)] hover:-translate-y-1 tracking-wide cursor-pointer">🚀 Submit Ad For Review</button>
+                    <button id="submit-ad-btn" onclick="submitAd()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-4 md:py-6 rounded-xl md:rounded-[2rem] text-sm md:text-lg transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:shadow-[0_0_40px_rgba(16,185,129,0.6)] hover:-translate-y-0.5 md:hover:-translate-y-1 tracking-wide cursor-pointer">🚀 Submit Ad For Review</button>
                 </div>
             </div>
         </div>
@@ -1104,7 +1277,7 @@
                     + List Your Equipment
                 </button>
             </div>
-            <div id="rentals-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8 relative z-40"></div>
+            <div id="rentals-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-8 relative z-40"></div>
         </div>
 
         <!-- ECO-LOOP LOGISTICS VIEW -->
@@ -1357,16 +1530,16 @@
         
         <!-- ABOUT VIEW -->
         <div id="view-about" class="fade-in hidden max-w-4xl mx-auto mt-10 md:mt-16 relative z-30 px-4 md:px-0">
-            <div class="glass-card p-8 md:p-16 rounded-2xl md:rounded-[4rem] shadow-lg md:shadow-[0_0_60px_rgba(0,0,0,0.3)] text-center relative overflow-hidden border border-emerald-500/20 z-40">
+            <div class="glass-card p-8 md:p-16 rounded-2xl md:rounded-[3rem] shadow-lg md:shadow-[0_0_60px_rgba(0,0,0,0.3)] text-center relative overflow-hidden border border-emerald-500/20 z-40">
                 <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
-                <h2 class="text-3xl md:text-6xl font-black text-white mb-5 md:mb-10 tracking-tight relative z-10">About AgromartDirect</h2>
+                <h2 class="text-3xl md:text-5xl font-black text-white mb-5 md:mb-10 tracking-tight relative z-10">About AgromartDirect</h2>
                 <p class="text-slate-300 text-sm md:text-2xl leading-relaxed font-medium relative z-10 max-w-2xl md:max-w-3xl mx-auto">We are digitizing the agricultural supply chain in Ghana. Fair prices for farmers, fresh produce for buyers, and zero middleman exploitation.</p>
             </div>
         </div>
 
         <!-- SUPPORT VIEW -->
         <div id="view-support" class="fade-in hidden max-w-2xl mx-auto mt-10 md:mt-16 relative z-30 px-4 md:px-0">
-            <div class="glass-card p-8 md:p-16 rounded-2xl md:rounded-[4rem] shadow-lg md:shadow-[0_0_50px_rgba(0,0,0,0.3)] text-center border border-white/5 z-40 relative">
+            <div class="glass-card p-8 md:p-16 rounded-2xl md:rounded-[3rem] shadow-lg md:shadow-[0_0_50px_rgba(0,0,0,0.3)] text-center border border-white/5 z-40 relative">
                 <h2 class="text-3xl md:text-5xl font-black text-white mb-4 md:mb-8 tracking-tight">Customer Support</h2>
                 <p class="text-slate-400 mb-8 md:mb-10 font-medium text-sm md:text-lg">Need help with an order or a listing? Give us a call.</p>
                 <a href="tel:0245641480" class="inline-block bg-[#0f172a] hover:bg-slate-800 border border-slate-700/80 text-white font-black py-4 px-8 md:py-6 md:px-12 rounded-xl md:rounded-[2rem] transition-all shadow-md md:shadow-lg hover:-translate-y-0.5 md:hover:-translate-y-1 tracking-wide text-base md:text-xl cursor-pointer">Call 024 564 1480</a>
@@ -1461,7 +1634,7 @@
         let currentSellerForReview = ""; 
         let pendingAdPayload = null;
 
-        // --- PLATFORM TEST DATA FALLBACKS (ONE PER CATEGORY) ---
+        // --- PLATFORM TEST DATA FALLBACKS (BUG FIX: Proper Category Assignments) ---
         const dummyAgromartAds = [
             "Poultry", "Chicks", "Eggs", "Meat", "Vegetables/Fruits", "Fishes", "Livestock", "Machinery", "Pets", "Vaccines & Feed"
         ].map((cat, i) => ({
@@ -1530,41 +1703,65 @@
             }
         ];
 
-        // --- EVERYDAY HUB TEST DATA FALLBACKS ---
+        // --- EVERYDAY HUB TEST DATA FALLBACKS (BUG FIX: Added Test Tags) ---
         const everydayData = {
             rooms: [
                 { 
-                    title: "Self-Contained Chamber & Hall", 
+                    title: "[TEST AD] Self-Contained Chamber & Hall", 
                     loc: "Madina Social Welfare, Accra", 
                     price: "GH₵ 850 / month", 
                     tag: "No Agent Fee", 
                     phone: "0244112233", 
                     details: "Walled compound with separate water meter and prepaid electricity. Directly from landlord." 
+                },
+                { 
+                    title: "[TEST AD] 2-in-a-Room Student Hostel", 
+                    loc: "Ayeduase Gate, KNUST, Kumasi", 
+                    price: "GH₵ 3,200 / year", 
+                    tag: "Hostel Management", 
+                    phone: "0201234567", 
+                    details: "Includes 24/7 backup power generator, study desks, and private washroom." 
                 }
             ],
             meds: [
                 { 
-                    title: "Augmentin 625mg Tablets", 
+                    title: "[TEST AD] Augmentin 625mg Tablets", 
                     loc: "Osu / Danquah Circle, Accra", 
                     price: "GH₵ 65.00", 
                     tag: "In Stock at MedPlus", 
                     phone: "0249887766", 
                     details: "Original GlaxoSmithKline pack verified in inventory." 
+                },
+                { 
+                    title: "[TEST AD] Ventolin Inhaler (100mcg)", 
+                    loc: "Requested near Spintex", 
+                    price: "Urgent Request", 
+                    tag: "Seeking Stock", 
+                    phone: "0245001122", 
+                    details: "Required for an asthma emergency. Please reach out." 
                 }
             ],
             artisans: [
                 { 
-                    title: "Master Pipefitter & Plumber (Kwame)", 
+                    title: "[TEST AD] Master Pipefitter & Plumber", 
                     loc: "Dansoman & Lapaz Area", 
                     price: "From GH₵ 80 / job", 
                     tag: "Verified Pro (4.9⭐)", 
                     phone: "0243456789", 
                     details: "12 years experience in overhead tank installs, borehole pumping, and emergency leak repairs." 
+                },
+                { 
+                    title: "[TEST AD] Air Conditioner & Fridge Tech", 
+                    loc: "East Legon", 
+                    price: "GH₵ 120 standard", 
+                    tag: "Verified Pro (5.0⭐)", 
+                    phone: "0278112233", 
+                    details: "Specialist in gas recharging and copper piping." 
                 }
             ],
             parcels: [
                 { 
-                    title: "Accra ➔ Kumasi (Package Hitch)", 
+                    title: "[TEST AD] Accra ➔ Kumasi (Hitch)", 
                     loc: "Leaving Circle Station at 2:00 PM Today", 
                     price: "GH₵ 40 / box", 
                     tag: "Private Car Commute", 
@@ -1574,7 +1771,7 @@
             ],
             thrift: [
                 { 
-                    title: "Samsung 43-inch Smart Crystal UHD TV", 
+                    title: "[TEST AD] Samsung 43-inch Smart UHD TV", 
                     loc: "Tema Community 25", 
                     price: "GH₵ 2,400", 
                     tag: "Gently Used", 
@@ -1852,28 +2049,6 @@
                     <button onclick="deleteBatch(${b.id})" class="w-full bg-[#0f172a] hover:bg-rose-600 border border-slate-700 hover:border-rose-500 text-slate-300 hover:text-white font-black py-3 md:py-4 rounded-xl md:rounded-2xl text-[11px] md:text-sm transition-colors shadow-lg tracking-wide relative z-10 cursor-pointer">End Batch / Harvest</button>
                 </div>
             `).join('');
-        }
-
-        async function deleteBatch(id) {
-            if (!confirm("Are you sure you want to end/harvest this batch?")) return;
-            
-            try {
-                const res = await fetch(`${API_URL}/api/v1/farm-batches/${id}?token=${agriToken}`, { 
-                    method: 'DELETE' 
-                });
-                
-                if (!res.ok) throw new Error("Fallback");
-                
-                showToast("Batch harvested successfully.");
-                loadFarmBatches();
-            } catch(e) {
-                let localBatches = JSON.parse(localStorage.getItem('local_farm_batches') || '[]');
-                localBatches = localBatches.filter(b => b.id !== id);
-                localStorage.setItem('local_farm_batches', JSON.stringify(localBatches));
-                
-                showToast("Batch harvested locally.");
-                loadFarmBatches();
-            }
         }
 
         // --- AGRI TRAINER ENCYCLOPEDIA (BUG FIX: Restored missing data) ---
@@ -2742,6 +2917,7 @@
             recognition.start();
         }
 
+        // BUG FIX: Category Filters now accurately filter local test data
         async function loadMarketplaceGrid() {
             const titleEl = document.getElementById('market-title'); 
             if (titleEl) {
@@ -2776,9 +2952,16 @@
                 
                 allLoadedProducts = products; 
                 
+                // CRITICAL FIX: Filtering logic for local test data
                 let filtered = products;
+                if (currentCategoryState) {
+                    filtered = filtered.filter(p => p.category === currentCategoryState);
+                }
+                if (currentSearchState) {
+                    filtered = filtered.filter(p => p.product_name.toLowerCase().includes(currentSearchState.toLowerCase()));
+                }
                 if (currentRegionState !== "All Regions") {
-                    filtered = products.filter(p => p.neighborhood.toLowerCase().includes(currentRegionState.toLowerCase()));
+                    filtered = filtered.filter(p => p.neighborhood.toLowerCase().includes(currentRegionState.toLowerCase()));
                 }
                 
                 if (filtered.length > 0) {
@@ -2798,7 +2981,20 @@
                 }
             } catch (err) { 
                 console.error("Marketplace fetch error: ", err); 
-                renderProductGrid(dummyAgromartAds, document.getElementById('product-grid'));
+                
+                // Apply the same strict filtering if the API completely fails
+                let filtered = dummyAgromartAds;
+                if (currentCategoryState) {
+                    filtered = filtered.filter(p => p.category === currentCategoryState);
+                }
+                if (currentSearchState) {
+                    filtered = filtered.filter(p => p.product_name.toLowerCase().includes(currentSearchState.toLowerCase()));
+                }
+                if (currentRegionState !== "All Regions") {
+                    filtered = filtered.filter(p => p.neighborhood.toLowerCase().includes(currentRegionState.toLowerCase()));
+                }
+                
+                renderProductGrid(filtered, document.getElementById('product-grid'));
             }
         }
 
