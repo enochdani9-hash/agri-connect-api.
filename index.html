@@ -64,7 +64,7 @@
         ::-webkit-scrollbar-thumb { background: rgba(16, 185, 129, 0.5); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: rgba(16, 185, 129, 0.8); }
         
-        /* Advanced Glassmorphism - Blur reduced to 8px to fix Android rendering lag */
+        /* Advanced Glassmorphism - BUG FIX: Blur reduced to 8px to fix Android rendering lag */
         .glass-card { 
             background: rgba(15, 23, 42, 0.4); 
             backdrop-filter: blur(8px); 
@@ -136,7 +136,7 @@
 </head>
 <body id="app-body" class="bg-[#020617] text-slate-100 font-sans min-h-screen flex flex-col transition-colors duration-500 overflow-x-hidden relative mode-portal-select">
     
-    <!-- FIX: Removed animate-blob classes to stop Android rendering lag -->
+    <!-- BUG FIX: Removed animate-blob classes to stop Android rendering lag -->
     <div class="fixed inset-0 z-[-10] pointer-events-none overflow-hidden">
         <div class="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-emerald-600/10 mix-blend-screen filter blur-[100px]"></div>
         <div class="absolute top-[20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-blue-600/10 mix-blend-screen filter blur-[100px]"></div>
@@ -155,7 +155,9 @@
         </div>
     </div>
 
-    <!-- MODALS SECTION -->
+    <!-- ========================================== -->
+    <!-- POP-UP MODALS SECTION                      -->
+    <!-- ========================================== -->
     <div id="edit-ad-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[120] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative">
             <button onclick="closeEditModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl cursor-pointer">✕</button>
@@ -435,7 +437,138 @@
                 <button onclick="submitCommunityPost()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-4.5 rounded-2xl text-sm shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all hover:-translate-y-0.5 tracking-wide mt-2 cursor-pointer">Publish to Feed</button>
             </div>
         </div>
-    </div><!-- THE EVERYDAY HUB VIEW -->
+    </div><!-- ========================================== -->
+    <!-- HEADER & NAVIGATION                        -->
+    <!-- ========================================== -->
+    <header class="bg-[#020617]/70 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-50 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('portal-select')">
+                <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-xl flex items-center justify-center text-lg shadow-[0_0_15px_rgba(16,185,129,0.5)] group-hover:scale-105 group-hover:shadow-[0_0_25px_rgba(16,185,129,0.8)] transition-all">🌾</div>
+                <div><h1 id="main-logo-text" class="text-xl font-black text-white tracking-tight group-hover:text-emerald-400 transition-colors">Agromart & Co.</h1></div>
+            </div>
+            
+            <div class="flex gap-2 items-center flex-wrap justify-end">
+                <button onclick="navigate('community')" class="pro-only text-xs font-black text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 rounded-xl hidden lg:flex items-center gap-1 hover:-translate-y-0.5 transition-all shadow-inner tracking-widest uppercase cursor-pointer">🗣️ Lounge</button>
+                <button onclick="navigate('haulage')" class="pro-only text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-amber-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">🚚 Haulage</button>
+                <button onclick="navigate('trainer')" class="pro-only text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-purple-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">📚 Trainer</button>
+                <button onclick="navigate('agridoctor')" class="pro-only text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-rose-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">🩺 AI Scan</button>
+                <button onclick="navigate('grants')" class="pro-only text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-amber-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">🏆 Grants</button>
+                <button onclick="navigate('farm-manager')" class="pro-only text-xs font-bold text-blue-400 border border-blue-500/30 bg-blue-500/10 px-3 py-1.5 rounded-lg hidden md:block hover:bg-blue-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">💼 Manager</button>
+                <button onclick="navigate('intel')" class="pro-only text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-rose-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">📊 Intel</button>
+                <button onclick="navigate('calculator')" class="pro-only text-xs font-bold text-teal-400 border border-teal-500/30 bg-teal-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-teal-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">🧮 Calc</button>
+                <button onclick="navigate('rentals')" class="pro-only text-xs font-bold text-amber-300 border border-amber-400/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-amber-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">🚜 Rentals</button>
+                <button onclick="navigate('waste')" class="pro-only text-xs font-bold text-emerald-300 border border-emerald-400/30 bg-emerald-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-emerald-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">♻️ Eco</button>
+                
+                <button id="pwa-install-btn" onclick="triggerPwaInstall()" class="hidden bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold px-3 py-1.5 rounded-lg text-xs hover:bg-emerald-500/30 transition-colors hover:shadow-[0_0_15px_rgba(16,185,129,0.3)] cursor-pointer">📲 App</button>
+                
+                <!-- PORTAL SWITCHER TOGGLE -->
+                <button onclick="navigate('portal-select')" class="text-xs font-black text-emerald-300 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1.5 rounded-xl hover:bg-emerald-500/20 transition-all flex items-center gap-1.5 shadow-inner cursor-pointer">
+                    <span>⇄</span> <span class="hidden sm:inline">Switch Portal</span>
+                </button>
+
+                <button onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center glass-card rounded-xl text-xs text-slate-300 hover:text-amber-400 transition-colors cursor-pointer">☀️</button>
+                <button id="nav-login-btn" onclick="navigate('auth')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 transition-colors ml-1 cursor-pointer">Sign In</button>
+                
+                <div id="nav-user-profile" class="hidden items-center gap-3 bg-white/5 px-4 py-1.5 rounded-full border border-white/10 shadow-inner">
+                    <span id="nav-user-name" class="text-xs font-bold text-emerald-400 hidden md:block"></span>
+                    <button onclick="navigate('dashboard')" class="text-xs font-black text-white hover:text-emerald-400 transition-colors cursor-pointer">Dashboard</button>
+                    <div class="w-px h-3 bg-white/20"></div>
+                    <button onclick="logout()" class="text-xs text-rose-400 font-bold hover:text-rose-300 transition-colors cursor-pointer">Logout</button>
+                </div>
+                
+                <button onclick="requireAuthToPost()" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white text-xs font-black px-4 sm:px-5 py-2.5 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.4)] hover:shadow-[0_0_25px_rgba(16,185,129,0.6)] transition-all sm:ml-2 hover:-translate-y-0.5 cursor-pointer">Post Ad</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="pro-only md:hidden glass-card border-b border-white/5 px-4 py-3 overflow-x-auto whitespace-nowrap flex gap-3 z-40 hide-scrollbar scroll-touch">
+        <button onclick="navigate('community')" class="text-xs font-black text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest cursor-pointer">🗣️ Lounge</button>
+        <button onclick="navigate('haulage')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">🚚 Haulage Pool</button>
+        <button onclick="navigate('trainer')" class="text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">📚 Agri Trainer</button>
+        <button onclick="navigate('agridoctor')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">🩺 AgriDoctor AI</button>
+        <button onclick="navigate('grants')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">🏆 Agri-Grants</button>
+        <button onclick="navigate('farm-manager')" class="text-xs font-bold text-blue-400 border border-blue-500/30 bg-blue-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">💼 Farm Manager</button>
+        <button onclick="navigate('intel')" class="text-xs font-bold text-rose-400 border border-rose-500/30 bg-rose-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">📊 Market Intel</button>
+        <button onclick="navigate('calculator')" class="text-xs font-bold text-teal-400 border border-teal-500/30 bg-teal-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">🧮 Feed Calc</button>
+        <button onclick="navigate('rentals')" class="text-xs font-bold text-amber-300 border border-amber-400/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">🚜 Machinery Hire</button>
+        <button onclick="navigate('waste')" class="text-xs font-bold text-emerald-300 border border-emerald-400/30 bg-emerald-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">♻️ Eco-Loop</button>
+    </div>
+
+    <!-- LIVE TICKER BAR -->
+    <div class="pro-only glass-card border-b border-white/5 relative z-40 hidden md:block overflow-hidden shadow-inner">
+        <div class="max-w-7xl mx-auto flex items-center pl-6">
+            <div class="bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider px-4 py-2 rounded-r-lg z-10 shrink-0 flex items-center gap-2 shadow-[0_0_15px_rgba(16,185,129,0.5)]">
+                <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> LIVE GHANA AVG
+            </div>
+            <div class="overflow-hidden flex-grow relative ml-4 h-8 flex items-center mask-edges">
+                <div class="flex gap-8 animate-marquee whitespace-nowrap" id="market-ticker">
+                    <span class="text-xs text-slate-400 font-medium">Gathering real-time nationwide prices...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MAIN APP VIEWS                             -->
+    <!-- ========================================== -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex-grow w-full relative z-30">
+        
+        <!-- FRONT DOOR / PORTAL SELECTOR VIEW -->
+        <div id="view-portal-select" class="fade-in max-w-4xl mx-auto my-8 space-y-8 relative z-30">
+            <div class="text-center space-y-3">
+                <span class="text-4xl md:text-5xl block animate-float">🇬🇭</span>
+                <h1 class="text-3xl md:text-4xl font-black text-white tracking-tight">Choose Your Portal</h1>
+                <p class="text-slate-400 text-sm md:text-base max-w-xl mx-auto font-medium px-2">Select how you want to use the platform today. You can switch between portals at any time.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 relative z-40">
+                <!-- PORTAL 1: THE EVERYDAY HUB -->
+                <div onclick="selectPortal('everyday')" class="glass-card p-6 md:p-8 rounded-[2.5rem] border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.1)] hover:border-blue-400 hover:-translate-y-1 transition-all cursor-pointer flex flex-col justify-between group">
+                    <div>
+                        <div class="w-16 h-16 bg-blue-500/10 rounded-2xl flex items-center justify-center text-3xl border border-blue-500/20 mb-6 group-hover:scale-110 transition-transform">
+                            ⚡
+                        </div>
+                        <span class="text-[10px] text-blue-400 uppercase font-black tracking-widest bg-blue-500/10 px-3.5 py-1.5 rounded-full border border-blue-500/20 shadow-inner">Everyday Living</span>
+                        <h2 class="text-3xl font-black text-white mt-4 mb-3 tracking-tight group-hover:text-blue-400 transition-colors">The Everyday Hub</h2>
+                        <p class="text-slate-400 text-sm leading-relaxed font-medium mb-8">
+                            Direct agent-free room rentals, urgent prescription medicine finder, verified neighborhood artisans, and traveler parcel delivery.
+                        </p>
+                        <div class="space-y-2 text-xs font-bold text-slate-300">
+                            <p class="flex items-center gap-2"><span class="text-blue-400 font-black text-sm">✓</span> 0% Agent Viewing Fees (Hostels)</p>
+                            <p class="flex items-center gap-2"><span class="text-blue-400 font-black text-sm">✓</span> Live Pharmacy Prescription Finder</p>
+                            <p class="flex items-center gap-2"><span class="text-blue-400 font-black text-sm">✓</span> Direct WhatsApp Artisan Bookings</p>
+                        </div>
+                    </div>
+                    <button class="w-full mt-8 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black py-4 rounded-2xl text-base shadow-md transition-all tracking-wide cursor-pointer">
+                        Enter Everyday Hub →
+                    </button>
+                </div>
+
+                <!-- PORTAL 2: AGROMART PRO -->
+                <div onclick="selectPortal('agro')" class="glass-card p-6 md:p-8 rounded-[2.5rem] border border-emerald-500/30 shadow-[0_0_30px_rgba(16,185,129,0.1)] hover:border-emerald-400 hover:-translate-y-1 transition-all cursor-pointer flex flex-col justify-between group">
+                    <div>
+                        <div class="w-16 h-16 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-3xl border border-emerald-500/20 mb-6 group-hover:scale-110 transition-transform">
+                            🌾
+                        </div>
+                        <span class="text-[10px] text-emerald-400 uppercase font-black tracking-widest bg-emerald-500/10 px-3.5 py-1.5 rounded-full border border-emerald-500/20 shadow-inner">Agribusiness OS</span>
+                        <h2 class="text-3xl font-black text-white mt-4 mb-3 tracking-tight group-hover:text-emerald-400 transition-colors">Agromart Pro</h2>
+                        <p class="text-slate-400 text-sm leading-relaxed font-medium mb-8">
+                            Direct trade catalog for farmers and food aggregators, commercial farm management, livestock diagnostics, and bulk haulage freight.
+                        </p>
+                        <div class="space-y-2 text-xs font-bold text-slate-300">
+                            <p class="flex items-center gap-2"><span class="text-emerald-400 font-black text-sm">✓</span> Wholesale Produce Marketplace & RFQs</p>
+                            <p class="flex items-center gap-2"><span class="text-emerald-400 font-black text-sm">✓</span> AgriDoctor AI Pathology Scanner</p>
+                            <p class="flex items-center gap-2"><span class="text-emerald-400 font-black text-sm">✓</span> Haulage Pool & Feed Formulation</p>
+                        </div>
+                    </div>
+                    <button class="w-full mt-8 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-4 rounded-2xl text-base shadow-md transition-all tracking-wide cursor-pointer">
+                        Enter Agromart Pro →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- THE EVERYDAY HUB VIEW -->
         <div id="view-everyday-hub" class="fade-in hidden space-y-12 relative z-30">
             <!-- Hero / Action Center -->
             <div class="glass-card p-10 md:p-14 rounded-[3rem] border border-blue-500/20 text-center relative overflow-hidden">
@@ -496,9 +629,7 @@
                     <!-- Dynamic everyday cards will be injected by JavaScript -->
                 </div>
             </div>
-        </div>
-
-        <!-- HOME VIEW (AGROMART PRO FRONT DOOR) -->
+        </div><!-- HOME VIEW (AGROMART PRO FRONT DOOR) -->
         <div id="view-home" class="fade-in hidden space-y-16 relative z-40">
             <div class="text-center py-24 px-4 glass-card rounded-[3rem] shadow-2xl relative overflow-hidden group border border-emerald-500/20">
                 <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none group-hover:opacity-10 transition-opacity"></div>
@@ -546,7 +677,209 @@
                         <button onclick="switchMarketplaceTab('rfqs')" id="btn-tab-rfqs" class="px-8 py-3.5 rounded-xl font-black text-sm transition-all text-slate-400 hover:text-white flex items-center gap-1.5 cursor-pointer">📢 Buyer Tenders (RFQs)</button>
                     </div>
                 </div>
-            </div><!-- FARM MANAGER VIEW -->
+            </div>
+
+            <!-- Home Screen Extenstions (RFQs, Trending, Categories, News) -->
+            <div id="home-rfq-container" class="hidden relative z-40">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
+                    <div>
+                        <h3 class="text-3xl font-black text-white tracking-tight flex items-center gap-3">📢 Commercial Buyer Tenders</h3>
+                        <p class="text-sm text-slate-400 mt-1 font-medium">Fulfill bulk orders directly from aggregators and hotels.</p>
+                    </div>
+                    <button onclick="openRfqModal()" class="bg-blue-600 hover:bg-blue-500 text-white font-black text-sm px-8 py-4 rounded-2xl transition-all shadow-[0_0_15px_rgba(37,99,235,0.4)] flex items-center gap-2 shrink-0 hover:-translate-y-0.5 tracking-wide cursor-pointer">+ Post Purchase Tender</button>
+                </div>
+                <div id="rfq-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
+            </div>
+
+            <div id="home-ads-container" class="relative z-40">
+                <div class="mt-16">
+                    <div class="flex items-center justify-between mb-8">
+                        <h3 class="text-3xl font-black text-white tracking-tight flex items-center gap-3">🔥 Trending Nationwide</h3>
+                        <button onclick="navigate('marketplace')" class="text-xs font-black text-emerald-400 hover:text-emerald-300 tracking-widest uppercase bg-emerald-500/10 px-5 py-2.5 rounded-xl transition-colors border border-emerald-500/20 shadow-inner cursor-pointer">View All →</button>
+                    </div>
+                    <div id="trending-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+                </div>
+
+                <div class="mt-20">
+                    <div class="flex items-center justify-between mb-8">
+                        <h3 class="text-3xl font-black text-white tracking-tight">Browse Categories</h3>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-5 gap-6">
+                        <div onclick="executeCategory('Poultry')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
+                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('poultry.jfif.jfif');"></div>
+                            <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400">Live Poultry</p>
+                        </div>
+                        <div onclick="executeCategory('Chicks')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
+                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('chicks.jfif');"></div>
+                            <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400 leading-tight">Day-old chicks</p>
+                        </div>
+                        <div onclick="executeCategory('Eggs')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
+                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Chicken_egg_2009-06-04.jpg/500px-Chicken_egg_2009-06-04.jpg');"></div>
+                            <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400">Fresh Eggs</p>
+                        </div>
+                        <div onclick="executeCategory('Meat')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
+                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('meat.jfif.jfif');"></div>
+                            <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400">Dressed Meat</p>
+                        </div>
+                        <div onclick="executeCategory('Vegetables/Fruits')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
+                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Marketvegetables.jpg/500px-Marketvegetables.jpg');"></div>
+                            <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400">Vegetables / Fruits</p>
+                        </div>
+                        <div onclick="executeCategory('Fishes')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
+                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('fishes.jfif');"></div>
+                            <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400 leading-tight">Fishes</p>
+                        </div>
+                        <div onclick="executeCategory('Livestock')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
+                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('livestock.jfif.jfif');"></div>
+                            <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400">Livestock</p>
+                        </div>
+                        <div onclick="executeCategory('Machinery')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
+                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('machinery.jfif.jfif');"></div>
+                            <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400">Machinery</p>
+                        </div>
+                        <div onclick="executeCategory('Pets')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
+                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('pets.jfif');"></div>
+                            <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400">Pets</p>
+                        </div>
+                        <div onclick="executeCategory('Vaccines & Feed')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
+                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('vaccines%20%26%20feed.jfif');"></div>
+                            <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400 leading-tight">Vaccines & Feed</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-24">
+                    <div class="flex items-center justify-between mb-8">
+                        <h3 class="text-3xl font-black text-white tracking-tight flex items-center gap-3">📰 Agri Newsroom & Policy</h3>
+                        <span class="text-[10px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-3 py-1.5 rounded-full uppercase font-black tracking-widest shadow-inner">Live Updates</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="newsroom-grid"></div>
+                </div>
+            </div>
+
+            <div class="mt-24 glass-card p-12 md:p-16 rounded-[3rem] relative overflow-hidden border border-emerald-500/20 bg-gradient-to-br from-[#020617]/80 to-emerald-950/30 relative z-40">
+                <div class="absolute top-0 right-0 w-[40vw] h-[40vw] bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none"></div>
+                <div class="text-center relative z-10">
+                    <span class="text-6xl mb-6 block animate-float">🤝</span>
+                    <h2 class="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">Partner With Us & Fuel the Future</h2>
+                    <p class="text-slate-300 text-lg max-w-3xl mx-auto leading-relaxed mb-10 font-medium">
+                        AgromartDirect is on a mission to completely digitize the agricultural supply chain in Ghana. By eliminating the middleman, we are increasing farmer profits and bringing cheaper, fresher food to consumers nationwide. 
+                    </p>
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-5">
+                        <a href="mailto:agriconnect886@gmail.com" class="glass-card hover:bg-white/5 text-white font-black py-4.5 px-8 rounded-2xl transition-all border border-white/10 flex items-center justify-center gap-3 shadow-lg hover:-translate-y-0.5 text-sm tracking-wide w-full md:w-auto cursor-pointer">✉️ agriconnect886@gmail.com</a>
+                        <a href="https://wa.me/233245641480" target="_blank" class="bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-[#020617] font-black py-4.5 px-8 rounded-2xl transition-all border border-[#25D366]/30 flex items-center justify-center gap-3 shadow-[0_0_15px_rgba(37,211,102,0.15)] hover:shadow-[0_0_25px_rgba(37,211,102,0.4)] hover:-translate-y-0.5 text-sm tracking-wide w-full md:w-auto cursor-pointer">📞 +233 245 641 480</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FARMER'S LOUNGE (COMMUNITY FEED) VIEW -->
+        <div id="view-community" class="fade-in hidden max-w-5xl mx-auto space-y-8 mt-8 relative z-30">
+            <div class="glass-card p-10 md:p-12 rounded-[3rem] border border-emerald-500/30 relative overflow-hidden shadow-[0_0_40px_rgba(16,185,129,0.15)] flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="absolute top-[-50px] right-[-50px] w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
+                <div class="relative z-10 text-center md:text-left">
+                    <h2 class="text-4xl font-black text-white flex items-center justify-center md:justify-start gap-4 tracking-tight">🗣️ The Farmer's Lounge</h2>
+                    <p class="text-slate-400 text-base mt-3 font-medium max-w-2xl">Join the largest digital agribusiness community in Ghana. Ask questions, share harvest success, and get real-time pest alerts.</p>
+                </div>
+                <button onclick="openCommunityPostModal()" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black px-10 py-5 rounded-2xl shadow-[0_0_20px_rgba(16,185,129,0.4)] transition-all shrink-0 hover:-translate-y-1 tracking-wide relative z-10 w-full md:w-auto text-lg cursor-pointer">
+                    + New Post
+                </button>
+            </div>
+
+            <!-- Feed Filters -->
+            <div class="flex gap-4 overflow-x-auto pb-4 hide-scrollbar scroll-touch relative z-40">
+                <button onclick="filterCommunity('All')" id="btn-comm-all" class="bg-emerald-600 text-white px-8 py-3.5 rounded-2xl font-black text-sm shadow-[0_0_15px_rgba(16,185,129,0.4)] shrink-0 transition-colors border border-transparent cursor-pointer">🌍 All Posts</button>
+                <button onclick="filterCommunity('Alert')" id="btn-comm-alert" class="bg-[#0f172a]/80 hover:bg-[#1e293b] text-rose-400 border border-slate-700/80 px-8 py-3.5 rounded-2xl font-black text-sm transition-colors shrink-0 shadow-inner cursor-pointer">🚨 Pest Alerts</button>
+                <button onclick="filterCommunity('Question')" id="btn-comm-question" class="bg-[#0f172a]/80 hover:bg-[#1e293b] text-blue-400 border border-slate-700/80 px-8 py-3.5 rounded-2xl font-black text-sm transition-colors shrink-0 shadow-inner cursor-pointer">❓ Questions</button>
+                <button onclick="filterCommunity('Success')" id="btn-comm-success" class="bg-[#0f172a]/80 hover:bg-[#1e293b] text-amber-400 border border-slate-700/80 px-8 py-3.5 rounded-2xl font-black text-sm transition-colors shrink-0 shadow-inner cursor-pointer">🏆 Success</button>
+            </div>
+
+            <!-- The Feed -->
+            <div id="community-feed" class="space-y-6 relative z-40">
+                <!-- Posts injected by JavaScript -->
+            </div>
+        </div><!-- MARKETPLACE VIEW -->
+        <div id="view-marketplace" class="fade-in hidden space-y-8 relative z-30">
+            <div class="flex flex-col md:flex-row md:items-center justify-between glass-card p-6 md:p-8 rounded-[2.5rem] gap-5 shadow-lg">
+                <div class="flex items-center gap-5">
+                    <h2 class="text-3xl font-black text-white tracking-tight" id="market-title">Market Catalog</h2>
+                    <div class="bg-[#020617]/60 p-2 rounded-2xl inline-flex border border-slate-700/50 shadow-inner">
+                        <button onclick="setMarketplaceMode('ads')" id="mode-ads-btn" class="px-5 py-2 rounded-xl text-sm font-black bg-emerald-600 text-white transition-colors shadow-md cursor-pointer">Ads</button>
+                        <button onclick="setMarketplaceMode('rfqs')" id="mode-rfqs-btn" class="px-5 py-2 rounded-xl text-sm font-black text-slate-400 hover:text-white transition-colors cursor-pointer">Tenders</button>
+                    </div>
+                </div>
+                <div class="flex gap-4 flex-wrap items-center relative z-40">
+                    <select id="market-region-filter" onchange="executeFilters()" class="bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-6 py-4 text-sm font-bold text-white outline-none focus:border-emerald-500 cursor-pointer shadow-inner transition-colors">
+                        <option value="All Regions">All Regions (Ghana)</option>
+                        <option value="Ahafo">Ahafo Region</option>
+                        <option value="Ashanti">Ashanti Region</option>
+                        <option value="Bono">Bono Region</option>
+                        <option value="Bono East">Bono East Region</option>
+                        <option value="Central">Central Region</option>
+                        <option value="Eastern">Eastern Region</option>
+                        <option value="Greater Accra">Greater Accra Region</option>
+                        <option value="North East">North East Region</option>
+                        <option value="Northern">Northern Region</option>
+                        <option value="Oti">Oti Region</option>
+                        <option value="Savannah">Savannah Region</option>
+                        <option value="Upper East">Upper East Region</option>
+                        <option value="Upper West">Upper West Region</option>
+                        <option value="Volta">Volta Region</option>
+                        <option value="Western">Western Region</option>
+                        <option value="Western North">Western North Region</option>
+                    </select>
+                    <select id="filter-sort" onchange="executeFilters()" class="bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-6 py-4 text-sm font-bold text-white outline-none focus:border-emerald-500 cursor-pointer shadow-inner transition-colors">
+                        <option value="newest">Newest First</option>
+                        <option value="price_asc">Price: Low to High</option>
+                        <option value="price_desc">Price: High to Low</option>
+                    </select>
+                    <button onclick="navigate('home')" class="text-sm font-black tracking-widest uppercase text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-6 py-4 rounded-2xl hover:bg-emerald-500/20 transition-colors shadow-inner cursor-pointer">← Back</button>
+                </div>
+            </div>
+            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 relative z-40"></div>
+        </div>
+
+        <!-- AGRI TRAINER VIEW -->
+        <div id="view-trainer" class="fade-in hidden space-y-8 relative z-30">
+            <div class="text-center mb-14 relative z-40">
+                <div class="w-24 h-24 bg-purple-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto mb-8 border border-purple-500/20 shadow-[0_0_40px_rgba(168,85,247,0.15)]">📚</div>
+                <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight">Agri Trainer Hub</h2>
+                <p class="text-slate-400 text-lg max-w-2xl mx-auto mt-4 font-medium">Select a category to view detailed, step-by-step guides on commercial farming.</p>
+            </div>
+            
+            <div id="trainer-categories" class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto relative z-40">
+                <div onclick="showTrainerSubCategory('crops')" class="glass-card p-12 md:p-16 rounded-[3rem] cursor-pointer text-center group border border-emerald-500/20 shadow-[0_0_30px_rgba(16,185,129,0.05)] hover:shadow-[0_0_40px_rgba(16,185,129,0.15)] hover:-translate-y-2 transition-all">
+                    <div class="text-8xl md:text-9xl mb-10 group-hover:scale-110 transition-transform duration-500 drop-shadow-xl">🌾</div>
+                    <h3 class="text-3xl md:text-4xl font-black text-white mb-3 group-hover:text-emerald-400 transition-colors tracking-tight">Learn to Grow Crops</h3>
+                </div>
+                <div onclick="showTrainerSubCategory('animals')" class="glass-card p-12 md:p-16 rounded-[3rem] cursor-pointer text-center group border border-blue-500/20 shadow-[0_0_30px_rgba(59,130,246,0.05)] hover:shadow-[0_0_40px_rgba(59,130,246,0.15)] hover:-translate-y-2 transition-all">
+                    <div class="text-8xl md:text-9xl mb-10 group-hover:scale-110 transition-transform duration-500 drop-shadow-xl">🐔</div>
+                    <h3 class="text-3xl md:text-4xl font-black text-white mb-3 group-hover:text-blue-400 transition-colors tracking-tight">Learn to Raise Animals</h3>
+                </div>
+            </div>
+
+            <div id="trainer-items" class="hidden relative z-40">
+                <button onclick="resetTrainer()" class="text-emerald-400 text-sm font-black mb-10 hover:text-emerald-300 transition-colors flex items-center gap-2 bg-emerald-500/10 px-6 py-3 rounded-2xl border border-emerald-500/20 w-fit tracking-wide shadow-inner cursor-pointer">← Back to Categories</button>
+                <div id="trainer-items-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
+            </div>
+
+            <div id="trainer-guide" class="hidden glass-card p-10 md:p-16 rounded-[3rem] border border-emerald-500/30 shadow-[0_0_50px_rgba(0,0,0,0.4)] relative overflow-hidden z-40">
+                <div class="absolute top-0 right-0 w-[40vw] h-[40vw] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+                <button onclick="document.getElementById('trainer-guide').classList.add('hidden'); document.getElementById('trainer-items').classList.remove('hidden');" class="text-emerald-400 text-sm font-black mb-12 hover:text-emerald-300 transition-colors relative z-10 flex items-center gap-2 bg-emerald-500/10 px-6 py-3 rounded-2xl border border-emerald-500/20 w-fit shadow-inner cursor-pointer">← Back to Selection</button>
+                
+                <div class="flex flex-col md:flex-row items-start md:items-center gap-10 mb-12 relative z-10 border-b border-white/10 pb-12">
+                    <div id="guide-icon" class="text-8xl glass-card p-8 rounded-[3rem] shadow-inner border border-white/5"></div>
+                    <div>
+                        <h2 id="guide-title" class="text-5xl md:text-6xl font-black text-white tracking-tight mb-4"></h2>
+                        <p id="guide-intro" class="text-emerald-400 font-bold tracking-wide text-xl"></p>
+                    </div>
+                </div>
+                
+                <div id="guide-content" class="guide-content relative z-10 max-w-4xl text-lg md:text-xl"></div>
+            </div>
+        </div>
+
+        <!-- FARM MANAGER VIEW -->
         <div id="view-farm-manager" class="fade-in hidden space-y-8 relative z-30">
             <div class="flex flex-col md:flex-row md:items-center justify-between glass-card p-10 rounded-[3rem] border border-blue-500/30 gap-8 shadow-[0_0_40px_rgba(59,130,246,0.15)] relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
@@ -570,9 +903,7 @@
                 <p class="text-slate-400 text-lg max-w-3xl mx-auto font-medium">Live regional price indexes and arbitrage tracking. See where it's cheapest to buy and most profitable to sell based on real-time platform data.</p>
             </div>
             <div id="intel-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 relative z-40"></div>
-        </div>
-
-        <!-- FEED CALCULATOR VIEW -->
+        </div><!-- FEED CALCULATOR VIEW -->
         <div id="view-calculator" class="fade-in hidden space-y-8 relative z-30">
             <div class="text-center space-y-4 mb-14 relative z-40">
                 <div class="w-24 h-24 bg-teal-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-teal-500/20 shadow-[0_0_40px_rgba(20,184,166,0.15)] mb-8">🧮</div>
@@ -662,7 +993,9 @@
                 <p class="text-slate-400 text-lg max-w-3xl mx-auto font-medium">Our automated system scans MoFA, USAID, and NGO portals daily to bring you the latest funding opportunities and loans.</p>
             </div>
             <div id="grants-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-40"></div>
-        </div><!-- AGRIDOCTOR AI SCANNER VIEW -->
+        </div>
+
+        <!-- AGRIDOCTOR AI SCANNER VIEW -->
         <div id="view-agridoctor" class="fade-in hidden max-w-5xl mx-auto mt-6 space-y-8 relative z-30">
             <div class="text-center space-y-4 mb-14 relative z-40">
                 <div class="w-24 h-24 bg-rose-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-rose-500/20 shadow-[0_0_40px_rgba(244,63,94,0.15)] mb-8">🩺</div>
@@ -813,9 +1146,7 @@
                     <button id="submit-ad-btn" onclick="submitAd()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-6 rounded-[2rem] text-lg transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:shadow-[0_0_40px_rgba(16,185,129,0.6)] hover:-translate-y-1 tracking-wide cursor-pointer">🚀 Submit Ad For Review</button>
                 </div>
             </div>
-        </div>
-
-        <!-- DASHBOARD VIEW -->
+        </div><!-- DASHBOARD VIEW -->
         <div id="view-dashboard" class="fade-in hidden max-w-6xl mx-auto mt-8 space-y-10 relative z-30">
             <div class="glass-card p-12 md:p-16 rounded-[3rem] relative overflow-hidden flex flex-col md:flex-row items-center gap-12 shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-emerald-500/30">
                 <div class="absolute top-[-80px] right-[-80px] w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none"></div>
@@ -859,7 +1190,9 @@
                         📢 Post Buyer Tender
                     </button>
                 </div>
-            </div><div class="grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-40">
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-40">
                 <div>
                     <div class="flex items-center justify-between mb-6 glass-card p-8 rounded-[2.5rem] border border-white/5 shadow-md">
                         <h2 class="text-3xl font-black text-white tracking-tight">My Ads</h2>
@@ -944,71 +1277,7 @@
             </div>
         </div>
 
-        <!-- RENTALS VIEW -->
-        <div id="view-rentals" class="fade-in hidden space-y-8 relative z-30">
-            <div class="flex flex-col md:flex-row md:items-center justify-between glass-card p-10 rounded-[3rem] border border-amber-500/30 gap-8 shadow-[0_0_40px_rgba(245,158,11,0.15)] relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-80 h-80 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none"></div>
-                <div class="relative z-10">
-                    <h2 class="text-4xl font-black text-white flex items-center gap-4 tracking-tight">🚜 Heavy Equipment Rentals</h2>
-                    <p class="text-base text-slate-400 mt-3 font-medium max-w-2xl">Rent idle tillers, generators, threshers, and pumps locally with escrow-backed deposits.</p>
-                </div>
-                <button onclick="openRentalPostModal()" class="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-[#020617] text-sm font-black px-10 py-5 rounded-2xl shadow-[0_0_20px_rgba(245,158,11,0.4)] transition-all whitespace-nowrap hover:-translate-y-1 tracking-wide relative z-10 cursor-pointer">
-                    + List Your Equipment
-                </button>
-            </div>
-            <div id="rentals-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 relative z-40"></div>
-        </div>
-
-        <!-- ECO-LOOP LOGISTICS VIEW -->
-        <div id="view-waste" class="fade-in hidden space-y-8 relative z-30">
-            <div class="text-center space-y-4 mb-14 relative z-40">
-                <div class="w-24 h-24 bg-emerald-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-emerald-500/20 shadow-[0_0_40px_rgba(16,185,129,0.15)] mb-8">♻️</div>
-                <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight">Eco-Loop Logistics</h2>
-                <p class="text-slate-400 text-lg max-w-3xl mx-auto font-medium">Monetize commercial waste and agricultural by-products. Request bulk collection for used cooking oil, spent grain, cocoa pods, and biomass.</p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto relative z-40">
-                <div class="glass-card p-12 md:p-16 rounded-[3rem] border border-emerald-500/30 shadow-[0_0_50px_rgba(16,185,129,0.15)] space-y-8">
-                    <h3 class="text-3xl font-black text-emerald-400 mb-6 tracking-tight">Request Reverse Pickup</h3>
-                    <div>
-                        <label class="text-sm text-slate-400 font-black uppercase tracking-widest">Material Type</label>
-                        <select id="waste-type" class="w-full bg-[#0f172a] border border-slate-700 rounded-[2rem] px-6 py-5 text-base font-medium text-white mt-3 shadow-inner focus:border-emerald-500 outline-none transition-colors cursor-pointer">
-                            <option value="Used Cooking Oil (UCO)">Used Cooking Oil (UCO)</option>
-                            <option value="Spent Brewer's Grain">Spent Brewer's Grain</option>
-                            <option value="Cocoa Pod Husks / Biomass">Cocoa Pod Husks / Biomass</option>
-                            <option value="Cassava Peel Pellets">Cassava Peel Pellets</option>
-                            <option value="Corrugated Cardboard Bales">Corrugated Cardboard Bales</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-sm text-slate-400 font-black uppercase tracking-widest">Estimated Volume / Weight</label>
-                        <input type="text" id="waste-qty" placeholder="e.g. 5 Drums (1000L) or 3 Tons" class="w-full bg-[#020617]/80 border border-slate-700 rounded-[2rem] px-6 py-5 text-base font-medium text-white mt-3 shadow-inner focus:border-emerald-500 outline-none transition-colors cursor-text">
-                    </div>
-                    <div>
-                        <label class="text-sm text-slate-400 font-black uppercase tracking-widest">Pickup Location & Business Name</label>
-                        <input type="text" id="waste-loc" placeholder="e.g. Papa's Kitchen, Spintex Road, Accra" class="w-full bg-[#020617]/80 border border-slate-700 rounded-[2rem] px-6 py-5 text-base font-medium text-white mt-3 shadow-inner focus:border-emerald-500 outline-none transition-colors cursor-text">
-                    </div>
-                    <div>
-                        <label class="text-sm text-slate-400 font-black uppercase tracking-widest">Dispatch Contact Phone</label>
-                        <input type="tel" id="waste-phone" placeholder="e.g. 0244123456" class="w-full bg-[#020617]/80 border border-slate-700 rounded-[2rem] px-6 py-5 text-base font-medium text-white mt-3 shadow-inner focus:border-emerald-500 outline-none transition-colors cursor-text">
-                    </div>
-                    <button onclick="submitWasteRequest()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-6 rounded-[2rem] text-lg transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:shadow-[0_0_40px_rgba(16,185,129,0.6)] hover:-translate-y-1 tracking-wide mt-6 cursor-pointer">
-                        Schedule Collector Dispatch 🚚
-                    </button>
-                </div>
-
-                <div class="glass-card p-12 md:p-16 rounded-[3rem] border border-white/5 flex flex-col justify-between shadow-2xl bg-gradient-to-br from-[#020617]/50 to-slate-900/50">
-                    <div>
-                        <h3 class="text-3xl font-black text-white mb-4 tracking-tight">Active Commercial Pickups</h3>
-                        <p class="text-base text-slate-400 mb-8 font-medium">Live queue of commercial waste routes available for registered drivers and aggregators.</p>
-                        <div id="waste-queue" class="space-y-5 max-h-[500px] overflow-y-auto pr-4 scroll-touch"></div>
-                    </div>
-                    <div class="p-8 rounded-3xl bg-[#020617]/80 border border-slate-700/80 text-base text-slate-400 mt-10 shadow-inner font-medium">
-                        💡 <strong class="text-slate-200">Refinery Arbitrage Guarantee:</strong> All processed materials are off-taken directly by vetted industrial recyclers and feed processing hubs.
-                    </div>
-                </div>
-            </div>
-        </div><!-- FULL-PAGE SELLER STOREFRONT VIEW -->
+        <!-- FULL-PAGE SELLER STOREFRONT VIEW -->
         <div id="view-seller-store" class="fade-in hidden space-y-8 max-w-6xl mx-auto mt-6 relative z-30">
             <button onclick="navigate('marketplace')" class="text-xs font-black tracking-widest uppercase text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-6 py-3.5 rounded-xl hover:bg-emerald-500/20 transition-colors mb-3 inline-flex items-center gap-2 shadow-inner cursor-pointer relative z-40">
                 ← Back to Market
@@ -1144,7 +1413,9 @@
                     <p class="text-sm text-slate-400 text-center mt-10 font-medium">Remember your password? <button onclick="toggleAuthBox('login')" class="text-emerald-400 font-black hover:text-emerald-300 transition-colors cursor-pointer">Back to Login</button></p>
                 </div>
             </div>
-        </div><!-- PRICING VIEW -->
+        </div>
+
+        <!-- PRICING VIEW -->
         <div id="view-pricing" class="fade-in hidden max-w-7xl mx-auto mt-16 space-y-10 relative z-30">
             <div class="text-center space-y-5 mb-16 relative z-40">
                 <h2 class="text-5xl md:text-7xl font-black text-white tracking-tight">Boost Your Sales</h2>
@@ -1240,1154 +1511,372 @@
             </div>
             <p class="text-sm text-slate-600 font-bold tracking-wide text-center md:text-right leading-relaxed">© 2026 AgromartDirect Ghana.<br>All rights reserved.</p>
         </div>
-    </footer><!-- ========================================== -->
-    <!-- JAVASCRIPT LOGIC                           -->
-    <!-- ========================================== -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => { 
-                navigator.serviceWorker.register('/sw.js').catch(err => {
-                    console.log("Service worker registration failed", err);
-                }); 
-            });
-        }
-
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            const installBtn = document.getElementById('pwa-install-btn');
-            if (installBtn) {
-                installBtn.classList.remove('hidden');
-            }
-        });
-
-        function triggerPwaInstall() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        showToast("App installed successfully! 📱");
-                        const installBtn = document.getElementById('pwa-install-btn');
-                        if (installBtn) {
-                            installBtn.classList.add('hidden');
-                        }
-                    }
-                    deferredPrompt = null;
-                });
-            }
-        }
-
-        // CONNECTED TO RENDER BACKEND
-        const API_URL = "https://agri-connect-api-mu49.onrender.com";
-        const PAYSTACK_PUBLIC_KEY = "pk_live_330a243539cdc3bf38ba0808ae8156d620ad03ed"; 
-        const GOOGLE_CLIENT_ID = "235464348393-sovqvjql532r4f480ngva5287rupkjma.apps.googleusercontent.com"; 
-
-        let agriToken = localStorage.getItem("agri_token") || "";
-        let pendingAction = null;
-        let uploadedImages = [];
-        let allLoadedProducts = [];
-        let allLoadedRfqs = [];
-        let currentUserEmail = "";
-        let myLoadedAds = [];
-        
-        let currentCategoryState = "";
-        let currentSearchState = "";
-        let currentRegionState = "All Regions";
-        let currentMarketMode = "ads";
-        
-        let currentOrderPhone = "";
-        let currentOrderName = "";
-        let currentOrderBasePrice = 0;
-        let currentOrderUnit = "";
-        let currentOrderSellerLoc = "";
-        let currentOrderTabState = "direct";
-        let currentSellerForReview = ""; 
-        
-        let pendingAdPayload = null;
-
-        // --- PLATFORM TEST DATA FALLBACKS ---
-        const dummyAgromartAds = [
-            "Poultry", "Chicks", "Eggs", "Meat", "Vegetables/Fruits", "Fishes", "Livestock", "Machinery", "Pets", "Vaccines & Feed"
-        ].map((cat, i) => ({
-            id: 900 + i,
-            product_name: `[TEST AD] Sample ${cat}`,
-            category: cat,
-            base_price_ghs: (100 + (i * 10)).toString(),
-            unit: "unit",
-            neighborhood: "Test Region, Accra",
-            image_data: null,
-            seller_name: "Test Farmer",
-            phone_number: "0000000000",
-            status: "approved",
-            boost_tier: i === 0 ? "premium" : "standard",
-            description: "This is a test advertisement to demonstrate platform layout. Please do not call this number."
-        }));
-
-        const dummyRfqs = [
-            { 
-                id: 991, 
-                item_needed: "[TEST AD] Bulk Supply Tender", 
-                category: "Vegetables/Fruits", 
-                quantity: "50 Units", 
-                target_budget_ghs: "500", 
-                delivery_destination: "Test Location", 
-                description: "This is a test tender. Do not call.", 
-                buyer_phone: "0000000000", 
-                created_at: "Today" 
-            }
-        ];
-
-        const dummyHaulage = [
-            { 
-                id: 992, 
-                route: "[TEST AD] Accra to Kumasi", 
-                truck: "10-Ton Truck", 
-                capacity: "Empty", 
-                price: "500", 
-                driver_name: "Test Driver", 
-                driver_phone: "0000000000", 
-                date: "Tomorrow" 
-            }
-        ];
-
-        const dummyRentals = [
-            { 
-                id: 993, 
-                title: "[TEST AD] Heavy Tractor", 
-                equipment_type: "Machinery", 
-                owner_name: "Test Owner", 
-                owner_phone: "0000000000", 
-                daily_rate_ghs: "200", 
-                security_deposit_ghs: "500", 
-                location: "Test Area" 
-            }
-        ];
-
-        const dummyWaste = [
-            { 
-                id: 994, 
-                waste_type: "[TEST AD] Used Cooking Oil", 
-                quantity: "5 Drums", 
-                address: "Test Kitchen, Accra", 
-                contact_phone: "0000000000", 
-                status: "Pending" 
-            }
-        ];
-
-        // --- THE EVERYDAY HUB DATA & LOGIC ---
-        const everydayData = {
-            rooms: [
-                { title: "[TEST AD] Self-Contained Chamber & Hall", loc: "Madina Social Welfare, Accra", price: "GH₵ 850 / month", tag: "No Agent Fee", phone: "0244112233", details: "Walled compound with separate water meter and prepaid electricity. Directly from landlord." },
-                { title: "[TEST AD] Standard 2-in-a-Room Student Hostel", loc: "Ayeduase Gate, KNUST, Kumasi", price: "GH₵ 3,200 / academic year", tag: "Hostel Management", phone: "0201234567", details: "Includes 24/7 backup power generator, study desks, and private washroom." },
-                { title: "[TEST AD] Single Room Self-Contained", loc: "Haatso Ecomog, Accra", price: "GH₵ 550 / month", tag: "Caretaker Direct", phone: "0559876543", details: "Tiled floor, ceiling fan installed, reliable Ghana Water connection." }
-            ],
-            meds: [
-                { title: "[TEST AD] Ventolin Inhaler (100mcg)", loc: "Requested near Spintex Road, Accra", price: "Urgent Request", tag: "Seeking Stock", phone: "0245001122", details: "Required for an asthma emergency. Any pharmacy nearby with available stock please reach out." },
-                { title: "[TEST AD] Augmentin 625mg Tablets", loc: "Osu / Danquah Circle, Accra", price: "GH₵ 65.00", tag: "In Stock at MedPlus", phone: "0249887766", details: "Original GlaxoSmithKline pack verified in inventory." }
-            ],
-            artisans: [
-                { title: "[TEST AD] Master Pipefitter & Plumber (Kwame)", loc: "Covers Dansoman, Kaneshie & Lapaz", price: "From GH₵ 80 / job", tag: "Verified Pro (4.9⭐)", phone: "0243456789", details: "12 years experience in overhead tank installs, borehole pumping, and emergency leak repairs." },
-                { title: "[TEST AD] Air Conditioner & Fridge Tech (Kofi)", loc: "East Legon & Spintex Area", price: "GH₵ 120 standard service", tag: "Verified Pro (5.0⭐)", phone: "0278112233", details: "Specialist in gas recharging, copper piping, and inverter AC troubleshooting." }
-            ],
-            parcels: [
-                { title: "[TEST AD] Accra ➔ Kumasi (Package Hitch)", loc: "Leaving Circle Station at 2:00 PM Today", price: "GH₵ 40 per small box", tag: "Private Car Commute", phone: "0504443322", details: "Driving private saloon car to Adum, Kumasi. Trunk space available for clean parcels and documents." }
-            ],
-            thrift: [
-                { title: "[TEST AD] Samsung 43-inch Smart Crystal UHD TV", loc: "Tema Community 25", price: "GH₵ 2,400", tag: "Gently Used", phone: "0242223344", details: "10 months old, spotless screen, comes with remote and wall mount bracket." }
-            ]
-        };
-
-        const platformFeatures = [
-            { 
-                icon: "🗣️", 
-                title: "The Farmer's Lounge", 
-                desc: "Join the live feed. Ask questions, share your harvest success, and get instant alerts on pests and diseases nearby.", 
-                color: "from-emerald-900/40 via-[#020617] to-[#020617]", 
-                view: "community" 
-            },
-            { 
-                icon: "🚚", 
-                title: "Haulage Pool", 
-                desc: "Book cheap return-trip truck space or list your empty haulage truck returning from deliveries.", 
-                color: "from-amber-900/40 via-[#020617] to-[#020617]", 
-                view: "haulage" 
-            },
-            { 
-                icon: "🩺", 
-                title: "AgriDoctor AI Scanner", 
-                desc: "Scan diseased crops or sick livestock with your camera for instant organic and chemical treatment plans.", 
-                color: "from-rose-900/40 via-[#020617] to-[#020617]", 
-                view: "agridoctor" 
-            },
-            { 
-                icon: "🚜", 
-                title: "Direct Farmer Market", 
-                desc: "Sell poultry, crops, and livestock directly to buyers nationwide with zero middleman fees.", 
-                color: "from-emerald-900/40 via-[#020617] to-[#020617]", 
-                view: "marketplace" 
-            },
-            { 
-                icon: "🤝", 
-                title: "Smart Deal Room", 
-                desc: "Negotiate prices, split group orders, and secure bulk buys with our integrated deal room.", 
-                color: "from-blue-900/40 via-[#020617] to-[#020617]", 
-                view: "marketplace" 
-            },
-            { 
-                icon: "♻️", 
-                title: "Eco-Loop Logistics", 
-                desc: "Turn farm waste into cash. Request bulk pickups for used oil, cassava peels, and cocoa pods.", 
-                color: "from-teal-900/40 via-[#020617] to-[#020617]", 
-                view: "waste" 
-            },
-            { 
-                icon: "📚", 
-                title: "Agri Trainer Hub", 
-                desc: "Access free, step-by-step commercial farming guides for crops, poultry, and aquaculture.", 
-                color: "from-purple-900/40 via-[#020617] to-[#020617]", 
-                view: "trainer" 
-            }
-        ];
-        
-        let currentSlide = 0;
-
-        function initSlideshow() {
-            const container = document.getElementById('feature-slideshow');
-            if (!container) return;
-            
-            const renderSlide = () => {
-                const slide = platformFeatures[currentSlide];
-                container.innerHTML = `
-                    <div onclick="navigate('${slide.view}')" class="w-full h-full bg-gradient-to-br ${slide.color} flex flex-col md:flex-row items-center justify-center p-10 md:p-14 text-center md:text-left slide-fade cursor-pointer hover:bg-[#0f172a]/50 transition-colors group">
-                        <div class="text-7xl md:text-8xl mb-6 md:mb-0 md:mr-12 filter drop-shadow-[0_0_20px_rgba(255,255,255,0.2)] group-hover:scale-110 transition-transform duration-500">${slide.icon}</div>
-                        <div>
-                            <span class="text-[10px] text-white/50 uppercase font-black tracking-widest mb-2 block">Platform Feature</span>
-                            <h3 class="text-3xl md:text-5xl font-black text-white mb-3 tracking-tight group-hover:text-emerald-400 transition-colors">${slide.title}</h3>
-                            <p class="text-slate-300 text-sm md:text-base max-w-xl leading-relaxed mx-auto md:mx-0 font-medium">${slide.desc}</p>
-                        </div>
-                    </div>
-                `;
-                currentSlide = (currentSlide + 1) % platformFeatures.length;
-            };
-            
-            renderSlide();
-            setInterval(renderSlide, 5000);
-        }
-
-        const fallbackDummyNews = [
-            { 
-                source: "MoFA Update", 
-                date: "Today", 
-                title: "Government Announces Subsidy on NPK Fertilizers for Season", 
-                snippet: "The Ministry of Food and Agriculture has rolled out a new digital tracking system...", 
-                link: "https://mofa.gov.gh/" 
-            },
-            { 
-                source: "COCOBOD", 
-                date: "Yesterday", 
-                title: "Cocoa Farm Gate Price Adjusted Upward to Support Local Growers", 
-                snippet: "In a bid to support local farmers, the guaranteed price per bag has seen an adjustment...", 
-                link: "https://cocobod.gh/" 
-            },
-            { 
-                source: "AgriTech Ghana", 
-                date: "Recent", 
-                title: "New Drought-Resistant Maize Variety Introduced to Northern Region", 
-                snippet: "CSIR researchers have approved the release of a new seed strain capable of surviving dry spells...", 
-                link: "https://www.csir.org.gh/" 
-            }
-        ];
-
-        async function loadAgriNews() {
-            const grid = document.getElementById('newsroom-grid');
-            if (!grid) return;
-            
-            const cachedNews = localStorage.getItem('agri_news_cache');
-            const cacheTime = localStorage.getItem('agri_news_time');
-            const now = new Date().getTime();
-            
-            if (cachedNews && cacheTime && (now - parseInt(cacheTime)) < 24 * 60 * 60 * 1000) {
-                renderNewsData(JSON.parse(cachedNews), grid);
-                return;
-            }
-
-            try {
-                const rssUrl = encodeURIComponent("https://news.google.com/rss/search?q=agriculture+ghana&hl=en-US&gl=US&ceid=US:en");
-                const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`);
-                const data = await res.json();
+    </footer><!-- DASHBOARD VIEW -->
+        <div id="view-dashboard" class="fade-in hidden max-w-6xl mx-auto mt-8 space-y-10 relative z-30">
+            <div class="glass-card p-12 md:p-16 rounded-[3rem] relative overflow-hidden flex flex-col md:flex-row items-center gap-12 shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-emerald-500/30">
+                <div class="absolute top-[-80px] right-[-80px] w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none"></div>
                 
-                if (data.items && data.items.length > 0) {
-                    const formattedNews = data.items.slice(0, 6).map(item => ({
-                        source: item.source || "Agri News",
-                        date: new Date(item.pubDate).toLocaleDateString(),
-                        title: item.title,
-                        snippet: item.description.replace(/(<([^>]+)>)/gi, "").substring(0, 120) + "...",
-                        link: item.link
-                    }));
-                    
-                    localStorage.setItem('agri_news_cache', JSON.stringify(formattedNews));
-                    localStorage.setItem('agri_news_time', now.toString());
-                    
-                    renderNewsData(formattedNews, grid);
-                } else {
-                    renderNewsData(fallbackDummyNews, grid); 
-                }
-            } catch (e) {
-                renderNewsData(fallbackDummyNews, grid); 
-            }
-        }
-
-        function renderNewsData(newsArray, grid) {
-            grid.innerHTML = newsArray.map(n => `
-                <div class="glass-card p-8 rounded-[2.5rem] border border-white/5 hover:border-emerald-500/30 transition-all flex flex-col justify-between group shadow-lg hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] cursor-pointer" onclick="window.open('${n.link}', '_blank')">
-                    <div>
-                        <div class="flex items-center justify-between mb-5">
-                            <span class="text-[9px] bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg font-black uppercase tracking-widest shadow-inner">${n.source.substring(0,20)}</span>
-                            <span class="text-[10px] text-slate-500 font-bold">${n.date}</span>
-                        </div>
-                        <h4 class="text-white font-black text-lg mb-3 group-hover:text-emerald-400 transition-colors leading-tight">${n.title}</h4>
-                        <p class="text-sm text-slate-400 leading-relaxed mb-6 line-clamp-3 font-medium">${n.snippet}</p>
+                <div class="relative w-40 h-40 shrink-0 z-40 group cursor-pointer" onclick="document.getElementById('profile-pic-upload').click()">
+                    <div id="my-profile-avatar" class="w-full h-full bg-slate-800 rounded-[2.5rem] flex items-center justify-center text-6xl border-4 border-slate-700 shadow-2xl overflow-hidden bg-cover bg-center group-hover:border-emerald-500 transition-colors">👨🏽‍🌾</div>
+                    <div class="absolute inset-0 bg-black/70 rounded-[2.5rem] flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
+                        <span class="text-3xl mb-2">📷</span>
+                        <span class="text-[10px] text-white font-black uppercase tracking-widest">Edit Photo</span>
                     </div>
-                    <a href="${n.link}" target="_blank" class="text-xs font-black text-blue-400 hover:text-emerald-400 transition-colors mt-auto block tracking-wide">Read Full Story →</a>
+                    <input type="file" id="profile-pic-upload" accept="image/*" class="hidden" onchange="uploadProfilePicture(event)">
                 </div>
-            `).join('');
-        }
 
-        // --- FARM MANAGER DASHBOARD LOGIC ---
-        function openBatchModal() {
-            if (!agriToken) {
-                showToast("Please sign in to manage farm batches", "error");
-                return navigate('auth');
-            }
-            document.getElementById('batch-modal').classList.remove('hidden');
-            document.getElementById('batch-modal').classList.add('flex');
-        }
-
-        function closeBatchModal() {
-            document.getElementById('batch-modal').classList.add('hidden');
-            document.getElementById('batch-modal').classList.remove('flex');
-        }
-
-        async function createBatch() {
-            const name = document.getElementById('batch-name').value.trim();
-            const category = document.getElementById('batch-cat').value;
-            const quantity = document.getElementById('batch-qty').value;
-            const days = document.getElementById('batch-days').value;
-
-            if (!name || !quantity || !days) {
-                return showToast("Please fill all batch details", "error");
-            }
-
-            try {
-                const res = await fetch(`${API_URL}/api/v1/farm-batches?token=${agriToken}`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ 
-                        identifier: name, 
-                        category: category, 
-                        quantity: parseInt(quantity), 
-                        days_to_harvest: parseInt(days) 
-                    })
-                });
-                
-                if (!res.ok) throw new Error("API not available");
-                
-                showToast("Batch Initialized! 🌱");
-                closeBatchModal();
-                loadFarmBatches();
-            } catch (e) {
-                let localBatches = JSON.parse(localStorage.getItem('local_farm_batches') || '[]');
-                localBatches.push({
-                    id: Date.now(), 
-                    identifier: name, 
-                    category: category, 
-                    quantity: quantity, 
-                    days_to_harvest: days, 
-                    created_at: new Date().toLocaleDateString()
-                });
-                localStorage.setItem('local_farm_batches', JSON.stringify(localBatches));
-                
-                showToast("Batch Initialized locally! 🌱");
-                closeBatchModal();
-                loadFarmBatches();
-            }
-            
-            document.getElementById('batch-name').value = '';
-            document.getElementById('batch-qty').value = '';
-            document.getElementById('batch-days').value = '';
-        }
-
-        async function loadFarmBatches() {
-            const grid = document.getElementById('farm-batches-grid');
-            if (!grid) return;
-            
-            grid.innerHTML = '<div class="col-span-full text-center text-slate-400 py-10">Loading farm batches... ⏳</div>';
-            
-            try {
-                const res = await fetch(`${API_URL}/api/v1/farm-batches?token=${agriToken}`);
-                if (!res.ok) throw new Error("Fallback to local");
-                
-                const batches = await res.json();
-                renderBatches(batches, grid);
-            } catch (e) {
-                let localBatches = JSON.parse(localStorage.getItem('local_farm_batches') || '[]');
-                renderBatches(localBatches, grid);
-            }
-        }
-
-        function renderBatches(batches, grid) {
-            if (!batches || batches.length === 0) {
-                grid.innerHTML = `
-                    <div class="col-span-full glass-card py-16 text-center rounded-[3rem] border border-white/5 shadow-inner">
-                        <p class="text-slate-400 font-medium">No active production batches. Click '+ Start New Batch' to begin.</p>
-                    </div>`;
-                return;
-            }
-            
-            grid.innerHTML = batches.map(b => `
-                <div class="glass-card p-8 rounded-[3rem] border border-blue-500/20 shadow-xl relative overflow-hidden flex flex-col justify-between hover:border-blue-500/40 transition-colors">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-[50px] pointer-events-none"></div>
-                    <div class="relative z-10">
-                        <div class="flex justify-between items-start mb-5">
-                            <span class="bg-blue-500/10 text-blue-400 text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border border-blue-500/20">${b.category}</span>
-                            <span class="text-[10px] text-slate-400 font-bold">Started: ${b.created_at || 'Recently'}</span>
+                <div class="flex-grow text-center md:text-left z-40 w-full">
+                    <div class="flex flex-col md:flex-row md:items-center gap-5 mb-4">
+                        <h2 class="text-5xl font-black text-white tracking-tight" id="my-profile-name">Loading...</h2>
+                        <span id="my-profile-badge" class="hidden bg-emerald-500/10 border border-emerald-500/40 text-emerald-400 text-sm font-black uppercase tracking-wider px-5 py-2 rounded-full items-center gap-2 mx-auto md:mx-0 w-fit shadow-inner">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Verified
+                        </span>
+                    </div>
+                    <div class="text-slate-400 text-base space-y-2 font-medium">
+                        <p>📧 Email: <span id="my-profile-email" class="text-white">...</span></p>
+                        <p>📞 Phone: <span id="my-profile-phone" class="text-white">...</span></p>
+                    </div>
+                    
+                    <div id="my-profile-unverified-box" class="hidden mt-8 bg-rose-500/10 border border-rose-500/30 p-6 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 shadow-inner">
+                        <div class="text-center md:text-left">
+                            <p class="text-base font-black text-rose-400 mb-1">Account Unverified</p>
+                            <p class="text-xs font-medium text-slate-300">Apply for a Verified Seller badge to build buyer trust and unlock priority support.</p>
                         </div>
-                        <h3 class="text-2xl font-black text-white mb-2 tracking-tight">${b.identifier || b.name || 'Unnamed Batch'}</h3>
-                        <p class="text-sm text-slate-400 mb-6 font-medium">Quantity: <strong class="text-slate-200">${b.quantity}</strong></p>
-                        
-                        <div class="bg-[#020617]/60 p-5 rounded-2xl border border-slate-700/50 mb-6 shadow-inner">
-                            <div class="flex justify-between text-xs items-center">
-                                <span class="text-slate-400 font-black uppercase tracking-wider">Est. Harvest In:</span>
-                                <span class="text-2xl font-black text-emerald-400 tracking-tight">${b.days_to_harvest} Days</span>
+                        <button onclick="payForVerification()" class="bg-rose-600 hover:bg-rose-500 text-white text-sm font-black px-8 py-4 rounded-xl shadow-[0_0_20px_rgba(225,29,72,0.4)] transition-all shrink-0 hover:-translate-y-0.5 tracking-wide cursor-pointer">
+                            Verify Now (GH₵ 5)
+                        </button>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-4 shrink-0 z-40 w-full md:w-auto">
+                    <button onclick="navigate('post')" class="w-full md:w-auto bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black px-10 py-5 rounded-2xl text-base transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:-translate-y-1 tracking-wide cursor-pointer">
+                        + Post Seller Ad
+                    </button>
+                    <button onclick="openRfqModal()" class="w-full md:w-auto bg-[#0f172a] hover:bg-slate-800 border border-blue-500/40 text-blue-400 hover:text-blue-300 font-black px-10 py-5 rounded-2xl text-base transition-all shadow-lg hover:-translate-y-1 tracking-wide cursor-pointer">
+                        📢 Post Buyer Tender
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-40">
+                <div>
+                    <div class="flex items-center justify-between mb-6 glass-card p-8 rounded-[2.5rem] border border-white/5 shadow-md">
+                        <h2 class="text-3xl font-black text-white tracking-tight">My Ads</h2>
+                    </div>
+                    <div id="my-ads-list" class="grid grid-cols-1 gap-6"></div>
+                </div>
+                <div>
+                    <div class="flex items-center justify-between mb-6 glass-card p-8 rounded-[2.5rem] border border-blue-500/30 bg-blue-500/5 shadow-md">
+                        <h2 class="text-3xl font-black text-white tracking-tight">My Purchase Tenders</h2>
+                    </div>
+                    <div id="my-tenders-list" class="grid grid-cols-1 gap-6"></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-12 relative z-40">
+                <div>
+                    <div class="flex items-center justify-between mb-6 glass-card p-8 rounded-[2.5rem] border border-amber-500/30 bg-amber-500/5 shadow-md">
+                        <h2 class="text-3xl font-black text-white tracking-tight">My Machinery Rentals</h2>
+                    </div>
+                    <div id="my-rentals-list" class="grid grid-cols-1 gap-6"></div>
+                </div>
+                <div>
+                    <div class="flex items-center justify-between mb-6 glass-card p-8 rounded-[2.5rem] border border-emerald-500/30 bg-emerald-500/5 shadow-md">
+                        <h2 class="text-3xl font-black text-white tracking-tight">My Eco-Loop Pickups</h2>
+                    </div>
+                    <div id="my-waste-list" class="grid grid-cols-1 gap-6"></div>
+                </div>
+            </div>
+
+            <!-- ADMIN PANEL -->
+            <div id="admin-panel" class="hidden mt-20 glass-card p-12 md:p-16 rounded-[3rem] border border-emerald-500/40 shadow-[0_0_60px_rgba(16,185,129,0.15)] bg-slate-900/80 relative overflow-hidden z-40">
+                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-12 border-b border-white/10 pb-8 relative z-10 gap-5">
+                    <div>
+                        <h3 class="text-4xl font-black text-emerald-400 tracking-tight">🛡️ Founder Admin Hub</h3>
+                        <p class="text-base text-slate-400 mt-2 font-medium">Master control overrides for marketplace moderation.</p>
+                    </div>
+                    <span class="text-sm font-black bg-emerald-500/20 text-emerald-400 px-6 py-2.5 rounded-full border border-emerald-500/40 uppercase tracking-widest animate-pulse shadow-[0_0_20px_rgba(16,185,129,0.2)]">Founder Mode</span>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10">
+                    <div>
+                        <div class="mb-12">
+                            <h4 class="text-sm font-black uppercase tracking-widest text-amber-400 mb-5 bg-amber-500/10 inline-block px-4 py-1.5 rounded-lg border border-amber-500/20">⭐ Paid Verifications (GH₵ 5)</h4>
+                            <div id="admin-verifications-list" class="space-y-4"></div>
+                        </div>
+
+                        <div class="pt-8 border-t border-white/10 bg-[#020617]/50 p-8 rounded-3xl shadow-inner">
+                            <label class="block text-sm font-black text-slate-300 mb-4 uppercase tracking-widest">Manual Verification (Override)</label>
+                            <div class="flex flex-col sm:flex-row gap-4">
+                                <input type="email" id="verify-email-input" placeholder="Farmer's Email Address" class="w-full bg-[#0f172a] border border-slate-700 rounded-2xl px-6 py-4 text-base font-medium text-white outline-none focus:border-emerald-500 transition-colors shadow-inner cursor-text">
+                                <button onclick="verifySeller()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-10 py-4 rounded-2xl shrink-0 transition-colors shadow-[0_0_20px_rgba(16,185,129,0.3)] tracking-wide cursor-pointer">Verify</button>
+                            </div>
+                        </div>
+
+                        <div class="pt-8 mt-10 bg-rose-950/20 p-8 rounded-3xl border border-rose-500/20 shadow-inner">
+                            <label class="block text-sm font-black text-rose-400 mb-4 uppercase tracking-widest">Permanent Ban (Revoke Access)</label>
+                            <div class="flex flex-col sm:flex-row gap-4">
+                                <input type="email" id="ban-email-input" placeholder="Farmer's Email Address" class="w-full bg-[#0f172a] border border-slate-700 rounded-2xl px-6 py-4 text-base font-medium text-white outline-none focus:border-rose-500 transition-colors shadow-inner cursor-text">
+                                <button onclick="banSeller()" class="bg-rose-600 hover:bg-rose-500 text-white font-black px-10 py-4 rounded-2xl shrink-0 transition-colors shadow-[0_0_20px_rgba(225,29,72,0.3)] tracking-wide cursor-pointer">Ban</button>
                             </div>
                         </div>
                     </div>
-                    <button onclick="deleteBatch(${b.id})" class="w-full bg-[#0f172a] hover:bg-rose-600 border border-slate-700 hover:border-rose-500 text-slate-300 hover:text-white font-black py-4 rounded-2xl text-sm transition-colors shadow-lg tracking-wide relative z-10 cursor-pointer">End Batch / Harvest</button>
-                </div>
-            `).join('');
-        }
 
-        async function deleteBatch(id) {
-            if (!confirm("Are you sure you want to end/harvest this batch?")) return;
-            
-            try {
-                const res = await fetch(`${API_URL}/api/v1/farm-batches/${id}?token=${agriToken}`, { 
-                    method: 'DELETE' 
-                });
-                
-                if (!res.ok) throw new Error("Fallback");
-                
-                showToast("Batch harvested successfully.");
-                loadFarmBatches();
-            } catch(e) {
-                let localBatches = JSON.parse(localStorage.getItem('local_farm_batches') || '[]');
-                localBatches = localBatches.filter(b => b.id !== id);
-                localStorage.setItem('local_farm_batches', JSON.stringify(localBatches));
-                
-                showToast("Batch harvested locally.");
-                loadFarmBatches();
-            }
-        }
-
-        // --- AGRI TRAINER ENCYCLOPEDIA ---
-        const agriTrainerData = {
-            "crops": [
-                {
-                    "id": "tomato",
-                    "icon": "🍅",
-                    "title": "Tomatoes",
-                    "wikiSearch": "Tomato",
-                    "intro": "High yield, 3-month cycle.",
-                    "guide": "<h3>Nursery & Transplanting</h3><p>Start seeds in trays using sterile soil. Transplant at 3-4 weeks when pencil thick. Space 60cm apart.</p><h3>Maintenance</h3><p>Stake plants to prevent fruit rot. Apply NPK 15-15-15 at flowering. Water deeply but infrequently.</p><h3>Harvest</h3><p>Harvest at 10-12 weeks when pink/red for immediate local markets, or mature green for distant haulage.</p>"
-                },
-                {
-                    "id": "maize",
-                    "icon": "🌽",
-                    "title": "Maize",
-                    "wikiSearch": "Maize",
-                    "intro": "Staple crop, 100 days.",
-                    "guide": "<h3>Planting</h3><p>Plant 2 seeds per hole, 75cm x 40cm spacing. Always use certified, treated seeds to prevent soil pests.</p><h3>Fertilizer</h3><p>Apply basal NPK 2 weeks after planting. Top dress with Urea just before tasseling begins.</p><h3>Harvest</h3><p>Harvest when cobs point downward and husks dry up to ensure low moisture content.</p>"
-                },
-                {
-                    "id": "cassava",
-                    "icon": "🥔",
-                    "title": "Cassava",
-                    "wikiSearch": "Cassava",
-                    "intro": "Drought resistant, 9-12 months.",
-                    "guide": "<h3>Planting</h3><p>Cut healthy stems into 20cm lengths. Plant on ridges at a 45-degree angle.</p><h3>Maintenance</h3><p>Weed regularly during the first 3 months to prevent canopy competition.</p><h3>Harvest</h3><p>Harvest at 9-12 months to prevent woody, unmarketable tubers.</p>"
-                },
-                {
-                    "id": "yam",
-                    "icon": "🍠",
-                    "title": "Yam",
-                    "wikiSearch": "Yam (vegetable)",
-                    "intro": "Tuber crop, requires mounds.",
-                    "guide": "<h3>Planting</h3><p>Plant seed yams or setts on large, well-tilled mounds at the onset of the rains.</p><h3>Staking</h3><p>Stake vines early to maximize sunlight exposure and keep leaves off the ground.</p><h3>Harvest</h3><p>Harvest when vines turn yellow and dry up completely.</p>"
-                },
-                {
-                    "id": "plantain",
-                    "icon": "🍌",
-                    "title": "Plantain",
-                    "wikiSearch": "Plantain",
-                    "intro": "High demand, 10-12 month cycle.",
-                    "guide": "<h3>Planting</h3><p>Plant suckers in holes 30cm deep. Space them 3 meters apart. Ensure good drainage.</p><h3>Maintenance</h3><p>Prune dead leaves regularly. Desucker to leave only 2-3 followers per mat.</p><h3>Harvest</h3><p>Harvest when the fingers are full and starting to show a slight color change.</p>"
-                },
-                {
-                    "id": "pepper",
-                    "icon": "🌶️",
-                    "title": "Chili Pepper",
-                    "wikiSearch": "Chili pepper",
-                    "intro": "Continuous harvest.",
-                    "guide": "<h3>Planting</h3><p>Nurse seeds for 4 weeks. Transplant in the late afternoon. Space 60cm apart.</p><h3>Maintenance</h3><p>Apply high-potassium fertilizer to boost fruiting. Spray neem oil to manage aphids.</p><h3>Harvest</h3><p>Harvest continuously as fruits mature to red or ripe yellow to encourage more flowering.</p>"
-                },
-                {
-                    "id": "cocoa",
-                    "icon": "🍫",
-                    "title": "Cocoa",
-                    "wikiSearch": "Cocoa bean",
-                    "intro": "Major cash crop.",
-                    "guide": "<h3>Planting</h3><p>Plant hybrid seedlings from COCOBOD under temporary shade. Space 3m x 3m.</p><h3>Maintenance</h3><p>Prune to form a well-balanced canopy. Spray approved fungicides for black pod disease.</p><h3>Harvest</h3><p>Harvest ripe yellow/orange pods carefully. Ferment beans for 6-7 days, then sun-dry.</p>"
-                },
-                {
-                    "id": "rice",
-                    "icon": "🌾",
-                    "title": "Rice",
-                    "wikiSearch": "Rice",
-                    "intro": "Swamp/Upland varieties.",
-                    "guide": "<h3>Planting</h3><p>Ensure steady water supply. Seed directly or transplant from nursery.</p><h3>Maintenance</h3><p>Weed regularly. Maintain water levels for swamp varieties.</p><h3>Harvest</h3><p>Harvest when grains are hard and yellow.</p>"
-                },
-                {
-                    "id": "soybean",
-                    "icon": "🌱",
-                    "title": "Soybean",
-                    "wikiSearch": "Soybean",
-                    "intro": "Protein-rich legume.",
-                    "guide": "<h3>Planting</h3><p>Inoculate seeds before planting. Space rows 60cm apart.</p><h3>Maintenance</h3><p>Weed early. Needs good moisture during pod filling.</p><h3>Harvest</h3><p>Harvest when pods turn brown and leaves drop.</p>"
-                },
-                {
-                    "id": "onion",
-                    "icon": "🧅",
-                    "title": "Onion",
-                    "wikiSearch": "Onion",
-                    "intro": "Dry season cultivation.",
-                    "guide": "<h3>Nursery</h3><p>Requires well-drained soils. Transplant at pencil thickness.</p><h3>Maintenance</h3><p>Keep weed-free. Requires regular, light watering.</p><h3>Harvest</h3><p>Harvest when tops fall over and dry.</p>"
-                }
-            ],
-            "animals": [
-                {
-                    "id": "broiler",
-                    "icon": "🐔",
-                    "title": "Broiler Chickens",
-                    "wikiSearch": "Broiler",
-                    "intro": "6-week meat birds.",
-                    "guide": "<h3>Brooding</h3><p>Preheat brooder to 32°C. Feed Starter ad-libitum. Block drafts entirely.</p><h3>Growth</h3><p>Expand space weekly. Vaccinate for Gumboro (Day 10) and Newcastle (Day 14).</p><h3>Finisher</h3><p>Feed Finisher mash. Ensure excellent ventilation. Harvest at 2.5kg around week 6.</p>"
-                },
-                {
-                    "id": "layer",
-                    "icon": "🥚",
-                    "title": "Layer Chickens",
-                    "wikiSearch": "Poultry farming",
-                    "intro": "Egg production.",
-                    "guide": "<h3>Brooding</h3><p>Careful temperature control. Provide chick mash. Debeak at 10 days to prevent cannibalism.</p><h3>Pullet Stage</h3><p>Switch to grower mash. Strictly adhere to the vaccination schedule.</p><h3>Production</h3><p>At 18 weeks, switch to Layer Mash. Provide 14-16 hours of light daily.</p>"
-                },
-                {
-                    "id": "catfish",
-                    "icon": "🐟",
-                    "title": "Catfish",
-                    "wikiSearch": "Catfish",
-                    "intro": "Hardy freshwater fish.",
-                    "guide": "<h3>Water Quality</h3><p>Ensure pH 6.5-8.0. Change water regularly to prevent fatal ammonia spikes.</p><h3>Feeding</h3><p>Use high-protein floating pellets. Feed twice daily until fish stop surfacing.</p><h3>Sorting</h3><p>Sort fish by size monthly to prevent larger fish from cannibalizing smaller ones.</p>"
-                },
-                {
-                    "id": "goat",
-                    "icon": "🐐",
-                    "title": "Goats",
-                    "wikiSearch": "Goat",
-                    "intro": "Hardy ruminants.",
-                    "guide": "<h3>Housing</h3><p>Keep floors slated and dry to prevent foot rot. Ensure good ventilation.</p><h3>Feeding</h3><p>Provide forage, cassava peels, and a continuous mineral salt lick.</p><h3>Healthcare</h3><p>Deworm regularly. Vaccinate against PPR annually.</p>"
-                },
-                {
-                    "id": "sheep",
-                    "icon": "🐑",
-                    "title": "Sheep",
-                    "wikiSearch": "Sheep",
-                    "intro": "Grazing ruminants.",
-                    "guide": "<h3>Housing</h3><p>Provide a dry, draft-free shelter. Susceptible to pneumonia in damp conditions.</p><h3>Feeding</h3><p>Primary diet is pasture grass. Supplement with concentrates during late pregnancy.</p><h3>Healthcare</h3><p>Regular foot trimming and deworming are essential.</p>"
-                },
-                {
-                    "id": "pig",
-                    "icon": "🐷",
-                    "title": "Pigs",
-                    "wikiSearch": "Pig farming",
-                    "intro": "Fast growth.",
-                    "guide": "<h3>Housing</h3><p>Construct solid concrete pens with a sloped floor for easy washing.</p><h3>Feeding</h3><p>Provide high-quality formulated pig mash. Boil swill before feeding.</p><h3>Healthcare</h3><p>Administer iron injections to piglets on day 3. Deworm regularly.</p>"
-                },
-                {
-                    "id": "rabbit",
-                    "icon": "🐇",
-                    "title": "Rabbits",
-                    "wikiSearch": "Cuniculture",
-                    "intro": "High reproduction.",
-                    "guide": "<h3>Housing</h3><p>Keep in well-ventilated wire cages to allow droppings to fall through.</p><h3>Feeding</h3><p>Provide pellets and fresh, clean forage daily.</p><h3>Breeding</h3><p>Does can be rebred shortly after kindling, but allow rest for optimal health.</p>"
-                },
-                {
-                    "id": "turkey",
-                    "icon": "🦃",
-                    "title": "Turkeys",
-                    "wikiSearch": "Turkey (bird)",
-                    "intro": "Festive season demand.",
-                    "guide": "<h3>Brooding</h3><p>Require intensive early care and higher temperatures than chicks.</p><h3>Feeding</h3><p>Require high protein starter feed (28% CP).</p><h3>Health</h3><p>Prone to blackhead disease; keep separate from chickens.</p>"
-                },
-                {
-                    "id": "cattle",
-                    "icon": "🐄",
-                    "title": "Cattle",
-                    "wikiSearch": "Cattle",
-                    "intro": "Beef and dairy.",
-                    "guide": "<h3>Grazing</h3><p>Provide extensive paddock rotation or zero-grazing system.</p><h3>Feeding</h3><p>Supplement dry season pasture with silage and mineral licks.</p><h3>Health</h3><p>Vaccinate against CBPP and control ticks regularly.</p>"
-                },
-                {
-                    "id": "snail",
-                    "icon": "🐌",
-                    "title": "Snails",
-                    "wikiSearch": "Heliciculture",
-                    "intro": "Low capital.",
-                    "guide": "<h3>Environment</h3><p>Requires shaded, moist environment. Construct pens to prevent escape and predators.</p><h3>Feeding</h3><p>Feed soft leaves, fruits, and calcium supplements for shell growth.</p><h3>Maintenance</h3><p>Keep soil damp but not waterlogged. Clean pens regularly.</p>"
-                }
-            ]
-        };
-
-        function showTrainerSubCategory(cat) {
-            const grid = document.getElementById('trainer-items-grid'); 
-            grid.innerHTML = ''; 
-            
-            agriTrainerData[cat].forEach(item => { 
-                grid.innerHTML += `
-                    <div onclick="openTrainerGuide('${cat}', '${item.id}')" class="glass-card p-8 md:p-10 rounded-[2rem] cursor-pointer hover:border-emerald-500/50 hover:-translate-y-2 transition-all text-center shadow-lg group">
-                        <div class="text-6xl mb-5 group-hover:scale-110 transition-transform duration-300 drop-shadow-lg">${item.icon}</div>
-                        <h4 class="text-xl font-black text-white group-hover:text-emerald-400 transition-colors tracking-tight">${item.title}</h4>
-                        <p class="text-sm text-slate-400 mt-2 font-medium">${item.intro}</p>
-                    </div>`; 
-            }); 
-            
-            document.getElementById('trainer-categories').classList.add('hidden'); 
-            document.getElementById('trainer-items').classList.remove('hidden'); 
-        }
-        
-        async function openTrainerGuide(cat, itemId) {
-            const item = agriTrainerData[cat].find(i => i.id === itemId); 
-            if (!item) return; 
-            
-            document.getElementById('guide-icon').innerText = item.icon; 
-            document.getElementById('guide-title').innerText = item.title; 
-            document.getElementById('guide-intro').innerText = item.intro; 
-            
-            const contentContainer = document.getElementById('guide-content');
-            contentContainer.innerHTML = '<p class="text-emerald-400 font-bold animate-pulse text-lg flex items-center gap-3"><span class="w-6 h-6 border-4 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin"></span> Fetching encyclopedia data...</p>';
-            
-            document.getElementById('trainer-items').classList.add('hidden'); 
-            document.getElementById('trainer-guide').classList.remove('hidden'); 
-            
-            try {
-                const searchStr = encodeURIComponent(item.wikiSearch || item.title);
-                const wikiRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${searchStr}`);
-                
-                if (wikiRes.ok) {
-                    const wikiData = await wikiRes.json();
-                    
-                    let wikiHtml = `<div class="bg-[#020617]/50 p-8 md:p-10 rounded-[2.5rem] border border-slate-700/50 mb-10 flex flex-col md:flex-row gap-8 shadow-inner items-start" id="wiki-content">`;
-                    
-                    if (wikiData.thumbnail && wikiData.thumbnail.source) {
-                        wikiHtml += `<img src="${wikiData.thumbnail.source}" class="w-full md:w-56 h-56 object-cover rounded-3xl shadow-[0_0_20px_rgba(0,0,0,0.5)] border border-slate-700 shrink-0">`;
-                    }
-                    
-                    wikiHtml += `
-                        <div>
-                            <h3 class="text-emerald-400 text-sm font-black uppercase tracking-widest mb-3 flex items-center gap-2">📖 Wikipedia Overview</h3>
-                            <p class="text-base text-slate-300 leading-relaxed font-medium">${wikiData.extract}</p>
-                        </div>
-                    </div>`;
-                    
-                    contentContainer.innerHTML = wikiHtml + `<h3 class="text-2xl font-black text-white mb-6 mt-10 border-b border-white/10 pb-4 tracking-tight">🚜 Agromart Cultivation Guide</h3>` + item.guide;
-                } else {
-                    throw new Error("Wiki not found");
-                }
-            } catch (e) {
-                contentContainer.innerHTML = `<h3 class="text-2xl font-black text-white mb-6 border-b border-white/10 pb-4 tracking-tight">🚜 Agromart Cultivation Guide</h3>` + item.guide;
-            }
-        }
-        
-        function resetTrainer() {
-            document.getElementById('trainer-guide').classList.add('hidden'); 
-            document.getElementById('trainer-items').classList.add('hidden'); 
-            document.getElementById('trainer-categories').classList.remove('hidden'); 
-        }
-
-        // --- AGRIDOCTOR AI SCANNER LOGIC ---
-        let currentAgriDoctorImageBase64 = null;
-
-        function handleAgriDoctorUpload(event) {
-            const file = event.target.files[0];
-            if (!file) {
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = (e) => {
-                const img = new Image();
-                img.src = e.target.result;
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    const scale = 600 / img.width;
-                    
-                    canvas.width = 600;
-                    canvas.height = img.height * scale;
-                    
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    
-                    currentAgriDoctorImageBase64 = canvas.toDataURL('image/jpeg', 0.8);
-                    
-                    const preview = document.getElementById('agridoctor-preview');
-                    if (preview) {
-                        preview.src = currentAgriDoctorImageBase64;
-                        preview.classList.remove('hidden');
-                    }
-                    
-                    const btn = document.getElementById('agridoctor-analyze-btn');
-                    if (btn) {
-                        btn.classList.remove('hidden');
-                    }
-                    
-                    showToast("Photo loaded successfully! 📸");
-                };
-            };
-            
-            event.target.value = '';
-        }
-
-        async function processAgriDoctor() {
-            if (!currentAgriDoctorImageBase64) {
-                return showToast("Please upload a photo first.", "error");
-            }
-
-            document.getElementById('agridoctor-upload-state').classList.add('hidden');
-            document.getElementById('agridoctor-processing-state').classList.remove('hidden');
-
-            setTimeout(() => {
-                document.getElementById('agridoctor-processing-state').classList.add('hidden');
-                document.getElementById('agridoctor-result-state').classList.remove('hidden');
-
-                document.getElementById('diag-icon').innerText = "🍂";
-                document.getElementById('diag-title').innerText = "Early Blight (Alternaria solani)";
-                document.getElementById('diag-desc').innerText = "Detected necrotic lesions with concentric rings on foliage, typical of high humidity and warm temperature stress in West African farming belts.";
-                
-                document.getElementById('diag-organic').innerText = "Spray with a mixture of neem oil extract and copper-based bio-fungicides every 7 days. Remove and destroy heavily infected lower leaves.";
-                document.getElementById('diag-chemical').innerText = "Apply Mancozeb or Chlorothalonil-based commercial fungicides according to local MoFA agricultural extension dosages.";
-                
-                showToast("Diagnosis Complete! 🩺");
-            }, 3500);
-        }
-
-        function resetAgriDoctor() {
-            currentAgriDoctorImageBase64 = null;
-            
-            const preview = document.getElementById('agridoctor-preview');
-            if (preview) {
-                preview.classList.add('hidden');
-                preview.src = '';
-            }
-            
-            const btn = document.getElementById('agridoctor-analyze-btn');
-            if (btn) {
-                btn.classList.add('hidden');
-            }
-            
-            document.getElementById('agridoctor-result-state').classList.add('hidden');
-            document.getElementById('agridoctor-upload-state').classList.remove('hidden');
-        }
-
-        function filterEverydayHub(category, shouldScroll = true) {
-            const feedTitle = document.getElementById('everyday-feed-title');
-            const grid = document.getElementById('everyday-listings-grid');
-            if (!grid) return;
-
-            const categoryTitles = {
-                rooms: "🏠 Direct Room & Hostel Rentals",
-                meds: "💊 Prescription Medicine Broadcast",
-                artisans: "🛠️ Verified Fixers & Artisans",
-                parcels: "📦 Inter-City Traveler Parcel Hitch",
-                thrift: "🔄 Neighborhood Thrift & Pre-Owned"
-            };
-
-            feedTitle.innerText = categoryTitles[category] || "Local Listings";
-            const items = everydayData[category] || [];
-
-            grid.innerHTML = items.map(item => `
-                <div class="glass-card p-8 rounded-[2.5rem] border border-white/5 hover:border-blue-500/30 transition-all flex flex-col justify-between shadow-lg">
                     <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="text-[10px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-3 py-1.5 rounded-lg font-black uppercase tracking-widest">${item.tag}</span>
-                            <span class="text-xs font-black text-emerald-400">${item.price}</span>
+                        <div class="mb-12">
+                            <h4 class="text-sm font-black uppercase tracking-widest text-slate-300 mb-5 bg-white/5 inline-block px-4 py-1.5 rounded-lg border border-white/10">Ad Moderation Queue</h4>
+                            <div id="admin-mod-list" class="space-y-4 max-h-[600px] overflow-y-auto pr-4 scroll-touch"></div>
                         </div>
-                        <h4 class="text-xl font-black text-white mb-2 leading-tight tracking-tight">${item.title}</h4>
-                        <p class="text-xs text-slate-400 font-bold mb-4">📍 ${item.loc}</p>
-                        <p class="text-sm text-slate-300 leading-relaxed font-medium mb-6">${item.details}</p>
+                        
+                        <div class="mt-12 border-t border-white/10 pt-10">
+                            <h4 class="text-sm font-black uppercase tracking-widest text-rose-400 mb-5 bg-rose-500/10 inline-block px-4 py-1.5 rounded-lg border border-rose-500/20">🚩 Scam Reports</h4>
+                            <div id="admin-reports-list" class="space-y-4 max-h-80 overflow-y-auto pr-4 scroll-touch"></div>
+                        </div>
                     </div>
-                    <a href="https://wa.me/233${item.phone.replace(/^0/,'')}?text=${encodeURIComponent('Hello, I saw your listing for ' + item.title + ' on Agromart Everyday Hub.')}" target="_blank" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-4 rounded-2xl text-sm flex items-center justify-center gap-2 transition-all shadow-md tracking-wide cursor-pointer">
-                        💬 Connect via WhatsApp
-                    </a>
                 </div>
-            `).join('');
 
-            if (shouldScroll) {
-                setTimeout(() => {
-                    feedTitle.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100);
-            }
-        }
+                <div class="mt-14 border-t border-white/10 pt-10 relative z-10">
+                    <h4 class="text-sm font-black uppercase tracking-widest text-blue-400 mb-5 bg-blue-500/10 inline-block px-4 py-1.5 rounded-lg border border-blue-500/20">Master Ad Directory (All Listings)</h4>
+                    <div id="admin-all-ads-list" class="space-y-4 max-h-[500px] overflow-y-auto pr-4 scroll-touch"></div>
+                </div>
+            </div>
+        </div>
 
-        function openEverydayPostModal() {
-            showToast("Opening submission form...");
-        }
-
-        // --- CORE PLATFORM LOGIC & NAVIGATION ---
-        function showToast(msg, type = 'success') {
-            const container = document.getElementById('toast-container');
-            if (!container) return;
-
-            const toast = document.createElement('div');
-            let borderClass = type === 'error' ? 'border-rose-500/50 text-rose-100 shadow-[0_0_20px_rgba(225,29,72,0.2)]' : 'border-emerald-500/50 text-emerald-100 shadow-[0_0_20px_rgba(16,185,129,0.2)]';
+        <!-- FULL-PAGE SELLER STOREFRONT VIEW -->
+        <div id="view-seller-store" class="fade-in hidden space-y-8 max-w-6xl mx-auto mt-6 relative z-30">
+            <button onclick="navigate('marketplace')" class="text-xs font-black tracking-widest uppercase text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-6 py-3.5 rounded-xl hover:bg-emerald-500/20 transition-colors mb-3 inline-flex items-center gap-2 shadow-inner cursor-pointer relative z-40">
+                ← Back to Market
+            </button>
             
-            toast.className = `p-4 pr-6 rounded-2xl glass-card flex items-center gap-3 fade-in border ${borderClass}`;
-            toast.innerHTML = `<span class="text-sm font-bold tracking-wide">${msg}</span>`;
-            
-            container.appendChild(toast);
-            
-            setTimeout(() => { 
-                toast.style.opacity = '0'; 
-                toast.style.transform = 'translateY(10px)';
-                toast.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'; 
-                setTimeout(() => toast.remove(), 300); 
-            }, 3000);
-        }
-
-        // BUG FIX: Added DOM reflow to prevent blank screen animation stalling
-        function navigate(view) {
-            const views = [
-                'home', 'marketplace', 'auth', 'grants', 'farm-manager', 
-                'intel', 'calculator', 'trainer', 'post', 'dashboard', 
-                'pricing', 'faq', 'about', 'support', 'rentals', 'waste', 'agridoctor', 'haulage', 'seller-store', 'community',
-                'portal-select', 'everyday-hub'
-            ];
-            
-            views.forEach(v => {
-                const el = document.getElementById(`view-${v}`);
-                if (el) {
-                    el.classList.add('hidden');
-                    el.classList.remove('fade-in'); 
-                }
-            });
-            
-            const target = document.getElementById(`view-${view}`);
-            if (target) {
-                target.classList.remove('hidden');
-                void target.offsetWidth; 
-                target.classList.add('fade-in');
-            }
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-
-            if (view === 'portal-select') {
-                document.body.classList.remove('mode-everyday', 'mode-agro');
-                document.body.classList.add('mode-portal-select');
-                const logoText = document.getElementById('main-logo-text');
-                if(logoText) logoText.innerText = "Agromart & Co.";
-            }
-
-            // BUG FIX: Reset search states if going home so trending isn't accidentally filtered
-            if (view === 'home') {
-                currentCategoryState = "";
-                currentSearchState = "";
-                const searchInput = document.getElementById('market_finder');
-                if(searchInput) searchInput.value = "";
+            <!-- Store Banner & Header -->
+            <div class="glass-card rounded-[3rem] border border-white/5 overflow-hidden shadow-2xl relative z-40">
+                <!-- Cover Photo -->
+                <div id="store-cover-photo" class="h-64 md:h-96 w-full bg-slate-800 bg-cover bg-center border-b border-white/10" style="background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80');"></div>
                 
-                if(allLoadedProducts.length > 0) {
-                    buildTrendingSection(allLoadedProducts);
-                }
-            }
-            
-            if (view === 'marketplace') executeFilters(); 
-            if (view === 'grants') loadGrants(); 
-            if (view === 'farm-manager') loadFarmBatches(); 
-            if (view === 'intel') loadMarketIntel();
-            if (view === 'rentals') loadRentals();
-            if (view === 'waste') loadWasteRequests();
-            if (view === 'haulage') loadHaulagePool();
-            if (view === 'dashboard') { 
-                loadMyAds(); loadMyTenders(); loadMyRentals(); loadMyWasteRequests();
-                if (agriToken && currentUserEmail === "enochdani9@gmail.com") { 
-                    renderAdminModQueue(); renderAdminAllAds(); renderAdminVerificationsList(); renderAdminReports();
-                } 
-            }
-        }
+                <div class="px-10 md:px-16 pb-16 relative">
+                    <!-- Avatar Overlapping Banner -->
+                    <div id="store-avatar" class="w-40 h-40 md:w-48 md:h-48 rounded-[3rem] bg-slate-800 border-[6px] border-[#0f172a] absolute -top-20 md:-top-24 bg-cover bg-center flex items-center justify-center text-7xl shadow-[0_0_40px_rgba(0,0,0,0.5)]">👨🏽‍🌾</div>
+                    
+                    <div class="flex flex-col md:flex-row md:items-start justify-between pt-24 md:pt-28 gap-8">
+                        <div>
+                            <div class="flex items-center gap-5 mb-3">
+                                <h2 class="text-5xl font-black text-white tracking-tight" id="store-name">Farmer Name</h2>
+                                <div id="store-badge" class="hidden items-center gap-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-black uppercase tracking-widest px-5 py-2 rounded-full shadow-inner">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Verified
+                                </div>
+                            </div>
+                            <p class="text-lg text-slate-400 mb-8 font-medium max-w-2xl" id="store-bio">Premium commercial supplier of fresh agricultural produce.</p>
+                            
+                            <div class="flex flex-wrap gap-5 text-sm font-bold">
+                                <span class="bg-[#020617]/50 border border-slate-700/80 px-5 py-3 rounded-2xl text-slate-300 shadow-inner">📞 <span class="text-white" id="store-phone">...</span></span>
+                                <span class="bg-[#020617]/50 border border-slate-700/80 px-5 py-3 rounded-2xl text-slate-300 shadow-inner">📅 Member Since: <span class="text-white" id="store-since">...</span></span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-col sm:flex-row md:flex-col gap-4 shrink-0 w-full md:w-auto">
+                            <a id="store-wa-btn" href="#" target="_blank" class="w-full md:w-auto bg-[#25D366] hover:bg-[#20bd5a] text-[#020617] font-black py-5 px-10 rounded-2xl text-base transition-all shadow-[0_0_20px_rgba(37,211,102,0.3)] hover:shadow-[0_0_30px_rgba(37,211,102,0.5)] flex items-center justify-center gap-3 hover:-translate-y-1 tracking-wide cursor-pointer">💬 Message Store</a>
+                            <button onclick="shareStore()" class="w-full md:w-auto bg-[#0f172a] hover:bg-slate-800 border border-blue-500/30 text-blue-400 hover:text-blue-300 font-black py-5 px-10 rounded-2xl text-base transition-colors shadow-inner flex items-center justify-center gap-3 tracking-wide cursor-pointer">🔗 Share Store Link</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        function selectPortal(type) {
-            localStorage.setItem('preferred_portal', type);
-            
-            document.body.classList.remove('mode-everyday', 'mode-agro', 'mode-portal-select');
-            const logoText = document.getElementById('main-logo-text');
-            
-            if (type === 'everyday') {
-                document.body.classList.add('mode-everyday');
-                if(logoText) logoText.innerText = "Everyday Hub";
-                navigate('everyday-hub');
-                filterEverydayHub('rooms', false);
-            } else {
-                document.body.classList.add('mode-agro');
-                if(logoText) logoText.innerText = "Agromart Pro";
-                navigate('home');
-            }
-        }
+            <!-- Store Layout (Sidebar & Main Content) -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 relative z-40">
+                <!-- Sidebar: Stats & Rating -->
+                <div class="space-y-8">
+                    <div class="glass-card p-10 rounded-[3rem] border border-amber-500/20 shadow-[0_0_40px_rgba(245,158,11,0.05)] bg-amber-500/5">
+                        <h3 class="text-sm font-black text-white mb-8 uppercase tracking-widest text-center">Store Reputation</h3>
+                        <div class="text-center bg-[#020617]/60 p-10 rounded-[2.5rem] border border-slate-700/50 shadow-inner">
+                            <div class="text-7xl font-black text-white mb-4 tracking-tight" id="store-rating-score">0.0</div>
+                            <div class="text-amber-400 text-2xl mb-3 tracking-widest" id="store-rating-stars">⭐⭐⭐⭐⭐</div>
+                            <p class="text-xs text-slate-400 uppercase font-black tracking-widest" id="store-rating-count">0 Reviews</p>
+                        </div>
+                        <button onclick="openLeaveReviewModal()" class="w-full mt-8 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-[#020617] font-black py-5 rounded-2xl text-base transition-all shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] hover:-translate-y-1 tracking-wide cursor-pointer">⭐ Leave a Review</button>
+                    </div>
+                    
+                    <button onclick="triggerReportFromProfile()" class="w-full glass-card p-6 rounded-[2rem] border border-rose-500/20 text-rose-400 text-sm font-black uppercase tracking-widest hover:bg-rose-500/10 transition-colors shadow-sm cursor-pointer">🚩 Report Suspicious Activity</button>
+                </div>
 
-        function toggleAuthBox(box) { 
-            const boxes = ['login-box', 'signup-box', 'forgot-password-box'];
-            boxes.forEach(b => {
-                const el = document.getElementById(b); 
-                if (el) {
-                    el.classList.add('hidden');
-                }
-            }); 
-            
-            const target = document.getElementById(box + '-box'); 
-            if (target) {
-                target.classList.remove('hidden'); 
-            }
-        }
+                <!-- Main Content: Tabs for Produce & Reviews -->
+                <div class="lg:col-span-2 space-y-10">
+                    <div class="flex gap-2 p-2.5 bg-[#020617]/60 rounded-2xl border border-slate-700/50 inline-flex shadow-inner backdrop-blur-md">
+                        <button onclick="switchStoreTab('produce')" id="tab-store-produce" class="px-10 py-4 rounded-xl font-black text-sm transition-all bg-emerald-600 text-white shadow-[0_0_20px_rgba(16,185,129,0.3)] cursor-pointer">🛒 Active Produce</button>
+                        <button onclick="switchStoreTab('reviews')" id="tab-store-reviews" class="px-10 py-4 rounded-xl font-black text-sm transition-all text-slate-400 hover:text-white cursor-pointer">💬 Customer Reviews</button>
+                    </div>
 
-        function logout() { 
-            localStorage.removeItem("agri_token"); 
-            localStorage.removeItem("preferred_portal");
-            window.location.reload(); 
-        }
+                    <div id="store-produce-view">
+                        <div id="store-ads-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-8"></div>
+                    </div>
 
-        function requireAuthToPost() { 
-            if (!agriToken) { 
-                showToast("Sign in to post an ad", "error"); 
-                navigate('auth'); 
-            } else { 
-                navigate('post'); 
-            }
-        }
+                    <div id="store-reviews-view" class="hidden space-y-8">
+                        <div id="store-reviews-list" class="space-y-8"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        function toggleSunlightMode() { 
-            const bodyEl = document.getElementById('app-body');
-            if (bodyEl) {
-                bodyEl.classList.toggle('sunlight-mode'); 
+        <!-- AUTH VIEW -->
+        <div id="view-auth" class="fade-in hidden max-w-md mx-auto mt-16 relative z-30">
+            <div class="glass-card p-12 md:p-14 rounded-[3rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
+                <div class="absolute top-[-50px] right-[-50px] w-48 h-48 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
                 
-                if(bodyEl.classList.contains('sunlight-mode')) { 
-                    showToast("☀️ Sunlight Mode Enabled"); 
-                } else { 
-                    showToast("🌙 Dark Mode Restored"); 
-                }
-            }
-        }
-
-        function togglePassword(id) {
-            const field = document.getElementById(id);
-            if (field) {
-                field.type = field.type === "password" ? "text" : "password"; 
-            }
-        }
-
-        function initGoogleAuth() { 
-            try {
-                if (typeof google === 'undefined' || !google.accounts) {
-                    return setTimeout(initGoogleAuth, 300); 
-                }
+                <div id="login-box" class="relative z-40">
+                    <h2 class="text-4xl font-black text-white text-center mb-10 tracking-tight">Welcome Back</h2>
+                    <div class="space-y-6">
+                        <input type="email" id="login-email" placeholder="Email" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner cursor-text">
+                        <div class="relative">
+                            <input type="password" id="login-password" placeholder="Password" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner pr-14 cursor-text">
+                            <button onclick="togglePassword('login-password')" class="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-400 text-xl transition-colors cursor-pointer">👁️</button>
+                        </div>
+                        <div class="text-right">
+                            <button onclick="toggleAuthBox('forgot-password')" class="text-[11px] text-slate-400 hover:text-emerald-400 font-black uppercase tracking-widest transition-colors cursor-pointer">Forgot Password?</button>
+                        </div>
+                        <button onclick="loginUser()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-5 rounded-[2rem] text-base transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:-translate-y-1 tracking-wide mt-4 cursor-pointer">Sign In</button>
+                    </div>
+                    <div class="my-8 flex items-center justify-between"><hr class="w-full border-slate-700/50"><span class="px-5 text-[10px] text-slate-500 font-black uppercase tracking-widest">OR</span><hr class="w-full border-slate-700/50"></div>
+                    <div id="google-signin-btn-login" class="flex justify-center w-full mb-8 cursor-pointer"></div>
+                    <p class="text-sm text-slate-400 text-center mt-10 font-medium">Don't have an account? <button onclick="toggleAuthBox('signup')" class="text-emerald-400 font-black hover:text-emerald-300 transition-colors cursor-pointer">Sign Up</button></p>
+                </div>
                 
-                google.accounts.id.initialize({ 
-                    client_id: GOOGLE_CLIENT_ID, 
-                    callback: async (response) => { 
-                        try { 
-                            const res = await fetch(`${API_URL}/api/v1/auth/google`, { 
-                                method: 'POST', 
-                                headers: { 'Content-Type': 'application/json' }, 
-                                body: JSON.stringify({ credential: response.credential }) 
-                            }); 
-                            
-                            const data = await res.json(); 
-                            
-                            if (!res.ok) {
-                                throw new Error(data.detail || "Google Sign-In failed"); 
-                            }
-                            
-                            agriToken = data.access_token; 
-                            localStorage.setItem("agri_token", agriToken); 
-                            showToast("Welcome back!"); 
-                            
-                            const userRes = await fetch(`${API_URL}/api/v1/me?token=${agriToken}`);
-                            const userData = await userRes.json();
-                            
-                            setupUserProfile(userData); 
-                            navigate('dashboard'); 
-                            
-                        } catch (err) { 
-                            showToast(err.message, "error"); 
-                        } 
-                    } 
-                }); 
+                <div id="signup-box" class="hidden relative z-40">
+                    <h2 class="text-4xl font-black text-white text-center mb-10 tracking-tight">Create Account</h2>
+                    <div class="space-y-6">
+                        <input type="text" id="su-name" placeholder="Full Name" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner cursor-text">
+                        <input type="email" id="su-email" placeholder="Email Address" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner cursor-text">
+                        <div class="grid grid-cols-3 gap-4">
+                            <input type="number" id="su-age" placeholder="Age" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner col-span-1 cursor-text">
+                            <input type="tel" id="su-phone" placeholder="Phone Number" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner col-span-2 cursor-text">
+                        </div>
+                        <div class="relative">
+                            <input type="password" id="su-password" placeholder="Create Password" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner pr-14 cursor-text">
+                            <button onclick="togglePassword('su-password')" class="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-400 text-xl transition-colors cursor-pointer">👁️</button>
+                        </div>
+                        <button onclick="signupUser()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-5 rounded-[2rem] text-base transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:-translate-y-1 tracking-wide mt-4 cursor-pointer">Create Account</button>
+                    </div>
+                    <div class="my-8 flex items-center justify-between"><hr class="w-full border-slate-700/50"><span class="px-5 text-[10px] text-slate-500 font-black uppercase tracking-widest">OR</span><hr class="w-full border-slate-700/50"></div>
+                    <div id="google-signin-btn-signup" class="flex justify-center w-full mb-8 cursor-pointer"></div>
+                    <p class="text-sm text-slate-400 text-center mt-10 font-medium">Already have an account? <button onclick="toggleAuthBox('login')" class="text-emerald-400 font-black hover:text-emerald-300 transition-colors cursor-pointer">Sign In</button></p>
+                </div>
                 
-                const btn1 = document.getElementById('google-signin-btn-login'); 
-                if (btn1) {
-                    google.accounts.id.renderButton(btn1, { theme: "filled_blue", size: "large", width: "300" }); 
-                }
+                <div id="forgot-password-box" class="hidden relative z-40">
+                    <h2 class="text-4xl font-black text-white text-center mb-4 tracking-tight">Reset Password</h2>
+                    <p class="text-base text-slate-400 text-center mb-10 font-medium">Enter your phone number to receive a reset code via WhatsApp.</p>
+                    <div id="fp-step-1" class="space-y-6">
+                        <input type="tel" id="fp-phone" placeholder="Registered Phone Number" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner cursor-text">
+                        <button onclick="requestPasswordReset()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-black py-5 rounded-[2rem] text-base transition-all shadow-lg hover:-translate-y-1 tracking-wide cursor-pointer">Send WhatsApp Code</button>
+                    </div>
+                    <div id="fp-step-2" class="space-y-6 hidden mt-8 border-t border-slate-700/50 pt-8">
+                        <input type="text" id="fp-code" placeholder="Enter 5-Digit Code" class="w-full bg-[#020617]/80 border border-emerald-500/50 rounded-[2rem] px-6 py-5 text-2xl text-white focus:border-emerald-400 outline-none tracking-[0.5em] text-center font-black shadow-inner transition-colors cursor-text">
+                        <div class="relative">
+                            <input type="password" id="fp-new-password" placeholder="New Password" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-[2rem] px-6 py-5 text-sm font-medium text-white focus:border-emerald-500 outline-none transition-colors shadow-inner pr-14 cursor-text">
+                            <button onclick="togglePassword('fp-new-password')" class="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-400 text-xl transition-colors cursor-pointer">👁️</button>
+                        </div>
+                        <button onclick="confirmPasswordReset()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-5 rounded-[2rem] text-base transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:-translate-y-1 tracking-wide mt-4 cursor-pointer">Set New Password</button>
+                    </div>
+                    <p class="text-sm text-slate-400 text-center mt-10 font-medium">Remember your password? <button onclick="toggleAuthBox('login')" class="text-emerald-400 font-black hover:text-emerald-300 transition-colors cursor-pointer">Back to Login</button></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRICING VIEW -->
+        <div id="view-pricing" class="fade-in hidden max-w-7xl mx-auto mt-16 space-y-10 relative z-30">
+            <div class="text-center space-y-5 mb-16 relative z-40">
+                <h2 class="text-5xl md:text-7xl font-black text-white tracking-tight">Boost Your Sales</h2>
+                <p class="text-slate-400 text-lg max-w-2xl mx-auto font-medium">Standard listings are free forever. Boost your visibility and sell faster with our premium features powered by Mobile Money.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 items-center relative z-40">
+                <div class="glass-card p-12 rounded-[3rem] flex flex-col border border-white/5 shadow-xl hover:border-emerald-500/20 transition-all h-full">
+                    <h3 class="text-3xl font-black text-slate-300 mb-4 tracking-tight">Standard</h3>
+                    <div class="mb-10"><span class="text-6xl font-black text-white tracking-tight">GH₵ 0</span><span class="text-slate-500 text-base font-bold"> / forever</span></div>
+                    <ul class="space-y-6 mb-12 flex-grow text-base text-slate-400 font-medium">
+                        <li class="flex gap-4"><span class="text-emerald-500 font-black text-lg">✓</span> Up to 3 active listings</li>
+                        <li class="flex gap-4"><span class="text-emerald-500 font-black text-lg">✓</span> Standard search placement</li>
+                        <li class="flex gap-4"><span class="text-emerald-500 font-black text-lg">✓</span> Direct WhatsApp Deal Room</li>
+                        <li class="flex gap-4"><span class="text-emerald-500 font-black text-lg">✓</span> Auto-expires in 30 days</li>
+                    </ul>
+                    <button onclick="navigate('post')" class="w-full bg-white/5 hover:bg-white/10 text-white font-black py-5 rounded-2xl transition-all border border-white/10 shadow-inner tracking-wide text-lg cursor-pointer">Post Free Ad</button>
+                </div>
                 
-                const btn2 = document.getElementById('google-signin-btn-signup'); 
-                if (btn2) {
-                    google.accounts.id.renderButton(btn2, { theme: "filled_blue", size: "large", width: "300" }); 
-                }
-            } catch(e) { 
-                console.warn("Google Auth disabled or blocked by browser extensions."); 
-            }
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            initGoogleAuth(); 
-            initSlideshow(); 
-            loadAgriNews(); 
-            loadBuyerRequests();
-            
-            fetch(`${API_URL}/api/v1/products?sort=newest&t=${new Date().getTime()}`)
-                .then(res => res.json())
-                .then(data => { 
-                    if (Array.isArray(data) && data.length > 0) { 
-                        allLoadedProducts = data; 
-                        buildMarketTicker(data); 
-                        buildTrendingSection(data); 
-                    } else {
-                        allLoadedProducts = dummyAgromartAds;
-                        buildMarketTicker(allLoadedProducts);
-                        buildTrendingSection(allLoadedProducts);
-                    }
-                })
-                .catch(e => {
-                    console.error("Failed to load initial marketplace data", e);
-                    allLoadedProducts = dummyAgromartAds;
-                    buildMarketTicker(allLoadedProducts); 
-                    buildTrendingSection(allLoadedProducts);
-                });
+                <div class="glass-card p-14 rounded-[3rem] flex flex-col border-[3px] border-emerald-500 relative transform md:-translate-y-8 shadow-[0_0_50px_rgba(16,185,129,0.2)] bg-gradient-to-b from-[#020617] to-emerald-950/20 h-[105%]">
+                    <span class="absolute -top-5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-emerald-500 to-teal-400 text-white text-xs font-black uppercase tracking-widest px-6 py-2 rounded-full shadow-lg">Most Popular</span>
+                    <h3 class="text-3xl font-black text-emerald-400 mb-4 tracking-tight">QuickSell Boost</h3>
+                    <div class="mb-10"><span class="text-6xl font-black text-white tracking-tight">GH₵ 15</span><span class="text-slate-500 text-base font-bold"> / ad (7 Days)</span></div>
+                    <ul class="space-y-6 mb-12 flex-grow text-base text-slate-300 font-medium">
+                        <li class="flex gap-4"><span class="text-emerald-400 font-black text-lg">✓</span> Pinned to top of category</li>
+                        <li class="flex gap-4"><span class="text-emerald-400 font-black text-lg">✓</span> "⭐ Premium" ad badge</li>
+                        <li class="flex gap-4"><span class="text-emerald-400 font-black text-lg">✓</span> Highlighted card border</li>
+                        <li class="flex gap-4"><span class="text-emerald-400 font-black text-lg">✓</span> 1x Telegram broadcast</li>
+                    </ul>
+                    <button onclick="handlePricingBoostClick()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-6 rounded-[2rem] transition-all shadow-[0_0_30px_rgba(16,185,129,0.4)] hover:-translate-y-1 tracking-wide text-lg cursor-pointer">Boost an Ad (MoMo)</button>
+                </div>
                 
-            if (agriToken) { 
-                fetch(`${API_URL}/api/v1/me?token=${agriToken}`)
-                    .then(res => {
-                        if (res.ok) {
-                            return res.json();
-                        }
-                        throw new Error("Invalid token");
-                    })
-                    .then(fullData => {
-                        setupUserProfile(fullData);
-                    })
-                    .catch(e => {
-                        console.log("Token invalid or expired, logging out securely."); 
-                        logout();
-                    });
-            } else { 
-                const btn = document.getElementById('nav-login-btn'); 
-                if (btn) {
-                    btn.classList.remove('hidden'); 
-                }
-            }
-            
-            // BUG FIX: Smart Routing based on previous preference instead of always forcing selection
-            const pref = localStorage.getItem('preferred_portal');
-            if (pref === 'everyday') {
-                selectPortal('everyday');
-            } else if (pref === 'agro') {
-                selectPortal('agro');
-            } else {
-                document.body.classList.remove('mode-everyday', 'mode-agro');
-                document.body.classList.add('mode-portal-select');
-                navigate('portal-select');
-            }
-        });
+                <div class="glass-card p-12 rounded-[3rem] flex flex-col border border-amber-500/30 bg-amber-500/5 shadow-[0_0_40px_rgba(245,158,11,0.05)] hover:border-amber-500/50 transition-all h-full">
+                    <h3 class="text-3xl font-black text-amber-400 mb-4 tracking-tight">Agromart Pro</h3>
+                    <div class="mb-10"><span class="text-6xl font-black text-white tracking-tight">GH₵ 70</span><span class="text-slate-500 text-base font-bold"> / month</span></div>
+                    <ul class="space-y-6 mb-12 flex-grow text-base text-slate-400 font-medium">
+                        <li class="flex gap-4"><span class="text-amber-500 font-black text-lg">✓</span> Unlimited active listings</li>
+                        <li class="flex gap-4"><span class="text-amber-500 font-black text-lg">✓</span> "Verified Commercial Farm" badge</li>
+                        <li class="flex gap-4"><span class="text-amber-500 font-black text-lg">✓</span> Instant SMS lead alerts</li>
+                        <li class="flex gap-4"><span class="text-amber-500 font-black text-lg">✓</span> Auto-renewing listings</li>
+                    </ul>
+                    <button onclick="payAgriProSubscription()" class="w-full bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-[#020617] font-black py-5 rounded-2xl transition-all border border-amber-500/40 shadow-lg tracking-wide hover:-translate-y-1 text-lg cursor-pointer">Upgrade to Pro (MoMo)</button>
+                </div>
+            </div>
+        </div>
 
-        function setupUserProfile(data) {
-            if (!data) return;
-            
-            currentUserEmail = data.email || ""; 
-            const navName = document.getElementById('nav-user-name'); 
-            
-            if (navName) { 
-                const firstName = data.full_name ? data.full_name.split(' ')[0] : "User";
-                navName.innerHTML = `Hi, ${firstName}`; 
-                navName.classList.remove('hidden'); 
-            }
-            
-            const loginBtn = document.getElementById('nav-login-btn'); 
-            if (loginBtn) {
-                loginBtn.classList.add('hidden'); 
-            }
-            
-            const profileMenu = document.getElementById('nav-user-profile'); 
-            if (profileMenu) { 
-                profileMenu.classList.remove('hidden'); 
-                profileMenu.classList.add('flex'); 
-            }
-            
-            const pName = document.getElementById('my-profile-name'); 
-            if (pName) pName.innerText = data.full_name || "User"; 
-            
-            const pEmail = document.getElementById('my-profile-email'); 
-            if (pEmail) pEmail.innerText = data.email || ""; 
-            
-            if (data.profile_picture && data.profile_picture !== 'null') { 
-                const avatar = document.getElementById('my-profile-avatar'); 
-                if (avatar) { 
-                    avatar.innerHTML = ''; 
-                    avatar.style.backgroundImage = `url('${data.profile_picture}')`; 
-                } 
-            }
-            
-            const badge = document.getElementById('my-profile-badge'); 
-            const unverifiedBox = document.getElementById('my-profile-unverified-box'); 
-            
-            if (data.is_verified) { 
-                if (badge) { 
-                    badge.classList.remove('hidden'); 
-                    badge.classList.add('flex'); 
-                } 
-                if (unverifiedBox) { 
-                    unverifiedBox.classList.add('hidden'); 
-                    unverifiedBox.classList.remove('flex'); 
-                } 
-            } else {
-                if (badge) { 
-                    badge.classList.add('hidden'); 
-                    badge.classList.remove('flex'); 
-                } 
-                if (unverifiedBox) { 
-                    unverifiedBox.classList.remove('hidden'); 
-                    unverifiedBox.classList.add('flex'); 
-                } 
-            }
-            
-            if (data.email === "enochdani9@gmail.com") { 
-                const adminPanel = document.getElementById('admin-panel'); 
-                if (adminPanel) {
-                    adminPanel.classList.remove('hidden'); 
-                }
-                renderAdminModQueue(); 
-                renderAdminAllAds(); 
-                renderAdminVerificationsList(); 
-                renderAdminReports();
-            }
-        }
+        <div id="view-faq" class="fade-in hidden max-w-5xl mx-auto mt-16 space-y-10 relative z-30">
+            <div class="text-center space-y-5 mb-16 relative z-40">
+                <h2 class="text-5xl md:text-6xl font-black text-white tracking-tight">Frequently Asked Questions</h2>
+            </div>
+            <div class="space-y-8 relative z-40">
+                <div class="glass-card rounded-[2.5rem] p-10 border border-white/5 hover:border-white/10 transition-colors shadow-lg">
+                    <h4 class="text-white font-black text-xl mb-4">Is it free to sell?</h4>
+                    <p class="text-slate-400 text-lg font-medium leading-relaxed">Yes! You can post up to 3 standard listings completely free of charge.</p>
+                </div>
+                <div class="glass-card rounded-[2.5rem] p-10 border border-white/5 hover:border-white/10 transition-colors shadow-lg">
+                    <h4 class="text-white font-black text-xl mb-4">How do I post a Buyer Tender?</h4>
+                    <p class="text-slate-400 text-lg font-medium leading-relaxed">Click the "📢 Post Buy Request" button. State what you need, and local farmers will bid to supply.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="view-about" class="fade-in hidden max-w-5xl mx-auto mt-16 relative z-30">
+            <div class="glass-card p-16 md:p-24 rounded-[4rem] shadow-[0_0_60px_rgba(0,0,0,0.3)] text-center relative overflow-hidden border border-emerald-500/20 z-40">
+                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
+                <h2 class="text-6xl md:text-7xl font-black text-white mb-10 tracking-tight relative z-10">About AgromartDirect</h2>
+                <p class="text-slate-300 text-xl md:text-2xl leading-relaxed font-medium relative z-10 max-w-3xl mx-auto">We are digitizing the agricultural supply chain in Ghana. Fair prices for farmers, fresh produce for buyers.</p>
+            </div>
+        </div>
 
-        async function loginUser() {
+        <div id="view-support" class="fade-in hidden max-w-3xl mx-auto mt-16 relative z-30">
+            <div class="glass-card p-16 rounded-[4rem] shadow-[0_0_50px_rgba(0,0,0,0.3)] text-center border border-white/5 z-40 relative">
+                <h2 class="text-5xl font-black text-white mb-8 tracking-tight">Customer Support</h2>
+                <p class="text-slate-400 mb-10 font-medium text-lg">Need help with an order or a listing? Give us a call.</p>
+                <a href="tel:0245641480" class="inline-block bg-[#0f172a] hover:bg-slate-800 border border-slate-700/80 text-white font-black py-6 px-12 rounded-[2rem] transition-all shadow-lg hover:-translate-y-1 tracking-wide text-xl cursor-pointer">Call 024 564 1480</a>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="mt-auto border-t border-white/10 bg-[#020617]/90 backdrop-blur-xl py-12 text-center text-sm text-slate-500 relative z-50">
+        <div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row items-center justify-between gap-10">
+            <div class="flex items-center gap-4">
+                <span class="text-emerald-500 text-4xl filter drop-shadow-md">🌾</span>
+                <div class="text-left">
+                    <span class="font-black text-white tracking-tight text-2xl block leading-none mb-1.5">AgromartDirect</span>
+                    <span class="font-bold text-[11px] uppercase tracking-widest text-emerald-400">Ghana's Everyday Super App</span>
+                </div>
+            </div>
+            <div class="flex flex-wrap justify-center gap-10 text-base font-black tracking-wide text-slate-400">
+                <button onclick="navigate('pricing')" class="hover:text-emerald-400 transition-colors cursor-pointer">Pricing</button>
+                <button onclick="navigate('trainer')" class="hover:text-emerald-400 transition-colors cursor-pointer">Agri Trainer</button>
+                <button onclick="navigate('support')" class="hover:text-emerald-400 transition-colors cursor-pointer">Support</button>
+            </div>
+            <p class="text-sm text-slate-600 font-bold tracking-wide text-center md:text-right leading-relaxed">© 2026 AgromartDirect Ghana.<br>All rights reserved.</p>
+        </div>
+    </footer>async function loginUser() {
             const email = document.getElementById('login-email').value.trim();
             const password = document.getElementById('login-password').value.trim();
             
@@ -2669,7 +2158,7 @@
             }
         }
 
-        // BUG FIX: Category Filters now accurately filter local test data
+        // CATEGORY BUG FIX: This now accurately filters the dummy local data dynamically
         async function loadMarketplaceGrid() {
             const titleEl = document.getElementById('market-title'); 
             if (titleEl) {
@@ -2704,7 +2193,7 @@
                 
                 allLoadedProducts = products; 
                 
-                // CRITICAL FIX: Filtering logic for local test data
+                // CRITICAL FIX: Filtering logic applied to the loaded array (both API or Dummy)
                 let filtered = products;
                 if (currentCategoryState) {
                     filtered = filtered.filter(p => p.category === currentCategoryState);
@@ -2734,7 +2223,7 @@
             } catch (err) { 
                 console.error("Marketplace fetch error: ", err); 
                 
-                // Apply the same strict filtering if the API completely fails
+                // Apply the same strict filtering if the API completely fails and we drop back to dummy data
                 let filtered = dummyAgromartAds;
                 if (currentCategoryState) {
                     filtered = filtered.filter(p => p.category === currentCategoryState);
@@ -2855,6 +2344,17 @@
             if (ticker && tickerHtml) {
                 ticker.innerHTML = tickerHtml.repeat(4); 
             }
+        }
+
+        function startVoiceSearch() {
+            if (!('webkitSpeechRecognition' in window)) return showToast("Voice search not supported in this browser.", "error"); 
+            const searchBox = document.getElementById('market_finder');
+            const recognition = new webkitSpeechRecognition();
+            recognition.continuous = false; recognition.lang = 'en-GH';
+            recognition.onstart = () => { searchBox.placeholder = "Listening..."; };
+            recognition.onresult = (event) => { searchBox.value = event.results[0][0].transcript; executeSearch(); };
+            recognition.onend = () => { searchBox.placeholder = "Search 'Live Broilers', 'Tomatoes'..."; };
+            recognition.start();
         }
 
         function handleImageUpload(event) {
