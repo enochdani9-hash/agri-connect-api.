@@ -209,9 +209,7 @@
                 <button onclick="createBatch()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-3.5 rounded-xl text-sm shadow-lg transition-colors mt-2 cursor-pointer">Initialize Batch 🌱</button>
             </div>
         </div>
-    </div>
-
-    <div id="rfq-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[120] hidden items-center justify-center p-4">
+    </div><div id="rfq-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[120] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-blue-500/30 text-left">
             <button onclick="closeRfqModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl cursor-pointer">✕</button>
             <h3 class="text-2xl font-black text-white mb-2">📢 Post Purchase Tender</h3>
@@ -428,10 +426,7 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- HEADER & NAVIGATION                        -->
-    <!-- ========================================== -->
-    
+    <!-- HEADER & NAVIGATION -->
     <header class="bg-[#020617]/70 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-50 transition-all">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('portal-select')">
@@ -500,9 +495,7 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- MAIN APP VIEWS                             -->
-    <!-- ========================================== -->
+    <!-- MAIN APP VIEWS -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex-grow w-full relative z-30">
         
         <!-- FRONT DOOR / PORTAL SELECTOR VIEW -->
@@ -621,259 +614,7 @@
                     <!-- Dynamic everyday cards will be injected by JavaScript -->
                 </div>
             </div>
-        </div><!-- HOME VIEW (AGROMART PRO FRONT DOOR) -->
-        <div id="view-home" class="fade-in hidden space-y-16 relative z-40">
-            <div class="text-center py-24 px-4 glass-card rounded-[3rem] shadow-2xl relative overflow-hidden group border border-emerald-500/20">
-                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none group-hover:opacity-10 transition-opacity"></div>
-                <div class="text-6xl mb-8 animate-float inline-block drop-shadow-2xl">🚜</div>
-                <h1 class="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-slate-200 to-slate-500 mb-6 relative z-10 tracking-tight leading-tight">The Farmers Market,<br>Now Online.</h1>
-                
-                <div class="max-w-4xl mx-auto relative z-20 mt-10">
-                    <div class="flex flex-col md:flex-row glass-card rounded-3xl p-2 gap-2 shadow-[0_0_30px_rgba(16,185,129,0.1)] border border-emerald-500/30">
-                        <div class="relative w-full md:w-1/3 flex items-center bg-[#020617]/50 rounded-2xl border border-slate-700/50 hover:border-emerald-500/30 transition-colors">
-                            <span class="absolute left-4 text-emerald-500 z-10">🌍</span>
-                            <select id="home-region" class="w-full bg-transparent text-sm text-white font-bold pl-10 pr-4 py-4 outline-none cursor-pointer appearance-none rounded-2xl relative z-20">
-                                <option value="All Regions">All Regions (Ghana)</option>
-                                <option value="Ahafo">Ahafo Region</option>
-                                <option value="Ashanti">Ashanti Region</option>
-                                <option value="Bono">Bono Region</option>
-                                <option value="Bono East">Bono East Region</option>
-                                <option value="Central">Central Region</option>
-                                <option value="Eastern">Eastern Region</option>
-                                <option value="Greater Accra">Greater Accra Region</option>
-                                <option value="North East">North East Region</option>
-                                <option value="Northern">Northern Region</option>
-                                <option value="Oti">Oti Region</option>
-                                <option value="Savannah">Savannah Region</option>
-                                <option value="Upper East">Upper East Region</option>
-                                <option value="Upper West">Upper West Region</option>
-                                <option value="Volta">Volta Region</option>
-                                <option value="Western">Western Region</option>
-                                <option value="Western North">Western North Region</option>
-                            </select>
-                        </div>
-                        <div class="relative w-full md:w-2/3 flex items-center bg-[#020617]/30 rounded-2xl border border-slate-700/30 hover:border-emerald-500/30 transition-colors">
-                            <span class="absolute left-4 text-slate-500 z-10">🔍</span>
-                            <input type="search" id="market_finder" name="market_search_query" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" placeholder="Search 'Broilers' or 'Tomatoes'..." class="w-full bg-transparent pl-10 pr-12 py-4 text-sm text-white focus:outline-none transition-all relative z-20 placeholder-slate-500 font-medium cursor-text">
-                            <button onclick="startVoiceSearch()" class="absolute right-4 text-slate-400 hover:text-emerald-400 transition-colors p-1 rounded-full bg-[#0f172a] shadow-inner cursor-pointer z-30">🎤</button>
-                        </div>
-                        <button onclick="executeSearch()" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black px-10 py-4 rounded-2xl transition-all shrink-0 shadow-[0_0_15px_rgba(16,185,129,0.4)] hover:shadow-[0_0_25px_rgba(16,185,129,0.6)] hover:-translate-y-0.5 tracking-wide cursor-pointer z-20">Search</button>
-                    </div>
-                </div>
-
-                <div class="mt-12 relative w-full max-w-5xl mx-auto glass-card rounded-[3rem] border border-white/5 overflow-hidden shadow-2xl h-64 md:h-56 group cursor-pointer" id="feature-slideshow"></div>
-
-                <div class="mt-10 flex justify-center relative z-20">
-                    <div class="bg-[#020617]/60 p-1.5 rounded-2xl border border-slate-700/50 inline-flex shadow-xl backdrop-blur-md">
-                        <button onclick="switchMarketplaceTab('ads')" id="btn-tab-ads" class="px-8 py-3.5 rounded-xl font-black text-sm transition-all bg-emerald-600 text-white shadow-[0_0_15px_rgba(16,185,129,0.3)] cursor-pointer">🌾 Available Produce (Ads)</button>
-                        <button onclick="switchMarketplaceTab('rfqs')" id="btn-tab-rfqs" class="px-8 py-3.5 rounded-xl font-black text-sm transition-all text-slate-400 hover:text-white flex items-center gap-1.5 cursor-pointer">📢 Buyer Tenders (RFQs)</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Home Screen Extenstions (RFQs, Trending, Categories, News) -->
-            <div id="home-rfq-container" class="hidden relative z-40">
-                <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
-                    <div>
-                        <h3 class="text-3xl font-black text-white tracking-tight flex items-center gap-3">📢 Commercial Buyer Tenders</h3>
-                        <p class="text-sm text-slate-400 mt-1 font-medium">Fulfill bulk orders directly from aggregators and hotels.</p>
-                    </div>
-                    <button onclick="openRfqModal()" class="bg-blue-600 hover:bg-blue-500 text-white font-black text-sm px-8 py-4 rounded-2xl transition-all shadow-[0_0_15px_rgba(37,99,235,0.4)] flex items-center gap-2 shrink-0 hover:-translate-y-0.5 tracking-wide cursor-pointer">+ Post Purchase Tender</button>
-                </div>
-                <div id="rfq-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
-            </div>
-
-            <div id="home-ads-container" class="relative z-40">
-                <div class="mt-16">
-                    <div class="flex items-center justify-between mb-8">
-                        <h3 class="text-3xl font-black text-white tracking-tight flex items-center gap-3">🔥 Trending Nationwide</h3>
-                        <button onclick="navigate('marketplace')" class="text-xs font-black text-emerald-400 hover:text-emerald-300 tracking-widest uppercase bg-emerald-500/10 px-5 py-2.5 rounded-xl transition-colors border border-emerald-500/20 shadow-inner cursor-pointer">View All →</button>
-                    </div>
-                    <div id="trending-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
-                </div>
-
-                <div class="mt-20">
-                    <div class="flex items-center justify-between mb-8">
-                        <h3 class="text-3xl font-black text-white tracking-tight">Browse Categories</h3>
-                    </div>
-                    <div class="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-5 gap-6">
-                        <div onclick="executeCategory('Poultry')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
-                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('poultry.jfif.jfif');"></div>
-                            <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400">Live Poultry</p>
-                        </div>
-                        <div onclick="executeCategory('Chicks')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
-                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('chicks.jfif');"></div>
-                            <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400 leading-tight">Day-old chicks</p>
-                        </div>
-                        <div onclick="executeCategory('Eggs')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
-                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Chicken_egg_2009-06-04.jpg/500px-Chicken_egg_2009-06-04.jpg');"></div>
-                            <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400">Fresh Eggs</p>
-                        </div>
-                        <div onclick="executeCategory('Meat')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
-                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('meat.jfif.jfif');"></div>
-                            <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400">Dressed Meat</p>
-                        </div>
-                        <div onclick="executeCategory('Vegetables/Fruits')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
-                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Marketvegetables.jpg/500px-Marketvegetables.jpg');"></div>
-                            <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400">Vegetables / Fruits</p>
-                        </div>
-                        <div onclick="executeCategory('Fishes')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
-                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('fishes.jfif');"></div>
-                            <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400 leading-tight">Fishes</p>
-                        </div>
-                        <div onclick="executeCategory('Livestock')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
-                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('livestock.jfif.jfif');"></div>
-                            <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400">Livestock</p>
-                        </div>
-                        <div onclick="executeCategory('Machinery')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
-                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('machinery.jfif.jfif');"></div>
-                            <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400">Machinery</p>
-                        </div>
-                        <div onclick="executeCategory('Pets')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
-                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('pets.jfif');"></div>
-                            <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400">Pets</p>
-                        </div>
-                        <div onclick="executeCategory('Vaccines & Feed')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
-                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('vaccines%20%26%20feed.jfif');"></div>
-                            <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400 leading-tight">Vaccines & Feed</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-24">
-                    <div class="flex items-center justify-between mb-8">
-                        <h3 class="text-3xl font-black text-white tracking-tight flex items-center gap-3">📰 Agri Newsroom & Policy</h3>
-                        <span class="text-[10px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-3 py-1.5 rounded-full uppercase font-black tracking-widest shadow-inner">Live Updates</span>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="newsroom-grid"></div>
-                </div>
-            </div>
-
-            <div class="mt-24 glass-card p-12 md:p-16 rounded-[3rem] relative overflow-hidden border border-emerald-500/20 bg-gradient-to-br from-[#020617]/80 to-emerald-950/30 relative z-40">
-                <div class="absolute top-0 right-0 w-[40vw] h-[40vw] bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none"></div>
-                <div class="text-center relative z-10">
-                    <span class="text-6xl mb-6 block animate-float">🤝</span>
-                    <h2 class="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">Partner With Us & Fuel the Future</h2>
-                    <p class="text-slate-300 text-lg max-w-3xl mx-auto leading-relaxed mb-10 font-medium">
-                        AgromartDirect is on a mission to completely digitize the agricultural supply chain in Ghana. By eliminating the middleman, we are increasing farmer profits and bringing cheaper, fresher food to consumers nationwide. 
-                    </p>
-                    <div class="flex flex-col md:flex-row items-center justify-center gap-5">
-                        <a href="mailto:agriconnect886@gmail.com" class="glass-card hover:bg-white/5 text-white font-black py-4.5 px-8 rounded-2xl transition-all border border-white/10 flex items-center justify-center gap-3 shadow-lg hover:-translate-y-0.5 text-sm tracking-wide w-full md:w-auto cursor-pointer">✉️ agriconnect886@gmail.com</a>
-                        <a href="https://wa.me/233245641480" target="_blank" class="bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-[#020617] font-black py-4.5 px-8 rounded-2xl transition-all border border-[#25D366]/30 flex items-center justify-center gap-3 shadow-[0_0_15px_rgba(37,211,102,0.15)] hover:shadow-[0_0_25px_rgba(37,211,102,0.4)] hover:-translate-y-0.5 text-sm tracking-wide w-full md:w-auto cursor-pointer">📞 +233 245 641 480</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- FARMER'S LOUNGE (COMMUNITY FEED) VIEW -->
-        <div id="view-community" class="fade-in hidden max-w-5xl mx-auto space-y-8 mt-8 relative z-30">
-            <div class="glass-card p-10 md:p-12 rounded-[3rem] border border-emerald-500/30 relative overflow-hidden shadow-[0_0_40px_rgba(16,185,129,0.15)] flex flex-col md:flex-row items-center justify-between gap-6">
-                <div class="absolute top-[-50px] right-[-50px] w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
-                <div class="relative z-10 text-center md:text-left">
-                    <h2 class="text-4xl font-black text-white flex items-center justify-center md:justify-start gap-4 tracking-tight">🗣️ The Farmer's Lounge</h2>
-                    <p class="text-slate-400 text-base mt-3 font-medium max-w-2xl">Join the largest digital agribusiness community in Ghana. Ask questions, share harvest success, and get real-time pest alerts.</p>
-                </div>
-                <button onclick="openCommunityPostModal()" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black px-10 py-5 rounded-2xl shadow-[0_0_20px_rgba(16,185,129,0.4)] transition-all shrink-0 hover:-translate-y-1 tracking-wide relative z-10 w-full md:w-auto text-lg cursor-pointer">
-                    + New Post
-                </button>
-            </div>
-
-            <!-- Feed Filters -->
-            <div class="flex gap-4 overflow-x-auto pb-4 hide-scrollbar scroll-touch relative z-40">
-                <button onclick="filterCommunity('All')" id="btn-comm-all" class="bg-emerald-600 text-white px-8 py-3.5 rounded-2xl font-black text-sm shadow-[0_0_15px_rgba(16,185,129,0.4)] shrink-0 transition-colors border border-transparent cursor-pointer">🌍 All Posts</button>
-                <button onclick="filterCommunity('Alert')" id="btn-comm-alert" class="bg-[#0f172a]/80 hover:bg-[#1e293b] text-rose-400 border border-slate-700/80 px-8 py-3.5 rounded-2xl font-black text-sm transition-colors shrink-0 shadow-inner cursor-pointer">🚨 Pest Alerts</button>
-                <button onclick="filterCommunity('Question')" id="btn-comm-question" class="bg-[#0f172a]/80 hover:bg-[#1e293b] text-blue-400 border border-slate-700/80 px-8 py-3.5 rounded-2xl font-black text-sm transition-colors shrink-0 shadow-inner cursor-pointer">❓ Questions</button>
-                <button onclick="filterCommunity('Success')" id="btn-comm-success" class="bg-[#0f172a]/80 hover:bg-[#1e293b] text-amber-400 border border-slate-700/80 px-8 py-3.5 rounded-2xl font-black text-sm transition-colors shrink-0 shadow-inner cursor-pointer">🏆 Success</button>
-            </div>
-
-            <!-- The Feed -->
-            <div id="community-feed" class="space-y-6 relative z-40">
-                <!-- Posts injected by JavaScript -->
-            </div>
-        </div>
-
-        <!-- MARKETPLACE VIEW -->
-        <div id="view-marketplace" class="fade-in hidden space-y-8 relative z-30">
-            <div class="flex flex-col md:flex-row md:items-center justify-between glass-card p-6 md:p-8 rounded-[2.5rem] gap-5 shadow-lg">
-                <div class="flex items-center gap-5">
-                    <h2 class="text-3xl font-black text-white tracking-tight" id="market-title">Market Catalog</h2>
-                    <div class="bg-[#020617]/60 p-2 rounded-2xl inline-flex border border-slate-700/50 shadow-inner">
-                        <button onclick="setMarketplaceMode('ads')" id="mode-ads-btn" class="px-5 py-2 rounded-xl text-sm font-black bg-emerald-600 text-white transition-colors shadow-md cursor-pointer">Ads</button>
-                        <button onclick="setMarketplaceMode('rfqs')" id="mode-rfqs-btn" class="px-5 py-2 rounded-xl text-sm font-black text-slate-400 hover:text-white transition-colors cursor-pointer">Tenders</button>
-                    </div>
-                </div>
-                <div class="flex gap-4 flex-wrap items-center relative z-40">
-                    <select id="market-region-filter" onchange="executeFilters()" class="bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-6 py-4 text-sm font-bold text-white outline-none focus:border-emerald-500 cursor-pointer shadow-inner transition-colors">
-                        <option value="All Regions">All Regions (Ghana)</option>
-                        <option value="Ahafo">Ahafo Region</option>
-                        <option value="Ashanti">Ashanti Region</option>
-                        <option value="Bono">Bono Region</option>
-                        <option value="Bono East">Bono East Region</option>
-                        <option value="Central">Central Region</option>
-                        <option value="Eastern">Eastern Region</option>
-                        <option value="Greater Accra">Greater Accra Region</option>
-                        <option value="North East">North East Region</option>
-                        <option value="Northern">Northern Region</option>
-                        <option value="Oti">Oti Region</option>
-                        <option value="Savannah">Savannah Region</option>
-                        <option value="Upper East">Upper East Region</option>
-                        <option value="Upper West">Upper West Region</option>
-                        <option value="Volta">Volta Region</option>
-                        <option value="Western">Western Region</option>
-                        <option value="Western North">Western North Region</option>
-                    </select>
-                    <select id="filter-sort" onchange="executeFilters()" class="bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-6 py-4 text-sm font-bold text-white outline-none focus:border-emerald-500 cursor-pointer shadow-inner transition-colors">
-                        <option value="newest">Newest First</option>
-                        <option value="price_asc">Price: Low to High</option>
-                        <option value="price_desc">Price: High to Low</option>
-                    </select>
-                    <button onclick="navigate('home')" class="text-sm font-black tracking-widest uppercase text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-6 py-4 rounded-2xl hover:bg-emerald-500/20 transition-colors shadow-inner cursor-pointer">← Back</button>
-                </div>
-            </div>
-            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 relative z-40"></div>
-        </div>
-
-        <!-- AGRI TRAINER VIEW -->
-        <div id="view-trainer" class="fade-in hidden space-y-8 relative z-30">
-            <div class="text-center mb-14 relative z-40">
-                <div class="w-24 h-24 bg-purple-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto mb-8 border border-purple-500/20 shadow-[0_0_40px_rgba(168,85,247,0.15)]">📚</div>
-                <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight">Agri Trainer Hub</h2>
-                <p class="text-slate-400 text-lg max-w-2xl mx-auto mt-4 font-medium">Select a category to view detailed, step-by-step guides on commercial farming.</p>
-            </div>
-            
-            <div id="trainer-categories" class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto relative z-40">
-                <div onclick="showTrainerSubCategory('crops')" class="glass-card p-12 md:p-16 rounded-[3rem] cursor-pointer text-center group border border-emerald-500/20 shadow-[0_0_30px_rgba(16,185,129,0.05)] hover:shadow-[0_0_40px_rgba(16,185,129,0.15)] hover:-translate-y-2 transition-all">
-                    <div class="text-8xl md:text-9xl mb-10 group-hover:scale-110 transition-transform duration-500 drop-shadow-xl">🌾</div>
-                    <h3 class="text-3xl md:text-4xl font-black text-white mb-3 group-hover:text-emerald-400 transition-colors tracking-tight">Learn to Grow Crops</h3>
-                </div>
-                <div onclick="showTrainerSubCategory('animals')" class="glass-card p-12 md:p-16 rounded-[3rem] cursor-pointer text-center group border border-blue-500/20 shadow-[0_0_30px_rgba(59,130,246,0.05)] hover:shadow-[0_0_40px_rgba(59,130,246,0.15)] hover:-translate-y-2 transition-all">
-                    <div class="text-8xl md:text-9xl mb-10 group-hover:scale-110 transition-transform duration-500 drop-shadow-xl">🐔</div>
-                    <h3 class="text-3xl md:text-4xl font-black text-white mb-3 group-hover:text-blue-400 transition-colors tracking-tight">Learn to Raise Animals</h3>
-                </div>
-            </div>
-
-            <div id="trainer-items" class="hidden relative z-40">
-                <button onclick="resetTrainer()" class="text-emerald-400 text-sm font-black mb-10 hover:text-emerald-300 transition-colors flex items-center gap-2 bg-emerald-500/10 px-6 py-3 rounded-2xl border border-emerald-500/20 w-fit tracking-wide shadow-inner cursor-pointer">← Back to Categories</button>
-                <div id="trainer-items-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
-            </div>
-
-            <div id="trainer-guide" class="hidden glass-card p-10 md:p-16 rounded-[3rem] border border-emerald-500/30 shadow-[0_0_50px_rgba(0,0,0,0.4)] relative overflow-hidden z-40">
-                <div class="absolute top-0 right-0 w-[40vw] h-[40vw] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none"></div>
-                <button onclick="document.getElementById('trainer-guide').classList.add('hidden'); document.getElementById('trainer-items').classList.remove('hidden');" class="text-emerald-400 text-sm font-black mb-12 hover:text-emerald-300 transition-colors relative z-10 flex items-center gap-2 bg-emerald-500/10 px-6 py-3 rounded-2xl border border-emerald-500/20 w-fit shadow-inner cursor-pointer">← Back to Selection</button>
-                
-                <div class="flex flex-col md:flex-row items-start md:items-center gap-10 mb-12 relative z-10 border-b border-white/10 pb-12">
-                    <div id="guide-icon" class="text-8xl glass-card p-8 rounded-[3rem] shadow-inner border border-white/5"></div>
-                    <div>
-                        <h2 id="guide-title" class="text-5xl md:text-6xl font-black text-white tracking-tight mb-4"></h2>
-                        <p id="guide-intro" class="text-emerald-400 font-bold tracking-wide text-xl"></p>
-                    </div>
-                </div>
-                
-                <div id="guide-content" class="guide-content relative z-10 max-w-4xl text-lg md:text-xl"></div>
-            </div>
-        </div>
-
-        <!-- FARM MANAGER VIEW -->
+        </div><!-- FARM MANAGER VIEW -->
         <div id="view-farm-manager" class="fade-in hidden space-y-8 relative z-30">
             <div class="flex flex-col md:flex-row md:items-center justify-between glass-card p-10 rounded-[3rem] border border-blue-500/30 gap-8 shadow-[0_0_40px_rgba(59,130,246,0.15)] relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
@@ -897,7 +638,9 @@
                 <p class="text-slate-400 text-lg max-w-3xl mx-auto font-medium">Live regional price indexes and arbitrage tracking. See where it's cheapest to buy and most profitable to sell based on real-time platform data.</p>
             </div>
             <div id="intel-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 relative z-40"></div>
-        </div><!-- FEED CALCULATOR VIEW -->
+        </div>
+
+        <!-- FEED CALCULATOR VIEW -->
         <div id="view-calculator" class="fade-in hidden space-y-8 relative z-30">
             <div class="text-center space-y-4 mb-14 relative z-40">
                 <div class="w-24 h-24 bg-teal-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-teal-500/20 shadow-[0_0_40px_rgba(20,184,166,0.15)] mb-8">🧮</div>
@@ -1063,9 +806,7 @@
                 </button>
             </div>
             <div id="haulage-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 relative z-40"></div>
-        </div>
-
-        <!-- POST AD VIEW -->
+        </div><!-- POST AD VIEW -->
         <div id="view-post" class="fade-in hidden max-w-4xl mx-auto mt-8 relative z-30">
             <div class="flex items-center gap-5 mb-10 relative z-40">
                 <div class="w-16 h-16 bg-emerald-500/20 rounded-[1.5rem] flex items-center justify-center text-3xl text-emerald-400 border border-emerald-500/30 shadow-[0_0_30px_rgba(16,185,129,0.2)]">📢</div>
@@ -1271,9 +1012,7 @@
                     <div id="admin-all-ads-list" class="space-y-4 max-h-[500px] overflow-y-auto pr-4 scroll-touch"></div>
                 </div>
             </div>
-        </div>
-
-        <!-- RENTALS VIEW -->
+        </div><!-- RENTALS VIEW -->
         <div id="view-rentals" class="fade-in hidden space-y-8 relative z-30">
             <div class="flex flex-col md:flex-row md:items-center justify-between glass-card p-10 rounded-[3rem] border border-amber-500/30 gap-8 shadow-[0_0_40px_rgba(245,158,11,0.15)] relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-80 h-80 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none"></div>
@@ -1643,7 +1382,7 @@
         
         let pendingAdPayload = null;
 
-        // --- PLATFORM TEST DATA FALLBACKS (BUG FIX: Added [TEST AD] Tags) ---
+        // --- PLATFORM TEST DATA FALLBACKS ---
         const dummyAgromartAds = [
             "Poultry", "Chicks", "Eggs", "Meat", "Vegetables/Fruits", "Fishes", "Livestock", "Machinery", "Pets", "Vaccines & Feed"
         ].map((cat, i) => ({
@@ -2090,7 +1829,7 @@
             }
         }
 
-        // --- AGRI TRAINER ENCYCLOPEDIA (BUG FIX: Full 10 Crops & 10 Animals) ---
+        // --- AGRI TRAINER ENCYCLOPEDIA ---
         const agriTrainerData = {
             "crops": [
                 {
@@ -2264,7 +2003,7 @@
             
             agriTrainerData[cat].forEach(item => { 
                 grid.innerHTML += `
-                    <div onclick="openTrainerGuide('${cat}', '${item.id}')" class="glass-card p-8 md:p-10 rounded-[2rem] cursor-pointer hover:border-emerald-500/50 hover:-translate-y-2 transition-all text-center shadow-lg group">
+                    <div onclick="openTrainerGuide('${cat}', '${item.id}')" class="glass-card p-6 md:p-8 rounded-[2rem] cursor-pointer hover:border-emerald-500/50 hover:-translate-y-2 transition-all text-center shadow-lg group">
                         <div class="text-6xl mb-5 group-hover:scale-110 transition-transform duration-300 drop-shadow-lg">${item.icon}</div>
                         <h4 class="text-xl font-black text-white group-hover:text-emerald-400 transition-colors tracking-tight">${item.title}</h4>
                         <p class="text-sm text-slate-400 mt-2 font-medium">${item.intro}</p>
@@ -2705,17 +2444,10 @@
                 }
             }
             
-            // SMART ROUTING FIX: Respects previous portal selection without forcing users back to front door
-            const pref = localStorage.getItem('preferred_portal');
-            if (pref === 'everyday') {
-                selectPortal('everyday');
-            } else if (pref === 'agro') {
-                selectPortal('agro');
-            } else {
-                document.body.classList.remove('mode-everyday', 'mode-agro');
-                document.body.classList.add('mode-portal-select');
-                navigate('portal-select');
-            }
+            // BUG FIX: ALWAYS FORCE PORTAL SELECTOR ON APP LOAD
+            document.body.classList.remove('mode-everyday', 'mode-agro');
+            document.body.classList.add('mode-portal-select');
+            navigate('portal-select');
         });
 
         function setupUserProfile(data) {
@@ -2788,9 +2520,7 @@
                 renderAdminVerificationsList(); 
                 renderAdminReports();
             }
-        }
-
-        async function loginUser() {
+        }async function loginUser() {
             const email = document.getElementById('login-email').value.trim();
             const password = document.getElementById('login-password').value.trim();
             
@@ -3072,7 +2802,33 @@
             }
         }
 
-        // CATEGORY BUG FIX: This now accurately filters the dummy local data dynamically
+        function startVoiceSearch() {
+            if (!('webkitSpeechRecognition' in window)) {
+                return showToast("Voice search not supported in this browser.", "error"); 
+            }
+            
+            const searchBox = document.getElementById('market_finder');
+            const recognition = new webkitSpeechRecognition();
+            
+            recognition.continuous = false; 
+            recognition.lang = 'en-GH';
+            
+            recognition.onstart = () => { 
+                searchBox.placeholder = "Listening..."; 
+            };
+            
+            recognition.onresult = (event) => { 
+                searchBox.value = event.results[0][0].transcript; 
+                executeSearch(); 
+            };
+            
+            recognition.onend = () => { 
+                searchBox.placeholder = "Search 'Live Broilers', 'Tomatoes'..."; 
+            };
+            
+            recognition.start();
+        }
+
         async function loadMarketplaceGrid() {
             const titleEl = document.getElementById('market-title'); 
             if (titleEl) {
@@ -3258,33 +3014,6 @@
             if (ticker && tickerHtml) {
                 ticker.innerHTML = tickerHtml.repeat(4); 
             }
-        }
-
-        function startVoiceSearch() {
-            if (!('webkitSpeechRecognition' in window)) {
-                return showToast("Voice search not supported in this browser.", "error"); 
-            }
-            
-            const searchBox = document.getElementById('market_finder');
-            const recognition = new webkitSpeechRecognition();
-            
-            recognition.continuous = false; 
-            recognition.lang = 'en-GH';
-            
-            recognition.onstart = () => { 
-                searchBox.placeholder = "Listening..."; 
-            };
-            
-            recognition.onresult = (event) => { 
-                searchBox.value = event.results[0][0].transcript; 
-                executeSearch(); 
-            };
-            
-            recognition.onend = () => { 
-                searchBox.placeholder = "Search 'Live Broilers', 'Tomatoes'..."; 
-            };
-            
-            recognition.start();
         }
 
         function handleImageUpload(event) {
@@ -3604,7 +3333,7 @@
             if (imgs.length) {
                 imgBlock = `<div class="h-64 w-full bg-slate-800 bg-cover bg-center border-b border-white/5 rounded-t-[2.5rem]" style="background-image: url('${imgs[0]}')"></div>`;
             } else {
-                imgBlock = `<div class="h-64 w-full bg-gradient-to-br from-emerald-900/40 to-slate-900 flex items-center justify-center text-6xl border-b border-white/5 rounded-t-[2.5rem] shadow-inner">🌾</div>`;
+                imgBlock = `<div class="h-64 w-full bg-gradient-to-br from-emerald-900/40 to-slate-900 flex items-center justify-center text-6xl border-b border-white/5 shadow-inner rounded-t-[2.5rem]">🌾</div>`;
             }
             
             let html = `
@@ -4406,17 +4135,17 @@
                 const reqs = await res.json(); 
                 
                 if (!reqs.length) {
-                    c.innerHTML = `<div class="bg-[#020617]/50 p-4 rounded-xl border border-slate-700/50 text-center"><p class="text-sm font-medium text-slate-500">No pending paid verifications.</p></div>`;
+                    c.innerHTML = `<div class="bg-[#020617]/50 p-6 rounded-2xl border border-slate-700/50 text-center"><p class="text-sm font-medium text-slate-500">No pending paid verifications.</p></div>`;
                     return;
                 }
                  
                 c.innerHTML = reqs.map((u) => `
-                    <div class="glass-card p-4 rounded-2xl flex justify-between items-center border border-amber-500/30 bg-amber-500/10 mb-3 shadow-inner">
+                    <div class="glass-card p-5 rounded-2xl flex justify-between items-center border border-amber-500/30 bg-amber-500/10 mb-3 shadow-inner">
                         <div>
-                            <p class="text-sm font-black text-white tracking-tight">${u.name}</p>
-                            <p class="text-xs text-amber-400 font-bold mt-0.5">${u.email}</p>
+                            <p class="text-base font-black text-white tracking-tight">${u.name}</p>
+                            <p class="text-xs text-amber-400 font-bold mt-1">${u.email}</p>
                         </div>
-                        <button onclick="quickVerifyUser('${u.email}', null)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs px-4 py-2.5 rounded-xl transition-colors shadow-lg cursor-pointer">✅ Approve</button>
+                        <button onclick="quickVerifyUser('${u.email}', null)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs px-5 py-3 rounded-xl transition-colors shadow-lg cursor-pointer">✅ Approve</button>
                     </div>`).join(''); 
             } catch (e) {} 
         }
@@ -4438,16 +4167,16 @@
                 } 
                 
                 c.innerHTML = ads.map((ad) => `
-                    <div id="mod-ad-${ad.id}" class="glass-card p-5 rounded-2xl flex flex-col sm:flex-row justify-between sm:items-center gap-4 border border-slate-700/80 mb-3 shadow-lg bg-[#0f172a]/50">
+                    <div id="mod-ad-${ad.id}" class="glass-card p-6 rounded-[2rem] flex flex-col sm:flex-row justify-between sm:items-center gap-5 border border-slate-700/80 mb-4 shadow-lg bg-[#0f172a]/50">
                         <div>
-                            <p class="text-base font-black text-white tracking-tight">${ad.product_name}</p>
-                            <p class="text-sm text-emerald-400 font-black mb-1.5">GH₵${ad.base_price_ghs}</p>
+                            <p class="text-lg font-black text-white tracking-tight">${ad.product_name}</p>
+                            <p class="text-base text-emerald-400 font-black mt-1 mb-2">GH₵${ad.base_price_ghs}</p>
                             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">By: <span class="text-slate-300">${ad.seller_name}</span></p>
                         </div>
-                        <div class="flex gap-2 items-center shrink-0">
-                            <button onclick="previewAd(${ad.id}, true, adminPendingAdsCache.find(a=>a.id===${ad.id}))" class="text-slate-300 font-black text-xs px-4 py-2.5 border border-slate-500/50 rounded-xl hover:bg-slate-800 transition-colors shadow-inner cursor-pointer">👁️ Preview</button>
-                            <button onclick="approveAd('mod-ad-${ad.id}', ${ad.id})" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs px-5 py-2.5 rounded-xl transition-colors shadow-lg cursor-pointer">Approve</button>
-                            <button onclick="rejectAd(${ad.id})" class="bg-rose-600 hover:bg-rose-500 text-white font-black text-xs px-5 py-2.5 rounded-xl transition-colors shadow-lg cursor-pointer">Reject</button>
+                        <div class="flex gap-2 items-center shrink-0 mt-4 sm:mt-0">
+                            <button onclick="previewAd(${ad.id}, true, adminPendingAdsCache.find(a=>a.id===${ad.id}))" class="text-slate-300 font-black text-xs px-5 py-3 border border-slate-500/50 rounded-xl hover:bg-slate-800 transition-colors shadow-inner cursor-pointer">👁️ Preview</button>
+                            <button onclick="approveAd('mod-ad-${ad.id}', ${ad.id})" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs px-6 py-3 rounded-xl transition-colors shadow-lg cursor-pointer">Approve</button>
+                            <button onclick="rejectAd(${ad.id})" class="bg-rose-600 hover:bg-rose-500 text-white font-black text-xs px-6 py-3 rounded-xl transition-colors shadow-lg cursor-pointer">Reject</button>
                         </div>
                     </div>`).join(''); 
             } catch (e) {} 
@@ -4469,14 +4198,14 @@
                 c.innerHTML = allAds.map((ad) => { 
                     let statusColor = ad.status === 'approved' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : (ad.status === 'pending' ? 'text-amber-400 bg-amber-500/10 border-amber-500/20' : 'text-rose-400 bg-rose-500/10 border-rose-500/20');
                     return `
-                        <div id="admin-all-ad-${ad.id}" class="glass-card p-4 rounded-2xl flex justify-between items-center border border-white/5 mb-3 hover:border-white/20 transition-colors shadow-lg">
+                        <div id="admin-all-ad-${ad.id}" class="glass-card p-5 rounded-2xl flex flex-col sm:flex-row justify-between sm:items-center gap-4 border border-white/5 mb-4 hover:border-white/20 transition-colors shadow-lg">
                             <div>
-                                <p class="text-sm font-black text-white tracking-tight">${ad.product_name} <span class="${statusColor} text-[9px] uppercase font-black tracking-widest ml-2 px-2 py-0.5 rounded-md border shadow-inner inline-block">${ad.status}</span></p>
-                                <p class="text-[11px] font-medium text-slate-400 mt-1.5">By: <span class="text-slate-300 font-bold">${ad.seller_name}</span> (${ad.phone_number})</p>
+                                <p class="text-base font-black text-white tracking-tight">${ad.product_name} <span class="${statusColor} text-[9px] uppercase font-black tracking-widest ml-3 px-2.5 py-1 rounded-lg border shadow-inner inline-block">${ad.status}</span></p>
+                                <p class="text-xs font-medium text-slate-400 mt-2">By: <span class="text-slate-300 font-bold">${ad.seller_name}</span> (${ad.phone_number})</p>
                             </div>
-                            <div class="flex gap-2">
-                                <button onclick="adminBanUser('${ad.seller_email}')" class="bg-[#020617] text-rose-500 font-black border border-rose-500/50 text-[10px] uppercase tracking-widest px-4 py-2 rounded-xl hover:bg-rose-900/30 transition-colors shadow-inner cursor-pointer">🚫 Ban</button>
-                                <button onclick="adminDeleteAd(${ad.id})" class="bg-rose-600 hover:bg-rose-500 text-white font-black text-xs px-4 py-2 rounded-xl transition-colors shadow-lg cursor-pointer">🗑️ Delete</button>
+                            <div class="flex gap-3 mt-4 sm:mt-0">
+                                <button onclick="adminBanUser('${ad.seller_email}')" class="bg-[#020617] text-rose-500 font-black border border-rose-500/50 text-[10px] uppercase tracking-widest px-5 py-2.5 rounded-xl hover:bg-rose-900/30 transition-colors shadow-inner cursor-pointer">🚫 Ban</button>
+                                <button onclick="adminDeleteAd(${ad.id})" class="bg-rose-600 hover:bg-rose-500 text-white font-black text-xs px-5 py-2.5 rounded-xl transition-colors shadow-lg cursor-pointer">🗑️ Delete</button>
                             </div>
                         </div>`; 
                 }).join(''); 
@@ -4492,15 +4221,15 @@
                 const reports = await res.json(); 
                 
                 if (!reports.length) {
-                    c.innerHTML = `<div class="bg-[#020617]/50 p-4 rounded-xl border border-slate-700/50 text-center"><p class="text-sm font-medium text-slate-500">No scam reports submitted.</p></div>`;
+                    c.innerHTML = `<div class="bg-[#020617]/50 p-6 rounded-2xl border border-slate-700/50 text-center"><p class="text-sm font-medium text-slate-500">No scam reports submitted.</p></div>`;
                     return;
                 }
                  
                 c.innerHTML = reports.map((r) => `
-                    <div class="glass-card p-5 rounded-2xl flex flex-col border border-rose-500/30 bg-rose-500/5 mb-3 shadow-inner">
-                        <p class="text-sm font-black text-white tracking-tight">Reported: <span class="text-rose-400">${r.seller_name}</span> <span class="text-slate-400 font-medium text-xs ml-1">(${r.seller_phone})</span></p>
-                        <p class="text-xs font-medium text-slate-300 mt-2.5 italic border-l-2 border-rose-500/50 pl-3">"${r.reason}"</p>
-                        <p class="text-[10px] font-bold text-slate-500 mt-3 text-right uppercase tracking-widest">${r.time}</p>
+                    <div class="glass-card p-6 rounded-[2rem] flex flex-col border border-rose-500/30 bg-rose-500/5 mb-4 shadow-inner">
+                        <p class="text-base font-black text-white tracking-tight">Reported: <span class="text-rose-400">${r.seller_name}</span> <span class="text-slate-400 font-medium text-xs ml-2">(${r.seller_phone})</span></p>
+                        <p class="text-sm font-medium text-slate-300 mt-3 italic border-l-2 border-rose-500/50 pl-4">"${r.reason}"</p>
+                        <p class="text-[10px] font-bold text-slate-500 mt-4 text-right uppercase tracking-widest">${r.time}</p>
                     </div>`).join(''); 
             } catch(e){} 
         }
