@@ -632,7 +632,7 @@
                     <h3 id="everyday-feed-title" class="text-2xl md:text-3xl font-black text-white tracking-tight flex items-center gap-3">
                         🏠 Direct Room & Hostel Rentals
                     </h3>
-                    <button onclick="requireAuthToPost()" class="bg-blue-600 hover:bg-blue-500 text-white font-black text-xs px-5 py-3 rounded-xl transition-all shadow-md hover:-translate-y-0.5 tracking-wide cursor-pointer">
+                    <button onclick="openEverydayPostModal()" class="bg-blue-600 hover:bg-blue-500 text-white font-black text-xs px-5 py-3 rounded-xl transition-all shadow-md hover:-translate-y-0.5 tracking-wide cursor-pointer">
                         + Post Listing / Request
                     </button>
                 </div>
@@ -1730,6 +1730,20 @@
             setInterval(renderSlide, 5000);
         }
 
+        
+        const fallbackTestAds = [
+            { id: 901, product_name: "50 Free-Range Broilers", category: "Poultry", base_price_ghs: "85", unit: "bird", neighborhood: "Amasaman, Accra", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "8 weeks old, fully vaccinated." },
+            { id: 902, product_name: "100 Kuroiler Day-Old Chicks", category: "Chicks", base_price_ghs: "9", unit: "chick", neighborhood: "Dome, Accra", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "Hatched today, healthy and active." },
+            { id: 903, product_name: "20 Crates of Large Brown Eggs", category: "Eggs", base_price_ghs: "45", unit: "crate", neighborhood: "Nsawam", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "Farm fresh, securely packaged." },
+            { id: 904, product_name: "10kg Processed Goat Meat", category: "Meat", base_price_ghs: "65", unit: "kg", neighborhood: "Madina", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "Cleaned, cut, and ready for dispatch." },
+            { id: 905, product_name: "50kg Organic Tomatoes", category: "Vegetables/Fruits", base_price_ghs: "350", unit: "box", neighborhood: "Kasoa", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "Freshly harvested from the farm." },
+            { id: 906, product_name: "20kg Fresh Tilapia", category: "Fishes", base_price_ghs: "35", unit: "kg", neighborhood: "Akosombo", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "Medium to large sizes, packed in ice." },
+            { id: 907, product_name: "2 West African Dwarf Goats", category: "Livestock", base_price_ghs: "800", unit: "head", neighborhood: "Aburi", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "1-year-old males, grass-fed." },
+            { id: 908, product_name: "Used Walk-Behind Tractor (2-Wheel)", category: "Machinery", base_price_ghs: "4500", unit: "unit", neighborhood: "Kumasi", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "Good working condition, recently serviced." },
+            { id: 909, product_name: "3 Boerboel Puppies", category: "Pets", base_price_ghs: "1200", unit: "puppy", neighborhood: "East Legon", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "6 weeks old, dewormed and vet-checked." },
+            { id: 910, product_name: "50kg Layer Mash Poultry Feed", category: "Vaccines & Feed", base_price_ghs: "220", unit: "bag", neighborhood: "Tema", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "High-protein formula for optimal production." }
+        ];
+
         const fallbackDummyNews = [
             { 
                 source: "MoFA Update", 
@@ -2307,8 +2321,9 @@
             }
         }
 
-        function requireAuthToPost() {
-            showToast("Opening submission form...");
+        function openEverydayPostModal() {
+            showToast("Everyday Hub listings are manually verified. Redirecting to Admin...");
+            setTimeout(() => window.open("https://wa.me/233245641480", "_blank"), 1500);
         }
 
         function toggleAuthBox(box) { 
@@ -2421,14 +2436,17 @@
             fetch(`${API_URL}/api/v1/products?sort=newest&t=${new Date().getTime()}`)
                 .then(res => res.json())
                 .then(data => { 
-                    allLoadedProducts = data; 
-                    if (data.length > 0) { 
-                        buildMarketTicker(data); 
-                        buildTrendingSection(data); 
+                    allLoadedProducts = data.length > 0 ? data.concat(fallbackTestAds) : fallbackTestAds; 
+                    if (allLoadedProducts.length > 0) { 
+                        buildMarketTicker(allLoadedProducts); 
+                        buildTrendingSection(allLoadedProducts); 
                     } 
                 })
                 .catch(e => {
-                    console.error("Failed to load initial marketplace data", e);
+                    console.error("Failed to load initial marketplace data, using fallbacks", e);
+                    allLoadedProducts = fallbackTestAds;
+                    buildMarketTicker(allLoadedProducts); 
+                    buildTrendingSection(allLoadedProducts);
                 });
                 
             if (agriToken) { 
@@ -2868,9 +2886,9 @@
                 const res = await fetch(url); 
                 const products = await res.json(); 
                 
-                allLoadedProducts = products; 
+                allLoadedProducts = products.length > 0 ? products.concat(fallbackTestAds) : fallbackTestAds; 
                 
-                let filtered = products;
+                let filtered = allLoadedProducts;
                 if (currentRegionState !== "All Regions") {
                     filtered = products.filter(p => p.neighborhood.toLowerCase().includes(currentRegionState.toLowerCase()));
                 }
