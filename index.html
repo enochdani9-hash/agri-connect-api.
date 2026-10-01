@@ -396,6 +396,27 @@
         </div>
     </div>
 
+    
+    <!-- HAULAGE POST MODAL -->
+    <div id="haulage-post-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
+        <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-amber-500/30 text-left">
+            <button onclick="closeHaulagePostModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl cursor-pointer">✕</button>
+            <h3 class="text-2xl font-black text-white mb-2">🚚 List Empty Truck</h3>
+            <p class="text-xs text-slate-400 mb-6 leading-relaxed">Publish your return trip to find cargo and reduce empty leg costs.</p>
+            <div class="space-y-4">
+                <input type="text" id="hp-route" placeholder="Route (e.g. Tamale ➔ Accra)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-amber-500 cursor-text">
+                <input type="text" id="hp-truck" placeholder="Truck Model & Capacity (e.g. 10-Ton Tata)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-amber-500 cursor-text">
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" id="hp-price" placeholder="Return Rate (GH₵)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-amber-500 cursor-text">
+                    <input type="date" id="hp-date" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-amber-500 cursor-pointer">
+                </div>
+                <input type="tel" id="hp-phone" placeholder="Driver Phone Number" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-amber-500 cursor-text">
+                <input type="text" id="hp-capacity" placeholder="Available Cargo Space (e.g. 50% Full)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-amber-500 cursor-text">
+                <button onclick="submitHaulagePost()" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-black py-4 rounded-xl text-sm transition-colors shadow-lg cursor-pointer">Publish Listing</button>
+            </div>
+        </div>
+    </div>
+
     <!-- REPORT MODAL -->
     <div id="report-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-10 rounded-[3rem] relative border border-rose-500/30 text-left shadow-[0_0_40px_rgba(225,29,72,0.15)]">
@@ -4543,7 +4564,200 @@
             }
         }
 
-        // --- FARMER'S LOUNGE (COMMUNITY) LOGIC EXTENDED DATABASE ---
+                function openHaulagePostModal() {
+            if (!agriToken) { 
+                showToast("Sign in to list empty trucks", "error"); 
+                return navigate('auth'); 
+            }
+            document.getElementById('haulage-post-modal').classList.remove('hidden');
+            document.getElementById('haulage-post-modal').classList.add('flex');
+        }
+        
+        function closeHaulagePostModal() {
+            document.getElementById('haulage-post-modal').classList.add('hidden');
+            document.getElementById('haulage-post-modal').classList.remove('flex');
+        }
+        
+        async function submitHaulagePost() {
+            const route = document.getElementById('hp-route').value.trim();
+            const truck = document.getElementById('hp-truck').value.trim();
+            const price = document.getElementById('hp-price').value.trim();
+            const phone = document.getElementById('hp-phone').value.trim();
+            const date = document.getElementById('hp-date').value;
+            const capacity = document.getElementById('hp-capacity').value.trim();
+            
+            if (!route || !truck || !price || !phone) return showToast("Fill all required fields", "error");
+            
+            try {
+                const res = await fetch(`${API_URL}/api/v1/haulage?token=${agriToken}`, { 
+                    method: 'POST', 
+                    headers: {'Content-Type': 'application/json'}, 
+                    body: JSON.stringify({ 
+                        route: route, 
+                        truck: truck, 
+                        price: price, 
+                        driver_phone: phone, 
+                        date: date || 'ASAP', 
+                        capacity: capacity || 'Empty'
+                    }) 
+                });
+                
+                if(!res.ok) throw new Error("Failed to post haulage ad");
+                
+                showToast("Empty truck successfully published! 🚚"); 
+                closeHaulagePostModal();
+                loadHaulagePool();
+                
+                ['hp-route', 'hp-truck', 'hp-price', 'hp-phone', 'hp-date', 'hp-capacity'].forEach(id => document.getElementById(id).value = '');
+            } catch(e) { 
+                showToast("Error posting haulage listing", "error"); 
+            }
+        }
+
+        async function loadRentals() {
+            const grid = document.getElementById('rentals-grid'); 
+            if (!grid) return; 
+            
+            grid.innerHTML = '<div class="col-span-full text-center text-slate-400 py-16 font-medium">Loading active equipment... ⏳</div>';
+            
+            try {
+                const res = await fetch(`${API_URL}/api/v1/rentals`); 
+                const items = await res.json();
+                
+                if (!items.length) { 
+                    grid.innerHTML = `
+                        <div class="col-span-full glass-card py-24 text-center rounded-[3rem] border border-white/5 shadow-inner">
+                            <p class="text-base text-slate-400 font-medium">No machinery currently listed for hire in this area.</p>
+                        </div>`; 
+                    return; 
+                }
+                
+                grid.innerHTML = items.map(item => `
+                    <div class="glass-card p-8 md:p-10 rounded-[3rem] border border-amber-500/20 shadow-xl flex flex-col justify-between hover:shadow-[0_0_30px_rgba(245,158,11,0.15)] hover:border-amber-500/40 transition-all group cursor-pointer">
+                        <div>
+                            <div class="flex justify-between items-start mb-5">
+                                <span class="bg-amber-500/10 text-amber-400 text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border border-amber-500/20 shadow-inner">${item.equipment_type}</span>
+                                <span class="text-[10px] text-slate-400 font-bold bg-[#020617]/50 px-3 py-1.5 rounded-lg border border-slate-700/50">📍 ${item.location}</span>
+                            </div>
+                            <h3 class="text-2xl font-black text-white mb-2 tracking-tight group-hover:text-amber-400 transition-colors">${item.title}</h3>
+                            <p class="text-sm text-slate-400 mb-6 font-medium">Owner: <strong class="text-slate-200">${item.owner_name}</strong></p>
+                            <div class="bg-[#020617]/60 p-5 rounded-2xl border border-slate-700/50 mb-6 space-y-3 shadow-inner">
+                                <div class="flex justify-between text-xs items-center">
+                                    <span class="text-slate-400 font-black uppercase tracking-widest">Daily Rate:</span>
+                                    <span class="font-black text-emerald-400 text-lg tracking-tight">GH₵ ${item.daily_rate_ghs} / day</span>
+                                </div>
+                                <div class="flex justify-between text-xs items-center">
+                                    <span class="text-slate-400 font-black uppercase tracking-widest">Security Deposit:</span>
+                                    <span class="font-bold text-amber-300 bg-amber-500/10 px-2 py-1 rounded">GH₵ ${item.security_deposit_ghs} (Escrow)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/233${(item.owner_phone || '').replace(/\D/g,'').replace(/^0/,'')}?text=${encodeURIComponent('Hello, I want to rent your ' + item.title + ' listed on AgromartDirect.')}" target="_blank" class="w-full bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-[#020617] text-sm font-black py-4 rounded-2xl transition-all text-center block shadow-[0_0_15px_rgba(245,158,11,0.3)] hover:-translate-y-0.5 tracking-wide cursor-pointer">Book Equipment Hire</a>
+                    </div>`).join('');
+            } catch (e) { 
+                grid.innerHTML = '<div class="col-span-full text-center text-rose-400 py-10 font-bold">Could not load equipment catalog.</div>'; 
+            }
+        }
+
+        function openRentalPostModal() {
+            if (!agriToken) { 
+                showToast("Sign in to list equipment", "error"); 
+                return navigate('auth'); 
+            }
+            
+            const title = prompt("Equipment Name & Model (e.g. Honda 10HP Water Pump):"); 
+            if (!title) return;
+            
+            const dailyRate = prompt("Daily Hire Rate (GH₵):"); 
+            const deposit = prompt("Security Deposit (GH₵):"); 
+            const location = prompt("Location / Town:");
+            
+            fetch(`${API_URL}/api/v1/rentals?token=${agriToken}`, { 
+                method: 'POST', 
+                headers: {'Content-Type': 'application/json'}, 
+                body: JSON.stringify({ 
+                    title: title, 
+                    equipment_type: "Machinery", 
+                    daily_rate_ghs: parseFloat(dailyRate) || 0, 
+                    security_deposit_ghs: parseFloat(deposit) || 0, 
+                    location: location || "Accra" 
+                }) 
+            }).then(res => { 
+                if(res.ok) { 
+                    showToast("Equipment Listed for Hire! 🚜"); 
+                    loadRentals(); 
+                } 
+            });
+        }
+
+        async function submitWasteRequest() {
+            if (!agriToken) { 
+                showToast("Sign in to schedule collection", "error"); 
+                return navigate('auth'); 
+            }
+            
+            const waste_type = document.getElementById('waste-type').value; 
+            const quantity_est = document.getElementById('waste-qty').value.trim(); 
+            const pickup_address = document.getElementById('waste-loc').value.trim(); 
+            const contact_phone = document.getElementById('waste-phone').value.trim();
+            
+            if (!quantity_est || !pickup_address || !contact_phone) {
+                return showToast("Please fill all collection details", "error");
+            }
+            
+            try {
+                const res = await fetch(`${API_URL}/api/v1/waste-collections?token=${agriToken}`, { 
+                    method: 'POST', 
+                    headers: {'Content-Type': 'application/json'}, 
+                    body: JSON.stringify({ 
+                        waste_type: waste_type, 
+                        quantity_est: quantity_est, 
+                        pickup_address: pickup_address, 
+                        contact_phone: contact_phone 
+                    }) 
+                });
+                
+                if (!res.ok) throw new Error("Failed to book dispatch");
+                
+                showToast("Collection Dispatched! 🚚"); 
+                document.getElementById('waste-qty').value = ''; 
+                document.getElementById('waste-loc').value = ''; 
+                document.getElementById('waste-phone').value = ''; 
+                
+                loadWasteRequests(); 
+                loadMyWasteRequests();
+            } catch (e) { 
+                showToast(e.message, "error"); 
+            }
+        }
+
+        async function loadWasteRequests() {
+            const container = document.getElementById('waste-queue'); 
+            if (!container) return;
+            
+            try {
+                const res = await fetch(`${API_URL}/api/v1/waste-collections`); 
+                const list = await res.json();
+                
+                if (!list.length) { 
+                    container.innerHTML = '<p class="text-sm font-medium text-slate-500">No pending pickups right now.</p>'; 
+                    return; 
+                }
+                
+                container.innerHTML = list.map(item => `
+                    <div class="glass-card p-5 rounded-2xl border border-white/5 flex justify-between items-center text-sm shadow-inner hover:border-emerald-500/20 transition-colors">
+                        <div>
+                            <span class="text-emerald-400 font-black tracking-tight block text-base">${item.waste_type}</span>
+                            <span class="text-slate-400 text-xs font-bold mt-1 block">${item.quantity} <span class="text-slate-600 mx-2">•</span> 📍 ${item.address}</span>
+                        </div>
+                        <span class="bg-blue-500/10 text-blue-400 text-[10px] uppercase font-black tracking-widest px-3 py-1.5 rounded-lg border border-blue-500/20 shadow-inner">${item.status}</span>
+                    </div>`).join('');
+            } catch (e) { 
+                container.innerHTML = '<p class="text-sm font-bold text-slate-500">Could not load logistics queue.</p>'; 
+            }
+        }
+
+        // --- FARMER'S LOUNGE (COMMUNITY) LOGIC ---
         let loungePosts = [
             { id: 1, author: "Kwame (Verified Farm)", type: "Alert", content: "Armyworms spotted in the Ashanti region! Spray your maize fields immediately before they spread.", time: "2 hours ago", likes: 14, comments: 5 },
             { id: 2, author: "Ama Yaa", type: "Success", content: "Just completed my first 1,000 broiler harvest using the Pearson Square feed calc. Saved so much money on feed!", time: "5 hours ago", likes: 32, comments: 12 },
@@ -4576,20 +4790,24 @@
             const feed = document.getElementById('community-feed');
             if (!feed) return;
             
+            // Reset all buttons to default styling
             const buttons = ['all', 'alert', 'question', 'success'];
             buttons.forEach(b => {
                 const btn = document.getElementById('btn-comm-' + b);
                 if (btn) btn.className = "bg-[#0f172a]/80 hover:bg-[#1e293b] text-slate-400 border border-slate-700/80 px-8 py-3.5 rounded-2xl font-black text-sm transition-colors shrink-0 shadow-inner cursor-pointer";
             });
             
+            // Highlight the active button
             const activeBtn = document.getElementById('btn-comm-' + type.toLowerCase());
             if (activeBtn) activeBtn.className = "bg-emerald-600 text-white px-8 py-3.5 rounded-2xl font-black text-sm shadow-[0_0_15px_rgba(16,185,129,0.4)] shrink-0 transition-colors border border-transparent cursor-pointer";
             
+            // Filter the posts
             let filtered = loungePosts;
             if (type !== 'All') {
                 filtered = loungePosts.filter(p => p.type === type);
             }
 
+            // Render the feed
             if (filtered.length === 0) {
                 feed.innerHTML = `
                     <div class="glass-card p-8 rounded-[2rem] border border-white/5 shadow-lg text-center">
@@ -4662,45 +4880,14 @@
                 comments: 0
             };
 
+            // Add the new post to the top of the feed array
             loungePosts.unshift(newPost);
 
             showToast("Post submitted to the Lounge! 🗣️");
             document.getElementById('community-post-content').value = "";
             closeCommunityPostModal();
-            filterCommunity('All'); 
+            filterCommunity('All'); // Refresh the feed to show the new post
         }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            initGoogleAuth(); 
-            initSlideshow(); 
-            loadAgriNews(); 
-            loadBuyerRequests();
-            
-            fetch(`${API_URL}/api/v1/products?sort=newest&t=${new Date().getTime()}`)
-                .then(res => res.json())
-                .then(data => { 
-                    allLoadedProducts = data; 
-                    if (data.length > 0) { 
-                        buildMarketTicker(data); 
-                        buildTrendingSection(data); 
-                    } 
-                })
-                .catch(e => console.error("Failed to load initial marketplace data", e));
-                
-            if (agriToken) { 
-                fetch(`${API_URL}/api/v1/me?token=${agriToken}`)
-                    .then(res => { if (res.ok) return res.json(); throw new Error("Invalid token"); })
-                    .then(fullData => setupUserProfile(fullData))
-                    .catch(e => { console.log("Token invalid or expired, logging out securely."); logout(); });
-            } else { 
-                const btn = document.getElementById('nav-login-btn'); 
-                if (btn) btn.classList.remove('hidden'); 
-            }
-            
-            document.body.classList.remove('mode-everyday', 'mode-agro');
-            document.body.classList.add('mode-portal-select');
-            navigate('portal-select');
-        });
     </script>
 </body>
 </html>
