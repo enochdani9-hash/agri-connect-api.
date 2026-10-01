@@ -493,7 +493,7 @@
                     <button onclick="logout()" class="text-xs text-rose-400 font-bold hover:text-rose-300 transition-colors cursor-pointer">Logout</button>
                 </div>
                 
-                <button onclick="requireAuthToPost()" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white text-xs font-black px-4 sm:px-5 py-2.5 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.4)] hover:shadow-[0_0_25px_rgba(16,185,129,0.6)] transition-all sm:ml-2 hover:-translate-y-0.5 cursor-pointer">Post Ad</button>
+                <button onclick="handleSmartPostAd()" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white text-xs font-black px-4 sm:px-5 py-2.5 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.4)] hover:shadow-[0_0_25px_rgba(16,185,129,0.6)] transition-all sm:ml-2 hover:-translate-y-0.5 cursor-pointer">Post Ad</button>
             </div>
         </div>
     </header>
@@ -1732,16 +1732,16 @@
 
         
         const fallbackTestAds = [
-            { id: 901, product_name: "50 Free-Range Broilers", category: "Poultry", base_price_ghs: "85", unit: "bird", neighborhood: "Amasaman, Accra", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "8 weeks old, fully vaccinated." },
-            { id: 902, product_name: "100 Kuroiler Day-Old Chicks", category: "Chicks", base_price_ghs: "9", unit: "chick", neighborhood: "Dome, Accra", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "Hatched today, healthy and active." },
-            { id: 903, product_name: "20 Crates of Large Brown Eggs", category: "Eggs", base_price_ghs: "45", unit: "crate", neighborhood: "Nsawam", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "Farm fresh, securely packaged." },
-            { id: 904, product_name: "10kg Processed Goat Meat", category: "Meat", base_price_ghs: "65", unit: "kg", neighborhood: "Madina", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "Cleaned, cut, and ready for dispatch." },
-            { id: 905, product_name: "50kg Organic Tomatoes", category: "Vegetables/Fruits", base_price_ghs: "350", unit: "box", neighborhood: "Kasoa", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "Freshly harvested from the farm." },
-            { id: 906, product_name: "20kg Fresh Tilapia", category: "Fishes", base_price_ghs: "35", unit: "kg", neighborhood: "Akosombo", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "Medium to large sizes, packed in ice." },
-            { id: 907, product_name: "2 West African Dwarf Goats", category: "Livestock", base_price_ghs: "800", unit: "head", neighborhood: "Aburi", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "1-year-old males, grass-fed." },
-            { id: 908, product_name: "Used Walk-Behind Tractor (2-Wheel)", category: "Machinery", base_price_ghs: "4500", unit: "unit", neighborhood: "Kumasi", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "Good working condition, recently serviced." },
-            { id: 909, product_name: "3 Boerboel Puppies", category: "Pets", base_price_ghs: "1200", unit: "puppy", neighborhood: "East Legon", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "6 weeks old, dewormed and vet-checked." },
-            { id: 910, product_name: "50kg Layer Mash Poultry Feed", category: "Vaccines & Feed", base_price_ghs: "220", unit: "bag", neighborhood: "Tema", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "High-protein formula for optimal production." }
+            { id: 901, product_name: "[TEST AD] 50 Free-Range Broilers", category: "Poultry", base_price_ghs: "85", unit: "bird", neighborhood: "Amasaman, Accra", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "This is a test ad. Do not call." },
+            { id: 902, product_name: "[TEST AD] 100 Kuroiler Day-Old Chicks", category: "Chicks", base_price_ghs: "9", unit: "chick", neighborhood: "Dome, Accra", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "This is a test ad. Do not call." },
+            { id: 903, product_name: "[TEST AD] 20 Crates Large Brown Eggs", category: "Eggs", base_price_ghs: "45", unit: "crate", neighborhood: "Nsawam", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "This is a test ad. Do not call." },
+            { id: 904, product_name: "[TEST AD] 10kg Processed Goat Meat", category: "Meat", base_price_ghs: "65", unit: "kg", neighborhood: "Madina", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "This is a test ad. Do not call." },
+            { id: 905, product_name: "[TEST AD] 50kg Organic Tomatoes", category: "Vegetables/Fruits", base_price_ghs: "350", unit: "box", neighborhood: "Kasoa", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "This is a test ad. Do not call." },
+            { id: 906, product_name: "[TEST AD] 20kg Fresh Tilapia", category: "Fishes", base_price_ghs: "35", unit: "kg", neighborhood: "Akosombo", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "This is a test ad. Do not call." },
+            { id: 907, product_name: "[TEST AD] 2 West African Dwarf Goats", category: "Livestock", base_price_ghs: "800", unit: "head", neighborhood: "Aburi", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "This is a test ad. Do not call." },
+            { id: 908, product_name: "[TEST AD] Used Walk-Behind Tractor", category: "Machinery", base_price_ghs: "4500", unit: "unit", neighborhood: "Kumasi", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "This is a test ad. Do not call." },
+            { id: 909, product_name: "[TEST AD] 3 Boerboel Puppies", category: "Pets", base_price_ghs: "1200", unit: "puppy", neighborhood: "East Legon", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "This is a test ad. Do not call." },
+            { id: 910, product_name: "[TEST AD] 50kg Layer Mash Feed", category: "Vaccines & Feed", base_price_ghs: "220", unit: "bag", neighborhood: "Tema", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "This is a test ad. Do not call." }
         ];
 
         const fallbackDummyNews = [
@@ -1962,64 +1962,28 @@
         // --- AGRI TRAINER ENCYCLOPEDIA ---
         const agriTrainerData = {
             "crops": [
-                {
-                    "id": "tomato",
-                    "icon": "🍅",
-                    "title": "Tomatoes",
-                    "wikiSearch": "Tomato",
-                    "intro": "High yield, 3-month cycle.",
-                    "guide": "<h3>Nursery & Transplanting</h3><p>Start seeds in trays using sterile soil. Transplant at 3-4 weeks when pencil thick. Space 60cm apart.</p><h3>Maintenance</h3><p>Stake plants to prevent fruit rot. Apply NPK 15-15-15 at flowering. Water deeply but infrequently.</p><h3>Harvest</h3><p>Harvest at 10-12 weeks when pink/red for immediate local markets, or mature green for distant haulage.</p>"
-                },
-                {
-                    "id": "maize",
-                    "icon": "🌽",
-                    "title": "Maize",
-                    "wikiSearch": "Maize",
-                    "intro": "Staple crop, 100 days.",
-                    "guide": "<h3>Planting</h3><p>Plant 2 seeds per hole, 75cm x 40cm spacing. Always use certified, treated seeds to prevent soil pests.</p><h3>Fertilizer</h3><p>Apply basal NPK 2 weeks after planting. Top dress with Urea just before tasseling begins.</p><h3>Harvest</h3><p>Harvest when cobs point downward and husks dry up to ensure low moisture content.</p>"
-                },
-                {
-                    "id": "cassava",
-                    "icon": "🥔",
-                    "title": "Cassava",
-                    "wikiSearch": "Cassava",
-                    "intro": "Drought resistant, 9-12 months.",
-                    "guide": "<h3>Planting</h3><p>Cut healthy stems into 20cm lengths. Plant on ridges at a 45-degree angle.</p><h3>Maintenance</h3><p>Weed regularly during the first 3 months to prevent canopy competition.</p><h3>Harvest</h3><p>Harvest at 9-12 months to prevent woody, unmarketable tubers.</p>"
-                },
-                {
-                    "id": "yam",
-                    "icon": "🍠",
-                    "title": "Yam",
-                    "wikiSearch": "Yam (vegetable)",
-                    "intro": "Tuber crop, requires mounds.",
-                    "guide": "<h3>Planting</h3><p>Plant seed yams or setts on large, well-tilled mounds at the onset of the rains.</p><h3>Staking</h3><p>Stake vines early to maximize sunlight exposure and keep leaves off the ground.</p><h3>Harvest</h3><p>Harvest when vines turn yellow and dry up completely.</p>"
-                }
+                { "id": "tomato", "icon": "🍅", "title": "Tomatoes", "wikiSearch": "Tomato", "intro": "High yield, 3-month cycle.", "guide": "<h3>Nursery & Transplanting</h3><p>Start seeds in trays using sterile soil. Transplant at 3-4 weeks when pencil thick. Space 60cm apart.</p><h3>Maintenance</h3><p>Stake plants to prevent fruit rot. Apply NPK 15-15-15 at flowering. Water deeply but infrequently.</p><h3>Harvest</h3><p>Harvest at 10-12 weeks when pink/red for immediate local markets, or mature green for distant haulage.</p>" },
+                { "id": "maize", "icon": "🌽", "title": "Maize", "wikiSearch": "Maize", "intro": "Staple crop, 100 days.", "guide": "<h3>Planting</h3><p>Plant 2 seeds per hole, 75cm x 40cm spacing. Always use certified, treated seeds to prevent soil pests.</p><h3>Fertilizer</h3><p>Apply basal NPK 2 weeks after planting. Top dress with Urea just before tasseling begins.</p><h3>Harvest</h3><p>Harvest when cobs point downward and husks dry up to ensure low moisture content.</p>" },
+                { "id": "cassava", "icon": "🥔", "title": "Cassava", "wikiSearch": "Cassava", "intro": "Drought resistant, 9-12 months.", "guide": "<h3>Planting</h3><p>Cut healthy stems into 20cm lengths. Plant on ridges at a 45-degree angle.</p><h3>Maintenance</h3><p>Weed regularly during the first 3 months to prevent canopy competition.</p><h3>Harvest</h3><p>Harvest at 9-12 months to prevent woody, unmarketable tubers.</p>" },
+                { "id": "yam", "icon": "🍠", "title": "Yam", "wikiSearch": "Yam (vegetable)", "intro": "Tuber crop, requires mounds.", "guide": "<h3>Planting</h3><p>Plant seed yams or setts on large, well-tilled mounds at the onset of the rains.</p><h3>Staking</h3><p>Stake vines early to maximize sunlight exposure and keep leaves off the ground.</p><h3>Harvest</h3><p>Harvest when vines turn yellow and dry up completely.</p>" },
+                { "id": "plantain", "icon": "🍌", "title": "Plantain", "wikiSearch": "Plantain", "intro": "High demand, 10-12 month cycle.", "guide": "<h3>Planting</h3><p>Plant suckers in holes 30cm deep. Space them 3 meters apart. Ensure good drainage.</p><h3>Maintenance</h3><p>Prune dead leaves regularly. Desucker to leave only 2-3 followers per mat.</p><h3>Harvest</h3><p>Harvest when the fingers are full and starting to show a slight color change.</p>" },
+                { "id": "pepper", "icon": "🌶️", "title": "Chili Pepper", "wikiSearch": "Chili pepper", "intro": "Continuous harvest.", "guide": "<h3>Planting</h3><p>Nurse seeds for 4 weeks. Transplant in the late afternoon. Space 60cm apart.</p><h3>Maintenance</h3><p>Apply high-potassium fertilizer to boost fruiting. Spray neem oil to manage aphids.</p><h3>Harvest</h3><p>Harvest continuously as fruits mature to red or ripe yellow to encourage more flowering.</p>" },
+                { "id": "cocoa", "icon": "🍫", "title": "Cocoa", "wikiSearch": "Cocoa bean", "intro": "Major cash crop.", "guide": "<h3>Planting</h3><p>Plant hybrid seedlings from COCOBOD under temporary shade. Space 3m x 3m.</p><h3>Maintenance</h3><p>Prune to form a well-balanced canopy. Spray approved fungicides for black pod disease.</p><h3>Harvest</h3><p>Harvest ripe yellow/orange pods carefully. Ferment beans for 6-7 days, then sun-dry.</p>" },
+                { "id": "rice", "icon": "🌾", "title": "Rice", "wikiSearch": "Rice", "intro": "Swamp/Upland varieties.", "guide": "<h3>Planting</h3><p>Ensure steady water supply. Seed directly or transplant from nursery.</p><h3>Maintenance</h3><p>Weed regularly. Maintain water levels for swamp varieties.</p><h3>Harvest</h3><p>Harvest when grains are hard and yellow.</p>" },
+                { "id": "soybean", "icon": "🌱", "title": "Soybean", "wikiSearch": "Soybean", "intro": "Protein-rich legume.", "guide": "<h3>Planting</h3><p>Inoculate seeds before planting. Space rows 60cm apart.</p><h3>Maintenance</h3><p>Weed early. Needs good moisture during pod filling.</p><h3>Harvest</h3><p>Harvest when pods turn brown and leaves drop.</p>" },
+                { "id": "onion", "icon": "🧅", "title": "Onion", "wikiSearch": "Onion", "intro": "Dry season cultivation.", "guide": "<h3>Nursery</h3><p>Requires well-drained soils. Transplant at pencil thickness.</p><h3>Maintenance</h3><p>Keep weed-free. Requires regular, light watering.</p><h3>Harvest</h3><p>Harvest when tops fall over and dry.</p>" }
             ],
             "animals": [
-                {
-                    "id": "broiler",
-                    "icon": "🐔",
-                    "title": "Broiler Chickens",
-                    "wikiSearch": "Broiler",
-                    "intro": "6-week meat birds.",
-                    "guide": "<h3>Brooding</h3><p>Preheat brooder to 32°C. Feed Starter ad-libitum. Block drafts entirely.</p><h3>Growth</h3><p>Expand space weekly. Vaccinate for Gumboro (Day 10) and Newcastle (Day 14).</p><h3>Finisher</h3><p>Feed Finisher mash. Ensure excellent ventilation. Harvest at 2.5kg around week 6.</p>"
-                },
-                {
-                    "id": "catfish",
-                    "icon": "🐟",
-                    "title": "Catfish",
-                    "wikiSearch": "Catfish",
-                    "intro": "Hardy freshwater fish.",
-                    "guide": "<h3>Water Quality</h3><p>Ensure pH 6.5-8.0. Change water regularly to prevent fatal ammonia spikes.</p><h3>Feeding</h3><p>Use high-protein floating pellets. Feed twice daily until fish stop surfacing.</p><h3>Sorting</h3><p>Sort fish by size monthly to prevent larger fish from cannibalizing smaller ones.</p>"
-                },
-                {
-                    "id": "goat",
-                    "icon": "🐐",
-                    "title": "Goats",
-                    "wikiSearch": "Goat",
-                    "intro": "Hardy ruminants.",
-                    "guide": "<h3>Housing</h3><p>Keep floors slated and dry to prevent foot rot. Ensure good ventilation.</p><h3>Feeding</h3><p>Provide forage, cassava peels, and a continuous mineral salt lick.</p><h3>Healthcare</h3><p>Deworm regularly. Vaccinate against PPR annually.</p>"
-                }
+                { "id": "broiler", "icon": "🐔", "title": "Broiler Chickens", "wikiSearch": "Broiler", "intro": "6-week meat birds.", "guide": "<h3>Brooding</h3><p>Preheat brooder to 32°C. Feed Starter ad-libitum. Block drafts entirely.</p><h3>Growth</h3><p>Expand space weekly. Vaccinate for Gumboro (Day 10) and Newcastle (Day 14).</p><h3>Finisher</h3><p>Feed Finisher mash. Ensure excellent ventilation. Harvest at 2.5kg around week 6.</p>" },
+                { "id": "layer", "icon": "🥚", "title": "Layer Chickens", "wikiSearch": "Poultry farming", "intro": "Egg production.", "guide": "<h3>Brooding</h3><p>Careful temperature control. Provide chick mash. Debeak at 10 days to prevent cannibalism.</p><h3>Pullet Stage</h3><p>Switch to grower mash. Strictly adhere to the vaccination schedule.</p><h3>Production</h3><p>At 18 weeks, switch to Layer Mash. Provide 14-16 hours of light daily.</p>" },
+                { "id": "catfish", "icon": "🐟", "title": "Catfish", "wikiSearch": "Catfish", "intro": "Hardy freshwater fish.", "guide": "<h3>Water Quality</h3><p>Ensure pH 6.5-8.0. Change water regularly to prevent fatal ammonia spikes.</p><h3>Feeding</h3><p>Use high-protein floating pellets. Feed twice daily until fish stop surfacing.</p><h3>Sorting</h3><p>Sort fish by size monthly to prevent larger fish from cannibalizing smaller ones.</p>" },
+                { "id": "goat", "icon": "🐐", "title": "Goats", "wikiSearch": "Goat", "intro": "Hardy ruminants.", "guide": "<h3>Housing</h3><p>Keep floors slated and dry to prevent foot rot. Ensure good ventilation.</p><h3>Feeding</h3><p>Provide forage, cassava peels, and a continuous mineral salt lick.</p><h3>Healthcare</h3><p>Deworm regularly. Vaccinate against PPR annually.</p>" },
+                { "id": "sheep", "icon": "🐑", "title": "Sheep", "wikiSearch": "Sheep", "intro": "Grazing ruminants.", "guide": "<h3>Housing</h3><p>Provide a dry, draft-free shelter. Susceptible to pneumonia in damp conditions.</p><h3>Feeding</h3><p>Primary diet is pasture grass. Supplement with concentrates during late pregnancy.</p><h3>Healthcare</h3><p>Regular foot trimming and deworming are essential.</p>" },
+                { "id": "pig", "icon": "🐷", "title": "Pigs", "wikiSearch": "Pig farming", "intro": "Fast growth.", "guide": "<h3>Housing</h3><p>Construct solid concrete pens with a sloped floor for easy washing.</p><h3>Feeding</h3><p>Provide high-quality formulated pig mash. Boil swill before feeding.</p><h3>Healthcare</h3><p>Administer iron injections to piglets on day 3. Deworm regularly.</p>" },
+                { "id": "rabbit", "icon": "🐇", "title": "Rabbits", "wikiSearch": "Cuniculture", "intro": "High reproduction.", "guide": "<h3>Housing</h3><p>Keep in well-ventilated wire cages to allow droppings to fall through.</p><h3>Feeding</h3><p>Provide pellets and fresh, clean forage daily.</p><h3>Breeding</h3><p>Does can be rebred shortly after kindling, but allow rest for optimal health.</p>" },
+                { "id": "turkey", "icon": "🦃", "title": "Turkeys", "wikiSearch": "Turkey (bird)", "intro": "Festive season demand.", "guide": "<h3>Brooding</h3><p>Require intensive early care and higher temperatures than chicks.</p><h3>Feeding</h3><p>Require high protein starter feed (28% CP).</p><h3>Health</h3><p>Prone to blackhead disease; keep separate from chickens.</p>" },
+                { "id": "cattle", "icon": "🐄", "title": "Cattle", "wikiSearch": "Cattle", "intro": "Beef and dairy.", "guide": "<h3>Grazing</h3><p>Provide extensive paddock rotation or zero-grazing system.</p><h3>Feeding</h3><p>Supplement dry season pasture with silage and mineral licks.</p><h3>Health</h3><p>Vaccinate against CBPP and control ticks regularly.</p>" },
+                { "id": "snail", "icon": "🐌", "title": "Snails", "wikiSearch": "Heliciculture", "intro": "Low capital.", "guide": "<h3>Environment</h3><p>Requires shaded, moist environment. Construct pens to prevent escape and predators.</p><h3>Feeding</h3><p>Feed soft leaves, fruits, and calcium supplements for shell growth.</p><h3>Maintenance</h3><p>Keep soil damp but not waterlogged. Clean pens regularly.</p>" }
             ]
         };
 
@@ -2346,6 +2310,14 @@
             window.location.reload(); 
         }
 
+                function handleSmartPostAd() {
+            if (document.body.classList.contains('mode-everyday')) {
+                openEverydayPostModal();
+            } else {
+                requireAuthToPost();
+            }
+        }
+        
         function requireAuthToPost() { 
             if (!agriToken) { 
                 showToast("Sign in to post an ad", "error"); 
@@ -2978,16 +2950,22 @@
             const grid = document.getElementById('trending-grid'); 
             if (!grid) return; 
             
-            let approvedAds = products.filter(p => p.status === 'approved');
-            let trendingAds = approvedAds.filter(p => p.boost_tier === 'premium'); 
+            // Explicitly filter out any ad with "[TEST AD]" in the title
+            let realAds = products.filter(p => p.status === 'approved' && !p.product_name.includes('[TEST AD]'));
+            let trendingAds = realAds.filter(p => p.boost_tier === 'premium'); 
             
             if (trendingAds.length < 3) { 
                 let extraAdsNeeded = 3 - trendingAds.length;
-                let standardAds = approvedAds.filter(p => p.boost_tier !== 'premium');
+                let standardAds = realAds.filter(p => p.boost_tier !== 'premium');
                 trendingAds = trendingAds.concat(standardAds.slice(0, extraAdsNeeded)); 
             }
             
-            renderProductGrid(trendingAds.slice(0, 3), grid); 
+            // If there are literally no real ads on the platform yet, show a clean empty state rather than test ads
+            if (trendingAds.length === 0) {
+                grid.innerHTML = '<div class="col-span-full glass-card py-16 text-center rounded-[2.5rem] border border-white/5 shadow-inner"><p class="text-slate-400 font-medium">New platform listings will appear here soon.</p></div>';
+            } else {
+                renderProductGrid(trendingAds.slice(0, 3), grid); 
+            }
         }
 
         function buildMarketTicker(products) { 
