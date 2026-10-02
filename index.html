@@ -64,83 +64,66 @@
         ::-webkit-scrollbar-thumb { background: rgba(16, 185, 129, 0.5); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: rgba(16, 185, 129, 0.8); }
         
-        /* Advanced Glassmorphism */
+        
+        /* Peak Android Performance Settings */
+        html { overscroll-behavior-y: none; scroll-behavior: smooth; }
+        * { -webkit-tap-highlight-color: transparent; outline: none; }
+        
+        .content-visibility-auto { content-visibility: auto; contain-intrinsic-size: 0 400px; }
+        
+        /* Smooth native-like spring animations */
         .glass-card { 
-            background: rgba(15, 23, 42, 0.4); 
-            backdrop-filter: blur(20px); 
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08); 
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05), 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(15, 23, 42, 0.6); 
+            backdrop-filter: blur(8px); /* Much lower blur for 60fps locked Android performance */
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s;
+            contain: paint; /* Massive CSS engine performance boost */
         }
         
-        .glass-card:hover {
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 10px 40px 0 rgba(0, 0, 0, 0.4);
-            transform: translateY(-2px);
+        .glass-card:active {
+            transform: scale(0.97);
+            transition: transform 0.05s linear;
         }
 
-        /* Form Inputs */
-        input, select, textarea {
-            transition: all 0.3s ease;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
-        }
-        input:focus, select:focus, textarea:focus {
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 0 0 2px rgba(16, 185, 129, 0.2);
+        button:active, .cursor-pointer:active {
+            transform: scale(0.95);
+            transition: transform 0.05s linear;
         }
         
-        /* Animations */
-        .fade-in { animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-        @keyframes fadeIn { 
-            from { opacity: 0; transform: translateY(15px); filter: blur(4px); } 
-            to { opacity: 1; transform: translateY(0); filter: blur(0); } 
-        }
-
-        .animate-marquee { display: inline-flex; animation: marquee 35s linear infinite; }
-        @keyframes marquee { 0% { transform: translateX(10%); } 100% { transform: translateX(-100%); } }
-        
-        /* High Contrast Sunlight Mode */
-        body.sunlight-mode { background-color: #f8fafc !important; color: #020617 !important; }
-        body.sunlight-mode .glass-card { 
-            background: rgba(255, 255, 255, 0.7) !important; 
-            border: 1px solid rgba(0, 0, 0, 0.05) !important; 
-            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05) !important;
-        }
-        body.sunlight-mode h1, body.sunlight-mode h2, body.sunlight-mode h3, body.sunlight-mode .text-white { color: #020617 !important; }
-        body.sunlight-mode p, body.sunlight-mode span.text-slate-400 { color: #475569 !important; }
-        
-        /* Agri Trainer Typography */
-        .guide-content h3 { color: #10b981; font-weight: 900; margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 1.15rem; }
-        .guide-content p { color: #cbd5e1; margin-bottom: 1rem; font-size: 0.9rem; line-height: 1.65; }
-        .guide-content ul { list-style-type: disc; padding-left: 1.5rem; color: #cbd5e1; font-size: 0.9rem; margin-bottom: 1rem; }
-        
-        /* Wikipedia Embed Typography */
-        #wiki-content p { margin-bottom: 0.75rem; font-size: 0.875rem; line-height: 1.6; color: #cbd5e1; }
-        #wiki-content b { color: #ffffff; }
-        body.sunlight-mode #wiki-content p { color: #334155; }
-        body.sunlight-mode #wiki-content b { color: #020617; }
-        body.sunlight-mode .guide-content p, body.sunlight-mode .guide-content ul { color: #334155; }
+        /* iOS Safe Area */
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom, 1rem); }
 
         /* Mobile Touch & Scroll Fixes */
-        input, select, textarea, button, a {
-            touch-action: manipulation;
-        }
+        * { -webkit-tap-highlight-color: transparent; }
         .scroll-touch { -webkit-overflow-scrolling: touch; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Hardware Acceleration for Animations */
+        .animate-blob, .animate-float {
+            will-change: transform;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+        }
+        
+        /* Glass Card Active State (Peak Design) */
+        .glass-card:active {
+            transform: scale(0.98);
+            transition: transform 0.1s ease;
+        }
+
 
         /* PORTAL VISIBILITY CONTROL */
         body.mode-everyday .pro-only { display: none !important; }
         body.mode-portal-select .pro-only { display: none !important; }
     </style>
 </head>
-<body id="app-body" class="bg-[#020617] text-slate-100 font-sans min-h-screen flex flex-col transition-colors duration-500 overflow-x-hidden relative mode-portal-select">
+<body id="app-body" class="bg-[#020617] text-slate-100 font-sans min-h-screen antialiased selection:bg-emerald-500/30 selection:text-emerald-200 flex flex-col transition-colors duration-500 overflow-x-hidden relative mode-portal-select">
     
-    <!-- FIX: Safe Background Animation Container (Prevents touch blocking) -->
-    <div class="fixed inset-0 z-[-10] pointer-events-none overflow-hidden">
-        <div class="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-emerald-600/10 mix-blend-screen filter blur-[100px] animate-blob"></div>
-        <div class="absolute top-[20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-blue-600/10 mix-blend-screen filter blur-[100px] animate-blob animation-delay-2000"></div>
-        <div class="absolute bottom-[-20%] left-[20%] w-[60vw] h-[60vw] rounded-full bg-teal-600/10 mix-blend-screen filter blur-[120px] animate-blob animation-delay-4000"></div>
+    <!-- PEAK PERFORMANCE ANDROID BACKGROUND: Replaced expensive CSS blur with lightweight radial gradients -->
+    <div class="fixed inset-0 z-[-10] pointer-events-none overflow-hidden" style="background: radial-gradient(circle at 10% 0%, rgba(16,185,129,0.08) 0%, transparent 40%), radial-gradient(circle at 90% 30%, rgba(59,130,246,0.08) 0%, transparent 40%), radial-gradient(circle at 30% 90%, rgba(20,184,166,0.08) 0%, transparent 50%); transform: translateZ(0); will-change: background;">
     </div>
     
     <div id="toast-container" class="fixed bottom-6 right-6 z-[200] flex flex-col gap-3 pointer-events-none"></div>
@@ -221,7 +204,7 @@
     </div><div id="rfq-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[120] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-blue-500/30 text-left">
             <button onclick="closeRfqModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl cursor-pointer">✕</button>
-            <h3 class="text-2xl font-black text-white mb-2">📢 Post Purchase Tender</h3>
+            <h3 class="text-xl md:text-2xl font-black text-white mb-2">📢 Post Purchase Tender</h3>
             <p class="text-xs text-slate-400 mb-6 leading-relaxed">Hotels, Chop Bars, Schools, and Aggregators: broadcast what produce you need, and local farms will place direct supply bids.</p>
             <div class="space-y-4">
                 <input type="text" id="rfq-item" placeholder="Produce Needed (e.g. 250 Live Broilers 2.5kg)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-blue-500 cursor-text">
@@ -245,7 +228,7 @@
     </div>
 
     <div id="order-modal" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
-        <div class="glass-card w-full max-w-lg p-8 md:p-10 rounded-[3rem] relative border border-emerald-500/30 shadow-[0_0_40px_rgba(16,185,129,0.15)]">
+        <div class="glass-card w-full max-w-lg p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] relative border border-emerald-500/30 shadow-xl md:shadow-[0_0_40px_rgba(16,185,129,0.15)]">
             <button onclick="closeOrderModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl cursor-pointer">✕</button>
             <h3 class="text-3xl font-black text-white mb-6 tracking-tight">🤝 Smart Deal Room</h3>
             
@@ -255,7 +238,7 @@
                     <span class="text-xs text-slate-400 font-bold bg-[#020617]/50 px-2.5 py-1 rounded-lg">📍 <span id="order-seller-loc"></span></span>
                 </div>
                 <div class="flex justify-between items-baseline">
-                    <p class="text-3xl font-black text-white tracking-tight">GH₵<span id="order-base-price">0</span> <span class="text-sm text-slate-400 uppercase tracking-widest">/ <span id="order-unit"></span></span></p>
+                    <p class="text-2xl md:text-3xl font-black text-white tracking-tight">GH₵<span id="order-base-price">0</span> <span class="text-sm text-slate-400 uppercase tracking-widest">/ <span id="order-unit"></span></span></p>
                 </div>
             </div>
             
@@ -305,9 +288,9 @@
     </div>
 
     <div id="flyer-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
-        <div class="glass-card w-full max-w-md p-8 rounded-[3rem] text-center border border-emerald-500/30 shadow-[0_0_40px_rgba(16,185,129,0.15)] relative">
+        <div class="glass-card w-full max-w-md p-8 rounded-[3rem] text-center border border-emerald-500/30 shadow-xl md:shadow-[0_0_40px_rgba(16,185,129,0.15)] relative">
             <button onclick="closeFlyerModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl font-bold cursor-pointer">✕</button>
-            <h3 class="text-2xl font-black text-white mb-2 tracking-tight">WhatsApp Status Flyer 📲</h3>
+            <h3 class="text-xl md:text-2xl font-black text-white mb-2 tracking-tight">WhatsApp Status Flyer 📲</h3>
             <p class="text-sm text-slate-400 mb-6 font-medium">Auto-rendered flyer with pricing & phone contact embedded.</p>
             <canvas id="flyer-canvas" class="hidden"></canvas>
             <img id="flyer-preview" src="" class="w-full max-w-[300px] rounded-[2rem] mb-8 mx-auto shadow-2xl border border-slate-700/50">
@@ -321,7 +304,7 @@
             <div class="flex items-center gap-4 mb-8">
                 <span class="text-5xl drop-shadow-[0_0_15px_rgba(168,85,247,0.4)]">🎬</span>
                 <div>
-                    <h3 class="text-3xl font-black text-white tracking-tight">AI Status Studio</h3>
+                    <h3 class="text-2xl md:text-3xl font-black text-white tracking-tight">AI Status Studio</h3>
                     <p class="text-[10px] text-purple-400 font-black uppercase tracking-widest mt-1">Automated Prompt-to-Video Engine</p>
                 </div>
             </div>
@@ -349,7 +332,7 @@
 
             <div id="video-studio-processing" class="hidden text-center py-10">
                 <div class="w-20 h-20 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin mx-auto mb-8 shadow-[0_0_20px_rgba(168,85,247,0.3)]"></div>
-                <h3 class="text-2xl font-black text-white mb-2 tracking-tight" id="vs-status-text">Writing Script...</h3>
+                <h3 class="text-xl md:text-2xl font-black text-white mb-2 tracking-tight" id="vs-status-text">Writing Script...</h3>
                 <p class="text-sm text-slate-400 font-medium max-w-sm mx-auto">Our model is assembling product images, generating speech, and rendering MP4 frames.</p>
             </div>
 
@@ -369,7 +352,7 @@
 
     <!-- LEAVE REVIEW MODAL -->
     <div id="leave-review-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
-        <div class="glass-card w-full max-w-md p-10 rounded-[3rem] relative border border-emerald-500/30 text-left shadow-[0_0_40px_rgba(16,185,129,0.15)]">
+        <div class="glass-card w-full max-w-md p-10 rounded-[3rem] relative border border-emerald-500/30 text-left shadow-xl md:shadow-[0_0_40px_rgba(16,185,129,0.15)]">
             <button onclick="closeLeaveReviewModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl cursor-pointer">✕</button>
             <h3 class="text-3xl font-black text-white mb-2 tracking-tight">Rate this Seller</h3>
             <p class="text-sm text-slate-400 mb-8 font-medium">Leave an honest review to help other buyers on the platform.</p>
@@ -401,7 +384,7 @@
     <div id="haulage-post-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-amber-500/30 text-left">
             <button onclick="closeHaulagePostModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl cursor-pointer">✕</button>
-            <h3 class="text-2xl font-black text-white mb-2">🚚 List Empty Truck</h3>
+            <h3 class="text-xl md:text-2xl font-black text-white mb-2">🚚 List Empty Truck</h3>
             <p class="text-xs text-slate-400 mb-6 leading-relaxed">Publish your return trip to find cargo and reduce empty leg costs.</p>
             <div class="space-y-4">
                 <input type="text" id="hp-route" placeholder="Route (e.g. Tamale ➔ Accra)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-amber-500 cursor-text">
@@ -439,7 +422,7 @@
 
     <!-- COMMUNITY POST MODAL (THE FARMER'S LOUNGE) -->
     <div id="community-post-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
-        <div class="glass-card w-full max-w-lg p-10 rounded-[3rem] relative border border-emerald-500/30 text-left shadow-[0_0_40px_rgba(16,185,129,0.15)]">
+        <div class="glass-card w-full max-w-lg p-10 rounded-[3rem] relative border border-emerald-500/30 text-left shadow-xl md:shadow-[0_0_40px_rgba(16,185,129,0.15)]">
             <button onclick="closeCommunityPostModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl cursor-pointer">✕</button>
             <h3 class="text-3xl font-black text-white mb-2 tracking-tight">🗣️ Post to Farmer's Lounge</h3>
             <p class="text-sm text-slate-400 mb-8 font-medium">Share updates, ask for advice, or warn nearby farmers about pests and diseases.</p>
@@ -456,6 +439,43 @@
         </div>
     </div>
 
+    
+    
+    <!-- EVERYDAY HUB POST MODAL -->
+    <div id="everyday-post-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
+        <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-blue-500/30 text-left">
+            <button onclick="closeEverydayPostModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl cursor-pointer">✕</button>
+            <h3 class="text-xl md:text-2xl font-black text-white mb-2">⚡ Post Everyday Hub Listing</h3>
+            <p class="text-xs text-slate-400 mb-6 leading-relaxed">Your listing will be manually verified by our team before going live to ensure community safety.</p>
+            <div class="space-y-4">
+                <select id="ed-category" class="w-full bg-[#0f172a] border border-slate-700/80 rounded-xl px-4 py-3 text-sm font-medium text-white shadow-inner focus:border-blue-500 outline-none transition-colors cursor-pointer">
+                    <option value="rooms">🏠 Room & Hostel Rental</option>
+                    <option value="meds">💊 Urgent Medicine Request/Stock</option>
+                    <option value="artisans">🛠️ Artisan Service (Plumber, AC, etc.)</option>
+                    <option value="parcels">📦 Parcel Hitch (Traveler Delivery)</option>
+                    <option value="thrift">🔄 Local Thrift (Used Items)</option>
+                </select>
+                
+                <div class="relative z-40">
+                    <label class="block text-[10px] font-black text-slate-400 mb-2 uppercase tracking-widest">Optional Photos</label>
+                    <div id="ed-image-preview" class="w-full h-24 bg-[#020617]/50 border-2 border-dashed border-slate-700/80 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 hover:bg-blue-500/5 transition-all overflow-hidden group shadow-inner" onclick="document.getElementById('ed-image').click()">
+                        <span id="ed-upload-text" class="text-slate-400 text-xs font-black text-center px-4 group-hover:text-blue-400 transition-colors">Click to attach photos</span>
+                    </div>
+                    <input type="file" id="ed-image" accept="image/*" multiple class="hidden" onchange="handleEdImageUpload(event)">
+                </div>
+
+                <input type="text" id="ed-title" placeholder="Listing Headline (e.g. Single Room Self-Contained)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-blue-500 cursor-text">
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" id="ed-price" placeholder="Price / Budget (GH₵)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-blue-500 cursor-text">
+                    <input type="text" id="ed-phone" placeholder="WhatsApp Phone No." class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-blue-500 cursor-text">
+                </div>
+                <input type="text" id="ed-loc" placeholder="Neighborhood & City (e.g. Madina, Accra)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-blue-500 cursor-text">
+                <textarea id="ed-desc" rows="3" placeholder="Provide more details about your listing or request..." class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-blue-500 cursor-text"></textarea>
+                <button onclick="submitEverydayPost()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-4 rounded-xl text-sm transition-colors shadow-lg cursor-pointer">Submit for Verification</button>
+            </div>
+        </div>
+    </div>
+
     <!-- HEADER & NAVIGATION -->
     <header class="bg-[#020617]/70 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-50 transition-all">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
@@ -465,6 +485,7 @@
             </div>
             
             <div class="flex gap-2 items-center flex-wrap justify-end">
+                <button onclick="navigate('cobuy')" class="text-xs font-black text-[#020617] bg-gradient-to-r from-amber-400 to-yellow-300 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest shadow-[0_0_20px_rgba(251,191,36,0.4)] hover:scale-105 transition-transform cursor-pointer flex items-center gap-1.5"><span class="animate-pulse">🤝</span> Co-Buy Susu</button>
                 <button onclick="navigate('community')" class="pro-only text-xs font-black text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 rounded-xl hidden lg:flex items-center gap-1 hover:-translate-y-0.5 transition-all shadow-inner tracking-widest uppercase cursor-pointer">🗣️ Lounge</button>
                 <button onclick="navigate('haulage')" class="pro-only text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-amber-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">🚚 Haulage</button>
                 <button onclick="navigate('trainer')" class="pro-only text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-purple-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">📚 Trainer</button>
@@ -488,17 +509,18 @@
                 
                 <div id="nav-user-profile" class="hidden items-center gap-3 bg-white/5 px-4 py-1.5 rounded-full border border-white/10 shadow-inner">
                     <span id="nav-user-name" class="text-xs font-bold text-emerald-400 hidden md:block"></span>
-                    <button onclick="navigate('dashboard')" class="text-xs font-black text-white hover:text-emerald-400 transition-colors cursor-pointer">Dashboard</button>
+                    <button onclick="navigate('dashboard')" class="hidden md:block text-xs font-black text-white hover:text-emerald-400 transition-colors cursor-pointer">Dashboard</button>
                     <div class="w-px h-3 bg-white/20"></div>
-                    <button onclick="logout()" class="text-xs text-rose-400 font-bold hover:text-rose-300 transition-colors cursor-pointer">Logout</button>
+                    <button onclick="logout()" class="hidden md:block text-xs text-rose-400 font-bold hover:text-rose-300 transition-colors cursor-pointer">Logout</button>
                 </div>
                 
-                <button onclick="handleSmartPostAd()" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white text-xs font-black px-4 sm:px-5 py-2.5 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.4)] hover:shadow-[0_0_25px_rgba(16,185,129,0.6)] transition-all sm:ml-2 hover:-translate-y-0.5 cursor-pointer">Post Ad</button>
+                <button onclick="handleSmartPostAd()" class="hidden md:inline-flex bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white text-xs font-black px-4 sm:px-5 py-2.5 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.4)] hover:shadow-[0_0_25px_rgba(16,185,129,0.6)] transition-all sm:ml-2 hover:-translate-y-0.5 cursor-pointer">Post Ad</button>
             </div>
         </div>
     </header>
 
     <div class="pro-only md:hidden glass-card border-b border-white/5 px-4 py-3 overflow-x-auto whitespace-nowrap flex gap-3 z-40">
+        <button onclick="navigate('cobuy')" class="text-xs font-black text-[#020617] bg-gradient-to-r from-amber-400 to-yellow-300 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest shadow-[0_0_20px_rgba(251,191,36,0.4)] hover:scale-105 transition-transform cursor-pointer flex items-center gap-1.5"><span class="animate-pulse">🤝</span> Co-Buy Susu</button>
         <button onclick="navigate('community')" class="text-xs font-black text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest cursor-pointer">🗣️ Lounge</button>
         <button onclick="navigate('haulage')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">🚚 Haulage Pool</button>
         <button onclick="navigate('trainer')" class="text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">📚 Agri Trainer</button>
@@ -524,25 +546,25 @@
             </div>
         </div>
     </div><!-- MAIN APP VIEWS -->
-    <main class="max-w-7xl mx-auto px-6 py-8 flex-grow w-full relative z-30">
+    <main class="max-w-7xl mx-auto px-6 py-8 pb-28 md:pb-8 flex-grow w-full relative z-30 pb-safe">
         
         <!-- FRONT DOOR / PORTAL SELECTOR VIEW -->
         <div id="view-portal-select" class="fade-in max-w-5xl mx-auto my-12 space-y-12 relative z-30">
             <div class="text-center space-y-4">
                 <span class="text-5xl block animate-float">🇬🇭</span>
-                <h1 class="text-4xl md:text-6xl font-black text-white tracking-tight">Choose Your Portal</h1>
-                <p class="text-slate-400 text-base md:text-lg max-w-xl mx-auto font-medium">Select how you want to use the platform today. You can switch between portals at any time.</p>
+                <h1 class="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">Choose Your Portal</h1>
+                <p class="text-slate-400 text-sm md:text-base lg:text-lg max-w-xl mx-auto font-medium">Select how you want to use the platform today. You can switch between portals at any time.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-40">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 relative z-40">
                 <!-- PORTAL 1: THE EVERYDAY HUB -->
-                <div onclick="selectPortal('everyday')" class="glass-card p-10 md:p-12 rounded-[3rem] border border-blue-500/30 shadow-[0_0_40px_rgba(59,130,246,0.15)] hover:border-blue-400 hover:-translate-y-2 transition-all cursor-pointer flex flex-col justify-between group">
+                <div onclick="selectPortal('everyday')" class="glass-card p-6 sm:p-8 md:p-12 rounded-[2rem] md:rounded-[3rem] border border-blue-500/30 shadow-xl md:shadow-[0_0_40px_rgba(59,130,246,0.15)] hover:border-blue-400 hover:-translate-y-2 transition-all cursor-pointer flex flex-col justify-between group">
                     <div>
-                        <div class="w-20 h-20 bg-blue-500/10 rounded-2xl flex items-center justify-center text-4xl border border-blue-500/20 mb-8 group-hover:scale-110 transition-transform">
+                        <div class="w-14 h-14 md:w-20 md:h-20 bg-blue-500/10 rounded-2xl flex items-center justify-center text-4xl border border-blue-500/20 mb-8 group-hover:scale-110 transition-transform">
                             ⚡
                         </div>
                         <span class="text-[10px] text-blue-400 uppercase font-black tracking-widest bg-blue-500/10 px-3.5 py-1.5 rounded-full border border-blue-500/20 shadow-inner">Everyday Living</span>
-                        <h2 class="text-3xl md:text-4xl font-black text-white mt-4 mb-3 tracking-tight group-hover:text-blue-400 transition-colors">The Everyday Hub</h2>
+                        <h2 class="text-2xl md:text-3xl lg:text-4xl font-black text-white mt-4 mb-3 tracking-tight group-hover:text-blue-400 transition-colors">The Everyday Hub</h2>
                         <p class="text-slate-400 text-sm md:text-base leading-relaxed font-medium mb-8">
                             Direct agent-free room rentals, urgent prescription medicine finder, verified neighborhood artisans, and traveler parcel delivery.
                         </p>
@@ -558,13 +580,13 @@
                 </div>
 
                 <!-- PORTAL 2: AGROMART PRO -->
-                <div onclick="selectPortal('agro')" class="glass-card p-10 md:p-12 rounded-[3rem] border border-emerald-500/30 shadow-[0_0_40px_rgba(16,185,129,0.15)] hover:border-emerald-400 hover:-translate-y-2 transition-all cursor-pointer flex flex-col justify-between group">
+                <div onclick="selectPortal('agro')" class="glass-card p-6 sm:p-8 md:p-12 rounded-[2rem] md:rounded-[3rem] border border-emerald-500/30 shadow-xl md:shadow-[0_0_40px_rgba(16,185,129,0.15)] hover:border-emerald-400 hover:-translate-y-2 transition-all cursor-pointer flex flex-col justify-between group">
                     <div>
-                        <div class="w-20 h-20 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-4xl border border-emerald-500/20 mb-8 group-hover:scale-110 transition-transform">
+                        <div class="w-14 h-14 md:w-20 md:h-20 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-4xl border border-emerald-500/20 mb-8 group-hover:scale-110 transition-transform">
                             🌾
                         </div>
                         <span class="text-[10px] text-emerald-400 uppercase font-black tracking-widest bg-emerald-500/10 px-3.5 py-1.5 rounded-full border border-emerald-500/20 shadow-inner">Agribusiness OS</span>
-                        <h2 class="text-3xl md:text-4xl font-black text-white mt-4 mb-3 tracking-tight group-hover:text-emerald-400 transition-colors">Agromart Pro</h2>
+                        <h2 class="text-2xl md:text-3xl lg:text-4xl font-black text-white mt-4 mb-3 tracking-tight group-hover:text-emerald-400 transition-colors">Agromart Pro</h2>
                         <p class="text-slate-400 text-sm md:text-base leading-relaxed font-medium mb-8">
                             Direct trade catalog for farmers and food aggregators, commercial farm management, livestock diagnostics, and bulk haulage freight.
                         </p>
@@ -581,45 +603,67 @@
             </div>
         </div>
 
+        
+        <!-- CO-BUY (COMMUNITY SUSU) VIEW -->
+        <div id="view-cobuy" class="fade-in hidden space-y-12 relative z-30">
+            <div class="glass-card p-8 md:p-16 rounded-[2rem] md:rounded-[3rem] border border-amber-500/40 shadow-2xl relative overflow-hidden bg-gradient-to-br from-[#020617]/90 to-amber-950/40">
+                <div class="absolute top-[-50px] right-[-50px] w-48 h-48 md:w-80 md:h-80 bg-amber-500/20 rounded-full blur-[60px] md:blur-[100px] pointer-events-none"></div>
+                <div class="relative z-10 text-center max-w-3xl mx-auto">
+                    <span class="text-[10px] text-amber-400 font-black uppercase tracking-widest bg-amber-500/10 px-4 py-2 rounded-full border border-amber-500/30 shadow-inner mb-6 inline-block"><span class="animate-pulse inline-block mr-1">🔥</span> Most Viral Feature</span>
+                    <h2 class="text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tight mb-6 mt-4 leading-tight">Community Co-Buy <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-200">(Smart Susu)</span></h2>
+                    <p class="text-slate-300 text-sm md:text-lg font-medium leading-relaxed mb-10">Can't afford bulk prices alone? Join a neighborhood Susu split! Pool money with others securely via MoMo. When the group fills up, the bulk item is delivered and split among you. Save up to 40% on everyday essentials.</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4 px-2">
+                <h3 class="text-2xl md:text-3xl font-black text-white tracking-tight flex items-center gap-3">⏳ Trending Splits Near You</h3>
+                <span class="text-xs font-bold text-slate-400 bg-white/5 px-4 py-2 rounded-xl shadow-inner border border-white/10 w-fit">Auto-refunds if group doesn't fill in 24hrs</span>
+            </div>
+
+            <div id="cobuy-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10 relative z-40 pb-24">
+                <!-- Co-buy cards generated via JS -->
+            </div>
+        </div>
+
         <!-- THE EVERYDAY HUB VIEW -->
         <div id="view-everyday-hub" class="fade-in hidden space-y-12 relative z-30">
             <!-- Hero / Action Center -->
-            <div class="glass-card p-10 md:p-14 rounded-[3rem] border border-blue-500/20 text-center relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+            <div class="glass-card p-6 sm:p-8 md:p-14 rounded-[2rem] md:rounded-[3rem] border border-blue-500/20 text-center relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-48 h-48 md:w-80 md:h-80 bg-blue-500/10 rounded-full opacity-50 pointer-events-none"></div>
                 <div class="relative z-10 max-w-2xl mx-auto space-y-4">
                     <span class="text-[11px] font-black uppercase tracking-widest text-blue-400 bg-blue-500/10 px-4 py-1.5 rounded-full border border-blue-500/20 shadow-inner">Ghana's Everyday Utility Hub</span>
-                    <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight">What do you need solved today?</h2>
+                    <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">What do you need solved today?</h2>
                     <p class="text-slate-400 text-base font-medium">Browse verified services with direct WhatsApp links and zero middleman charges.</p>
                 </div>
 
                 <!-- 5 Essential Service Launchers -->
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 mt-12 relative z-20">
                     <div onclick="filterEverydayHub('rooms')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-blue-400 hover:-translate-y-1 transition-all group flex flex-col items-center text-center">
-                        <span class="text-4xl mb-3 group-hover:scale-110 transition-transform">🏠</span>
+                        <span class="text-3xl md:text-4xl mb-2 md:mb-3 group-hover:scale-110 transition-transform">🏠</span>
                         <h3 class="font-black text-sm text-white group-hover:text-blue-400 transition-colors">Direct Rentals</h3>
                         <p class="text-[11px] text-slate-400 font-medium mt-1">Hostels & Rooms (No Agent Fee)</p>
                     </div>
 
                     <div onclick="filterEverydayHub('meds')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-rose-400 hover:-translate-y-1 transition-all group flex flex-col items-center text-center">
-                        <span class="text-4xl mb-3 group-hover:scale-110 transition-transform">💊</span>
+                        <span class="text-3xl md:text-4xl mb-2 md:mb-3 group-hover:scale-110 transition-transform">💊</span>
                         <h3 class="font-black text-sm text-white group-hover:text-rose-400 transition-colors">Meds Locator</h3>
                         <p class="text-[11px] text-slate-400 font-medium mt-1">Urgent Prescription Stock</p>
                     </div>
 
                     <div onclick="filterEverydayHub('artisans')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-amber-400 hover:-translate-y-1 transition-all group flex flex-col items-center text-center">
-                        <span class="text-4xl mb-3 group-hover:scale-110 transition-transform">🛠️</span>
+                        <span class="text-3xl md:text-4xl mb-2 md:mb-3 group-hover:scale-110 transition-transform">🛠️</span>
                         <h3 class="font-black text-sm text-white group-hover:text-amber-400 transition-colors">Fixers & Pros</h3>
                         <p class="text-[11px] text-slate-400 font-medium mt-1">Plumbers, Electricians, AC</p>
                     </div>
 
                     <div onclick="filterEverydayHub('parcels')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-teal-400 hover:-translate-y-1 transition-all group flex flex-col items-center text-center">
-                        <span class="text-4xl mb-3 group-hover:scale-110 transition-transform">📦</span>
+                        <span class="text-3xl md:text-4xl mb-2 md:mb-3 group-hover:scale-110 transition-transform">📦</span>
                         <h3 class="font-black text-sm text-white group-hover:text-teal-400 transition-colors">Parcel Hitch</h3>
                         <p class="text-[11px] text-slate-400 font-medium mt-1">Inter-City Driver Delivery</p>
                     </div>
 
                     <div onclick="filterEverydayHub('thrift')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-400 hover:-translate-y-1 transition-all group flex flex-col items-center text-center col-span-2 sm:col-span-1">
-                        <span class="text-4xl mb-3 group-hover:scale-110 transition-transform">🔄</span>
+                        <span class="text-3xl md:text-4xl mb-2 md:mb-3 group-hover:scale-110 transition-transform">🔄</span>
                         <h3 class="font-black text-sm text-white group-hover:text-emerald-400 transition-colors">Local Thrift</h3>
                         <p class="text-[11px] text-slate-400 font-medium mt-1">Used Tech & Home Deals</p>
                     </div>
@@ -629,7 +673,7 @@
             <!-- Dynamic Category Section -->
             <div class="space-y-6 relative z-30">
                 <div class="flex items-center justify-between">
-                    <h3 id="everyday-feed-title" class="text-2xl md:text-3xl font-black text-white tracking-tight flex items-center gap-3">
+                    <h3 id="everyday-feed-title" class="text-2xl md:text-2xl md:text-3xl font-black text-white tracking-tight flex items-center gap-3">
                         🏠 Direct Room & Hostel Rentals
                     </h3>
                     <button onclick="openEverydayPostModal()" class="bg-blue-600 hover:bg-blue-500 text-white font-black text-xs px-5 py-3 rounded-xl transition-all shadow-md hover:-translate-y-0.5 tracking-wide cursor-pointer">
@@ -638,7 +682,7 @@
                 </div>
 
                 <!-- Render Target Grid -->
-                <div id="everyday-listings-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-40">
+                <div id="everyday-listings-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-40 pb-20">
                     <!-- Dynamic everyday cards will be injected by JavaScript -->
                 </div>
             </div>
@@ -649,7 +693,7 @@
             <div class="text-center py-24 px-4 glass-card rounded-[3rem] shadow-2xl relative overflow-hidden group border border-emerald-500/20">
                 <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none group-hover:opacity-10 transition-opacity"></div>
                 <div class="text-6xl mb-8 animate-float inline-block drop-shadow-2xl">🚜</div>
-                <h1 class="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-slate-200 to-slate-500 mb-6 relative z-10 tracking-tight leading-tight">The Farmers Market,<br>Now Online.</h1>
+                <h1 class="text-4xl md:text-5xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-slate-200 to-slate-500 mb-6 relative z-10 tracking-tight leading-tight">The Farmers Market,<br>Now Online.</h1>
                 
                 <div class="max-w-4xl mx-auto relative z-20 mt-10">
                     <div class="flex flex-col md:flex-row glass-card rounded-3xl p-2 gap-2 shadow-[0_0_30px_rgba(16,185,129,0.1)] border border-emerald-500/30">
@@ -688,14 +732,14 @@
 
                 <div class="mt-10 flex justify-center relative z-20">
                     <div class="bg-[#020617]/60 p-1.5 rounded-2xl border border-slate-700/50 inline-flex shadow-xl backdrop-blur-md">
-                        <button onclick="switchMarketplaceTab('ads')" id="btn-tab-ads" class="px-8 py-3.5 rounded-xl font-black text-sm transition-all bg-emerald-600 text-white shadow-[0_0_15px_rgba(16,185,129,0.3)] cursor-pointer">🌾 Available Produce (Ads)</button>
-                        <button onclick="switchMarketplaceTab('rfqs')" id="btn-tab-rfqs" class="px-8 py-3.5 rounded-xl font-black text-sm transition-all text-slate-400 hover:text-white flex items-center gap-1.5 cursor-pointer">📢 Buyer Tenders (RFQs)</button>
+                        <button onclick="switchMarketplaceTab('ads')" id="btn-tab-ads" class="px-5 py-2.5 md:px-8 md:py-3.5 rounded-lg md:rounded-xl font-black text-xs md:text-sm transition-all bg-emerald-600 text-white shadow-[0_0_15px_rgba(16,185,129,0.3)] cursor-pointer">🌾 Available Produce (Ads)</button>
+                        <button onclick="switchMarketplaceTab('rfqs')" id="btn-tab-rfqs" class="px-5 py-2.5 md:px-8 md:py-3.5 rounded-lg md:rounded-xl font-black text-xs md:text-sm transition-all text-slate-400 hover:text-white flex items-center gap-1.5 cursor-pointer">📢 Buyer Tenders (RFQs)</button>
                     </div>
                 </div>
             </div><div id="home-rfq-container" class="hidden relative z-40">
                 <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
                     <div>
-                        <h3 class="text-3xl font-black text-white tracking-tight flex items-center gap-3">📢 Commercial Buyer Tenders</h3>
+                        <h3 class="text-2xl md:text-3xl font-black text-white tracking-tight flex items-center gap-3">📢 Commercial Buyer Tenders</h3>
                         <p class="text-sm text-slate-400 mt-1 font-medium">Fulfill bulk orders directly from aggregators and hotels.</p>
                     </div>
                     <button onclick="openRfqModal()" class="bg-blue-600 hover:bg-blue-500 text-white font-black text-sm px-8 py-4 rounded-2xl transition-all shadow-[0_0_15px_rgba(37,99,235,0.4)] flex items-center gap-2 shrink-0 hover:-translate-y-0.5 tracking-wide cursor-pointer">+ Post Purchase Tender</button>
@@ -706,7 +750,7 @@
             <div id="home-ads-container" class="relative z-40">
                 <div class="mt-16">
                     <div class="flex items-center justify-between mb-8">
-                        <h3 class="text-3xl font-black text-white tracking-tight flex items-center gap-3">🔥 Trending Nationwide</h3>
+                        <h3 class="text-2xl md:text-3xl font-black text-white tracking-tight flex items-center gap-3">🔥 Trending Nationwide</h3>
                         <button onclick="navigate('marketplace')" class="text-xs font-black text-emerald-400 hover:text-emerald-300 tracking-widest uppercase bg-emerald-500/10 px-5 py-2.5 rounded-xl transition-colors border border-emerald-500/20 shadow-inner cursor-pointer">View All →</button>
                     </div>
                     <div id="trending-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
@@ -714,47 +758,47 @@
 
                 <div class="mt-20">
                     <div class="flex items-center justify-between mb-8">
-                        <h3 class="text-3xl font-black text-white tracking-tight">Browse Categories</h3>
+                        <h3 class="text-2xl md:text-3xl font-black text-white tracking-tight">Browse Categories</h3>
                     </div>
                     <div class="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-5 gap-6">
-                        <div onclick="executeCategory('Poultry')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
-                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('poultry.jfif.jfif');"></div>
+                        <div onclick="executeCategory('Poultry')" class="glass-card p-5 md:p-8 rounded-3xl md:rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
+                            <div class="w-16 h-16 md:w-24 md:h-24 mb-3 md:mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('poultry.jfif.jfif');"></div>
                             <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400">Live Poultry</p>
                         </div>
-                        <div onclick="executeCategory('Chicks')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
-                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('chicks.jfif');"></div>
+                        <div onclick="executeCategory('Chicks')" class="glass-card p-5 md:p-8 rounded-3xl md:rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
+                            <div class="w-16 h-16 md:w-24 md:h-24 mb-3 md:mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('chicks.jfif');"></div>
                             <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400 leading-tight">Day-old chicks</p>
                         </div>
-                        <div onclick="executeCategory('Eggs')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
-                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Chicken_egg_2009-06-04.jpg/500px-Chicken_egg_2009-06-04.jpg');"></div>
+                        <div onclick="executeCategory('Eggs')" class="glass-card p-5 md:p-8 rounded-3xl md:rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
+                            <div class="w-16 h-16 md:w-24 md:h-24 mb-3 md:mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Chicken_egg_2009-06-04.jpg/500px-Chicken_egg_2009-06-04.jpg');"></div>
                             <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400">Fresh Eggs</p>
                         </div>
-                        <div onclick="executeCategory('Meat')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
-                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('meat.jfif.jfif');"></div>
+                        <div onclick="executeCategory('Meat')" class="glass-card p-5 md:p-8 rounded-3xl md:rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
+                            <div class="w-16 h-16 md:w-24 md:h-24 mb-3 md:mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('meat.jfif.jfif');"></div>
                             <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400">Dressed Meat</p>
                         </div>
-                        <div onclick="executeCategory('Vegetables/Fruits')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
-                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Marketvegetables.jpg/500px-Marketvegetables.jpg');"></div>
+                        <div onclick="executeCategory('Vegetables/Fruits')" class="glass-card p-5 md:p-8 rounded-3xl md:rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
+                            <div class="w-16 h-16 md:w-24 md:h-24 mb-3 md:mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Marketvegetables.jpg/500px-Marketvegetables.jpg');"></div>
                             <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400">Vegetables / Fruits</p>
                         </div>
-                        <div onclick="executeCategory('Fishes')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
-                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('fishes.jfif');"></div>
+                        <div onclick="executeCategory('Fishes')" class="glass-card p-5 md:p-8 rounded-3xl md:rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
+                            <div class="w-16 h-16 md:w-24 md:h-24 mb-3 md:mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('fishes.jfif');"></div>
                             <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400 leading-tight">Fishes</p>
                         </div>
-                        <div onclick="executeCategory('Livestock')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
-                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('livestock.jfif.jfif');"></div>
+                        <div onclick="executeCategory('Livestock')" class="glass-card p-5 md:p-8 rounded-3xl md:rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
+                            <div class="w-16 h-16 md:w-24 md:h-24 mb-3 md:mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('livestock.jfif.jfif');"></div>
                             <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400">Livestock</p>
                         </div>
-                        <div onclick="executeCategory('Machinery')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
-                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('machinery.jfif.jfif');"></div>
+                        <div onclick="executeCategory('Machinery')" class="glass-card p-5 md:p-8 rounded-3xl md:rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
+                            <div class="w-16 h-16 md:w-24 md:h-24 mb-3 md:mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('machinery.jfif.jfif');"></div>
                             <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400">Machinery</p>
                         </div>
-                        <div onclick="executeCategory('Pets')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
-                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('pets.jfif');"></div>
+                        <div onclick="executeCategory('Pets')" class="glass-card p-5 md:p-8 rounded-3xl md:rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
+                            <div class="w-16 h-16 md:w-24 md:h-24 mb-3 md:mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('pets.jfif');"></div>
                             <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400">Pets</p>
                         </div>
-                        <div onclick="executeCategory('Vaccines & Feed')" class="glass-card p-6 md:p-8 rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
-                            <div class="w-24 h-24 mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('vaccines%20%26%20feed.jfif');"></div>
+                        <div onclick="executeCategory('Vaccines & Feed')" class="glass-card p-5 md:p-8 rounded-3xl md:rounded-[2.5rem] cursor-pointer hover:border-emerald-500/40 text-center transition-all group flex flex-col items-center hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1">
+                            <div class="w-16 h-16 md:w-24 md:h-24 mb-3 md:mb-5 rounded-full bg-slate-800 bg-cover bg-center overflow-hidden border-4 border-transparent group-hover:border-emerald-500 transition-colors shadow-lg" style="background-image: url('vaccines%20%26%20feed.jfif');"></div>
                             <p class="font-black text-sm text-slate-300 group-hover:text-emerald-400 leading-tight">Vaccines & Feed</p>
                         </div>
                     </div>
@@ -762,18 +806,18 @@
 
                 <div class="mt-24">
                     <div class="flex items-center justify-between mb-8">
-                        <h3 class="text-3xl font-black text-white tracking-tight flex items-center gap-3">📰 Agri Newsroom & Policy</h3>
+                        <h3 class="text-2xl md:text-3xl font-black text-white tracking-tight flex items-center gap-3">📰 Agri Newsroom & Policy</h3>
                         <span class="text-[10px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-3 py-1.5 rounded-full uppercase font-black tracking-widest shadow-inner">Live Updates</span>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="newsroom-grid"></div>
                 </div>
             </div>
 
-            <div class="mt-24 glass-card p-12 md:p-16 rounded-[3rem] relative overflow-hidden border border-emerald-500/20 bg-gradient-to-br from-[#020617]/80 to-emerald-950/30 relative z-40">
-                <div class="absolute top-0 right-0 w-[40vw] h-[40vw] bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none"></div>
+            <div class="mt-24 glass-card p-6 sm:p-8 md:p-16 rounded-[2rem] md:rounded-[3rem] relative overflow-hidden border border-emerald-500/20 bg-gradient-to-br from-[#020617]/80 to-emerald-950/30 relative z-40">
+                <div class="absolute top-0 right-0 w-[40vw] h-[40vw] bg-emerald-500/5 rounded-full opacity-50 pointer-events-none"></div>
                 <div class="text-center relative z-10">
                     <span class="text-6xl mb-6 block animate-float">🤝</span>
-                    <h2 class="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">Partner With Us & Fuel the Future</h2>
+                    <h2 class="text-2xl md:text-4xl lg:text-5xl font-black text-white mb-6 tracking-tight">Partner With Us & Fuel the Future</h2>
                     <p class="text-slate-300 text-lg max-w-3xl mx-auto leading-relaxed mb-10 font-medium">
                         AgromartDirect is on a mission to completely digitize the agricultural supply chain in Ghana. By eliminating the middleman, we are increasing farmer profits and bringing cheaper, fresher food to consumers nationwide. 
                     </p>
@@ -787,8 +831,8 @@
 
         <!-- FARMER'S LOUNGE (COMMUNITY FEED) VIEW -->
         <div id="view-community" class="fade-in hidden max-w-5xl mx-auto space-y-8 mt-8 relative z-30">
-            <div class="glass-card p-10 md:p-12 rounded-[3rem] border border-emerald-500/30 relative overflow-hidden shadow-[0_0_40px_rgba(16,185,129,0.15)] flex flex-col md:flex-row items-center justify-between gap-6">
-                <div class="absolute top-[-50px] right-[-50px] w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
+            <div class="glass-card p-6 sm:p-8 md:p-12 rounded-[2rem] md:rounded-[3rem] border border-emerald-500/30 relative overflow-hidden shadow-xl md:shadow-[0_0_40px_rgba(16,185,129,0.15)] flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="absolute top-[-50px] right-[-50px] w-64 h-64 bg-emerald-500/10 rounded-full opacity-50 pointer-events-none"></div>
                 <div class="relative z-10 text-center md:text-left">
                     <h2 class="text-4xl font-black text-white flex items-center justify-center md:justify-start gap-4 tracking-tight">🗣️ The Farmer's Lounge</h2>
                     <p class="text-slate-400 text-base mt-3 font-medium max-w-2xl">Join the largest digital agribusiness community in Ghana. Ask questions, share harvest success, and get real-time pest alerts.</p>
@@ -814,9 +858,9 @@
 
         <!-- MARKETPLACE VIEW -->
         <div id="view-marketplace" class="fade-in hidden space-y-8 relative z-30">
-            <div class="flex flex-col md:flex-row md:items-center justify-between glass-card p-6 md:p-8 rounded-[2.5rem] gap-5 shadow-lg">
+            <div class="flex flex-col md:flex-row md:items-center justify-between glass-card p-5 md:p-8 rounded-3xl md:rounded-[2.5rem] gap-5 shadow-lg">
                 <div class="flex items-center gap-5">
-                    <h2 class="text-3xl font-black text-white tracking-tight" id="market-title">Market Catalog</h2>
+                    <h2 class="text-2xl md:text-3xl font-black text-white tracking-tight" id="market-title">Market Catalog</h2>
                     <div class="bg-[#020617]/60 p-2 rounded-2xl inline-flex border border-slate-700/50 shadow-inner">
                         <button onclick="setMarketplaceMode('ads')" id="mode-ads-btn" class="px-5 py-2 rounded-xl text-sm font-black bg-emerald-600 text-white transition-colors shadow-md cursor-pointer">Ads</button>
                         <button onclick="setMarketplaceMode('rfqs')" id="mode-rfqs-btn" class="px-5 py-2 rounded-xl text-sm font-black text-slate-400 hover:text-white transition-colors cursor-pointer">Tenders</button>
@@ -850,25 +894,25 @@
                     <button onclick="navigate('home')" class="text-sm font-black tracking-widest uppercase text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-6 py-4 rounded-2xl hover:bg-emerald-500/20 transition-colors shadow-inner cursor-pointer">← Back</button>
                 </div>
             </div>
-            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 relative z-40"></div>
+            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-8 relative z-40 pb-20"></div>
         </div>
 
         <!-- AGRI TRAINER VIEW -->
         <div id="view-trainer" class="fade-in hidden space-y-8 relative z-30">
             <div class="text-center mb-14 relative z-40">
-                <div class="w-24 h-24 bg-purple-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto mb-8 border border-purple-500/20 shadow-[0_0_40px_rgba(168,85,247,0.15)]">📚</div>
-                <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight">Agri Trainer Hub</h2>
+                <div class="w-16 h-16 md:w-24 md:h-24 bg-purple-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto mb-8 border border-purple-500/20 shadow-[0_0_40px_rgba(168,85,247,0.15)]">📚</div>
+                <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">Agri Trainer Hub</h2>
                 <p class="text-slate-400 text-lg max-w-2xl mx-auto mt-4 font-medium">Select a category to view detailed, step-by-step guides on commercial farming.</p>
             </div>
             
             <div id="trainer-categories" class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto relative z-40">
-                <div onclick="showTrainerSubCategory('crops')" class="glass-card p-12 md:p-16 rounded-[3rem] cursor-pointer text-center group border border-emerald-500/20 shadow-[0_0_30px_rgba(16,185,129,0.05)] hover:shadow-[0_0_40px_rgba(16,185,129,0.15)] hover:-translate-y-2 transition-all">
-                    <div class="text-8xl md:text-9xl mb-10 group-hover:scale-110 transition-transform duration-500 drop-shadow-xl">🌾</div>
-                    <h3 class="text-3xl md:text-4xl font-black text-white mb-3 group-hover:text-emerald-400 transition-colors tracking-tight">Learn to Grow Crops</h3>
+                <div onclick="showTrainerSubCategory('crops')" class="glass-card p-6 sm:p-8 md:p-16 rounded-[2rem] md:rounded-[3rem] cursor-pointer text-center group border border-emerald-500/20 shadow-[0_0_30px_rgba(16,185,129,0.05)] hover:shadow-xl md:shadow-[0_0_40px_rgba(16,185,129,0.15)] hover:-translate-y-2 transition-all">
+                    <div class="text-6xl md:text-8xl mb-10 group-hover:scale-110 transition-transform duration-500 drop-shadow-xl">🌾</div>
+                    <h3 class="text-2xl md:text-3xl lg:text-4xl font-black text-white mb-3 group-hover:text-emerald-400 transition-colors tracking-tight">Learn to Grow Crops</h3>
                 </div>
-                <div onclick="showTrainerSubCategory('animals')" class="glass-card p-12 md:p-16 rounded-[3rem] cursor-pointer text-center group border border-blue-500/20 shadow-[0_0_30px_rgba(59,130,246,0.05)] hover:shadow-[0_0_40px_rgba(59,130,246,0.15)] hover:-translate-y-2 transition-all">
-                    <div class="text-8xl md:text-9xl mb-10 group-hover:scale-110 transition-transform duration-500 drop-shadow-xl">🐔</div>
-                    <h3 class="text-3xl md:text-4xl font-black text-white mb-3 group-hover:text-blue-400 transition-colors tracking-tight">Learn to Raise Animals</h3>
+                <div onclick="showTrainerSubCategory('animals')" class="glass-card p-6 sm:p-8 md:p-16 rounded-[2rem] md:rounded-[3rem] cursor-pointer text-center group border border-blue-500/20 shadow-[0_0_30px_rgba(59,130,246,0.05)] hover:shadow-xl md:shadow-[0_0_40px_rgba(59,130,246,0.15)] hover:-translate-y-2 transition-all">
+                    <div class="text-6xl md:text-8xl mb-10 group-hover:scale-110 transition-transform duration-500 drop-shadow-xl">🐔</div>
+                    <h3 class="text-2xl md:text-3xl lg:text-4xl font-black text-white mb-3 group-hover:text-blue-400 transition-colors tracking-tight">Learn to Raise Animals</h3>
                 </div>
             </div>
 
@@ -878,7 +922,7 @@
             </div>
 
             <div id="trainer-guide" class="hidden glass-card p-10 md:p-16 rounded-[3rem] border border-emerald-500/30 shadow-[0_0_50px_rgba(0,0,0,0.4)] relative overflow-hidden z-40">
-                <div class="absolute top-0 right-0 w-[40vw] h-[40vw] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+                <div class="absolute top-0 right-0 w-[40vw] h-[40vw] bg-emerald-500/10 rounded-full opacity-50 pointer-events-none"></div>
                 <button onclick="document.getElementById('trainer-guide').classList.add('hidden'); document.getElementById('trainer-items').classList.remove('hidden');" class="text-emerald-400 text-sm font-black mb-12 hover:text-emerald-300 transition-colors relative z-10 flex items-center gap-2 bg-emerald-500/10 px-6 py-3 rounded-2xl border border-emerald-500/20 w-fit shadow-inner cursor-pointer">← Back to Selection</button>
                 
                 <div class="flex flex-col md:flex-row items-start md:items-center gap-10 mb-12 relative z-10 border-b border-white/10 pb-12">
@@ -893,8 +937,8 @@
             </div>
         </div><!-- FARM MANAGER VIEW -->
         <div id="view-farm-manager" class="fade-in hidden space-y-8 relative z-30">
-            <div class="flex flex-col md:flex-row md:items-center justify-between glass-card p-10 rounded-[3rem] border border-blue-500/30 gap-8 shadow-[0_0_40px_rgba(59,130,246,0.15)] relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+            <div class="flex flex-col md:flex-row md:items-center justify-between glass-card p-10 rounded-[3rem] border border-blue-500/30 gap-8 shadow-xl md:shadow-[0_0_40px_rgba(59,130,246,0.15)] relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-48 h-48 md:w-80 md:h-80 bg-blue-500/10 rounded-full opacity-50 pointer-events-none"></div>
                 <div class="relative z-10">
                     <h2 class="text-4xl font-black text-white flex items-center gap-4 tracking-tight">💼 Farm Manager Dashboard</h2>
                     <p class="text-base text-slate-400 mt-3 font-medium max-w-xl">Track flock cycles, log expenses, and auto-list inventory upon harvest.</p>
@@ -904,29 +948,29 @@
                 </button>
             </div>
             
-            <div id="farm-batches-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-40"></div>
+            <div id="farm-batches-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8 relative z-40"></div>
         </div>
 
         <!-- MARKET INTEL VIEW -->
         <div id="view-intel" class="fade-in hidden space-y-8 relative z-30">
             <div class="text-center space-y-4 mb-14 relative z-40">
-                <div class="w-24 h-24 bg-rose-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-rose-500/20 shadow-[0_0_40px_rgba(244,63,94,0.15)] mb-8">📊</div>
-                <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight">Market Intelligence</h2>
+                <div class="w-16 h-16 md:w-24 md:h-24 bg-rose-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-rose-500/20 shadow-[0_0_40px_rgba(244,63,94,0.15)] mb-8">📊</div>
+                <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">Market Intelligence</h2>
                 <p class="text-slate-400 text-lg max-w-3xl mx-auto font-medium">Live regional price indexes and arbitrage tracking. See where it's cheapest to buy and most profitable to sell based on real-time platform data.</p>
             </div>
-            <div id="intel-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 relative z-40"></div>
+            <div id="intel-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-8 relative z-40"></div>
         </div>
 
         <!-- FEED CALCULATOR VIEW -->
         <div id="view-calculator" class="fade-in hidden space-y-8 relative z-30">
             <div class="text-center space-y-4 mb-14 relative z-40">
-                <div class="w-24 h-24 bg-teal-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-teal-500/20 shadow-[0_0_40px_rgba(20,184,166,0.15)] mb-8">🧮</div>
-                <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight">Precision Feed Calculator</h2>
+                <div class="w-16 h-16 md:w-24 md:h-24 bg-teal-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-teal-500/20 shadow-[0_0_40px_rgba(20,184,166,0.15)] mb-8">🧮</div>
+                <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">Precision Feed Calculator</h2>
                 <p class="text-slate-400 text-lg max-w-3xl mx-auto font-medium">Use the Pearson Square method to instantly calculate the exact mix ratio and cost of formulating your own poultry or livestock feed.</p>
             </div>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto relative z-40">
-                <div class="glass-card p-10 md:p-14 rounded-[3rem] border border-teal-500/30 shadow-[0_0_40px_rgba(20,184,166,0.15)]">
+                <div class="glass-card p-6 sm:p-8 md:p-14 rounded-[2rem] md:rounded-[3rem] border border-teal-500/30 shadow-[0_0_40px_rgba(20,184,166,0.15)]">
                     <h3 class="text-3xl font-black text-teal-400 mb-10 flex items-center gap-4 tracking-tight">1. Set Your Targets</h3>
                     <div class="space-y-8">
                         <div class="bg-[#020617]/50 p-8 rounded-[2rem] border border-slate-700/80 shadow-inner">
@@ -965,8 +1009,8 @@
                     </div>
                 </div>
 
-                <div class="glass-card p-10 md:p-14 rounded-[3rem] border border-white/5 relative overflow-hidden flex flex-col justify-center shadow-2xl z-40">
-                    <div class="absolute top-[-50px] right-[-50px] w-80 h-80 bg-teal-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+                <div class="glass-card p-6 sm:p-8 md:p-14 rounded-[2rem] md:rounded-[3rem] border border-white/5 relative overflow-hidden flex flex-col justify-center shadow-2xl z-40">
+                    <div class="absolute top-[-50px] right-[-50px] w-48 h-48 md:w-80 md:h-80 bg-teal-500/10 rounded-full opacity-50 pointer-events-none"></div>
                     <h3 class="text-3xl font-black text-white mb-10 z-10 tracking-tight">2. Your Custom Formulation</h3>
                     
                     <div id="calc-results-empty" class="text-center py-24 text-slate-500 text-base font-medium relative z-10">
@@ -1002,21 +1046,21 @@
         <!-- GRANTS VIEW -->
         <div id="view-grants" class="fade-in hidden space-y-8 relative z-30">
             <div class="text-center space-y-4 mb-14 relative z-40">
-                <div class="w-24 h-24 bg-amber-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-amber-500/20 shadow-[0_0_40px_rgba(245,158,11,0.15)] mb-8">🏆</div>
-                <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight">Agri-Finance & Grants</h2>
+                <div class="w-16 h-16 md:w-24 md:h-24 bg-amber-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-amber-500/20 shadow-[0_0_40px_rgba(245,158,11,0.15)] mb-8">🏆</div>
+                <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">Agri-Finance & Grants</h2>
                 <p class="text-slate-400 text-lg max-w-3xl mx-auto font-medium">Our automated system scans MoFA, USAID, and NGO portals daily to bring you the latest funding opportunities and loans.</p>
             </div>
-            <div id="grants-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-40"></div>
+            <div id="grants-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8 relative z-40"></div>
         </div><!-- AGRIDOCTOR AI SCANNER VIEW -->
         <div id="view-agridoctor" class="fade-in hidden max-w-5xl mx-auto mt-6 space-y-8 relative z-30">
             <div class="text-center space-y-4 mb-14 relative z-40">
-                <div class="w-24 h-24 bg-rose-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-rose-500/20 shadow-[0_0_40px_rgba(244,63,94,0.15)] mb-8">🩺</div>
-                <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight">AgriDoctor AI</h2>
+                <div class="w-16 h-16 md:w-24 md:h-24 bg-rose-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-rose-500/20 shadow-[0_0_40px_rgba(244,63,94,0.15)] mb-8">🩺</div>
+                <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">AgriDoctor AI</h2>
                 <p class="text-slate-400 text-lg max-w-3xl mx-auto font-medium">Upload a photo of a diseased crop leaf or sick livestock. Our AI will diagnose the issue and provide an instant treatment plan.</p>
             </div>
 
-            <div class="glass-card p-12 md:p-16 rounded-[3rem] border border-rose-500/30 shadow-[0_0_50px_rgba(244,63,94,0.15)] relative overflow-hidden z-40">
-                <div class="absolute top-[-80px] right-[-80px] w-80 h-80 bg-rose-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+            <div class="glass-card p-6 sm:p-8 md:p-16 rounded-[2rem] md:rounded-[3rem] border border-rose-500/30 shadow-[0_0_50px_rgba(244,63,94,0.15)] relative overflow-hidden z-40">
+                <div class="absolute top-[-80px] right-[-80px] w-48 h-48 md:w-80 md:h-80 bg-rose-500/10 rounded-full opacity-50 pointer-events-none"></div>
                 
                 <div id="agridoctor-upload-state" class="text-center relative z-40">
                     <div class="w-full h-96 bg-[#020617]/50 border-2 border-dashed border-rose-500/40 rounded-[3rem] flex flex-col items-center justify-center cursor-pointer hover:border-rose-400 hover:bg-rose-500/5 transition-all group relative overflow-hidden shadow-inner" onclick="document.getElementById('agridoctor-file').click()">
@@ -1071,7 +1115,7 @@
         <!-- HAULAGE POOL VIEW -->
         <div id="view-haulage" class="fade-in hidden space-y-8 relative z-30">
             <div class="flex flex-col md:flex-row md:items-center justify-between glass-card p-10 rounded-[3rem] border border-amber-500/30 gap-8 shadow-[0_0_40px_rgba(245,158,11,0.15)] relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-80 h-80 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+                <div class="absolute top-0 right-0 w-48 h-48 md:w-80 md:h-80 bg-amber-500/10 rounded-full opacity-50 pointer-events-none"></div>
                 <div class="relative z-10">
                     <h2 class="text-4xl font-black text-white flex items-center gap-4 tracking-tight">🚚 Haulage Pool & Empty-Leg Freight</h2>
                     <p class="text-base text-slate-400 mt-3 font-medium max-w-2xl">Book cheap return-trip truck space or list your empty haulage truck returning from deliveries.</p>
@@ -1080,7 +1124,7 @@
                     + List Empty Truck
                 </button>
             </div>
-            <div id="haulage-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 relative z-40"></div>
+            <div id="haulage-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-8 relative z-40"></div>
         </div>
 
         <!-- POST AD VIEW -->
@@ -1089,8 +1133,8 @@
                 <div class="w-16 h-16 bg-emerald-500/20 rounded-[1.5rem] flex items-center justify-center text-3xl text-emerald-400 border border-emerald-500/30 shadow-[0_0_30px_rgba(16,185,129,0.2)]">📢</div>
                 <h2 class="text-5xl font-black text-white tracking-tight">Post a Seller Ad</h2>
             </div>
-            <div class="glass-card p-12 md:p-16 rounded-[3rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] space-y-10 relative overflow-hidden border border-emerald-500/20 z-40">
-                <div class="absolute top-[-80px] left-[-80px] w-80 h-80 bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none"></div>
+            <div class="glass-card p-6 sm:p-8 md:p-16 rounded-[2rem] md:rounded-[3rem] shadow-2xl md:shadow-[0_0_50px_rgba(0,0,0,0.5)] space-y-10 relative overflow-hidden border border-emerald-500/20 z-40">
+                <div class="absolute top-[-80px] left-[-80px] w-48 h-48 md:w-80 md:h-80 bg-emerald-500/5 rounded-full opacity-50 pointer-events-none"></div>
                 
                 <div class="relative z-40">
                     <label class="block text-sm font-black text-slate-400 mb-5 uppercase tracking-widest">Product Photos (Select Multiple)</label>
@@ -1162,8 +1206,8 @@
 
         <!-- DASHBOARD VIEW -->
         <div id="view-dashboard" class="fade-in hidden max-w-6xl mx-auto mt-8 space-y-10 relative z-30">
-            <div class="glass-card p-12 md:p-16 rounded-[3rem] relative overflow-hidden flex flex-col md:flex-row items-center gap-12 shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-emerald-500/30">
-                <div class="absolute top-[-80px] right-[-80px] w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+            <div class="glass-card p-6 sm:p-8 md:p-16 rounded-[2rem] md:rounded-[3rem] relative overflow-hidden flex flex-col md:flex-row items-center gap-12 shadow-2xl md:shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-emerald-500/30">
+                <div class="absolute top-[-80px] right-[-80px] w-96 h-96 bg-emerald-500/10 rounded-full opacity-50 pointer-events-none"></div>
                 
                 <div class="relative w-40 h-40 shrink-0 z-40 group cursor-pointer" onclick="document.getElementById('profile-pic-upload').click()">
                     <div id="my-profile-avatar" class="w-full h-full bg-slate-800 rounded-[2.5rem] flex items-center justify-center text-6xl border-4 border-slate-700 shadow-2xl overflow-hidden bg-cover bg-center group-hover:border-emerald-500 transition-colors">👨🏽‍🌾</div>
@@ -1197,23 +1241,23 @@
                     </div>
                 </div>
                 <div class="flex flex-col gap-4 shrink-0 z-40 w-full md:w-auto">
-                    <button onclick="navigate('post')" class="w-full md:w-auto bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black px-10 py-5 rounded-2xl text-base transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:-translate-y-1 tracking-wide cursor-pointer">
+                    <button onclick="navigate('post')" class="w-full md:w-auto bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black px-6 py-4 md:px-10 md:py-5 rounded-xl md:rounded-2xl text-sm md:text-base transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:-translate-y-1 tracking-wide cursor-pointer">
                         + Post Seller Ad
                     </button>
-                    <button onclick="openRfqModal()" class="w-full md:w-auto bg-[#0f172a] hover:bg-slate-800 border border-blue-500/40 text-blue-400 hover:text-blue-300 font-black px-10 py-5 rounded-2xl text-base transition-all shadow-lg hover:-translate-y-1 tracking-wide cursor-pointer">
+                    <button onclick="openRfqModal()" class="w-full md:w-auto bg-[#0f172a] hover:bg-slate-800 border border-blue-500/40 text-blue-400 hover:text-blue-300 font-black px-6 py-4 md:px-10 md:py-5 rounded-xl md:rounded-2xl text-sm md:text-base transition-all shadow-lg hover:-translate-y-1 tracking-wide cursor-pointer">
                         📢 Post Buyer Tender
                     </button>
                 </div>
-            </div><div class="grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-40">
+            </div><div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 relative z-40">
                 <div>
                     <div class="flex items-center justify-between mb-6 glass-card p-8 rounded-[2.5rem] border border-white/5 shadow-md">
-                        <h2 class="text-3xl font-black text-white tracking-tight">My Ads</h2>
+                        <h2 class="text-2xl md:text-3xl font-black text-white tracking-tight">My Ads</h2>
                     </div>
                     <div id="my-ads-list" class="grid grid-cols-1 gap-6"></div>
                 </div>
                 <div>
                     <div class="flex items-center justify-between mb-6 glass-card p-8 rounded-[2.5rem] border border-blue-500/30 bg-blue-500/5 shadow-md">
-                        <h2 class="text-3xl font-black text-white tracking-tight">My Purchase Tenders</h2>
+                        <h2 class="text-2xl md:text-3xl font-black text-white tracking-tight">My Purchase Tenders</h2>
                     </div>
                     <div id="my-tenders-list" class="grid grid-cols-1 gap-6"></div>
                 </div>
@@ -1222,20 +1266,20 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-12 relative z-40">
                 <div>
                     <div class="flex items-center justify-between mb-6 glass-card p-8 rounded-[2.5rem] border border-amber-500/30 bg-amber-500/5 shadow-md">
-                        <h2 class="text-3xl font-black text-white tracking-tight">My Machinery Rentals</h2>
+                        <h2 class="text-2xl md:text-3xl font-black text-white tracking-tight">My Machinery Rentals</h2>
                     </div>
                     <div id="my-rentals-list" class="grid grid-cols-1 gap-6"></div>
                 </div>
                 <div>
                     <div class="flex items-center justify-between mb-6 glass-card p-8 rounded-[2.5rem] border border-emerald-500/30 bg-emerald-500/5 shadow-md">
-                        <h2 class="text-3xl font-black text-white tracking-tight">My Eco-Loop Pickups</h2>
+                        <h2 class="text-2xl md:text-3xl font-black text-white tracking-tight">My Eco-Loop Pickups</h2>
                     </div>
                     <div id="my-waste-list" class="grid grid-cols-1 gap-6"></div>
                 </div>
             </div>
 
             <!-- ADMIN PANEL -->
-            <div id="admin-panel" class="hidden mt-20 glass-card p-12 md:p-16 rounded-[3rem] border border-emerald-500/40 shadow-[0_0_60px_rgba(16,185,129,0.15)] bg-slate-900/80 relative overflow-hidden z-40">
+            <div id="admin-panel" class="hidden mt-20 glass-card p-6 sm:p-8 md:p-16 rounded-[2rem] md:rounded-[3rem] border border-emerald-500/40 shadow-[0_0_60px_rgba(16,185,129,0.15)] bg-slate-900/80 relative overflow-hidden z-40">
                 <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
                 <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-12 border-b border-white/10 pb-8 relative z-10 gap-5">
                     <div>
@@ -1292,7 +1336,7 @@
         <!-- RENTALS VIEW -->
         <div id="view-rentals" class="fade-in hidden space-y-8 relative z-30">
             <div class="flex flex-col md:flex-row md:items-center justify-between glass-card p-10 rounded-[3rem] border border-amber-500/30 gap-8 shadow-[0_0_40px_rgba(245,158,11,0.15)] relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-80 h-80 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+                <div class="absolute top-0 right-0 w-48 h-48 md:w-80 md:h-80 bg-amber-500/10 rounded-full opacity-50 pointer-events-none"></div>
                 <div class="relative z-10">
                     <h2 class="text-4xl font-black text-white flex items-center gap-4 tracking-tight">🚜 Heavy Equipment Rentals</h2>
                     <p class="text-base text-slate-400 mt-3 font-medium max-w-2xl">Rent idle tillers, generators, threshers, and pumps locally with escrow-backed deposits.</p>
@@ -1301,19 +1345,19 @@
                     + List Your Equipment
                 </button>
             </div>
-            <div id="rentals-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 relative z-40"></div>
+            <div id="rentals-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-8 relative z-40"></div>
         </div>
 
         <!-- ECO-LOOP LOGISTICS VIEW -->
         <div id="view-waste" class="fade-in hidden space-y-8 relative z-30">
             <div class="text-center space-y-4 mb-14 relative z-40">
-                <div class="w-24 h-24 bg-emerald-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-emerald-500/20 shadow-[0_0_40px_rgba(16,185,129,0.15)] mb-8">♻️</div>
-                <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight">Eco-Loop Logistics</h2>
+                <div class="w-16 h-16 md:w-24 md:h-24 bg-emerald-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-emerald-500/20 shadow-xl md:shadow-[0_0_40px_rgba(16,185,129,0.15)] mb-8">♻️</div>
+                <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">Eco-Loop Logistics</h2>
                 <p class="text-slate-400 text-lg max-w-3xl mx-auto font-medium">Monetize commercial waste and agricultural by-products. Request bulk collection for used cooking oil, spent grain, cocoa pods, and biomass.</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto relative z-40">
-                <div class="glass-card p-12 md:p-16 rounded-[3rem] border border-emerald-500/30 shadow-[0_0_50px_rgba(16,185,129,0.15)] space-y-8">
+                <div class="glass-card p-6 sm:p-8 md:p-16 rounded-[2rem] md:rounded-[3rem] border border-emerald-500/30 shadow-[0_0_50px_rgba(16,185,129,0.15)] space-y-8">
                     <h3 class="text-3xl font-black text-emerald-400 mb-6 tracking-tight">Request Reverse Pickup</h3>
                     <div>
                         <label class="text-sm text-slate-400 font-black uppercase tracking-widest">Material Type</label>
@@ -1342,7 +1386,7 @@
                     </button>
                 </div>
 
-                <div class="glass-card p-12 md:p-16 rounded-[3rem] border border-white/5 flex flex-col justify-between shadow-2xl bg-gradient-to-br from-[#020617]/50 to-slate-900/50">
+                <div class="glass-card p-6 sm:p-8 md:p-16 rounded-[2rem] md:rounded-[3rem] border border-white/5 flex flex-col justify-between shadow-2xl bg-gradient-to-br from-[#020617]/50 to-slate-900/50">
                     <div>
                         <h3 class="text-3xl font-black text-white mb-4 tracking-tight">Active Commercial Pickups</h3>
                         <p class="text-base text-slate-400 mb-8 font-medium">Live queue of commercial waste routes available for registered drivers and aggregators.</p>
@@ -1378,7 +1422,7 @@
                                     <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Verified
                                 </div>
                             </div>
-                            <p class="text-lg text-slate-400 mb-8 font-medium max-w-2xl" id="store-bio">Premium commercial supplier of fresh agricultural produce.</p>
+                            <p class="text-sm md:text-base lg:text-lg text-slate-400 mb-8 font-medium max-w-2xl" id="store-bio">Premium commercial supplier of fresh agricultural produce.</p>
                             
                             <div class="flex flex-wrap gap-5 text-sm font-bold">
                                 <span class="bg-[#020617]/50 border border-slate-700/80 px-5 py-3 rounded-2xl text-slate-300 shadow-inner">📞 <span class="text-white" id="store-phone">...</span></span>
@@ -1393,7 +1437,7 @@
                     </div>
                 </div>
             </div><!-- Store Layout (Sidebar & Main Content) -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 relative z-40">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-12 relative z-40">
                 <!-- Sidebar: Stats & Rating -->
                 <div class="space-y-8">
                     <div class="glass-card p-10 rounded-[3rem] border border-amber-500/20 shadow-[0_0_40px_rgba(245,158,11,0.05)] bg-amber-500/5">
@@ -1429,9 +1473,9 @@
 
         <!-- AUTH VIEW -->
         <div id="view-auth" class="fade-in hidden max-w-md mx-auto mt-16 relative z-30">
-            <div class="glass-card p-12 md:p-14 rounded-[3rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-hidden">
+            <div class="glass-card p-12 md:p-14 rounded-[3rem] shadow-2xl md:shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
-                <div class="absolute top-[-50px] right-[-50px] w-48 h-48 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
+                <div class="absolute top-[-50px] right-[-50px] w-48 h-48 bg-emerald-500/10 rounded-full opacity-50 pointer-events-none"></div>
                 
                 <div id="login-box" class="relative z-40">
                     <h2 class="text-4xl font-black text-white text-center mb-10 tracking-tight">Welcome Back</h2>
@@ -1494,10 +1538,10 @@
         <!-- PRICING VIEW -->
         <div id="view-pricing" class="fade-in hidden max-w-7xl mx-auto mt-16 space-y-10 relative z-30">
             <div class="text-center space-y-5 mb-16 relative z-40">
-                <h2 class="text-5xl md:text-7xl font-black text-white tracking-tight">Boost Your Sales</h2>
+                <h2 class="text-4xl md:text-5xl lg:text-7xl font-black text-white tracking-tight">Boost Your Sales</h2>
                 <p class="text-slate-400 text-lg max-w-2xl mx-auto font-medium">Standard listings are free forever. Boost your visibility and sell faster with our premium features powered by Mobile Money.</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 items-center relative z-40">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 items-center relative z-40">
                 <div class="glass-card p-12 rounded-[3rem] flex flex-col border border-white/5 shadow-xl hover:border-emerald-500/20 transition-all h-full">
                     <h3 class="text-3xl font-black text-slate-300 mb-4 tracking-tight">Standard</h3>
                     <div class="mb-10"><span class="text-6xl font-black text-white tracking-tight">GH₵ 0</span><span class="text-slate-500 text-base font-bold"> / forever</span></div>
@@ -1570,6 +1614,30 @@
         </div>
 
     </main>
+
+    <!-- MOBILE NATIVE BOTTOM NAVIGATION -->
+    <nav class="md:hidden fixed bottom-0 left-0 w-full border-t border-white/10 z-[100] pb-safe flex justify-around items-center px-2 py-3 bg-[#020617]/90 backdrop-blur-xl shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+        <button onclick="navigate('portal-select')" class="flex flex-col items-center gap-1 w-16 group active:scale-95 transition-transform">
+            <span class="text-xl grayscale group-hover:grayscale-0 transition-all drop-shadow-md">🌍</span>
+            <span class="text-[9px] font-black text-slate-500 group-hover:text-emerald-400 transition-colors">Portals</span>
+        </button>
+        <button onclick="selectPortal('everyday')" class="flex flex-col items-center gap-1 w-16 group active:scale-95 transition-transform">
+            <span class="text-xl grayscale group-hover:grayscale-0 transition-all drop-shadow-md">⚡</span>
+            <span class="text-[9px] font-black text-slate-500 group-hover:text-blue-400 transition-colors">Hub</span>
+        </button>
+        <button onclick="handleSmartPostAd()" class="flex flex-col items-center justify-center -mt-10 w-16 h-16 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-full shadow-[0_5px_25px_rgba(16,185,129,0.5)] active:scale-90 transition-transform border-[5px] border-[#020617]">
+            <span class="text-3xl text-white font-black leading-none drop-shadow-md">+</span>
+        </button>
+        <button onclick="selectPortal('agro')" class="flex flex-col items-center gap-1 w-16 group active:scale-95 transition-transform">
+            <span class="text-xl grayscale group-hover:grayscale-0 transition-all drop-shadow-md">🚜</span>
+            <span class="text-[9px] font-black text-slate-500 group-hover:text-amber-400 transition-colors">Market</span>
+        </button>
+        <button onclick="navigate('dashboard')" class="flex flex-col items-center gap-1 w-16 group active:scale-95 transition-transform">
+            <span class="text-xl grayscale group-hover:grayscale-0 transition-all drop-shadow-md">👤</span>
+            <span class="text-[9px] font-black text-slate-500 group-hover:text-white transition-colors">Profile</span>
+        </button>
+    </nav>
+
 
     <footer class="mt-auto border-t border-white/10 bg-[#020617]/90 backdrop-blur-xl py-12 text-center text-sm text-slate-500 relative z-50">
         <div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row items-center justify-between gap-10">
@@ -1715,7 +1783,7 @@
                 const slide = platformFeatures[currentSlide];
                 container.innerHTML = `
                     <div onclick="navigate('${slide.view}')" class="w-full h-full bg-gradient-to-br ${slide.color} flex flex-col md:flex-row items-center justify-center p-10 md:p-14 text-center md:text-left slide-fade cursor-pointer hover:bg-[#0f172a]/50 transition-colors group">
-                        <div class="text-7xl md:text-8xl mb-6 md:mb-0 md:mr-12 filter drop-shadow-[0_0_20px_rgba(255,255,255,0.2)] group-hover:scale-110 transition-transform duration-500">${slide.icon}</div>
+                        <div class="text-5xl md:text-7xl mb-6 md:mb-0 md:mr-12 filter drop-shadow-[0_0_20px_rgba(255,255,255,0.2)] group-hover:scale-110 transition-transform duration-500">${slide.icon}</div>
                         <div>
                             <span class="text-[10px] text-white/50 uppercase font-black tracking-widest mb-2 block">Platform Feature</span>
                             <h3 class="text-3xl md:text-5xl font-black text-white mb-3 tracking-tight group-hover:text-emerald-400 transition-colors">${slide.title}</h3>
@@ -1731,6 +1799,111 @@
         }
 
         
+        
+        const cobuyDeals = [
+            { id: 101, title: "50kg Royal Aroma Perfume Rice", img: "rice", total_price: 800, splits_total: 4, splits_filled: 3, unit: "12.5kg each", loc: "Madina Zone" },
+            { id: 102, title: "1 Live Full Goat (Weekend Soup)", img: "goat", total_price: 900, splits_total: 3, splits_filled: 1, unit: "1/3 Carcass each", loc: "East Legon" },
+            { id: 103, title: "25 Liters Frytol Cooking Oil", img: "oil", total_price: 550, splits_total: 5, splits_filled: 4, unit: "5 Liters each", loc: "Dansoman" },
+            { id: 104, title: "Carton of Frozen Chicken (10kg)", img: "chicken", total_price: 400, splits_total: 4, splits_filled: 0, unit: "2.5kg each", loc: "Tema Comm 2" },
+            { id: 105, title: "Full Sack of Red Onions (Bawku)", img: "onion", total_price: 600, splits_total: 6, splits_filled: 5, unit: "1 Rubber each", loc: "Kasoa Market" },
+            { id: 106, title: "Crate of Fresh Tomatoes (Full Box)", img: "tomato", total_price: 1200, splits_total: 10, splits_filled: 7, unit: "1/10 Box each", loc: "Agbogbloshie" }
+        ];
+
+        function renderCoBuyDeals() {
+            const grid = document.getElementById('cobuy-grid');
+            if (!grid) return;
+
+            grid.innerHTML = cobuyDeals.map(deal => {
+                const mySharePrice = (deal.total_price / deal.splits_total).toFixed(2);
+                const progressPct = (deal.splits_filled / deal.splits_total) * 100;
+                const isAlmostFull = (deal.splits_total - deal.splits_filled) === 1;
+                
+                let badgeHtml = '';
+                if (isAlmostFull) {
+                    badgeHtml = `<span class="absolute top-4 left-4 bg-rose-500 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-[0_0_15px_rgba(225,29,72,0.6)] z-10 animate-pulse">Needs 1 More!</span>`;
+                }
+
+                let visual = '';
+                if(deal.img === 'goat') visual = '🐐';
+                else if(deal.img === 'oil') visual = '🛢️';
+                else if(deal.img === 'chicken') visual = '🍗';
+                else if(deal.img === 'onion') visual = '🧅';
+                else if(deal.img === 'tomato') visual = '🍅';
+                else visual = '🍚';
+
+                return `
+                    <div class="glass-card content-visibility-auto rounded-[2.5rem] p-2 border border-white/5 hover:border-amber-500/40 transition-all shadow-xl group flex flex-col cursor-pointer">
+                        <div class="relative h-48 w-full bg-gradient-to-br from-[#0f172a] to-slate-900 rounded-[2rem] flex items-center justify-center text-7xl shadow-inner overflow-hidden border border-slate-700/50">
+                            ${badgeHtml}
+                            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
+                            <span class="group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl">${visual}</span>
+                            <div class="absolute bottom-3 right-3 bg-[#020617]/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 shadow-lg flex items-center gap-1.5">
+                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Bulk Value:</span>
+                                <span class="text-xs font-black text-white">GH₵${deal.total_price}</span>
+                            </div>
+                        </div>
+                        <div class="p-6 md:p-8 flex flex-col flex-grow">
+                            <h3 class="text-xl md:text-2xl font-black text-white mb-2 leading-tight tracking-tight group-hover:text-amber-400 transition-colors">${deal.title}</h3>
+                            <p class="text-xs font-bold text-slate-400 mb-6 bg-slate-800/50 w-fit px-3 py-1 rounded-lg border border-slate-700/50 shadow-inner">📍 Pickup: ${deal.loc}</p>
+                            
+                            <div class="mb-6 bg-[#020617]/60 p-5 rounded-2xl border border-slate-700/50 shadow-inner">
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Group Progress</span>
+                                    <span class="text-sm font-black text-amber-400">${deal.splits_filled} / ${deal.splits_total} Joined</span>
+                                </div>
+                                <div class="w-full h-3 bg-slate-800 rounded-full overflow-hidden shadow-inner">
+                                    <div class="h-full bg-gradient-to-r from-amber-500 to-yellow-300 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(251,191,36,0.5)]" style="width: ${progressPct}%"></div>
+                                </div>
+                                <div class="flex mt-4 -space-x-2 overflow-hidden">
+                                    ${Array.from({length: deal.splits_filled}).map(() => `<div class="inline-flex h-8 w-8 rounded-full ring-2 ring-[#0f172a] bg-slate-700 items-center justify-center text-[10px] shadow-md z-10">👤</div>`).join('')}
+                                    ${Array.from({length: deal.splits_total - deal.splits_filled}).map(() => `<div class="inline-flex h-8 w-8 rounded-full ring-2 ring-[#0f172a] bg-[#020617] border border-dashed border-slate-600 items-center justify-center text-[10px] text-slate-600">?</div>`).join('')}
+                                </div>
+                            </div>
+
+                            <div class="mt-auto border-t border-white/10 pt-5 flex items-center justify-between">
+                                <div>
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Your Share (${deal.unit})</p>
+                                    <p class="text-3xl font-black text-white tracking-tight">GH₵${mySharePrice}</p>
+                                </div>
+                                <button onclick="joinCoBuy(${deal.id})" class="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-[#020617] font-black px-6 py-4 rounded-2xl text-sm transition-all shadow-[0_0_20px_rgba(245,158,11,0.3)] tracking-wide active:scale-95 cursor-pointer flex-shrink-0 ml-2">Join Group</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function joinCoBuy(dealId) {
+            if (!agriToken) {
+                showToast("Please sign in to join a Susu group", "error");
+                return navigate('auth');
+            }
+
+            const dealIndex = cobuyDeals.findIndex(d => d.id === dealId);
+            if (dealIndex === -1) return;
+            const deal = cobuyDeals[dealIndex];
+
+            showToast("Initializing MoMo Escrow for Group Buy... ⏳");
+            
+            setTimeout(() => {
+                cobuyDeals[dealIndex].splits_filled += 1;
+                renderCoBuyDeals();
+                
+                confetti({
+                    particleCount: 150,
+                    spread: 80,
+                    origin: { y: 0.6 },
+                    colors: ['#f59e0b', '#fde047', '#10b981']
+                });
+                
+                if (cobuyDeals[dealIndex].splits_filled === cobuyDeals[dealIndex].splits_total) {
+                    showToast(`🎉 Group Filled! Your ${deal.title} is being dispatched!`, "success");
+                } else {
+                    showToast(`✅ You joined the group! Waiting for ${deal.splits_total - deal.splits_filled} more people.`, "success");
+                }
+            }, 1500);
+        }
+
         const fallbackTestAds = [
             { id: 901, product_name: "[TEST AD] 50 Free-Range Broilers", category: "Poultry", base_price_ghs: "85", unit: "bird", neighborhood: "Amasaman, Accra", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "This is a test ad. Do not call." },
             { id: 902, product_name: "[TEST AD] 100 Kuroiler Day-Old Chicks", category: "Chicks", base_price_ghs: "9", unit: "chick", neighborhood: "Dome, Accra", image_data: null, seller_name: "Test Farmer", phone_number: "0240000000", status: "approved", boost_tier: "standard", description: "This is a test ad. Do not call." },
@@ -1922,7 +2095,7 @@
                             <span class="bg-blue-500/10 text-blue-400 text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border border-blue-500/20">${b.category}</span>
                             <span class="text-[10px] text-slate-400 font-bold">Started: ${b.created_at || 'Recently'}</span>
                         </div>
-                        <h3 class="text-2xl font-black text-white mb-2 tracking-tight">${b.identifier || b.name || 'Unnamed Batch'}</h3>
+                        <h3 class="text-xl md:text-2xl font-black text-white mb-2 tracking-tight">${b.identifier || b.name || 'Unnamed Batch'}</h3>
                         <p class="text-sm text-slate-400 mb-6 font-medium">Quantity: <strong class="text-slate-200">${b.quantity}</strong></p>
                         
                         <div class="bg-[#020617]/60 p-5 rounded-2xl border border-slate-700/50 mb-6 shadow-inner">
@@ -2039,12 +2212,12 @@
                         </div>
                     </div>`;
                     
-                    contentContainer.innerHTML = wikiHtml + `<h3 class="text-2xl font-black text-white mb-6 mt-10 border-b border-white/10 pb-4 tracking-tight">🚜 Agromart Cultivation Guide</h3>` + item.guide;
+                    contentContainer.innerHTML = wikiHtml + `<h3 class="text-xl md:text-2xl font-black text-white mb-6 mt-10 border-b border-white/10 pb-4 tracking-tight">🚜 Agromart Cultivation Guide</h3>` + item.guide;
                 } else {
                     throw new Error("Wiki not found");
                 }
             } catch (e) {
-                contentContainer.innerHTML = `<h3 class="text-2xl font-black text-white mb-6 border-b border-white/10 pb-4 tracking-tight">🚜 Agromart Cultivation Guide</h3>` + item.guide;
+                contentContainer.innerHTML = `<h3 class="text-xl md:text-2xl font-black text-white mb-6 border-b border-white/10 pb-4 tracking-tight">🚜 Agromart Cultivation Guide</h3>` + item.guide;
             }
         }
         
@@ -2166,7 +2339,7 @@
                 'home', 'marketplace', 'auth', 'grants', 'farm-manager', 
                 'intel', 'calculator', 'trainer', 'post', 'dashboard', 
                 'pricing', 'faq', 'about', 'support', 'rentals', 'waste', 'agridoctor', 'haulage', 'seller-store', 'community',
-                'portal-select', 'everyday-hub'
+                'portal-select', 'everyday-hub', 'cobuy'
             ];
             
             views.forEach(v => {
@@ -2224,23 +2397,19 @@
         // --- NEW: THE EVERYDAY HUB DATA & LOGIC ---
         const everydayData = {
             rooms: [
-                { title: "Self-Contained Chamber & Hall", loc: "Madina Social Welfare, Accra", price: "GH₵ 850 / month", tag: "No Agent Fee", phone: "0244112233", details: "Walled compound with separate water meter and prepaid electricity. Directly from landlord." },
-                { title: "Standard 2-in-a-Room Student Hostel", loc: "Ayeduase Gate, KNUST, Kumasi", price: "GH₵ 3,200 / academic year", tag: "Hostel Management", phone: "0201234567", details: "Includes 24/7 backup power generator, study desks, and private washroom." },
-                { title: "Single Room Self-Contained", loc: "Haatso Ecomog, Accra", price: "GH₵ 550 / month", tag: "Caretaker Direct", phone: "0559876543", details: "Tiled floor, ceiling fan installed, reliable Ghana Water connection." }
+                { title: "[TEST AD] Chamber & Hall Self-Contained", loc: "Madina Social Welfare", price: "GH₵ 850 / month", tag: "No Agent Fee", phone: "0000000000", details: "Walled compound with separate water meter. This is a test listing." }
             ],
             meds: [
-                { title: "Ventolin Inhaler (100mcg)", loc: "Requested near Spintex Road, Accra", price: "Urgent Request", tag: "Seeking Stock", phone: "0245001122", details: "Required for an asthma emergency. Any pharmacy nearby with available stock please reach out." },
-                { title: "Augmentin 625mg Tablets", loc: "Osu / Danquah Circle, Accra", price: "GH₵ 65.00", tag: "In Stock at MedPlus", phone: "0249887766", details: "Original GlaxoSmithKline pack verified in inventory." }
+                { title: "[TEST AD] Ventolin Inhaler Stock Available", loc: "East Legon Pharmacy", price: "GH₵ 120", tag: "In Stock - Verified", phone: "0000000000", details: "This is a test listing to demonstrate the medicine locator. Do not call." }
             ],
             artisans: [
-                { title: "Master Pipefitter & Plumber (Kwame)", loc: "Covers Dansoman, Kaneshie & Lapaz", price: "From GH₵ 80 / job", tag: "Verified Pro (4.9⭐)", phone: "0243456789", details: "12 years experience in overhead tank installs, borehole pumping, and emergency leak repairs." },
-                { title: "Air Conditioner & Fridge Tech (Kofi)", loc: "East Legon & Spintex Area", price: "GH₵ 120 standard service", tag: "Verified Pro (5.0⭐)", phone: "0278112233", details: "Specialist in gas recharging, copper piping, and inverter AC troubleshooting." }
+                { title: "[TEST AD] Master Pipefitter & Plumber", loc: "Covers Dansoman & Lapaz", price: "From GH₵ 80", tag: "Verified Pro (4.9⭐)", phone: "0000000000", details: "12 years experience in overhead tank installs. This is a test listing." }
             ],
             parcels: [
-                { title: "Accra ➔ Kumasi (Package Hitch)", loc: "Leaving Circle Station at 2:00 PM Today", price: "GH₵ 40 per small box", tag: "Private Car Commute", phone: "0504443322", details: "Driving private saloon car to Adum, Kumasi. Trunk space available for clean parcels and documents." }
+                { title: "[TEST AD] Accra ➔ Kumasi Driver", loc: "Leaving Circle at 2:00 PM", price: "GH₵ 40 / box", tag: "Private Car Commute", phone: "0000000000", details: "Trunk space available for clean parcels. This is a test listing." }
             ],
             thrift: [
-                { title: "Samsung 43-inch Smart Crystal UHD TV", loc: "Tema Community 25", price: "GH₵ 2,400", tag: "Gently Used", phone: "0242223344", details: "10 months old, spotless screen, comes with remote and wall mount bracket." }
+                { title: "[TEST AD] 43-inch Smart UHD TV", loc: "Tema Community 25", price: "GH₵ 2,400", tag: "Gently Used", phone: "0000000000", details: "Spotless screen, comes with remote. This is a test listing." }
             ]
         };
 
@@ -2261,7 +2430,7 @@
             const items = everydayData[category] || [];
 
             grid.innerHTML = items.map(item => `
-                <div class="glass-card p-6 md:p-8 rounded-[2.5rem] border border-white/5 hover:border-blue-500/30 transition-all flex flex-col justify-between shadow-lg">
+                <div class="glass-card content-visibility-auto p-5 md:p-8 rounded-3xl md:rounded-[2.5rem] border border-white/5 hover:border-blue-500/30 transition-all flex flex-col justify-between shadow-lg">
                     <div>
                         <div class="flex justify-between items-start mb-4">
                             <span class="text-[10px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-3 py-1.5 rounded-lg font-black uppercase tracking-widest">${item.tag}</span>
@@ -2285,12 +2454,102 @@
             }
         }
 
+        
+        
+        let edUploadedImages = [];
+        
+        function handleEdImageUpload(event) {
+            const files = event.target.files; 
+            if (!files.length) return; 
+            
+            Array.from(files).forEach(file => { 
+                const reader = new FileReader(); 
+                reader.readAsDataURL(file); 
+                reader.onload = (e) => { 
+                    const img = new Image(); 
+                    img.src = e.target.result; 
+                    img.onload = () => { 
+                        const canvas = document.createElement('canvas'); 
+                        const scale = 300 / img.width; 
+                        canvas.width = 300; 
+                        canvas.height = img.height * scale; 
+                        
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height); 
+                        
+                        edUploadedImages.push(canvas.toDataURL('image/jpeg', 0.6)); 
+                        renderEdImagePreview(); 
+                    } 
+                } 
+            }); 
+            
+            event.target.value = '';
+        }
+
+        function removeEdUploadedImage(index, event) { 
+            event.stopPropagation(); 
+            edUploadedImages.splice(index, 1); 
+            renderEdImagePreview(); 
+        }
+
+        function renderEdImagePreview() {
+            const pb = document.getElementById('ed-image-preview'); 
+            if (!pb) return; 
+            
+            if (edUploadedImages.length === 0) { 
+                pb.innerHTML = `<span class="text-slate-400 text-xs font-black text-center px-4 group-hover:text-blue-400 transition-colors">Click to attach photos</span>`; 
+                return; 
+            } 
+            
+            let html = '<div class="flex gap-3 p-2 overflow-x-auto h-full items-center w-full">'; 
+            
+            edUploadedImages.forEach((cImg, idx) => { 
+                html += `
+                    <div class="relative h-full shrink-0 group/img">
+                        <img src="${cImg}" class="h-full w-auto object-cover rounded-lg border border-slate-600 shadow-md group-hover/img:border-blue-500 transition-colors">
+                        <button type="button" onclick="removeEdUploadedImage(${idx}, event)" class="absolute -top-1 -right-1 bg-rose-500 text-white rounded-full w-5 h-5 flex items-center justify-center font-black text-[10px] hover:scale-110 transition-transform shadow-[0_0_10px_rgba(225,29,72,0.5)] cursor-pointer">✕</button>
+                    </div>`; 
+            }); 
+            
+            html += '</div>'; 
+            pb.innerHTML = html;
+        }
+
         function openEverydayPostModal() {
-            showToast("Everyday Hub listings are manually verified. Redirecting to Admin...");
-            setTimeout(() => window.open("https://wa.me/233245641480", "_blank"), 1500);
+            document.getElementById('everyday-post-modal').classList.remove('hidden');
+            document.getElementById('everyday-post-modal').classList.add('flex');
+        }
+
+        function closeEverydayPostModal() {
+            document.getElementById('everyday-post-modal').classList.add('hidden');
+            document.getElementById('everyday-post-modal').classList.remove('flex');
+        }
+
+        function submitEverydayPost() {
+            const title = document.getElementById('ed-title').value.trim();
+            const price = document.getElementById('ed-price').value.trim();
+            const phone = document.getElementById('ed-phone').value.trim();
+            const loc = document.getElementById('ed-loc').value.trim();
+            
+            if (!title || !price || !phone || !loc) {
+                return showToast("Please fill all required fields", "error");
+            }
+            
+            showToast("Listing submitted! Our admins will verify and post it shortly. ✅");
+            
+            // Clear inputs
+            ['ed-title', 'ed-price', 'ed-phone', 'ed-loc', 'ed-desc'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
+            edUploadedImages = [];
+            renderEdImagePreview();
+            
+            closeEverydayPostModal();
         }
 
         function toggleAuthBox(box) { 
+ 
+ 
             const boxes = ['login-box', 'signup-box', 'forgot-password-box'];
             boxes.forEach(b => {
                 const el = document.getElementById(b); 
@@ -2401,14 +2660,17 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             initGoogleAuth(); 
-            initSlideshow(); 
+            initSlideshow();
+            renderCoBuyDeals(); 
             loadAgriNews(); 
             loadBuyerRequests();
             
             fetch(`${API_URL}/api/v1/products?sort=newest&t=${new Date().getTime()}`)
                 .then(res => res.json())
                 .then(data => { 
-                    allLoadedProducts = data.length > 0 ? data.concat(fallbackTestAds) : fallbackTestAds; 
+                    let realData = data.filter(p => !p.product_name.toUpperCase().includes('[TEST AD]'));
+                    allLoadedProducts = realData.concat(fallbackTestAds); 
+                    
                     if (allLoadedProducts.length > 0) { 
                         buildMarketTicker(allLoadedProducts); 
                         buildTrendingSection(allLoadedProducts); 
@@ -2856,13 +3118,29 @@
             
             try { 
                 const res = await fetch(url); 
-                const products = await res.json(); 
+                let products = await res.json(); 
                 
-                allLoadedProducts = products.length > 0 ? products.concat(fallbackTestAds) : fallbackTestAds; 
+                // Purge any old test ads from the live database so they don't multiply
+                products = products.filter(p => !p.product_name.toUpperCase().includes('[TEST AD]'));
+                
+                allLoadedProducts = products.concat(fallbackTestAds); 
                 
                 let filtered = allLoadedProducts;
+                
+                if (currentCategoryState) {
+                    filtered = filtered.filter(p => p.category === currentCategoryState);
+                }
+                
+                if (currentSearchState) {
+                    const s = currentSearchState.toLowerCase();
+                    filtered = filtered.filter(p => 
+                        p.product_name.toLowerCase().includes(s) || 
+                        (p.description && p.description.toLowerCase().includes(s))
+                    );
+                }
+                
                 if (currentRegionState !== "All Regions") {
-                    filtered = products.filter(p => p.neighborhood.toLowerCase().includes(currentRegionState.toLowerCase()));
+                    filtered = filtered.filter(p => p.neighborhood && p.neighborhood.toLowerCase().includes(currentRegionState.toLowerCase()));
                 }
                 
                 if (filtered.length > 0) {
@@ -2878,7 +3156,12 @@
                             <p class="text-slate-400 font-medium">No ads found matching your criteria.</p>
                         </div>`; 
                 } else { 
-                    renderProductGrid(filtered, grid); 
+                    // To prevent screen clutter during testing, limit standard unfiltered marketplace view to a clean number of items
+                    let finalDisplay = filtered;
+                    if (!currentCategoryState && !currentSearchState && filtered.length > 6) {
+                        finalDisplay = filtered.slice(0, 6);
+                    }
+                    renderProductGrid(finalDisplay, grid); 
                 }
             } catch (err) { 
                 console.error("Marketplace fetch error: ", err); 
@@ -2918,7 +3201,7 @@
                 }
                 
                 return `
-                    <div class="glass-card rounded-[2.5rem] flex flex-col justify-between transition-all overflow-hidden shadow-xl hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:border-emerald-500/40 group">
+                    <div class="glass-card content-visibility-auto rounded-[2.5rem] flex flex-col justify-between transition-all overflow-hidden shadow-xl hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:border-emerald-500/40 group">
                         ${imgBlock}
                         <div class="p-8 flex flex-col justify-between flex-grow">
                             <div>
@@ -2926,7 +3209,7 @@
                                     <span class="bg-white/5 text-slate-300 text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border border-white/10 shadow-inner">${item.category}</span>
                                     <span class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-500/20">📍 ${item.neighborhood}</span>
                                 </div>
-                                <h3 class="text-2xl font-black text-white mb-2 leading-tight group-hover:text-emerald-400 transition-colors tracking-tight">${item.product_name}</h3>
+                                <h3 class="text-xl md:text-2xl font-black text-white mb-2 leading-tight group-hover:text-emerald-400 transition-colors tracking-tight">${item.product_name}</h3>
                                 <div class="flex flex-col gap-1 mb-6">
                                     <div onclick="openSellerProfileByAdId(${item.id})" class="flex items-center gap-2 text-slate-300 text-xs font-bold cursor-pointer hover:text-emerald-400 w-fit transition-colors">
                                         ${avatarSmall}
@@ -3783,7 +4066,7 @@
                                 <span class="bg-blue-500/10 text-blue-400 text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border border-blue-500/20 shadow-inner">${r.category}</span>
                                 <span class="text-[10px] text-slate-400 font-bold">📅 ${r.created_at}</span>
                             </div>
-                            <h3 class="text-2xl font-black text-white mb-2 tracking-tight group-hover:text-blue-400 transition-colors">${r.item_needed}</h3>
+                            <h3 class="text-xl md:text-2xl font-black text-white mb-2 tracking-tight group-hover:text-blue-400 transition-colors">${r.item_needed}</h3>
                             <p class="text-sm text-slate-400 mb-6 line-clamp-2 font-medium">${r.description || 'Looking for suppliers.'}</p>
                             <div class="bg-[#020617]/50 p-5 rounded-2xl border border-slate-700/50 mb-6 space-y-3 shadow-inner">
                                 <div class="flex justify-between text-xs items-center">
@@ -4436,10 +4719,10 @@
                 }
                 
                 grid.innerHTML = grants.map(g => `
-                    <div class="glass-card p-8 md:p-10 rounded-[3rem] border border-amber-500/20 shadow-xl group hover:border-amber-500/50 hover:shadow-[0_0_30px_rgba(245,158,11,0.15)] hover:-translate-y-1 transition-all flex flex-col justify-between cursor-pointer" onclick="window.open('${g.link}', '_blank')">
+                    <div class="glass-card p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] border border-amber-500/20 shadow-xl group hover:border-amber-500/50 hover:shadow-[0_0_30px_rgba(245,158,11,0.15)] hover:-translate-y-1 transition-all flex flex-col justify-between cursor-pointer" onclick="window.open('${g.link}', '_blank')">
                         <div>
                             <span class="bg-amber-500/10 text-amber-400 text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border border-amber-500/20 shadow-inner">${g.provider}</span>
-                            <h3 class="text-2xl font-black text-white mt-5 mb-3 group-hover:text-amber-400 transition-colors tracking-tight leading-snug">${g.title}</h3>
+                            <h3 class="text-xl md:text-2xl font-black text-white mt-5 mb-3 group-hover:text-amber-400 transition-colors tracking-tight leading-snug">${g.title}</h3>
                             <p class="text-base text-emerald-400 font-black mb-8 tracking-wide">Value: ${g.amount}</p>
                         </div>
                         <div class="flex justify-between items-center border-t border-white/10 pt-6">
@@ -4470,7 +4753,7 @@
                 grid.innerHTML = data.map(d => { 
                     let margin = d.highest_price > 0 ? (((d.highest_price - d.cheapest_price) / d.cheapest_price) * 100).toFixed(1) : 0; 
                     return `
-                        <div class="glass-card p-8 md:p-10 rounded-[3rem] border border-white/5 shadow-xl relative overflow-hidden group hover:border-rose-500/40 hover:shadow-[0_0_30px_rgba(244,63,94,0.1)] transition-all flex flex-col justify-between">
+                        <div class="glass-card p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] border border-white/5 shadow-xl relative overflow-hidden group hover:border-rose-500/40 hover:shadow-[0_0_30px_rgba(244,63,94,0.1)] transition-all flex flex-col justify-between">
                             <div class="absolute top-0 right-0 w-40 h-40 bg-rose-500/10 rounded-full blur-[60px] pointer-events-none group-hover:bg-rose-500/20 transition-all duration-500"></div>
                             <div class="relative z-10">
                                 <div class="flex justify-between items-start mb-6">
@@ -4525,7 +4808,7 @@
                     grid.innerHTML = `
                         <div class="col-span-full glass-card py-24 text-center rounded-[3rem] border border-white/5 shadow-inner">
                             <div class="text-6xl mb-6 drop-shadow-xl animate-float">🚛</div>
-                            <h3 class="text-2xl font-black text-white mb-3 tracking-tight">No Active Haulage Listings</h3>
+                            <h3 class="text-xl md:text-2xl font-black text-white mb-3 tracking-tight">No Active Haulage Listings</h3>
                             <p class="text-sm text-slate-400 mb-8 max-w-lg mx-auto font-medium">There are currently no empty-leg freight routes published. Be the first transporter to list your return trip.</p>
                             <button onclick="openHaulagePostModal()" class="bg-gradient-to-r from-amber-500 to-amber-400 text-[#020617] text-sm font-black px-8 py-4 rounded-2xl shadow-[0_0_15px_rgba(245,158,11,0.4)] transition-all inline-block hover:-translate-y-0.5 tracking-wide cursor-pointer">+ List Empty Truck</button>
                         </div>`; 
@@ -4533,13 +4816,13 @@
                 }
                 
                 grid.innerHTML = items.map(h => `
-                    <div class="glass-card p-8 md:p-10 rounded-[3rem] border border-amber-500/30 shadow-xl flex flex-col justify-between hover:shadow-[0_0_30px_rgba(245,158,11,0.15)] hover:border-amber-500/50 transition-all group cursor-pointer">
+                    <div class="glass-card p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] border border-amber-500/30 shadow-xl flex flex-col justify-between hover:shadow-[0_0_30px_rgba(245,158,11,0.15)] hover:border-amber-500/50 transition-all group cursor-pointer">
                         <div>
                             <div class="flex justify-between items-start mb-5">
                                 <span class="bg-amber-500/10 text-amber-400 text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border border-amber-500/20 shadow-inner">Empty-Leg Return</span>
                                 <span class="text-[10px] text-slate-400 font-bold">📅 ${h.date}</span>
                             </div>
-                            <h3 class="text-2xl font-black text-white mb-3 tracking-tight group-hover:text-amber-400 transition-colors">${h.route}</h3>
+                            <h3 class="text-xl md:text-2xl font-black text-white mb-3 tracking-tight group-hover:text-amber-400 transition-colors">${h.route}</h3>
                             <p class="text-sm text-slate-300 font-black mb-1.5 tracking-wide">🚛 ${h.truck}</p>
                             <p class="text-xs text-slate-400 mb-6 font-medium">Driver: <strong class="text-slate-200">${h.driver_name || h.driver || 'Unlisted'}</strong> (${h.capacity})</p>
                             <div class="bg-[#020617]/60 p-5 rounded-2xl border border-slate-700/50 mb-6 flex justify-between items-center shadow-inner">
@@ -4553,7 +4836,7 @@
                 grid.innerHTML = `
                     <div class="col-span-full glass-card py-24 text-center rounded-[3rem] border border-white/5 shadow-inner">
                         <div class="text-6xl mb-6 drop-shadow-xl animate-float">🚛</div>
-                        <h3 class="text-2xl font-black text-white mb-3 tracking-tight">Haulage Pool Ready</h3>
+                        <h3 class="text-xl md:text-2xl font-black text-white mb-3 tracking-tight">Haulage Pool Ready</h3>
                         <p class="text-sm text-slate-400 mb-8 max-w-lg mx-auto font-medium">The database is clean and ready for live driver listings.</p>
                         <button onclick="openHaulagePostModal()" class="bg-gradient-to-r from-amber-500 to-amber-400 text-[#020617] text-sm font-black px-8 py-4 rounded-2xl shadow-[0_0_15px_rgba(245,158,11,0.4)] transition-all inline-block hover:-translate-y-0.5 tracking-wide cursor-pointer">+ List Empty Truck</button>
                     </div>`; 
@@ -4629,13 +4912,13 @@
                 }
                 
                 grid.innerHTML = items.map(item => `
-                    <div class="glass-card p-8 md:p-10 rounded-[3rem] border border-amber-500/20 shadow-xl flex flex-col justify-between hover:shadow-[0_0_30px_rgba(245,158,11,0.15)] hover:border-amber-500/40 transition-all group cursor-pointer">
+                    <div class="glass-card p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] border border-amber-500/20 shadow-xl flex flex-col justify-between hover:shadow-[0_0_30px_rgba(245,158,11,0.15)] hover:border-amber-500/40 transition-all group cursor-pointer">
                         <div>
                             <div class="flex justify-between items-start mb-5">
                                 <span class="bg-amber-500/10 text-amber-400 text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border border-amber-500/20 shadow-inner">${item.equipment_type}</span>
                                 <span class="text-[10px] text-slate-400 font-bold bg-[#020617]/50 px-3 py-1.5 rounded-lg border border-slate-700/50">📍 ${item.location}</span>
                             </div>
-                            <h3 class="text-2xl font-black text-white mb-2 tracking-tight group-hover:text-amber-400 transition-colors">${item.title}</h3>
+                            <h3 class="text-xl md:text-2xl font-black text-white mb-2 tracking-tight group-hover:text-amber-400 transition-colors">${item.title}</h3>
                             <p class="text-sm text-slate-400 mb-6 font-medium">Owner: <strong class="text-slate-200">${item.owner_name}</strong></p>
                             <div class="bg-[#020617]/60 p-5 rounded-2xl border border-slate-700/50 mb-6 space-y-3 shadow-inner">
                                 <div class="flex justify-between text-xs items-center">
