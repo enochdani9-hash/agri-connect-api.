@@ -485,7 +485,7 @@
             </div>
             
             <div class="flex gap-2 items-center flex-wrap justify-end">
-                <button onclick="navigate('cobuy')" class="text-xs font-black text-[#020617] bg-gradient-to-r from-amber-400 to-yellow-300 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest shadow-[0_0_20px_rgba(251,191,36,0.4)] hover:scale-105 transition-transform cursor-pointer flex items-center gap-1.5"><span class="animate-pulse">🤝</span> Co-Buy Susu</button>
+                <button onclick="navigate('freshbox')" class="text-xs font-black text-[#020617] bg-gradient-to-r from-emerald-400 to-green-300 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:scale-105 transition-transform cursor-pointer flex items-center gap-1.5"><span class="animate-bounce">📦</span> FreshBox Drops</button>
                 <button onclick="navigate('community')" class="pro-only text-xs font-black text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 rounded-xl hidden lg:flex items-center gap-1 hover:-translate-y-0.5 transition-all shadow-inner tracking-widest uppercase cursor-pointer">🗣️ Lounge</button>
                 <button onclick="navigate('haulage')" class="pro-only text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-amber-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">🚚 Haulage</button>
                 <button onclick="navigate('trainer')" class="pro-only text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-purple-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">📚 Trainer</button>
@@ -504,7 +504,7 @@
                     <span>⇄</span> <span class="hidden sm:inline">Switch Portal</span>
                 </button>
 
-                <button onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center glass-card rounded-xl text-xs text-slate-300 hover:text-amber-400 transition-colors cursor-pointer">☀️</button>
+                <button id="sunlight-toggle-btn" onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center glass-card rounded-xl text-xs text-slate-300 hover:text-amber-400 transition-colors cursor-pointer">☀️</button>
                 <button id="nav-login-btn" onclick="navigate('auth')" class="text-xs font-bold text-slate-300 hover:text-emerald-400 transition-colors ml-1 cursor-pointer">Sign In</button>
                 
                 <div id="nav-user-profile" class="hidden items-center gap-3 bg-white/5 px-4 py-1.5 rounded-full border border-white/10 shadow-inner">
@@ -520,7 +520,7 @@
     </header>
 
     <div class="pro-only md:hidden glass-card border-b border-white/5 px-4 py-3 overflow-x-auto whitespace-nowrap flex gap-3 z-40">
-        <button onclick="navigate('cobuy')" class="text-xs font-black text-[#020617] bg-gradient-to-r from-amber-400 to-yellow-300 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest shadow-[0_0_20px_rgba(251,191,36,0.4)] hover:scale-105 transition-transform cursor-pointer flex items-center gap-1.5"><span class="animate-pulse">🤝</span> Co-Buy Susu</button>
+        <button onclick="navigate('freshbox')" class="text-xs font-black text-[#020617] bg-gradient-to-r from-emerald-400 to-green-300 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:scale-105 transition-transform cursor-pointer flex items-center gap-1.5"><span class="animate-bounce">📦</span> FreshBox Drops</button>
         <button onclick="navigate('community')" class="text-xs font-black text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest cursor-pointer">🗣️ Lounge</button>
         <button onclick="navigate('haulage')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">🚚 Haulage Pool</button>
         <button onclick="navigate('trainer')" class="text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">📚 Agri Trainer</button>
@@ -603,25 +603,83 @@
             </div>
         </div>
 
-        
-        <!-- CO-BUY (COMMUNITY SUSU) VIEW -->
-        <div id="view-cobuy" class="fade-in hidden space-y-12 relative z-30">
-            <div class="glass-card p-8 md:p-16 rounded-[2rem] md:rounded-[3rem] border border-amber-500/40 shadow-2xl relative overflow-hidden bg-gradient-to-br from-[#020617]/90 to-amber-950/40">
-                <div class="absolute top-[-50px] right-[-50px] w-48 h-48 md:w-80 md:h-80 bg-amber-500/20 rounded-full blur-[60px] md:blur-[100px] pointer-events-none"></div>
+        <!-- FRESHBOX DROPS VIEW -->
+        <div id="view-freshbox" class="fade-in hidden space-y-12 relative z-30">
+            <div class="glass-card p-8 md:p-16 rounded-[2rem] md:rounded-[3rem] border border-emerald-500/40 shadow-2xl relative overflow-hidden bg-gradient-to-br from-[#020617]/90 to-emerald-950/40">
+                <div class="absolute top-[-50px] right-[-50px] w-48 h-48 md:w-80 md:h-80 bg-emerald-500/20 rounded-full blur-[60px] md:blur-[100px] pointer-events-none"></div>
                 <div class="relative z-10 text-center max-w-3xl mx-auto">
-                    <span class="text-[10px] text-amber-400 font-black uppercase tracking-widest bg-amber-500/10 px-4 py-2 rounded-full border border-amber-500/30 shadow-inner mb-6 inline-block"><span class="animate-pulse inline-block mr-1">🔥</span> Most Viral Feature</span>
-                    <h2 class="text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tight mb-6 mt-4 leading-tight">Community Co-Buy <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-200">(Smart Susu)</span></h2>
-                    <p class="text-slate-300 text-sm md:text-lg font-medium leading-relaxed mb-10">Can't afford bulk prices alone? Join a neighborhood Susu split! Pool money with others securely via MoMo. When the group fills up, the bulk item is delivered and split among you. Save up to 40% on everyday essentials.</p>
+                    <span class="text-[10px] text-emerald-400 font-black uppercase tracking-widest bg-emerald-500/10 px-4 py-2 rounded-full border border-emerald-500/30 shadow-inner mb-6 inline-block"><span class="animate-pulse inline-block mr-1">🚚</span> Direct Farm-to-Doorstep</span>
+                    <h2 class="text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tight mb-6 mt-4 leading-tight">Agromart <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-200">FreshBox Drops</span></h2>
+                    <p class="text-slate-300 text-sm md:text-lg font-medium leading-relaxed mb-10">Skip the market traffic and the middleman markup. Subscribe to a weekly box of premium, freshly harvested organic produce delivered straight from our verified partner farms to your home every Saturday morning. Save up to 40% off supermarket prices.</p>
                 </div>
             </div>
 
             <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4 px-2">
-                <h3 class="text-2xl md:text-3xl font-black text-white tracking-tight flex items-center gap-3">⏳ Trending Splits Near You</h3>
-                <span class="text-xs font-bold text-slate-400 bg-white/5 px-4 py-2 rounded-xl shadow-inner border border-white/10 w-fit">Auto-refunds if group doesn't fill in 24hrs</span>
+                <h3 class="text-2xl md:text-3xl font-black text-white tracking-tight flex items-center gap-3">📦 Weekly Subscription Plans</h3>
+                <span class="text-xs font-bold text-slate-400 bg-white/5 px-4 py-2 rounded-xl shadow-inner border border-white/10 w-fit">Pause or cancel anytime</span>
             </div>
 
-            <div id="cobuy-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10 relative z-40 pb-24">
-                <!-- Co-buy cards generated via JS -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 relative z-40 pb-24">
+                <!-- BOX 1 -->
+                <div class="glass-card content-visibility-auto rounded-[2.5rem] p-2 border border-white/5 hover:border-emerald-500/40 transition-all shadow-xl group flex flex-col cursor-pointer">
+                    <div class="relative h-48 w-full bg-gradient-to-br from-[#0f172a] to-slate-900 rounded-[2rem] flex items-center justify-center text-7xl shadow-inner overflow-hidden border border-slate-700/50">
+                        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
+                        <span class="group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl">🥗</span>
+                    </div>
+                    <div class="p-6 md:p-8 flex flex-col flex-grow">
+                        <h3 class="text-xl md:text-2xl font-black text-white mb-2 leading-tight tracking-tight group-hover:text-emerald-400 transition-colors">The Starter Veggie Box</h3>
+                        <p class="text-sm text-slate-400 mb-6 font-medium leading-relaxed">Perfect for singles or couples. A curated mix of fresh tomatoes, onions, sweet peppers, carrots, cucumbers, and leafy greens.</p>
+                        <ul class="text-xs font-bold text-slate-300 space-y-2 mb-8 flex-grow">
+                            <li class="flex gap-2 items-center"><span class="text-emerald-400">✓</span> 5-7 kg total weight</li>
+                            <li class="flex gap-2 items-center"><span class="text-emerald-400">✓</span> Free Saturday Delivery</li>
+                        </ul>
+                        <div class="mt-auto border-t border-white/10 pt-5 flex items-center justify-between">
+                            <p class="text-3xl font-black text-white tracking-tight">GH₵150 <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">/ wk</span></p>
+                            <button onclick="subscribeFreshBox('Veggie Box')" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-teal-400 hover:to-emerald-500 text-[#020617] font-black px-5 py-3 rounded-xl text-sm transition-all shadow-lg tracking-wide active:scale-95 cursor-pointer">Subscribe</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOX 2 -->
+                <div class="glass-card content-visibility-auto rounded-[2.5rem] p-2 border-2 border-emerald-500 relative transform md:-translate-y-4 shadow-[0_0_40px_rgba(16,185,129,0.2)] group flex flex-col cursor-pointer bg-gradient-to-b from-[#020617] to-emerald-950/20">
+                    <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-emerald-500 to-teal-400 text-[#020617] text-[10px] font-black uppercase tracking-widest px-5 py-1.5 rounded-full shadow-lg z-20">Most Popular</span>
+                    <div class="relative h-48 w-full bg-gradient-to-br from-[#0f172a] to-emerald-900/30 rounded-[2rem] flex items-center justify-center text-7xl shadow-inner overflow-hidden border border-emerald-500/30">
+                        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
+                        <span class="group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl">🥩</span>
+                    </div>
+                    <div class="p-6 md:p-8 flex flex-col flex-grow">
+                        <h3 class="text-xl md:text-2xl font-black text-emerald-400 mb-2 leading-tight tracking-tight">The Protein Pack</h3>
+                        <p class="text-sm text-slate-400 mb-6 font-medium leading-relaxed">Fuel your week. Includes 1 full crate of large brown eggs, 2.5kg of dressed farm chicken, and 1kg of fresh smoked catfish.</p>
+                        <ul class="text-xs font-bold text-slate-300 space-y-2 mb-8 flex-grow">
+                            <li class="flex gap-2 items-center"><span class="text-emerald-400">✓</span> 100% Organic Fed Poultry</li>
+                            <li class="flex gap-2 items-center"><span class="text-emerald-400">✓</span> Free Saturday Delivery</li>
+                        </ul>
+                        <div class="mt-auto border-t border-emerald-500/30 pt-5 flex items-center justify-between">
+                            <p class="text-3xl font-black text-white tracking-tight">GH₵280 <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">/ wk</span></p>
+                            <button onclick="subscribeFreshBox('Protein Pack')" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-teal-400 hover:to-emerald-500 text-[#020617] font-black px-5 py-3 rounded-xl text-sm transition-all shadow-[0_0_15px_rgba(16,185,129,0.5)] tracking-wide active:scale-95 cursor-pointer">Subscribe</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOX 3 -->
+                <div class="glass-card content-visibility-auto rounded-[2.5rem] p-2 border border-white/5 hover:border-emerald-500/40 transition-all shadow-xl group flex flex-col cursor-pointer">
+                    <div class="relative h-48 w-full bg-gradient-to-br from-[#0f172a] to-slate-900 rounded-[2rem] flex items-center justify-center text-7xl shadow-inner overflow-hidden border border-slate-700/50">
+                        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
+                        <span class="group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl">🧺</span>
+                    </div>
+                    <div class="p-6 md:p-8 flex flex-col flex-grow">
+                        <h3 class="text-xl md:text-2xl font-black text-white mb-2 leading-tight tracking-tight group-hover:text-emerald-400 transition-colors">The Mega Family Basket</h3>
+                        <p class="text-sm text-slate-400 mb-6 font-medium leading-relaxed">The ultimate household supply. Combines The Veggie Box, The Protein Pack, plus 5kg of Royal Aroma rice, plantains, yams, and seasonal fruits.</p>
+                        <ul class="text-xs font-bold text-slate-300 space-y-2 mb-8 flex-grow">
+                            <li class="flex gap-2 items-center"><span class="text-emerald-400">✓</span> Feeds family of 4-6</li>
+                            <li class="flex gap-2 items-center"><span class="text-emerald-400">✓</span> VIP Priority Delivery</li>
+                        </ul>
+                        <div class="mt-auto border-t border-white/10 pt-5 flex items-center justify-between">
+                            <p class="text-3xl font-black text-white tracking-tight">GH₵550 <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">/ wk</span></p>
+                            <button onclick="subscribeFreshBox('Mega Family Basket')" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-teal-400 hover:to-emerald-500 text-[#020617] font-black px-5 py-3 rounded-xl text-sm transition-all shadow-lg tracking-wide active:scale-95 cursor-pointer">Subscribe</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1229,6 +1287,9 @@
                         <p>📧 Email: <span id="my-profile-email" class="text-white">...</span></p>
                         <p>📞 Phone: <span id="my-profile-phone" class="text-white">...</span></p>
                     </div>
+                    <button onclick="logout()" class="mt-6 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 text-sm font-black px-6 py-3 rounded-xl transition-colors cursor-pointer w-full md:w-auto md:hidden">
+                        🚪 Logout
+                    </button>
                     
                     <div id="my-profile-unverified-box" class="hidden mt-8 bg-rose-500/10 border border-rose-500/30 p-6 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 shadow-inner">
                         <div class="text-center md:text-left">
@@ -1652,6 +1713,7 @@
                 <button onclick="navigate('pricing')" class="hover:text-emerald-400 transition-colors cursor-pointer">Pricing</button>
                 <button onclick="navigate('trainer')" class="hover:text-emerald-400 transition-colors cursor-pointer">Agri Trainer</button>
                 <button onclick="navigate('support')" class="hover:text-emerald-400 transition-colors cursor-pointer">Support</button>
+                <button onclick="triggerPwaInstall()" class="text-amber-400 hover:text-amber-300 transition-colors cursor-pointer">📲 Install App</button>
             </div>
             <p class="text-sm text-slate-600 font-bold tracking-wide text-center md:text-right leading-relaxed">© 2026 AgromartDirect Ghana.<br>All rights reserved.</p>
         </div>
@@ -1799,108 +1861,15 @@
         }
 
         
-        
-        const cobuyDeals = [
-            { id: 101, title: "50kg Royal Aroma Perfume Rice", img: "rice", total_price: 800, splits_total: 4, splits_filled: 3, unit: "12.5kg each", loc: "Madina Zone" },
-            { id: 102, title: "1 Live Full Goat (Weekend Soup)", img: "goat", total_price: 900, splits_total: 3, splits_filled: 1, unit: "1/3 Carcass each", loc: "East Legon" },
-            { id: 103, title: "25 Liters Frytol Cooking Oil", img: "oil", total_price: 550, splits_total: 5, splits_filled: 4, unit: "5 Liters each", loc: "Dansoman" },
-            { id: 104, title: "Carton of Frozen Chicken (10kg)", img: "chicken", total_price: 400, splits_total: 4, splits_filled: 0, unit: "2.5kg each", loc: "Tema Comm 2" },
-            { id: 105, title: "Full Sack of Red Onions (Bawku)", img: "onion", total_price: 600, splits_total: 6, splits_filled: 5, unit: "1 Rubber each", loc: "Kasoa Market" },
-            { id: 106, title: "Crate of Fresh Tomatoes (Full Box)", img: "tomato", total_price: 1200, splits_total: 10, splits_filled: 7, unit: "1/10 Box each", loc: "Agbogbloshie" }
-        ];
-
-        function renderCoBuyDeals() {
-            const grid = document.getElementById('cobuy-grid');
-            if (!grid) return;
-
-            grid.innerHTML = cobuyDeals.map(deal => {
-                const mySharePrice = (deal.total_price / deal.splits_total).toFixed(2);
-                const progressPct = (deal.splits_filled / deal.splits_total) * 100;
-                const isAlmostFull = (deal.splits_total - deal.splits_filled) === 1;
-                
-                let badgeHtml = '';
-                if (isAlmostFull) {
-                    badgeHtml = `<span class="absolute top-4 left-4 bg-rose-500 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-[0_0_15px_rgba(225,29,72,0.6)] z-10 animate-pulse">Needs 1 More!</span>`;
-                }
-
-                let visual = '';
-                if(deal.img === 'goat') visual = '🐐';
-                else if(deal.img === 'oil') visual = '🛢️';
-                else if(deal.img === 'chicken') visual = '🍗';
-                else if(deal.img === 'onion') visual = '🧅';
-                else if(deal.img === 'tomato') visual = '🍅';
-                else visual = '🍚';
-
-                return `
-                    <div class="glass-card content-visibility-auto rounded-[2.5rem] p-2 border border-white/5 hover:border-amber-500/40 transition-all shadow-xl group flex flex-col cursor-pointer">
-                        <div class="relative h-48 w-full bg-gradient-to-br from-[#0f172a] to-slate-900 rounded-[2rem] flex items-center justify-center text-7xl shadow-inner overflow-hidden border border-slate-700/50">
-                            ${badgeHtml}
-                            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
-                            <span class="group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl">${visual}</span>
-                            <div class="absolute bottom-3 right-3 bg-[#020617]/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 shadow-lg flex items-center gap-1.5">
-                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Bulk Value:</span>
-                                <span class="text-xs font-black text-white">GH₵${deal.total_price}</span>
-                            </div>
-                        </div>
-                        <div class="p-6 md:p-8 flex flex-col flex-grow">
-                            <h3 class="text-xl md:text-2xl font-black text-white mb-2 leading-tight tracking-tight group-hover:text-amber-400 transition-colors">${deal.title}</h3>
-                            <p class="text-xs font-bold text-slate-400 mb-6 bg-slate-800/50 w-fit px-3 py-1 rounded-lg border border-slate-700/50 shadow-inner">📍 Pickup: ${deal.loc}</p>
-                            
-                            <div class="mb-6 bg-[#020617]/60 p-5 rounded-2xl border border-slate-700/50 shadow-inner">
-                                <div class="flex justify-between items-center mb-3">
-                                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Group Progress</span>
-                                    <span class="text-sm font-black text-amber-400">${deal.splits_filled} / ${deal.splits_total} Joined</span>
-                                </div>
-                                <div class="w-full h-3 bg-slate-800 rounded-full overflow-hidden shadow-inner">
-                                    <div class="h-full bg-gradient-to-r from-amber-500 to-yellow-300 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(251,191,36,0.5)]" style="width: ${progressPct}%"></div>
-                                </div>
-                                <div class="flex mt-4 -space-x-2 overflow-hidden">
-                                    ${Array.from({length: deal.splits_filled}).map(() => `<div class="inline-flex h-8 w-8 rounded-full ring-2 ring-[#0f172a] bg-slate-700 items-center justify-center text-[10px] shadow-md z-10">👤</div>`).join('')}
-                                    ${Array.from({length: deal.splits_total - deal.splits_filled}).map(() => `<div class="inline-flex h-8 w-8 rounded-full ring-2 ring-[#0f172a] bg-[#020617] border border-dashed border-slate-600 items-center justify-center text-[10px] text-slate-600">?</div>`).join('')}
-                                </div>
-                            </div>
-
-                            <div class="mt-auto border-t border-white/10 pt-5 flex items-center justify-between">
-                                <div>
-                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Your Share (${deal.unit})</p>
-                                    <p class="text-3xl font-black text-white tracking-tight">GH₵${mySharePrice}</p>
-                                </div>
-                                <button onclick="joinCoBuy(${deal.id})" class="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-[#020617] font-black px-6 py-4 rounded-2xl text-sm transition-all shadow-[0_0_20px_rgba(245,158,11,0.3)] tracking-wide active:scale-95 cursor-pointer flex-shrink-0 ml-2">Join Group</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function joinCoBuy(dealId) {
+        function subscribeFreshBox(boxName) {
             if (!agriToken) {
-                showToast("Please sign in to join a Susu group", "error");
+                showToast("Please sign in to subscribe.", "error");
                 return navigate('auth');
             }
-
-            const dealIndex = cobuyDeals.findIndex(d => d.id === dealId);
-            if (dealIndex === -1) return;
-            const deal = cobuyDeals[dealIndex];
-
-            showToast("Initializing MoMo Escrow for Group Buy... ⏳");
-            
+            showToast("Initializing MoMo Gateway for " + boxName + "... ⏳");
             setTimeout(() => {
-                cobuyDeals[dealIndex].splits_filled += 1;
-                renderCoBuyDeals();
-                
-                confetti({
-                    particleCount: 150,
-                    spread: 80,
-                    origin: { y: 0.6 },
-                    colors: ['#f59e0b', '#fde047', '#10b981']
-                });
-                
-                if (cobuyDeals[dealIndex].splits_filled === cobuyDeals[dealIndex].splits_total) {
-                    showToast(`🎉 Group Filled! Your ${deal.title} is being dispatched!`, "success");
-                } else {
-                    showToast(`✅ You joined the group! Waiting for ${deal.splits_total - deal.splits_filled} more people.`, "success");
-                }
+                confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#10b981', '#34d399', '#ffffff'] });
+                showToast("🎉 Subscription Confirmed! Your first box arrives this Saturday.", "success");
             }, 1500);
         }
 
@@ -2339,7 +2308,7 @@
                 'home', 'marketplace', 'auth', 'grants', 'farm-manager', 
                 'intel', 'calculator', 'trainer', 'post', 'dashboard', 
                 'pricing', 'faq', 'about', 'support', 'rentals', 'waste', 'agridoctor', 'haulage', 'seller-store', 'community',
-                'portal-select', 'everyday-hub', 'cobuy'
+                'portal-select', 'everyday-hub', 'freshbox'
             ];
             
             views.forEach(v => {
@@ -2588,13 +2557,16 @@
 
         function toggleSunlightMode() { 
             const bodyEl = document.getElementById('app-body');
+            const btn = document.getElementById('sunlight-toggle-btn');
             if (bodyEl) {
                 bodyEl.classList.toggle('sunlight-mode'); 
                 
                 if(bodyEl.classList.contains('sunlight-mode')) { 
                     showToast("☀️ Sunlight Mode Enabled"); 
+                    if(btn) btn.innerText = "🌙";
                 } else { 
                     showToast("🌙 Dark Mode Restored"); 
+                    if(btn) btn.innerText = "☀️";
                 }
             }
         }
@@ -2660,8 +2632,7 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             initGoogleAuth(); 
-            initSlideshow();
-            renderCoBuyDeals(); 
+            initSlideshow(); 
             loadAgriNews(); 
             loadBuyerRequests();
             
@@ -5038,31 +5009,10 @@
 
         // --- FARMER'S LOUNGE (COMMUNITY) LOGIC ---
         let loungePosts = [
-            { id: 1, author: "Kwame (Verified Farm)", type: "Alert", content: "Armyworms spotted in the Ashanti region! Spray your maize fields immediately before they spread.", time: "2 hours ago", likes: 14, comments: 5 },
-            { id: 2, author: "Ama Yaa", type: "Success", content: "Just completed my first 1,000 broiler harvest using the Pearson Square feed calc. Saved so much money on feed!", time: "5 hours ago", likes: 32, comments: 12 },
-            { id: 3, author: "Sulemana", type: "Question", content: "What is the current farm gate price for a 50kg bag of soybeans in Tamale?", time: "1 day ago", likes: 4, comments: 8 },
-            { id: 4, author: "Osei Farms", type: "General", content: "The rains are early this year in the Eastern Region. Are you guys starting to plant yams yet?", time: "1 day ago", likes: 12, comments: 22 },
-            { id: 5, author: "Dr. Mensah (Vet)", type: "Alert", content: "Notice to all poultry farmers in Greater Accra: There is a slight uptick in Newcastle disease cases. Please ensure your vaccination schedules are strictly followed.", time: "2 days ago", likes: 89, comments: 34 },
-            { id: 6, author: "Kofi Greenhouses", type: "Success", content: "First harvest of bell peppers from the new greenhouse setup. The quality is unmatched! Uploading to the marketplace now.", time: "2 days ago", likes: 45, comments: 10 },
-            { id: 7, author: "Aisha", type: "Question", content: "Has anyone tried using neem oil for pest control on tomatoes? Does it affect the yield?", time: "2 days ago", likes: 11, comments: 18 },
-            { id: 8, author: "Nana Agri-Biz", type: "General", content: "Just listed my tractor for rent on the equipment page. If you are in the Sunyani area and need land plowing, hit me up.", time: "3 days ago", likes: 21, comments: 4 },
-            { id: 9, author: "Yussif", type: "Alert", content: "Beware of a buyer requesting upfront mobile money transfers before inspecting goods. Always use the platform's escrow or pay on delivery.", time: "3 days ago", likes: 112, comments: 40 },
-            { id: 10, author: "Esi Farms", type: "Success", content: "Sold out my entire batch of catfish within 24 hours of posting on Agromart! The RFQ system is a game changer.", time: "4 days ago", likes: 76, comments: 15 },
-            { id: 11, author: "Kwasi", type: "Question", content: "Where can I source reliable Day-Old Chicks (DOCs) in the Central Region? Need 500 layers.", time: "4 days ago", likes: 5, comments: 14 },
-            { id: 12, author: "AgroTech Hub", type: "General", content: "We are hosting a free webinar on climate-smart agriculture next weekend. Check the Grants & Finance tab for the registration link.", time: "5 days ago", likes: 54, comments: 9 },
-            { id: 13, author: "Abena", type: "Success", content: "My cassava yields doubled this year thanks to the new spacing techniques I learned in the Agri Trainer Hub. Highly recommend it to beginners!", time: "5 days ago", likes: 41, comments: 6 },
-            { id: 14, author: "Musa", type: "Alert", content: "Road closures near Kintampo due to heavy rains. If you are dispatching haulage trucks to the north, advise drivers to take alternative routes.", time: "6 days ago", likes: 201, comments: 55 },
-            { id: 15, author: "Akosua", type: "Question", content: "Is it more profitable to sell fresh maize or dry it and store it for the dry season?", time: "1 week ago", likes: 18, comments: 42 },
-            { id: 16, author: "Tetteh", type: "General", content: "AgromartDirect has completely changed how I find buyers. No more market queens dictating prices to me.", time: "1 week ago", likes: 134, comments: 21 },
-            { id: 17, author: "Zainab", type: "Success", content: "Secured a major supply contract with a hotel in Ridge through the Buyer Tenders section. Huge win for our cooperative!", time: "1 week ago", likes: 98, comments: 30 },
-            { id: 18, author: "Iddrisu", type: "Alert", content: "Fake fertilizers spotted in the Wa market. The bags are branded as NPK 15-15-15 but they contain mostly sand. Buy only from certified input dealers.", time: "2 weeks ago", likes: 245, comments: 80 },
-            { id: 19, author: "Blessing", type: "Question", content: "My plantain leaves are turning yellow prematurely. I scanned with AgriDoctor but I want a second opinion. Potassium deficiency?", time: "2 weeks ago", likes: 7, comments: 11 },
-            { id: 20, author: "Ghana Cocoa Board", type: "General", content: "Reminder: Mass spraying exercises begin next month. Ensure your farms are cleared and accessible.", time: "2 weeks ago", likes: 310, comments: 45 },
-            { id: 21, author: "Fiifi", type: "Success", content: "Just used the Eco-Loop logistics to sell 2 tons of spent grain from my brewery to a pig farmer. Circular economy at its best!", time: "3 weeks ago", likes: 62, comments: 19 },
-            { id: 22, author: "Serwaa", type: "Question", content: "Does anyone have a reliable contact for organic pesticides in Accra?", time: "3 weeks ago", likes: 9, comments: 16 },
-            { id: 23, author: "Yaw", type: "Alert", content: "Theft alert: Several water pumps have been stolen from farms along the Densu river. Secure your equipment at night.", time: "3 weeks ago", likes: 156, comments: 38 },
-            { id: 24, author: "Mansa", type: "General", content: "Looking to partner with an investor for a 50-acre pineapple farm in Nsawam. Land is already acquired.", time: "1 month ago", likes: 45, comments: 27 },
-            { id: 25, author: "Kweku", type: "Success", content: "Successfully harvested and sold 500 tubers of yam today. Hard work pays off!", time: "1 month ago", likes: 120, comments: 14 }
+            { id: 1, author: "Kwame (Verified Farm)", type: "Alert", content: "Armyworms spotted in the Ashanti region! Spray your maize fields immediately before they spread.", time: "2 hours ago" },
+            { id: 2, author: "Ama Yaa", type: "Success", content: "Just completed my first 1,000 broiler harvest using the Pearson Square feed calc. Saved so much money on feed!", time: "5 hours ago" },
+            { id: 3, author: "Sulemana", type: "Question", content: "What is the current farm gate price for a 50kg bag of soybeans in Tamale?", time: "1 day ago" },
+            { id: 4, author: "Osei Farms", type: "General", content: "The rains are early this year in the Eastern Region. Are you guys starting to plant yams yet?", time: "1 day ago" }
         ];
 
         function filterCommunity(type) {
@@ -5116,15 +5066,7 @@
                                 <span class="text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border shadow-inner ${badgeColor}">${icon} ${post.type}</span>
                             </div>
                             <p class="text-slate-300 text-sm md:text-base leading-relaxed font-medium mb-6">${post.content}</p>
-                            <div class="flex items-center gap-6 border-t border-white/10 pt-4">
-                                <button class="flex items-center gap-2 text-slate-400 hover:text-emerald-400 text-xs font-bold transition-colors cursor-pointer">
-                                    👍 ${post.likes} Likes
-                                </button>
-                                <button class="flex items-center gap-2 text-slate-400 hover:text-blue-400 text-xs font-bold transition-colors cursor-pointer">
-                                    💬 ${post.comments} Comments
-                                </button>
-                            </div>
-                        </div>`;
+                            </div>`;
                 }).join('');
             }
         }
