@@ -69,7 +69,7 @@
         html { overscroll-behavior-y: none; scroll-behavior: smooth; }
         * { -webkit-tap-highlight-color: transparent; outline: none; }
         
-        .content-visibility-auto { content-visibility: auto; contain-intrinsic-size: 0 400px; }
+        
         
         /* Smooth native-like spring animations */
         .glass-card { 
@@ -79,7 +79,7 @@
             border: 1px solid rgba(255, 255, 255, 0.05); 
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
             transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s;
-            contain: paint; /* Massive CSS engine performance boost */
+            
         }
         
         .glass-card:active {
@@ -380,6 +380,27 @@
     </div>
 
     
+        <!-- FRESHBOX SUPPLIER MODAL -->
+    <div id="freshbox-supplier-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
+        <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-emerald-500/30 text-left shadow-[0_0_40px_rgba(16,185,129,0.15)]">
+            <button onclick="closeFreshBoxSupplierModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl cursor-pointer">✕</button>
+            <h3 class="text-xl md:text-2xl font-black text-white mb-2">🌾 FreshBox Supplier Network</h3>
+            <p class="text-xs text-slate-400 mb-6 leading-relaxed">Apply for guaranteed weekly off-take. Our procurement team will visit your farm for organic certification.</p>
+            <div class="space-y-4">
+                <input type="text" id="fb-sup-farm" placeholder="Farm / Business Name" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 cursor-text">
+                <input type="text" id="fb-sup-loc" placeholder="Farm Location (e.g. Nsawam)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 cursor-text">
+                <select id="fb-sup-cat" class="w-full bg-[#0f172a] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 cursor-pointer">
+                    <option value="Vegetables">Vegetables & Leafy Greens</option>
+                    <option value="Poultry">Dressed Poultry & Eggs</option>
+                    <option value="Tubers">Tubers (Yam, Cassava)</option>
+                    <option value="Fruits">Seasonal Fruits</option>
+                </select>
+                <input type="text" id="fb-sup-cap" placeholder="Weekly Supply Capacity (e.g. 500kg)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 cursor-text">
+                <button onclick="submitFreshBoxSupplier()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black py-4 rounded-xl text-sm shadow-lg transition-colors cursor-pointer mt-2">Submit Application</button>
+            </div>
+        </div>
+    </div>
+
     <!-- HAULAGE POST MODAL -->
     <div id="haulage-post-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-amber-500/30 text-left">
@@ -621,7 +642,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 relative z-40 pb-24">
                 <!-- BOX 1 -->
-                <div class="glass-card content-visibility-auto rounded-[2.5rem] p-2 border border-white/5 hover:border-emerald-500/40 transition-all shadow-xl group flex flex-col cursor-pointer">
+                <div class="glass-card  rounded-[2.5rem] p-2 border border-white/5 hover:border-emerald-500/40 transition-all shadow-xl group flex flex-col cursor-pointer">
                     <div class="relative h-48 w-full bg-gradient-to-br from-[#0f172a] to-slate-900 rounded-[2rem] flex items-center justify-center text-7xl shadow-inner overflow-hidden border border-slate-700/50">
                         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
                         <span class="group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl">🥗</span>
@@ -635,13 +656,13 @@
                         </ul>
                         <div class="mt-auto border-t border-white/10 pt-5 flex items-center justify-between">
                             <p class="text-3xl font-black text-white tracking-tight">GH₵150 <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">/ wk</span></p>
-                            <button onclick="subscribeFreshBox('Veggie Box')" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-teal-400 hover:to-emerald-500 text-[#020617] font-black px-5 py-3 rounded-xl text-sm transition-all shadow-lg tracking-wide active:scale-95 cursor-pointer">Subscribe</button>
+                            <button onclick="subscribeFreshBox('Veggie Box', 15000)" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-teal-400 hover:to-emerald-500 text-[#020617] font-black px-5 py-3 rounded-xl text-sm transition-all shadow-lg tracking-wide active:scale-95 cursor-pointer">Subscribe</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- BOX 2 -->
-                <div class="glass-card content-visibility-auto rounded-[2.5rem] p-2 border-2 border-emerald-500 relative transform md:-translate-y-4 shadow-[0_0_40px_rgba(16,185,129,0.2)] group flex flex-col cursor-pointer bg-gradient-to-b from-[#020617] to-emerald-950/20">
+                <div class="glass-card  rounded-[2.5rem] p-2 border-2 border-emerald-500 relative transform md:-translate-y-4 shadow-[0_0_40px_rgba(16,185,129,0.2)] group flex flex-col cursor-pointer bg-gradient-to-b from-[#020617] to-emerald-950/20">
                     <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-emerald-500 to-teal-400 text-[#020617] text-[10px] font-black uppercase tracking-widest px-5 py-1.5 rounded-full shadow-lg z-20">Most Popular</span>
                     <div class="relative h-48 w-full bg-gradient-to-br from-[#0f172a] to-emerald-900/30 rounded-[2rem] flex items-center justify-center text-7xl shadow-inner overflow-hidden border border-emerald-500/30">
                         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
@@ -656,13 +677,13 @@
                         </ul>
                         <div class="mt-auto border-t border-emerald-500/30 pt-5 flex items-center justify-between">
                             <p class="text-3xl font-black text-white tracking-tight">GH₵280 <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">/ wk</span></p>
-                            <button onclick="subscribeFreshBox('Protein Pack')" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-teal-400 hover:to-emerald-500 text-[#020617] font-black px-5 py-3 rounded-xl text-sm transition-all shadow-[0_0_15px_rgba(16,185,129,0.5)] tracking-wide active:scale-95 cursor-pointer">Subscribe</button>
+                            <button onclick="subscribeFreshBox('Protein Pack', 28000)" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-teal-400 hover:to-emerald-500 text-[#020617] font-black px-5 py-3 rounded-xl text-sm transition-all shadow-[0_0_15px_rgba(16,185,129,0.5)] tracking-wide active:scale-95 cursor-pointer">Subscribe</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- BOX 3 -->
-                <div class="glass-card content-visibility-auto rounded-[2.5rem] p-2 border border-white/5 hover:border-emerald-500/40 transition-all shadow-xl group flex flex-col cursor-pointer">
+                <div class="glass-card  rounded-[2.5rem] p-2 border border-white/5 hover:border-emerald-500/40 transition-all shadow-xl group flex flex-col cursor-pointer">
                     <div class="relative h-48 w-full bg-gradient-to-br from-[#0f172a] to-slate-900 rounded-[2rem] flex items-center justify-center text-7xl shadow-inner overflow-hidden border border-slate-700/50">
                         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
                         <span class="group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl">🧺</span>
@@ -676,10 +697,18 @@
                         </ul>
                         <div class="mt-auto border-t border-white/10 pt-5 flex items-center justify-between">
                             <p class="text-3xl font-black text-white tracking-tight">GH₵550 <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">/ wk</span></p>
-                            <button onclick="subscribeFreshBox('Mega Family Basket')" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-teal-400 hover:to-emerald-500 text-[#020617] font-black px-5 py-3 rounded-xl text-sm transition-all shadow-lg tracking-wide active:scale-95 cursor-pointer">Subscribe</button>
+                            <button onclick="subscribeFreshBox('Mega Family Basket', 55000)" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-teal-400 hover:to-emerald-500 text-[#020617] font-black px-5 py-3 rounded-xl text-sm transition-all shadow-lg tracking-wide active:scale-95 cursor-pointer">Subscribe</button>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Farmer CTA -->
+            <div class="mt-16 glass-card p-8 md:p-12 rounded-[2rem] border border-emerald-500/20 text-center relative overflow-hidden bg-emerald-900/10 mb-8 mx-2">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-[40px] pointer-events-none"></div>
+                <h3 class="text-2xl md:text-3xl font-black text-white mb-3 tracking-tight">Are you a commercial farmer? 🌾</h3>
+                <p class="text-slate-400 text-sm md:text-base mb-6 font-medium max-w-2xl mx-auto">We are actively sourcing high-quality organic produce for our weekly FreshBox drops. Secure guaranteed weekly off-take contracts by joining our supplier network.</p>
+                <button onclick="openFreshBoxSupplierModal()" class="bg-[#0f172a] hover:bg-slate-800 border border-emerald-500/40 text-emerald-400 hover:text-emerald-300 font-black px-8 py-4 rounded-2xl text-sm transition-colors shadow-inner flex items-center justify-center gap-3 tracking-wide cursor-pointer mx-auto">Apply to be a Supplier</button>
             </div>
         </div>
 
@@ -1861,16 +1890,59 @@
         }
 
         
-        function subscribeFreshBox(boxName) {
+        function subscribeFreshBox(boxName, amount) {
             if (!agriToken) {
                 showToast("Please sign in to subscribe.", "error");
                 return navigate('auth');
             }
-            showToast("Initializing MoMo Gateway for " + boxName + "... ⏳");
-            setTimeout(() => {
-                confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#10b981', '#34d399', '#ffffff'] });
-                showToast("🎉 Subscription Confirmed! Your first box arrives this Saturday.", "success");
-            }, 1500);
+            
+            showToast("Initializing MoMo payment for " + boxName + "...");
+            
+            let handler = PaystackPop.setup({
+                key: PAYSTACK_PUBLIC_KEY, 
+                email: currentUserEmail || "buyer@agromart.com",
+                amount: amount, 
+                currency: 'GHS',
+                ref: 'FRESHBOX_' + Math.floor((Math.random() * 1000000000) + 1),
+                channels: ['mobile_money', 'card'],
+                callback: function(response) {
+                    showToast("🎉 Subscription Confirmed! Your first " + boxName + " arrives this Saturday.", "success");
+                    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#10b981', '#34d399', '#ffffff'] });
+                },
+                onClose: function() {
+                    showToast("Subscription cancelled.", "error");
+                }
+            });
+            handler.openIframe();
+        }
+
+        function openFreshBoxSupplierModal() {
+            if (!agriToken) {
+                showToast("Please sign in to apply.", "error");
+                return navigate('auth');
+            }
+            document.getElementById('freshbox-supplier-modal').classList.remove('hidden');
+            document.getElementById('freshbox-supplier-modal').classList.add('flex');
+        }
+
+        function closeFreshBoxSupplierModal() {
+            document.getElementById('freshbox-supplier-modal').classList.add('hidden');
+            document.getElementById('freshbox-supplier-modal').classList.remove('flex');
+        }
+
+        function submitFreshBoxSupplier() {
+            const farm = document.getElementById('fb-sup-farm').value.trim();
+            const loc = document.getElementById('fb-sup-loc').value.trim();
+            const cap = document.getElementById('fb-sup-cap').value.trim();
+            
+            if(!farm || !loc || !cap) return showToast("Fill all required fields", "error");
+            
+            showToast("Application submitted! Our procurement team will contact you shortly. 🌾", "success");
+            closeFreshBoxSupplierModal();
+            
+            document.getElementById('fb-sup-farm').value = '';
+            document.getElementById('fb-sup-loc').value = '';
+            document.getElementById('fb-sup-cap').value = '';
         }
 
         const fallbackTestAds = [
@@ -2399,7 +2471,7 @@
             const items = everydayData[category] || [];
 
             grid.innerHTML = items.map(item => `
-                <div class="glass-card content-visibility-auto p-5 md:p-8 rounded-3xl md:rounded-[2.5rem] border border-white/5 hover:border-blue-500/30 transition-all flex flex-col justify-between shadow-lg">
+                <div class="glass-card  p-5 md:p-8 rounded-3xl md:rounded-[2.5rem] border border-white/5 hover:border-blue-500/30 transition-all flex flex-col justify-between shadow-lg">
                     <div>
                         <div class="flex justify-between items-start mb-4">
                             <span class="text-[10px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-3 py-1.5 rounded-lg font-black uppercase tracking-widest">${item.tag}</span>
@@ -3172,7 +3244,7 @@
                 }
                 
                 return `
-                    <div class="glass-card content-visibility-auto rounded-[2.5rem] flex flex-col justify-between transition-all overflow-hidden shadow-xl hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:border-emerald-500/40 group">
+                    <div class="glass-card  rounded-[2.5rem] flex flex-col justify-between transition-all overflow-hidden shadow-xl hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:border-emerald-500/40 group">
                         ${imgBlock}
                         <div class="p-8 flex flex-col justify-between flex-grow">
                             <div>
