@@ -380,27 +380,21 @@
     </div>
 
     
-        <!-- FRESHBOX SUPPLIER MODAL -->
-    <div id="freshbox-supplier-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
-        <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-emerald-500/30 text-left shadow-[0_0_40px_rgba(16,185,129,0.15)]">
-            <button onclick="closeFreshBoxSupplierModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl cursor-pointer">✕</button>
-            <h3 class="text-xl md:text-2xl font-black text-white mb-2">🌾 FreshBox Supplier Network</h3>
-            <p class="text-xs text-slate-400 mb-6 leading-relaxed">Apply for guaranteed weekly off-take. Our procurement team will visit your farm for organic certification.</p>
+        <!-- GIFT BASKET SUPPLIER MODAL -->
+    <div id="gift-supplier-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
+        <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-rose-500/30 text-left shadow-[0_0_40px_rgba(244,63,94,0.15)]">
+            <button onclick="closeGiftSupplierModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl cursor-pointer">✕</button>
+            <h3 class="text-xl md:text-2xl font-black text-white mb-2">🎀 Gift Basket Seller Application</h3>
+            <p class="text-xs text-slate-400 mb-6 leading-relaxed">Apply for early access to list your custom hampers when the category goes live.</p>
             <div class="space-y-4">
-                <input type="text" id="fb-sup-farm" placeholder="Farm / Business Name" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 cursor-text">
-                <input type="text" id="fb-sup-loc" placeholder="Farm Location (e.g. Nsawam)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 cursor-text">
-                <select id="fb-sup-cat" class="w-full bg-[#0f172a] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 cursor-pointer">
-                    <option value="Vegetables">Vegetables & Leafy Greens</option>
-                    <option value="Poultry">Dressed Poultry & Eggs</option>
-                    <option value="Tubers">Tubers (Yam, Cassava)</option>
-                    <option value="Fruits">Seasonal Fruits</option>
-                </select>
-                <input type="text" id="fb-sup-cap" placeholder="Weekly Supply Capacity (e.g. 500kg)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 cursor-text">
-                <button onclick="submitFreshBoxSupplier()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black py-4 rounded-xl text-sm shadow-lg transition-colors cursor-pointer mt-2">Submit Application</button>
+                <input type="text" id="gift-sup-name" placeholder="Business Name" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-rose-500 cursor-text">
+                <input type="text" id="gift-sup-loc" placeholder="Location / City" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-rose-500 cursor-text">
+                <textarea id="gift-sup-desc" placeholder="Describe your typical gift baskets (e.g. Corporate, Fruit, Wine & Cheese)" rows="3" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-rose-500 cursor-text"></textarea>
+                <input type="text" id="gift-sup-cap" placeholder="Estimated Production Capacity (Hampers/Month)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-rose-500 cursor-text">
+                <button onclick="submitGiftSupplier()" class="w-full bg-gradient-to-r from-rose-600 to-pink-500 hover:from-rose-500 hover:to-pink-400 text-white font-black py-4 rounded-xl text-sm shadow-lg transition-colors cursor-pointer mt-2">Submit Application</button>
             </div>
         </div>
     </div>
-
     <!-- HAULAGE POST MODAL -->
     <div id="haulage-post-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-amber-500/30 text-left">
@@ -417,6 +411,54 @@
                 <input type="tel" id="hp-phone" placeholder="Driver Phone Number" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-amber-500 cursor-text">
                 <input type="text" id="hp-capacity" placeholder="Available Cargo Space (e.g. 50% Full)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-amber-500 cursor-text">
                 <button onclick="submitHaulagePost()" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-black py-4 rounded-xl text-sm transition-colors shadow-lg cursor-pointer">Publish Listing</button>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- DATA TOP-UP MODAL -->
+    <div id="topup-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md p-8 md:p-10 rounded-[3rem] relative border border-purple-500/30 text-left shadow-[0_0_40px_rgba(168,85,247,0.15)]">
+            <button onclick="closeTopUpModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl font-bold cursor-pointer z-50">✕</button>
+            <div class="absolute top-[-50px] right-[-50px] w-48 h-48 bg-purple-500/10 rounded-full blur-[40px] pointer-events-none"></div>
+            
+            <div class="relative z-10">
+                <div class="flex items-center gap-4 mb-2">
+                    <span class="text-4xl animate-pulse drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]">📱</span>
+                    <h3 class="text-2xl font-black text-white tracking-tight">Instant Top-Up</h3>
+                </div>
+                <p class="text-xs text-slate-400 mb-8 font-medium">Buy data bundles or airtime for any network instantly via MoMo.</p>
+                
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-xs font-black text-slate-400 mb-2 uppercase tracking-widest">Phone Number</label>
+                        <input type="tel" id="topup-phone" placeholder="e.g. 024XXXXXXX" oninput="detectNetwork()" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-white text-lg font-black outline-none focus:border-purple-500 shadow-inner transition-colors cursor-text">
+                        <p id="topup-network" class="text-xs font-bold text-purple-400 mt-2 hidden flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span> <span id="topup-network-name">Network Detected</span></p>
+                    </div>
+
+                    <div class="flex gap-2 p-1.5 bg-[#020617]/60 rounded-2xl border border-slate-700/50 shadow-inner">
+                        <button onclick="switchTopUpType('data')" id="tab-data" class="flex-1 py-3 rounded-xl text-sm font-black bg-purple-600 text-white shadow-[0_0_15px_rgba(168,85,247,0.3)] transition-all cursor-pointer">Data Bundles</button>
+                        <button onclick="switchTopUpType('airtime')" id="tab-airtime" class="flex-1 py-3 rounded-xl text-sm font-black text-slate-400 hover:text-white transition-all cursor-pointer">Airtime</button>
+                    </div>
+
+                    <div id="panel-data-bundles">
+                        <label class="block text-xs font-black text-slate-400 mb-2 uppercase tracking-widest">Select Bundle</label>
+                        <select id="topup-bundle-select" class="w-full bg-[#0f172a] border border-slate-700/80 rounded-2xl px-5 py-4 text-white text-sm font-medium outline-none focus:border-purple-500 shadow-inner transition-colors cursor-pointer">
+                            <option value="10">1GB - GH₵ 10.00 (Non-Expiry)</option>
+                            <option value="20">2.5GB - GH₵ 20.00 (Non-Expiry)</option>
+                            <option value="50">7GB - GH₵ 50.00 (Non-Expiry)</option>
+                            <option value="100">15GB - GH₵ 100.00 (Non-Expiry)</option>
+                            <option value="350">92GB - GH₵ 350.00 (Non-Expiry)</option>
+                        </select>
+                    </div>
+
+                    <div id="panel-airtime-input" class="hidden">
+                        <label class="block text-xs font-black text-slate-400 mb-2 uppercase tracking-widest">Amount (GH₵)</label>
+                        <input type="number" id="topup-amount" placeholder="e.g. 5" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-white text-lg font-black outline-none focus:border-purple-500 shadow-inner transition-colors cursor-text">
+                    </div>
+
+                    <button onclick="processTopUp()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-500 hover:from-purple-500 hover:to-indigo-400 text-white font-black py-4.5 rounded-2xl text-base transition-all shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:-translate-y-1 tracking-wide mt-4 cursor-pointer">Pay with MoMo</button>
+                </div>
             </div>
         </div>
     </div>
@@ -506,7 +548,8 @@
             </div>
             
             <div class="flex gap-2 items-center flex-wrap justify-end">
-                <button onclick="navigate('freshbox')" class="text-xs font-black text-[#020617] bg-gradient-to-r from-emerald-400 to-green-300 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:scale-105 transition-transform cursor-pointer flex items-center gap-1.5"><span class="animate-bounce">📦</span> FreshBox Drops</button>
+                <button onclick="navigate('gift')" class="text-xs font-black text-[#020617] bg-gradient-to-r from-rose-400 to-pink-300 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest shadow-[0_0_20px_rgba(244,63,94,0.4)] hover:scale-105 transition-transform cursor-pointer flex items-center gap-1.5"><span class="animate-bounce">🎁</span> Gift Baskets</button>
+                <button onclick="openTopUpModal()" class="text-xs font-black text-white bg-gradient-to-r from-purple-500 to-indigo-400 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:scale-105 transition-transform cursor-pointer flex items-center gap-1.5"><span class="animate-pulse">📱</span> Data & Airtime</button>
                 <button onclick="navigate('community')" class="pro-only text-xs font-black text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 rounded-xl hidden lg:flex items-center gap-1 hover:-translate-y-0.5 transition-all shadow-inner tracking-widest uppercase cursor-pointer">🗣️ Lounge</button>
                 <button onclick="navigate('haulage')" class="pro-only text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-amber-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">🚚 Haulage</button>
                 <button onclick="navigate('trainer')" class="pro-only text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-purple-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">📚 Trainer</button>
@@ -541,7 +584,8 @@
     </header>
 
     <div class="pro-only md:hidden glass-card border-b border-white/5 px-4 py-3 overflow-x-auto whitespace-nowrap flex gap-3 z-40">
-        <button onclick="navigate('freshbox')" class="text-xs font-black text-[#020617] bg-gradient-to-r from-emerald-400 to-green-300 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:scale-105 transition-transform cursor-pointer flex items-center gap-1.5"><span class="animate-bounce">📦</span> FreshBox Drops</button>
+        <button onclick="navigate('gift')" class="text-xs font-black text-[#020617] bg-gradient-to-r from-rose-400 to-pink-300 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest shadow-[0_0_20px_rgba(244,63,94,0.4)] hover:scale-105 transition-transform cursor-pointer flex items-center gap-1.5"><span class="animate-bounce">🎁</span> Gift Baskets</button>
+                <button onclick="openTopUpModal()" class="text-xs font-black text-white bg-gradient-to-r from-purple-500 to-indigo-400 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:scale-105 transition-transform cursor-pointer flex items-center gap-1.5"><span class="animate-pulse">📱</span> Data & Airtime</button>
         <button onclick="navigate('community')" class="text-xs font-black text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest cursor-pointer">🗣️ Lounge</button>
         <button onclick="navigate('haulage')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">🚚 Haulage Pool</button>
         <button onclick="navigate('trainer')" class="text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">📚 Agri Trainer</button>
@@ -624,94 +668,40 @@
             </div>
         </div>
 
-        <!-- FRESHBOX DROPS VIEW -->
-        <div id="view-freshbox" class="fade-in hidden space-y-12 relative z-30">
-            <div class="glass-card p-8 md:p-16 rounded-[2rem] md:rounded-[3rem] border border-emerald-500/40 shadow-2xl relative overflow-hidden bg-gradient-to-br from-[#020617]/90 to-emerald-950/40">
-                <div class="absolute top-[-50px] right-[-50px] w-48 h-48 md:w-80 md:h-80 bg-emerald-500/20 rounded-full blur-[60px] md:blur-[100px] pointer-events-none"></div>
+        <!-- GIFT BASKETS VIEW -->
+        <div id="view-gift" class="fade-in hidden space-y-12 relative z-30">
+            <div class="glass-card p-8 md:p-16 rounded-[2rem] md:rounded-[3rem] border border-rose-500/40 shadow-2xl relative overflow-hidden bg-gradient-to-br from-[#020617]/90 to-rose-950/40">
+                <div class="absolute top-[-50px] right-[-50px] w-48 h-48 md:w-80 md:h-80 bg-rose-500/20 rounded-full blur-[60px] md:blur-[100px] pointer-events-none"></div>
                 <div class="relative z-10 text-center max-w-3xl mx-auto">
-                    <span class="text-[10px] text-emerald-400 font-black uppercase tracking-widest bg-emerald-500/10 px-4 py-2 rounded-full border border-emerald-500/30 shadow-inner mb-6 inline-block"><span class="animate-pulse inline-block mr-1">🚚</span> Direct Farm-to-Doorstep</span>
-                    <h2 class="text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tight mb-6 mt-4 leading-tight">Agromart <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-200">FreshBox Drops</span></h2>
-                    <p class="text-slate-300 text-sm md:text-lg font-medium leading-relaxed mb-10">Skip the market traffic and the middleman markup. Subscribe to a weekly box of premium, freshly harvested organic produce delivered straight from our verified partner farms to your home every Saturday morning. Save up to 40% off supermarket prices.</p>
+                    <span class="text-[10px] text-rose-400 font-black uppercase tracking-widest bg-rose-500/10 px-4 py-2 rounded-full border border-rose-500/30 shadow-inner mb-6 inline-block"><span class="animate-pulse inline-block mr-1">✨</span> Corporate & Personal Gifting</span>
+                    <h2 class="text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tight mb-6 mt-4 leading-tight">Agromart <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-pink-200">Gift Baskets</span></h2>
+                    <p class="text-slate-300 text-sm md:text-lg font-medium leading-relaxed mb-10">Beautifully curated hampers featuring premium local produce, artisanal cheeses, fine wines, and organic treats. Perfect for corporate clients, holidays, or special occasions.</p>
                 </div>
             </div>
 
-            <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4 px-2">
-                <h3 class="text-2xl md:text-3xl font-black text-white tracking-tight flex items-center gap-3">📦 Weekly Subscription Plans</h3>
-                <span class="text-xs font-bold text-slate-400 bg-white/5 px-4 py-2 rounded-xl shadow-inner border border-white/10 w-fit">Pause or cancel anytime</span>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 relative z-40 pb-24">
-                <!-- BOX 1 -->
-                <div class="glass-card  rounded-[2.5rem] p-2 border border-white/5 hover:border-emerald-500/40 transition-all shadow-xl group flex flex-col cursor-pointer">
-                    <div class="relative h-48 w-full bg-gradient-to-br from-[#0f172a] to-slate-900 rounded-[2rem] flex items-center justify-center text-7xl shadow-inner overflow-hidden border border-slate-700/50">
-                        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
-                        <span class="group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl">🥗</span>
-                    </div>
-                    <div class="p-6 md:p-8 flex flex-col flex-grow">
-                        <h3 class="text-xl md:text-2xl font-black text-white mb-2 leading-tight tracking-tight group-hover:text-emerald-400 transition-colors">The Starter Veggie Box</h3>
-                        <p class="text-sm text-slate-400 mb-6 font-medium leading-relaxed">Perfect for singles or couples. A curated mix of fresh tomatoes, onions, sweet peppers, carrots, cucumbers, and leafy greens.</p>
-                        <ul class="text-xs font-bold text-slate-300 space-y-2 mb-8 flex-grow">
-                            <li class="flex gap-2 items-center"><span class="text-emerald-400">✓</span> 5-7 kg total weight</li>
-                            <li class="flex gap-2 items-center"><span class="text-emerald-400">✓</span> Free Saturday Delivery</li>
-                        </ul>
-                        <div class="mt-auto border-t border-white/10 pt-5 flex items-center justify-between">
-                            <p class="text-3xl font-black text-white tracking-tight">GH₵150 <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">/ wk</span></p>
-                            <button onclick="subscribeFreshBox('Veggie Box', 15000)" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-teal-400 hover:to-emerald-500 text-[#020617] font-black px-5 py-3 rounded-xl text-sm transition-all shadow-lg tracking-wide active:scale-95 cursor-pointer">Subscribe</button>
-                        </div>
+            <div class="glass-card p-6 sm:p-8 md:p-14 rounded-[2rem] md:rounded-[3rem] border-2 border-rose-500/50 relative overflow-hidden text-center shadow-[0_0_50px_rgba(244,63,94,0.15)] mx-2 bg-gradient-to-b from-[#0f172a] to-[#020617]">
+                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 pointer-events-none"></div>
+                
+                <h3 class="text-4xl md:text-6xl font-black text-rose-400 tracking-tight mb-8 drop-shadow-lg relative z-10 animate-pulse">... COMING SOON ...</h3>
+                
+                <div class="max-w-md mx-auto mb-10 relative z-10">
+                    <div class="relative w-full aspect-square rounded-[2rem] overflow-hidden border-4 border-slate-700/50 shadow-2xl">
+                        <!-- We use the verbatim filename as requested for the image -->
+                        <img src="Gemini_Generated_Image_snfzpksnfzpksnfz.jfif" alt="Beautiful Gift Basket Example" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent opacity-80"></div>
                     </div>
                 </div>
-
-                <!-- BOX 2 -->
-                <div class="glass-card  rounded-[2.5rem] p-2 border-2 border-emerald-500 relative transform md:-translate-y-4 shadow-[0_0_40px_rgba(16,185,129,0.2)] group flex flex-col cursor-pointer bg-gradient-to-b from-[#020617] to-emerald-950/20">
-                    <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-emerald-500 to-teal-400 text-[#020617] text-[10px] font-black uppercase tracking-widest px-5 py-1.5 rounded-full shadow-lg z-20">Most Popular</span>
-                    <div class="relative h-48 w-full bg-gradient-to-br from-[#0f172a] to-emerald-900/30 rounded-[2rem] flex items-center justify-center text-7xl shadow-inner overflow-hidden border border-emerald-500/30">
-                        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
-                        <span class="group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl">🥩</span>
-                    </div>
-                    <div class="p-6 md:p-8 flex flex-col flex-grow">
-                        <h3 class="text-xl md:text-2xl font-black text-emerald-400 mb-2 leading-tight tracking-tight">The Protein Pack</h3>
-                        <p class="text-sm text-slate-400 mb-6 font-medium leading-relaxed">Fuel your week. Includes 1 full crate of large brown eggs, 2.5kg of dressed farm chicken, and 1kg of fresh smoked catfish.</p>
-                        <ul class="text-xs font-bold text-slate-300 space-y-2 mb-8 flex-grow">
-                            <li class="flex gap-2 items-center"><span class="text-emerald-400">✓</span> 100% Organic Fed Poultry</li>
-                            <li class="flex gap-2 items-center"><span class="text-emerald-400">✓</span> Free Saturday Delivery</li>
-                        </ul>
-                        <div class="mt-auto border-t border-emerald-500/30 pt-5 flex items-center justify-between">
-                            <p class="text-3xl font-black text-white tracking-tight">GH₵280 <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">/ wk</span></p>
-                            <button onclick="subscribeFreshBox('Protein Pack', 28000)" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-teal-400 hover:to-emerald-500 text-[#020617] font-black px-5 py-3 rounded-xl text-sm transition-all shadow-[0_0_15px_rgba(16,185,129,0.5)] tracking-wide active:scale-95 cursor-pointer">Subscribe</button>
-                        </div>
-                    </div>
+                
+                <p class="text-slate-300 text-base md:text-xl font-medium mb-12 max-w-xl mx-auto relative z-10">We are currently onboarding specialized hamper curators and artisan producers for our grand launch.</p>
+                
+                <!-- Seller CTA -->
+                <div class="glass-card p-8 md:p-10 rounded-[2rem] border border-rose-500/30 text-center relative overflow-hidden bg-rose-900/10 mx-auto max-w-2xl z-10 shadow-inner">
+                    <h4 class="text-xl md:text-2xl font-black text-white mb-3 tracking-tight">Are you a Gift Basket Creator? 🎀</h4>
+                    <p class="text-slate-400 text-sm mb-6 font-medium">Join our exclusive network of premium hamper sellers. Get access to thousands of corporate buyers nationwide.</p>
+                    <button onclick="openGiftSupplierModal()" class="bg-gradient-to-r from-rose-600 to-pink-500 hover:from-rose-500 hover:to-pink-400 text-white font-black px-8 py-4 rounded-2xl text-sm transition-colors shadow-[0_0_20px_rgba(244,63,94,0.4)] flex items-center justify-center gap-3 tracking-wide cursor-pointer mx-auto hover:-translate-y-1">Apply to be a Gift Basket Seller</button>
                 </div>
-
-                <!-- BOX 3 -->
-                <div class="glass-card  rounded-[2.5rem] p-2 border border-white/5 hover:border-emerald-500/40 transition-all shadow-xl group flex flex-col cursor-pointer">
-                    <div class="relative h-48 w-full bg-gradient-to-br from-[#0f172a] to-slate-900 rounded-[2rem] flex items-center justify-center text-7xl shadow-inner overflow-hidden border border-slate-700/50">
-                        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
-                        <span class="group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl">🧺</span>
-                    </div>
-                    <div class="p-6 md:p-8 flex flex-col flex-grow">
-                        <h3 class="text-xl md:text-2xl font-black text-white mb-2 leading-tight tracking-tight group-hover:text-emerald-400 transition-colors">The Mega Family Basket</h3>
-                        <p class="text-sm text-slate-400 mb-6 font-medium leading-relaxed">The ultimate household supply. Combines The Veggie Box, The Protein Pack, plus 5kg of Royal Aroma rice, plantains, yams, and seasonal fruits.</p>
-                        <ul class="text-xs font-bold text-slate-300 space-y-2 mb-8 flex-grow">
-                            <li class="flex gap-2 items-center"><span class="text-emerald-400">✓</span> Feeds family of 4-6</li>
-                            <li class="flex gap-2 items-center"><span class="text-emerald-400">✓</span> VIP Priority Delivery</li>
-                        </ul>
-                        <div class="mt-auto border-t border-white/10 pt-5 flex items-center justify-between">
-                            <p class="text-3xl font-black text-white tracking-tight">GH₵550 <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">/ wk</span></p>
-                            <button onclick="subscribeFreshBox('Mega Family Basket', 55000)" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-teal-400 hover:to-emerald-500 text-[#020617] font-black px-5 py-3 rounded-xl text-sm transition-all shadow-lg tracking-wide active:scale-95 cursor-pointer">Subscribe</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Farmer CTA -->
-            <div class="mt-16 glass-card p-8 md:p-12 rounded-[2rem] border border-emerald-500/20 text-center relative overflow-hidden bg-emerald-900/10 mb-8 mx-2">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-[40px] pointer-events-none"></div>
-                <h3 class="text-2xl md:text-3xl font-black text-white mb-3 tracking-tight">Are you a commercial farmer? 🌾</h3>
-                <p class="text-slate-400 text-sm md:text-base mb-6 font-medium max-w-2xl mx-auto">We are actively sourcing high-quality organic produce for our weekly FreshBox drops. Secure guaranteed weekly off-take contracts by joining our supplier network.</p>
-                <button onclick="openFreshBoxSupplierModal()" class="bg-[#0f172a] hover:bg-slate-800 border border-emerald-500/40 text-emerald-400 hover:text-emerald-300 font-black px-8 py-4 rounded-2xl text-sm transition-colors shadow-inner flex items-center justify-center gap-3 tracking-wide cursor-pointer mx-auto">Apply to be a Supplier</button>
             </div>
         </div>
-
         <!-- THE EVERYDAY HUB VIEW -->
         <div id="view-everyday-hub" class="fade-in hidden space-y-12 relative z-30">
             <!-- Hero / Action Center -->
@@ -749,12 +739,13 @@
                         <p class="text-[11px] text-slate-400 font-medium mt-1">Inter-City Driver Delivery</p>
                     </div>
 
-                    <div onclick="filterEverydayHub('thrift')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-400 hover:-translate-y-1 transition-all group flex flex-col items-center text-center col-span-2 sm:col-span-1">
+                                        <div onclick="filterEverydayHub('thrift')" class="glass-card p-6 rounded-3xl cursor-pointer hover:border-emerald-400 hover:-translate-y-1 transition-all group flex flex-col items-center text-center">
                         <span class="text-3xl md:text-4xl mb-2 md:mb-3 group-hover:scale-110 transition-transform">🔄</span>
                         <h3 class="font-black text-sm text-white group-hover:text-emerald-400 transition-colors">Local Thrift</h3>
                         <p class="text-[11px] text-slate-400 font-medium mt-1">Used Tech & Home Deals</p>
                     </div>
-                </div>
+
+                    </div>
             </div>
 
             <!-- Dynamic Category Section -->
@@ -1890,59 +1881,34 @@
         }
 
         
-        function subscribeFreshBox(boxName, amount) {
-            if (!agriToken) {
-                showToast("Please sign in to subscribe.", "error");
-                return navigate('auth');
-            }
-            
-            showToast("Initializing MoMo payment for " + boxName + "...");
-            
-            let handler = PaystackPop.setup({
-                key: PAYSTACK_PUBLIC_KEY, 
-                email: currentUserEmail || "buyer@agromart.com",
-                amount: amount, 
-                currency: 'GHS',
-                ref: 'FRESHBOX_' + Math.floor((Math.random() * 1000000000) + 1),
-                channels: ['mobile_money', 'card'],
-                callback: function(response) {
-                    showToast("🎉 Subscription Confirmed! Your first " + boxName + " arrives this Saturday.", "success");
-                    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#10b981', '#34d399', '#ffffff'] });
-                },
-                onClose: function() {
-                    showToast("Subscription cancelled.", "error");
-                }
-            });
-            handler.openIframe();
-        }
-
-        function openFreshBoxSupplierModal() {
+        function openGiftSupplierModal() {
             if (!agriToken) {
                 showToast("Please sign in to apply.", "error");
                 return navigate('auth');
             }
-            document.getElementById('freshbox-supplier-modal').classList.remove('hidden');
-            document.getElementById('freshbox-supplier-modal').classList.add('flex');
+            document.getElementById('gift-supplier-modal').classList.remove('hidden');
+            document.getElementById('gift-supplier-modal').classList.add('flex');
         }
 
-        function closeFreshBoxSupplierModal() {
-            document.getElementById('freshbox-supplier-modal').classList.add('hidden');
-            document.getElementById('freshbox-supplier-modal').classList.remove('flex');
+        function closeGiftSupplierModal() {
+            document.getElementById('gift-supplier-modal').classList.add('hidden');
+            document.getElementById('gift-supplier-modal').classList.remove('flex');
         }
 
-        function submitFreshBoxSupplier() {
-            const farm = document.getElementById('fb-sup-farm').value.trim();
-            const loc = document.getElementById('fb-sup-loc').value.trim();
-            const cap = document.getElementById('fb-sup-cap').value.trim();
+        function submitGiftSupplier() {
+            const name = document.getElementById('gift-sup-name').value.trim();
+            const loc = document.getElementById('gift-sup-loc').value.trim();
+            const desc = document.getElementById('gift-sup-desc').value.trim();
             
-            if(!farm || !loc || !cap) return showToast("Fill all required fields", "error");
+            if(!name || !loc || !desc) return showToast("Fill all required fields", "error");
             
-            showToast("Application submitted! Our procurement team will contact you shortly. 🌾", "success");
-            closeFreshBoxSupplierModal();
+            showToast("Application submitted! Our curation team will review your details. 🎀", "success");
+            closeGiftSupplierModal();
             
-            document.getElementById('fb-sup-farm').value = '';
-            document.getElementById('fb-sup-loc').value = '';
-            document.getElementById('fb-sup-cap').value = '';
+            document.getElementById('gift-sup-name').value = '';
+            document.getElementById('gift-sup-loc').value = '';
+            document.getElementById('gift-sup-desc').value = '';
+            document.getElementById('gift-sup-cap').value = '';
         }
 
         const fallbackTestAds = [
@@ -2380,7 +2346,7 @@
                 'home', 'marketplace', 'auth', 'grants', 'farm-manager', 
                 'intel', 'calculator', 'trainer', 'post', 'dashboard', 
                 'pricing', 'faq', 'about', 'support', 'rentals', 'waste', 'agridoctor', 'haulage', 'seller-store', 'community',
-                'portal-select', 'everyday-hub', 'freshbox'
+                'portal-select', 'everyday-hub', 'gift'
             ];
             
             views.forEach(v => {
@@ -2554,6 +2520,103 @@
             
             html += '</div>'; 
             pb.innerHTML = html;
+        }
+
+                let currentTopUpType = 'data';
+
+        function openTopUpModal() {
+            if (!agriToken) {
+                showToast("Please sign in to buy data.", "error");
+                return navigate('auth');
+            }
+            document.getElementById('topup-modal').classList.remove('hidden');
+            document.getElementById('topup-modal').classList.add('flex');
+        }
+
+        function closeTopUpModal() {
+            document.getElementById('topup-modal').classList.add('hidden');
+            document.getElementById('topup-modal').classList.remove('flex');
+        }
+
+        function switchTopUpType(type) {
+            currentTopUpType = type;
+            document.getElementById('tab-data').className = "flex-1 py-3 rounded-xl text-sm font-black text-slate-400 hover:text-white transition-all cursor-pointer";
+            document.getElementById('tab-airtime').className = "flex-1 py-3 rounded-xl text-sm font-black text-slate-400 hover:text-white transition-all cursor-pointer";
+            
+            document.getElementById('panel-data-bundles').classList.add('hidden');
+            document.getElementById('panel-airtime-input').classList.add('hidden');
+            
+            if (type === 'data') {
+                document.getElementById('tab-data').className = "flex-1 py-3 rounded-xl text-sm font-black bg-purple-600 text-white shadow-[0_0_15px_rgba(168,85,247,0.3)] transition-all cursor-pointer";
+                document.getElementById('panel-data-bundles').classList.remove('hidden');
+            } else {
+                document.getElementById('tab-airtime').className = "flex-1 py-3 rounded-xl text-sm font-black bg-purple-600 text-white shadow-[0_0_15px_rgba(168,85,247,0.3)] transition-all cursor-pointer";
+                document.getElementById('panel-airtime-input').classList.remove('hidden');
+            }
+        }
+
+        function detectNetwork() {
+            const phone = document.getElementById('topup-phone').value;
+            const netEl = document.getElementById('topup-network');
+            const nameEl = document.getElementById('topup-network-name');
+            
+            if (phone.length >= 3) {
+                netEl.classList.remove('hidden');
+                if (phone.startsWith('024') || phone.startsWith('054') || phone.startsWith('055') || phone.startsWith('059') || phone.startsWith('025')) {
+                    nameEl.innerText = "MTN Ghana Detected";
+                    nameEl.className = "text-yellow-400";
+                } else if (phone.startsWith('020') || phone.startsWith('050')) {
+                    nameEl.innerText = "Telecel Ghana Detected";
+                    nameEl.className = "text-rose-400";
+                } else if (phone.startsWith('027') || phone.startsWith('057') || phone.startsWith('026') || phone.startsWith('056')) {
+                    nameEl.innerText = "AT Detected";
+                    nameEl.className = "text-blue-400";
+                } else {
+                    nameEl.innerText = "Unknown Network";
+                    nameEl.className = "text-slate-400";
+                }
+            } else {
+                netEl.classList.add('hidden');
+            }
+        }
+
+        function processTopUp() {
+            const phone = document.getElementById('topup-phone').value;
+            if (phone.length < 10) return showToast("Enter a valid 10-digit number.", "error");
+
+            let amount = 0;
+            if (currentTopUpType === 'data') {
+                amount = parseInt(document.getElementById('topup-bundle-select').value);
+            } else {
+                amount = parseInt(document.getElementById('topup-amount').value);
+            }
+
+            if (!amount || amount <= 0) return showToast("Enter a valid amount.", "error");
+
+            showToast("Connecting to Telecom Aggregator... ⏳");
+            
+            let handler = PaystackPop.setup({
+                key: PAYSTACK_PUBLIC_KEY, 
+                email: currentUserEmail || "buyer@agromart.com",
+                amount: amount * 100, // GH₵ to pesewas
+                currency: 'GHS',
+                ref: 'VTU_' + Math.floor((Math.random() * 1000000000) + 1),
+                channels: ['mobile_money', 'card'],
+                callback: function(response) {
+                    showToast(`🎉 Top-up successful! Processing delivery to ${phone}...`, "success");
+                    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#a855f7', '#818cf8', '#ffffff'] });
+                    closeTopUpModal();
+                    
+                    // Simulate carrier delay
+                    setTimeout(() => {
+                        showToast(`📱 SMS: Your bundle has been credited to ${phone}. Thank you!`, "success");
+                    }, 4000);
+                },
+                onClose: function() {
+                    showToast("Transaction cancelled.", "error");
+                }
+            });
+            handler.openIframe();
         }
 
         function openEverydayPostModal() {
