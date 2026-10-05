@@ -385,11 +385,21 @@
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-rose-500/30 text-left shadow-[0_0_40px_rgba(244,63,94,0.15)]">
             <button onclick="closeGiftSupplierModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl cursor-pointer">✕</button>
             <h3 class="text-xl md:text-2xl font-black text-white mb-2">🎀 Gift Basket Seller Application</h3>
-            <p class="text-xs text-slate-400 mb-6 leading-relaxed">Apply for early access to list your custom hampers when the category goes live.</p>
+            <p class="text-xs text-slate-400 mb-4 leading-relaxed">Apply for early access to list your custom hampers when the category goes live.</p>
+            
             <div class="space-y-4">
+                <!-- Image Upload Area -->
+                <div class="relative z-40">
+                    <label class="block text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Portfolio Images (Max 3)</label>
+                    <div id="gift-image-preview" class="w-full h-20 bg-[#020617]/50 border-2 border-dashed border-slate-700/80 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-rose-500 hover:bg-rose-500/5 transition-all overflow-hidden group shadow-inner" onclick="document.getElementById('gift-image').click()">
+                        <span id="gift-upload-text" class="text-slate-400 text-xs font-black text-center px-4 group-hover:text-rose-400 transition-colors">Tap to upload basket photos 📸</span>
+                    </div>
+                    <input type="file" id="gift-image" accept="image/*" multiple class="hidden" onchange="handleGiftImageUpload(event)">
+                </div>
+            
                 <input type="text" id="gift-sup-name" placeholder="Business Name" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-rose-500 cursor-text">
                 <input type="text" id="gift-sup-loc" placeholder="Location / City" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-rose-500 cursor-text">
-                <textarea id="gift-sup-desc" placeholder="Describe your typical gift baskets (e.g. Corporate, Fruit, Wine & Cheese)" rows="3" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-rose-500 cursor-text"></textarea>
+                <textarea id="gift-sup-desc" placeholder="Describe your typical gift baskets (e.g. Corporate, Fruit, Wine & Cheese)" rows="2" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-rose-500 cursor-text"></textarea>
                 <input type="text" id="gift-sup-cap" placeholder="Estimated Production Capacity (Hampers/Month)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-rose-500 cursor-text">
                 <button onclick="submitGiftSupplier()" class="w-full bg-gradient-to-r from-rose-600 to-pink-500 hover:from-rose-500 hover:to-pink-400 text-white font-black py-4 rounded-xl text-sm shadow-lg transition-colors cursor-pointer mt-2">Submit Application</button>
             </div>
@@ -576,7 +586,7 @@
             
             <div class="flex gap-2 items-center flex-wrap justify-end">
                 <button onclick="navigate('gift')" class="text-xs font-black text-[#020617] bg-gradient-to-r from-rose-400 to-pink-300 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest shadow-[0_0_20px_rgba(244,63,94,0.4)] hover:scale-105 transition-transform cursor-pointer flex items-center gap-1.5"><span class="animate-bounce">🎁</span> Gift Baskets</button>
-                <button onclick="openTopUpModal()" class="text-xs font-black text-white bg-gradient-to-r from-purple-500 to-indigo-400 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:scale-105 transition-transform cursor-pointer flex items-center gap-1.5"><span class="animate-pulse">📱</span> Data & Airtime</button>
+                
                 <button onclick="navigate('community')" class="pro-only text-xs font-black text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 rounded-xl hidden lg:flex items-center gap-1 hover:-translate-y-0.5 transition-all shadow-inner tracking-widest uppercase cursor-pointer">🗣️ Lounge</button>
                 <button onclick="navigate('haulage')" class="pro-only text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-amber-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">🚚 Haulage</button>
                 <button onclick="navigate('trainer')" class="pro-only text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-purple-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">📚 Trainer</button>
@@ -612,7 +622,7 @@
 
     <div class="pro-only md:hidden glass-card border-b border-white/5 px-4 py-3 overflow-x-auto whitespace-nowrap flex gap-3 z-40">
         <button onclick="navigate('gift')" class="text-xs font-black text-[#020617] bg-gradient-to-r from-rose-400 to-pink-300 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest shadow-[0_0_20px_rgba(244,63,94,0.4)] hover:scale-105 transition-transform cursor-pointer flex items-center gap-1.5"><span class="animate-bounce">🎁</span> Gift Baskets</button>
-                <button onclick="openTopUpModal()" class="text-xs font-black text-white bg-gradient-to-r from-purple-500 to-indigo-400 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:scale-105 transition-transform cursor-pointer flex items-center gap-1.5"><span class="animate-pulse">📱</span> Data & Airtime</button>
+                
         <button onclick="navigate('community')" class="text-xs font-black text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest cursor-pointer">🗣️ Lounge</button>
         <button onclick="navigate('haulage')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">🚚 Haulage Pool</button>
         <button onclick="navigate('trainer')" class="text-xs font-bold text-purple-400 border border-purple-500/30 bg-purple-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">📚 Agri Trainer</button>
@@ -1908,7 +1918,69 @@
         }
 
         
+        
+        let giftUploadedImages = [];
+        
+        function handleGiftImageUpload(event) {
+            const files = event.target.files; 
+            if (!files.length) return; 
+            
+            Array.from(files).forEach(file => { 
+                if (giftUploadedImages.length >= 3) return; // Limit to 3 images
+                const reader = new FileReader(); 
+                reader.readAsDataURL(file); 
+                reader.onload = (e) => { 
+                    const img = new Image(); 
+                    img.src = e.target.result; 
+                    img.onload = () => { 
+                        const canvas = document.createElement('canvas'); 
+                        const scale = 300 / img.width; 
+                        canvas.width = 300; 
+                        canvas.height = img.height * scale; 
+                        
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height); 
+                        
+                        giftUploadedImages.push(canvas.toDataURL('image/jpeg', 0.6)); 
+                        renderGiftImagePreview(); 
+                    } 
+                } 
+            }); 
+            
+            event.target.value = '';
+        }
+
+        function removeGiftUploadedImage(index, event) { 
+            event.stopPropagation(); 
+            giftUploadedImages.splice(index, 1); 
+            renderGiftImagePreview(); 
+        }
+
+        function renderGiftImagePreview() {
+            const pb = document.getElementById('gift-image-preview'); 
+            if (!pb) return; 
+            
+            if (giftUploadedImages.length === 0) { 
+                pb.innerHTML = `<span class="text-slate-400 text-xs font-black text-center px-4 group-hover:text-rose-400 transition-colors">Tap to upload basket photos 📸</span>`; 
+                return; 
+            } 
+            
+            let html = '<div class="flex gap-2 p-1 overflow-x-auto h-full items-center w-full">'; 
+            
+            giftUploadedImages.forEach((cImg, idx) => { 
+                html += `
+                    <div class="relative h-full shrink-0 group/img">
+                        <img src="${cImg}" class="h-full w-auto object-cover rounded-lg border border-slate-600 shadow-md group-hover/img:border-rose-500 transition-colors">
+                        <button type="button" onclick="removeGiftUploadedImage(${idx}, event)" class="absolute -top-1 -right-1 bg-rose-500 text-white rounded-full w-4 h-4 flex items-center justify-center font-black text-[8px] hover:scale-110 transition-transform shadow-[0_0_10px_rgba(225,29,72,0.5)] cursor-pointer">✕</button>
+                    </div>`; 
+            }); 
+            
+            html += '</div>'; 
+            pb.innerHTML = html;
+        }
+
         function openGiftSupplierModal() {
+
             if (!agriToken) {
                 showToast("Please sign in to apply.", "error");
                 return navigate('auth');
@@ -1936,6 +2008,8 @@
             document.getElementById('gift-sup-loc').value = '';
             document.getElementById('gift-sup-desc').value = '';
             document.getElementById('gift-sup-cap').value = '';
+            giftUploadedImages = [];
+            renderGiftImagePreview();
         }
 
         const fallbackTestAds = [
