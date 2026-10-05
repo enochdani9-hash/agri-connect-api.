@@ -463,6 +463,33 @@
         </div>
     </div>
 
+    
+    <!-- RECEIPT MODAL -->
+    <div id="receipt-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[200] hidden items-center justify-center p-4">
+        <div class="glass-card w-full max-w-sm p-8 rounded-[3rem] text-center border border-emerald-500/30 shadow-[0_0_50px_rgba(16,185,129,0.2)] relative">
+            <div class="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 border-2 border-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.5)] animate-bounce">✓</div>
+            <h3 class="text-3xl font-black text-white mb-2 tracking-tight">Top-Up Successful</h3>
+            <p class="text-sm text-slate-400 mb-6 font-medium">Your account has been credited.</p>
+            
+            <div class="bg-[#0f172a]/80 p-5 rounded-2xl border border-slate-700/50 mb-8 space-y-3 text-left shadow-inner">
+                <div class="flex justify-between text-xs items-center">
+                    <span class="text-slate-500 font-bold uppercase tracking-widest">Amount</span>
+                    <span class="text-white font-black text-base" id="receipt-amt">GH₵ 0.00</span>
+                </div>
+                <div class="flex justify-between text-xs items-center">
+                    <span class="text-slate-500 font-bold uppercase tracking-widest">Number</span>
+                    <span class="text-white font-black" id="receipt-phone">024XXXXXXX</span>
+                </div>
+                <div class="flex justify-between text-xs items-center">
+                    <span class="text-slate-500 font-bold uppercase tracking-widest">Ref ID</span>
+                    <span class="text-emerald-400 font-black truncate max-w-[150px]" id="receipt-ref">VTU_123456</span>
+                </div>
+            </div>
+            
+            <button onclick="closeReceiptModal()" class="w-full bg-[#0f172a] hover:bg-slate-800 border border-slate-700 text-white font-black py-4 rounded-2xl text-sm transition-colors cursor-pointer shadow-lg hover:-translate-y-1">Close Receipt</button>
+        </div>
+    </div>
+
     <!-- REPORT MODAL -->
     <div id="report-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-10 rounded-[3rem] relative border border-rose-500/30 text-left shadow-[0_0_40px_rgba(225,29,72,0.15)]">
@@ -687,7 +714,7 @@
                 <div class="max-w-md mx-auto mb-10 relative z-10">
                     <div class="relative w-full aspect-square rounded-[2rem] overflow-hidden border-4 border-slate-700/50 shadow-2xl">
                         <!-- We use the verbatim filename as requested for the image -->
-                        <img src="Gemini_Generated_Image_snfzpksnfzpksnfz.jfif" alt="Beautiful Gift Basket Example" class="w-full h-full object-cover">
+                        <img src="Gemini_Generated_Image_snfzpksnfzpksnfz_2.jfif" alt="Beautiful Gift Basket Example" class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent opacity-80"></div>
                     </div>
                 </div>
@@ -2603,20 +2630,31 @@
                 ref: 'VTU_' + Math.floor((Math.random() * 1000000000) + 1),
                 channels: ['mobile_money', 'card'],
                 callback: function(response) {
-                    showToast(`🎉 Top-up successful! Processing delivery to ${phone}...`, "success");
-                    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#a855f7', '#818cf8', '#ffffff'] });
                     closeTopUpModal();
+                    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, zIndex: 300, colors: ['#10b981', '#34d399', '#ffffff'] });
                     
-                    // Simulate carrier delay
+                    document.getElementById('receipt-amt').innerText = "GH₵ " + amount.toFixed(2);
+                    document.getElementById('receipt-phone').innerText = phone;
+                    document.getElementById('receipt-ref').innerText = response.reference || ('VTU_' + Math.floor(Math.random() * 100000));
+                    
+                    document.getElementById('receipt-modal').classList.remove('hidden');
+                    document.getElementById('receipt-modal').classList.add('flex');
+                    
+                    // Add a mock SMS notification after 2 seconds
                     setTimeout(() => {
                         showToast(`📱 SMS: Your bundle has been credited to ${phone}. Thank you!`, "success");
-                    }, 4000);
+                    }, 2000);
                 },
                 onClose: function() {
                     showToast("Transaction cancelled.", "error");
                 }
             });
             handler.openIframe();
+        }
+
+                function closeReceiptModal() {
+            document.getElementById('receipt-modal').classList.add('hidden');
+            document.getElementById('receipt-modal').classList.remove('flex');
         }
 
         function openEverydayPostModal() {
