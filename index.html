@@ -1750,7 +1750,7 @@
             <span class="text-xl grayscale group-hover:grayscale-0 transition-all drop-shadow-md">🚜</span>
             <span class="text-[9px] font-black text-slate-500 group-hover:text-amber-400 transition-colors">Market</span>
         </button>
-        <button onclick="navigate('dashboard')" class="flex flex-col items-center gap-1 w-16 group active:scale-95 transition-transform">
+        <button id="mobile-nav-profile-btn" onclick="navigate('dashboard')" class="hidden flex-col items-center gap-1 w-16 group active:scale-95 transition-transform">
             <span class="text-xl grayscale group-hover:grayscale-0 transition-all drop-shadow-md">👤</span>
             <span class="text-[9px] font-black text-slate-500 group-hover:text-white transition-colors">Profile</span>
         </button>
@@ -1994,22 +1994,75 @@
             document.getElementById('gift-supplier-modal').classList.remove('flex');
         }
 
-        function submitGiftSupplier() {
+        async function submitGiftSupplier() {
             const name = document.getElementById('gift-sup-name').value.trim();
             const loc = document.getElementById('gift-sup-loc').value.trim();
             const desc = document.getElementById('gift-sup-desc').value.trim();
+            const cap = document.getElementById('gift-sup-cap').value.trim();
             
             if(!name || !loc || !desc) return showToast("Fill all required fields", "error");
             
-            showToast("Application submitted! Our curation team will review your details. 🎀", "success");
-            closeGiftSupplierModal();
+            const btn = document.querySelector('#gift-supplier-modal button');
+            if (btn) {
+                btn.innerHTML = "Submitting... ⏳";
+                btn.disabled = true;
+            }
             
-            document.getElementById('gift-sup-name').value = '';
-            document.getElementById('gift-sup-loc').value = '';
-            document.getElementById('gift-sup-desc').value = '';
-            document.getElementById('gift-sup-cap').value = '';
-            giftUploadedImages = [];
-            renderGiftImagePreview();
+            try {
+                // Formatting this as a product ad in a "Gift Baskets - Pending" category for the admin to review
+                const payload = { 
+                    product_name: `[GIFT SUPPLIER] ${name}`, 
+                    description: `${desc}
+
+Capacity: ${cap}`, 
+                    category: "Gift Baskets", 
+                    unit: "hamper", 
+                    base_price_ghs: "0", 
+                    delivery_details: "Application Pending Review", 
+                    neighborhood: loc, 
+                    image_data: giftUploadedImages.length > 0 ? JSON.stringify(giftUploadedImages) : null 
+                }; 
+                
+                const res = await fetch(`${API_URL}/api/v1/products?token=${agriToken}`, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify(payload) 
+                }); 
+                
+                if (!res.ok) {
+                    throw new Error("Failed to submit application"); 
+                }
+                
+                
+                showToast("Application submitted! Our curation team will review your details. 🎀", "success");
+                
+                // Simulate an SMS notification 2 seconds after submitting
+                setTimeout(() => {
+                    showToast(`📱 SMS: Agromart received your Gift Basket application for ${name}. We will contact you shortly.`, "success");
+                }, 2500);
+
+                closeGiftSupplierModal();
+                
+                document.getElementById('gift-sup-name').value = '';
+                document.getElementById('gift-sup-loc').value = '';
+                document.getElementById('gift-sup-desc').value = '';
+                document.getElementById('gift-sup-cap').value = '';
+                giftUploadedImages = [];
+                renderGiftImagePreview();
+                
+                // If they are on the dashboard, refresh their ads list so they see the pending application
+                if (document.getElementById('view-dashboard') && !document.getElementById('view-dashboard').classList.contains('hidden')) {
+                    loadMyAds();
+                }
+                
+            } catch (err) {
+                showToast(err.message, "error");
+            } finally {
+                if (btn) {
+                    btn.innerHTML = "Submit Application";
+                    btn.disabled = false;
+                }
+            }
         }
 
         const fallbackTestAds = [
@@ -2780,10 +2833,17 @@
             }
         }
 
+        
         function logout() { 
             localStorage.removeItem("agri_token"); 
+            const mobileProfileBtn = document.getElementById('mobile-nav-profile-btn');
+            if (mobileProfileBtn) {
+                mobileProfileBtn.classList.add('hidden');
+                mobileProfileBtn.classList.remove('flex');
+            }
             window.location.reload(); 
         }
+
 
                 function handleSmartPostAd() {
             if (document.body.classList.contains('mode-everyday')) {
@@ -2955,8 +3015,16 @@
             const pName = document.getElementById('my-profile-name'); 
             if (pName) pName.innerText = data.full_name || "User"; 
             
+            
             const pEmail = document.getElementById('my-profile-email'); 
             if (pEmail) pEmail.innerText = data.email || ""; 
+            
+            const mobileProfileBtn = document.getElementById('mobile-nav-profile-btn');
+            if (mobileProfileBtn) {
+                mobileProfileBtn.classList.remove('hidden');
+                mobileProfileBtn.classList.add('flex');
+            }
+ 
             
             if (data.profile_picture && data.profile_picture !== 'null') { 
                 const avatar = document.getElementById('my-profile-avatar'); 
