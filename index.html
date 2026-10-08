@@ -193,6 +193,14 @@
                         <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">Premium curated hampers for corporate and personal gifting.</p>
                     </div>
                 </div>
+            
+                <div class="bg-[#0f172a]/60 border border-slate-700/50 p-4 rounded-2xl flex gap-4 items-start hover:border-orange-500/50 transition-colors">
+                    <span class="text-2xl">🍿</span>
+                    <div>
+                        <h4 class="text-sm font-black text-orange-400">The Chill Zone</h4>
+                        <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">Relax with instant web games and free digital novels.</p>
+                    </div>
+                </div>
             </div>
             
             <div class="mt-8 relative z-10">
@@ -688,6 +696,7 @@
                     <span>⇄</span> <span class="hidden sm:inline">Switch Portal</span>
                 </button>
 
+                <button onclick="openWelcomeTour()" class="w-9 h-9 flex items-center justify-center glass-card rounded-xl text-xs text-slate-300 hover:text-blue-400 transition-colors cursor-pointer mr-1" title="App Tour">ℹ️</button>
                 <button id="sunlight-toggle-btn" onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center glass-card rounded-xl text-xs text-slate-300 hover:text-amber-400 transition-colors cursor-pointer">☀️</button>
                 <button id="nav-login-btn" onclick="navigate('auth')" class="text-[11px] font-black text-[#020617] bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 px-5 py-2.5 rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.6)] ml-3 cursor-pointer tracking-widest uppercase animate-pulse border-2 border-emerald-200/50 hover:scale-105">Sign In</button>
                 
@@ -741,7 +750,7 @@
                 <p class="text-slate-400 text-sm md:text-base lg:text-lg max-w-xl mx-auto font-medium">Select how you want to use the platform today. You can switch between portals at any time.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 relative z-40">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 md:gap-8 relative z-40">
                 <!-- PORTAL 1: THE EVERYDAY HUB -->
                 <div onclick="selectPortal('everyday')" class="glass-card p-6 sm:p-8 md:p-12 rounded-[2rem] md:rounded-[3rem] border border-blue-500/30 shadow-xl md:shadow-[0_0_40px_rgba(59,130,246,0.15)] hover:border-blue-400 hover:-translate-y-2 transition-all cursor-pointer flex flex-col justify-between group">
                     <div>
@@ -765,6 +774,7 @@
                 </div>
 
                 <!-- PORTAL 2: AGROMART PRO -->
+
                 <div onclick="selectPortal('agro')" class="glass-card p-6 sm:p-8 md:p-12 rounded-[2rem] md:rounded-[3rem] border border-emerald-500/30 shadow-xl md:shadow-[0_0_40px_rgba(16,185,129,0.15)] hover:border-emerald-400 hover:-translate-y-2 transition-all cursor-pointer flex flex-col justify-between group">
                     <div>
                         <div class="w-14 h-14 md:w-20 md:h-20 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-4xl border border-emerald-500/20 mb-8 group-hover:scale-110 transition-transform">
@@ -785,6 +795,29 @@
                         Enter Agromart Pro →
                     </button>
                 </div>
+
+                <!-- PORTAL 3: THE CHILL ZONE -->
+                <div onclick="selectPortal('chill')" class="glass-card p-6 sm:p-8 md:p-12 rounded-[2rem] md:rounded-[3rem] border border-pink-500/30 shadow-xl md:shadow-[0_0_40px_rgba(236,72,153,0.15)] hover:border-pink-400 hover:-translate-y-2 transition-all cursor-pointer flex flex-col justify-between group">
+                    <div>
+                        <div class="w-14 h-14 md:w-20 md:h-20 bg-pink-500/10 rounded-2xl flex items-center justify-center text-4xl border border-pink-500/20 mb-8 group-hover:scale-110 transition-transform">
+                            🍿
+                        </div>
+                        <span class="text-[10px] text-pink-400 uppercase font-black tracking-widest bg-pink-500/10 px-3.5 py-1.5 rounded-full border border-pink-500/20 shadow-inner">Entertainment</span>
+                        <h2 class="text-2xl md:text-3xl lg:text-4xl font-black text-white mt-4 mb-3 tracking-tight group-hover:text-pink-400 transition-colors">The Chill Zone</h2>
+                        <p class="text-slate-400 text-sm md:text-base leading-relaxed font-medium mb-8">
+                            Take a break from the farm! Play instant web games or dive into thousands of free online novels and classics.
+                        </p>
+                        <div class="space-y-2 text-xs font-bold text-slate-300">
+                            <p class="flex items-center gap-2"><span class="text-pink-400 font-black">✓</span> 1000+ Free Browser Games</p>
+                            <p class="flex items-center gap-2"><span class="text-pink-400 font-black">✓</span> Access to Webnovel & Wattpad</p>
+                            <p class="flex items-center gap-2"><span class="text-pink-400 font-black">✓</span> Classic eBooks Library</p>
+                        </div>
+                    </div>
+                    <button class="w-full mt-10 bg-gradient-to-r from-pink-600 to-rose-500 hover:from-pink-500 hover:to-rose-400 text-white font-black py-5 rounded-2xl text-base shadow-lg transition-all tracking-wide cursor-pointer">
+                        Enter Chill Zone →
+                    </button>
+                </div>
+
             </div>
         </div>
 
@@ -870,6 +903,9 @@
                         <h3 class="font-black text-sm text-white group-hover:text-purple-400 transition-colors">Daily Spin</h3>
                         <p class="text-[11px] text-slate-400 font-medium mt-1">Win Free Airtime</p>
                     </div>
+
+                    
+
 
 
                     </div>
@@ -1030,6 +1066,201 @@
                         <a href="mailto:agriconnect886@gmail.com" class="glass-card hover:bg-white/5 text-white font-black py-4.5 px-8 rounded-2xl transition-all border border-white/10 flex items-center justify-center gap-3 shadow-lg hover:-translate-y-0.5 text-sm tracking-wide w-full md:w-auto cursor-pointer">✉️ agriconnect886@gmail.com</a>
                         <a href="https://wa.me/233245641480" target="_blank" class="bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-[#020617] font-black py-4.5 px-8 rounded-2xl transition-all border border-[#25D366]/30 flex items-center justify-center gap-3 shadow-[0_0_15px_rgba(37,211,102,0.15)] hover:shadow-[0_0_25px_rgba(37,211,102,0.4)] hover:-translate-y-0.5 text-sm tracking-wide w-full md:w-auto cursor-pointer">📞 +233 245 641 480</a>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <!-- ENTERTAINMENT VIEW (CHILL ZONE) -->
+        <div id="view-entertainment" class="fade-in hidden space-y-12 relative z-30">
+            <div class="glass-card p-8 md:p-12 rounded-[2rem] md:rounded-[3rem] border border-orange-500/30 shadow-2xl relative overflow-hidden bg-gradient-to-br from-[#020617]/90 to-orange-950/30">
+                <div class="absolute top-[-50px] right-[-50px] w-48 h-48 md:w-80 md:h-80 bg-orange-500/20 rounded-full blur-[60px] md:blur-[100px] pointer-events-none"></div>
+                <div class="relative z-10 text-center max-w-3xl mx-auto">
+                    <span class="text-[10px] text-orange-400 font-black uppercase tracking-widest bg-orange-500/10 px-4 py-2 rounded-full border border-orange-500/30 shadow-inner mb-6 inline-block"><span class="animate-pulse inline-block mr-1">🍿</span> Entertainment Hub</span>
+                    <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tight mb-4 mt-2 leading-tight">The Chill Zone</h2>
+                    <p class="text-slate-300 text-sm md:text-base font-medium leading-relaxed mb-6">Take a break from the farm! Play instant web games or dive into free online novels.</p>
+                </div>
+            </div>
+
+            <!-- GAMES SECTION -->
+            <div class="glass-card p-6 md:p-10 rounded-[2.5rem] border border-blue-500/20 shadow-xl relative z-40 bg-[#020617]/40">
+                <div class="flex items-center justify-between mb-8">
+                    <h3 class="text-2xl md:text-3xl font-black text-white tracking-tight flex items-center gap-3">🕹️ Popular Games</h3>
+                    <a href="https://poki.com" target="_blank" class="text-[10px] md:text-xs font-black text-blue-400 hover:text-blue-300 tracking-widest uppercase bg-blue-500/10 px-4 py-2 rounded-xl transition-colors border border-blue-500/20 shadow-inner cursor-pointer">View All Games →</a>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
+                    
+        <div onclick="window.open('https://poki.com/en/g/subway-surfers', '_blank')" class="glass-card rounded-[1.5rem] overflow-hidden group cursor-pointer hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(59,130,246,0.3)] transition-all flex flex-col h-full border border-slate-700/50 hover:border-blue-400">
+            <div class="h-32 w-full bg-slate-800 bg-cover bg-center overflow-hidden relative border-b border-slate-700/50" style="background-image: url('https://img.poki.com/cdn-cgi/image/quality=78,width=204,height=204,fit=cover,f=auto/12711ab4b4bdf001dd1a6c429ba04a55.png');">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-sm">
+                    <span class="bg-blue-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2">▶ Play</span>
+                </div>
+            </div>
+            <div class="p-4 flex-grow bg-[#0f172a]/90">
+                <span class="text-[9px] font-black uppercase tracking-widest text-blue-400 mb-1 block">Action</span>
+                <h4 class="text-white font-bold text-sm tracking-tight line-clamp-1">Subway Surfers</h4>
+            </div>
+        </div>
+
+        <div onclick="window.open('https://poki.com/en/g/temple-run-2', '_blank')" class="glass-card rounded-[1.5rem] overflow-hidden group cursor-pointer hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(59,130,246,0.3)] transition-all flex flex-col h-full border border-slate-700/50 hover:border-blue-400">
+            <div class="h-32 w-full bg-slate-800 bg-cover bg-center overflow-hidden relative border-b border-slate-700/50" style="background-image: url('https://img.poki.com/cdn-cgi/image/quality=78,width=204,height=204,fit=cover,f=auto/54ca730a91ca23e71d374465b0577da7.png');">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-sm">
+                    <span class="bg-blue-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2">▶ Play</span>
+                </div>
+            </div>
+            <div class="p-4 flex-grow bg-[#0f172a]/90">
+                <span class="text-[9px] font-black uppercase tracking-widest text-blue-400 mb-1 block">Arcade</span>
+                <h4 class="text-white font-bold text-sm tracking-tight line-clamp-1">Temple Run 2</h4>
+            </div>
+        </div>
+
+        <div onclick="window.open('https://king.com/game/candycrush', '_blank')" class="glass-card rounded-[1.5rem] overflow-hidden group cursor-pointer hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(59,130,246,0.3)] transition-all flex flex-col h-full border border-slate-700/50 hover:border-blue-400">
+            <div class="h-32 w-full bg-slate-800 bg-cover bg-center overflow-hidden relative border-b border-slate-700/50" style="background-image: url('https://store-images.s-microsoft.com/image/apps.4382.13510798887182902.1643c7b2-32a2-4a7b-aab8-cb6ec555a6d2.1e6bb3b9-122e-4b2a-a92c-e1fcc11f5ab8');">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-sm">
+                    <span class="bg-blue-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2">▶ Play</span>
+                </div>
+            </div>
+            <div class="p-4 flex-grow bg-[#0f172a]/90">
+                <span class="text-[9px] font-black uppercase tracking-widest text-blue-400 mb-1 block">Puzzle</span>
+                <h4 class="text-white font-bold text-sm tracking-tight line-clamp-1">Candy Crush</h4>
+            </div>
+        </div>
+
+        <div onclick="window.open('https://miniclip.com/games/8-ball-pool', '_blank')" class="glass-card rounded-[1.5rem] overflow-hidden group cursor-pointer hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(59,130,246,0.3)] transition-all flex flex-col h-full border border-slate-700/50 hover:border-blue-400">
+            <div class="h-32 w-full bg-slate-800 bg-cover bg-center overflow-hidden relative border-b border-slate-700/50" style="background-image: url('https://img.poki.com/cdn-cgi/image/quality=78,width=204,height=204,fit=cover,f=auto/bdca4a9ec044431e6704627ea1bf7b0f.png');">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-sm">
+                    <span class="bg-blue-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2">▶ Play</span>
+                </div>
+            </div>
+            <div class="p-4 flex-grow bg-[#0f172a]/90">
+                <span class="text-[9px] font-black uppercase tracking-widest text-blue-400 mb-1 block">Sports</span>
+                <h4 class="text-white font-bold text-sm tracking-tight line-clamp-1">8 Ball Pool</h4>
+            </div>
+        </div>
+
+        <div onclick="window.open('https://poki.com/en/g/ludo-multiplayer', '_blank')" class="glass-card rounded-[1.5rem] overflow-hidden group cursor-pointer hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(59,130,246,0.3)] transition-all flex flex-col h-full border border-slate-700/50 hover:border-blue-400">
+            <div class="h-32 w-full bg-slate-800 bg-cover bg-center overflow-hidden relative border-b border-slate-700/50" style="background-image: url('https://img.poki.com/cdn-cgi/image/quality=78,width=204,height=204,fit=cover,f=auto/3ec6a117b38d38e2d4d98942b0cb2187.png');">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-sm">
+                    <span class="bg-blue-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2">▶ Play</span>
+                </div>
+            </div>
+            <div class="p-4 flex-grow bg-[#0f172a]/90">
+                <span class="text-[9px] font-black uppercase tracking-widest text-blue-400 mb-1 block">Board</span>
+                <h4 class="text-white font-bold text-sm tracking-tight line-clamp-1">Ludo King</h4>
+            </div>
+        </div>
+
+        <div onclick="window.open('https://crazygames.com/game/sniper-3d', '_blank')" class="glass-card rounded-[1.5rem] overflow-hidden group cursor-pointer hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(59,130,246,0.3)] transition-all flex flex-col h-full border border-slate-700/50 hover:border-blue-400">
+            <div class="h-32 w-full bg-slate-800 bg-cover bg-center overflow-hidden relative border-b border-slate-700/50" style="background-image: url('https://images.crazygames.com/sniper-3d/20240902092520/sniper-3d-cover?auto=format,compress&q=75&cs=strip');">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-sm">
+                    <span class="bg-blue-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2">▶ Play</span>
+                </div>
+            </div>
+            <div class="p-4 flex-grow bg-[#0f172a]/90">
+                <span class="text-[9px] font-black uppercase tracking-widest text-blue-400 mb-1 block">Shooter</span>
+                <h4 class="text-white font-bold text-sm tracking-tight line-clamp-1">Sniper 3D</h4>
+            </div>
+        </div>
+                </div>
+            </div>
+
+            <!-- LIBRARY SECTION -->
+            <div class="glass-card p-6 md:p-10 rounded-[2.5rem] border border-pink-500/20 shadow-xl relative z-40 bg-[#020617]/40">
+                <div class="flex items-center justify-between mb-8">
+                    <h3 class="text-2xl md:text-3xl font-black text-white tracking-tight flex items-center gap-3">📖 The Library</h3>
+                    <a href="https://www.gutenberg.org" target="_blank" class="text-[10px] md:text-xs font-black text-pink-400 hover:text-pink-300 tracking-widest uppercase bg-pink-500/10 px-4 py-2 rounded-xl transition-colors border border-pink-500/20 shadow-inner cursor-pointer">View All Novels →</a>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
+                    
+        <div onclick="window.open('https://www.gutenberg.org/', '_blank')" class="glass-card rounded-[1.5rem] overflow-hidden group cursor-pointer hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(236,72,153,0.3)] transition-all flex flex-col h-full border border-slate-700/50 hover:border-pink-400">
+            <div class="h-40 w-full bg-slate-800 bg-cover bg-top overflow-hidden relative" style="background-image: url('https://covers.openlibrary.org/b/isbn/9780061122415-L.jpg');">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-sm">
+                    <span class="bg-pink-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2">📖 Read</span>
+                </div>
+            </div>
+            <div class="p-4 flex-grow bg-[#0f172a]/90">
+                <span class="text-[9px] font-black uppercase tracking-widest text-pink-400 mb-1 block">Fiction</span>
+                <h4 class="text-white font-bold text-sm tracking-tight line-clamp-1">The Alchemist</h4>
+                <p class="text-slate-500 text-[10px] font-bold mt-1 truncate">Paulo Coelho</p>
+            </div>
+        </div>
+
+        <div onclick="window.open('https://www.gutenberg.org/', '_blank')" class="glass-card rounded-[1.5rem] overflow-hidden group cursor-pointer hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(236,72,153,0.3)] transition-all flex flex-col h-full border border-slate-700/50 hover:border-pink-400">
+            <div class="h-40 w-full bg-slate-800 bg-cover bg-top overflow-hidden relative" style="background-image: url('https://covers.openlibrary.org/b/isbn/9780385474542-L.jpg');">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-sm">
+                    <span class="bg-pink-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2">📖 Read</span>
+                </div>
+            </div>
+            <div class="p-4 flex-grow bg-[#0f172a]/90">
+                <span class="text-[9px] font-black uppercase tracking-widest text-pink-400 mb-1 block">Classic</span>
+                <h4 class="text-white font-bold text-sm tracking-tight line-clamp-1">Things Fall Apart</h4>
+                <p class="text-slate-500 text-[10px] font-bold mt-1 truncate">Chinua Achebe</p>
+            </div>
+        </div>
+
+        <div onclick="window.open('https://www.gutenberg.org/ebooks/1342', '_blank')" class="glass-card rounded-[1.5rem] overflow-hidden group cursor-pointer hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(236,72,153,0.3)] transition-all flex flex-col h-full border border-slate-700/50 hover:border-pink-400">
+            <div class="h-40 w-full bg-slate-800 bg-cover bg-top overflow-hidden relative" style="background-image: url('https://covers.openlibrary.org/b/isbn/9780141439518-L.jpg');">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-sm">
+                    <span class="bg-pink-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2">📖 Read</span>
+                </div>
+            </div>
+            <div class="p-4 flex-grow bg-[#0f172a]/90">
+                <span class="text-[9px] font-black uppercase tracking-widest text-pink-400 mb-1 block">Romance</span>
+                <h4 class="text-white font-bold text-sm tracking-tight line-clamp-1">Pride & Prejudice</h4>
+                <p class="text-slate-500 text-[10px] font-bold mt-1 truncate">Jane Austen</p>
+            </div>
+        </div>
+
+        <div onclick="window.open('https://www.gutenberg.org/ebooks/1661', '_blank')" class="glass-card rounded-[1.5rem] overflow-hidden group cursor-pointer hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(236,72,153,0.3)] transition-all flex flex-col h-full border border-slate-700/50 hover:border-pink-400">
+            <div class="h-40 w-full bg-slate-800 bg-cover bg-top overflow-hidden relative" style="background-image: url('https://covers.openlibrary.org/b/isbn/9780553212419-L.jpg');">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-sm">
+                    <span class="bg-pink-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2">📖 Read</span>
+                </div>
+            </div>
+            <div class="p-4 flex-grow bg-[#0f172a]/90">
+                <span class="text-[9px] font-black uppercase tracking-widest text-pink-400 mb-1 block">Mystery</span>
+                <h4 class="text-white font-bold text-sm tracking-tight line-clamp-1">Sherlock Holmes</h4>
+                <p class="text-slate-500 text-[10px] font-bold mt-1 truncate">Arthur Conan Doyle</p>
+            </div>
+        </div>
+
+        <div onclick="window.open('https://www.gutenberg.org/ebooks/64317', '_blank')" class="glass-card rounded-[1.5rem] overflow-hidden group cursor-pointer hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(236,72,153,0.3)] transition-all flex flex-col h-full border border-slate-700/50 hover:border-pink-400">
+            <div class="h-40 w-full bg-slate-800 bg-cover bg-top overflow-hidden relative" style="background-image: url('https://covers.openlibrary.org/b/isbn/9780743273565-L.jpg');">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-sm">
+                    <span class="bg-pink-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2">📖 Read</span>
+                </div>
+            </div>
+            <div class="p-4 flex-grow bg-[#0f172a]/90">
+                <span class="text-[9px] font-black uppercase tracking-widest text-pink-400 mb-1 block">Classic</span>
+                <h4 class="text-white font-bold text-sm tracking-tight line-clamp-1">The Great Gatsby</h4>
+                <p class="text-slate-500 text-[10px] font-bold mt-1 truncate">F. Scott Fitzgerald</p>
+            </div>
+        </div>
+
+        <div onclick="window.open('https://www.gutenberg.org/ebooks/345', '_blank')" class="glass-card rounded-[1.5rem] overflow-hidden group cursor-pointer hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(236,72,153,0.3)] transition-all flex flex-col h-full border border-slate-700/50 hover:border-pink-400">
+            <div class="h-40 w-full bg-slate-800 bg-cover bg-top overflow-hidden relative" style="background-image: url('https://covers.openlibrary.org/b/isbn/9780486411095-L.jpg');">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-sm">
+                    <span class="bg-pink-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2">📖 Read</span>
+                </div>
+            </div>
+            <div class="p-4 flex-grow bg-[#0f172a]/90">
+                <span class="text-[9px] font-black uppercase tracking-widest text-pink-400 mb-1 block">Horror</span>
+                <h4 class="text-white font-bold text-sm tracking-tight line-clamp-1">Dracula</h4>
+                <p class="text-slate-500 text-[10px] font-bold mt-1 truncate">Bram Stoker</p>
+            </div>
+        </div>
                 </div>
             </div>
         </div>
@@ -2256,7 +2487,7 @@ Capacity: ${cap}`,
             document.getElementById('minigame-modal').classList.remove('hidden');
             document.getElementById('minigame-modal').classList.add('flex');
             document.getElementById('spin-wheel').style.transform = 'rotate(0deg)';
-            document.getElementById('spin-wheel').innerText = '❓';
+            document.getElementById('spin-wheel').innerText = '🎡';
             document.getElementById('spin-btn').disabled = false;
             document.getElementById('spin-btn').innerText = 'Spin Now';
         }
@@ -2277,15 +2508,15 @@ Capacity: ${cap}`,
             wheel.style.transform = `rotate(${randomAngle}deg)`;
             
             setTimeout(() => {
-                // 90% chance to lose, 10% chance to win something small
-                const isWin = Math.random() > 0.9;
+                // Let's give them a 30% chance to win something for fun.
+                const isWin = Math.random() > 0.7;
                 if (isWin) {
                     wheel.innerText = '🎁';
                     confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
                     showToast("🎉 You won GH₵ 2 Airtime! It will be credited shortly.");
                     btn.innerText = "Come back tomorrow!";
                 } else {
-                    wheel.innerText = '😢';
+                    wheel.innerText = '💨';
                     showToast("No luck today. Try again tomorrow!", "error");
                     btn.innerText = "Come back tomorrow!";
                 }
@@ -2658,7 +2889,7 @@ Capacity: ${cap}`,
                 'home', 'marketplace', 'auth', 'grants', 'farm-manager', 
                 'intel', 'calculator', 'trainer', 'post', 'dashboard', 
                 'pricing', 'faq', 'about', 'support', 'rentals', 'waste', 'agridoctor', 'haulage', 'seller-store', 'community',
-                'portal-select', 'everyday-hub', 'gift'
+                'portal-select', 'everyday-hub', 'gift', 'entertainment'
             ];
             
             views.forEach(v => {
@@ -2698,7 +2929,7 @@ Capacity: ${cap}`,
             localStorage.setItem('preferred_portal', type);
             
             // Strip out old modes
-            document.body.classList.remove('mode-everyday', 'mode-agro', 'mode-portal-select');
+            document.body.classList.remove('mode-everyday', 'mode-agro', 'mode-portal-select', 'mode-chill');
             const logoText = document.getElementById('main-logo-text');
             
             if (type === 'everyday') {
@@ -2706,6 +2937,10 @@ Capacity: ${cap}`,
                 if(logoText) logoText.innerText = "Everyday Hub";
                 navigate('everyday-hub');
                 filterEverydayHub('rooms', false);
+            } else if (type === 'chill') {
+                document.body.classList.add('mode-chill');
+                if(logoText) logoText.innerText = "Chill Zone";
+                navigate('entertainment');
             } else {
                 document.body.classList.add('mode-agro');
                 if(logoText) logoText.innerText = "Agromart Pro";
