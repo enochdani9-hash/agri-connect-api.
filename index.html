@@ -138,6 +138,37 @@
 
     <!-- MODALS SECTION -->
 
+    <!-- INSTALL APP MODAL -->
+    <div id="install-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[300] hidden items-center justify-center p-4">
+        <div class="glass-card w-full max-w-sm p-8 md:p-10 rounded-[3rem] text-center relative border border-emerald-500/30 shadow-[0_0_50px_rgba(16,185,129,0.15)]">
+            <button onclick="document.getElementById('install-modal').classList.add('hidden'); document.getElementById('install-modal').classList.remove('flex');" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl font-bold cursor-pointer z-50">✕</button>
+            <div class="w-20 h-20 bg-emerald-500/10 rounded-3xl mx-auto flex items-center justify-center text-4xl mb-6 shadow-inner border border-emerald-500/20">📲</div>
+            <h3 class="text-2xl font-black text-white mb-2 tracking-tight">Install Agromart</h3>
+            <p class="text-sm text-slate-400 mb-8 font-medium">Get quick access from your home screen.</p>
+            
+            <div class="bg-[#0f172a]/80 p-5 rounded-2xl border border-slate-700/50 mb-6 text-left space-y-4 shadow-inner">
+                <div class="flex gap-4 items-start">
+                    <span class="text-2xl">🍎</span>
+                    <div>
+                        <h4 class="text-white font-bold text-sm">iPhone / iPad (Safari)</h4>
+                        <p class="text-xs text-slate-400 mt-1">Tap the <strong class="text-slate-200">Share</strong> button at the bottom of Safari, then scroll down and tap <strong class="text-emerald-400">Add to Home Screen</strong>.</p>
+                    </div>
+                </div>
+                <div class="border-t border-white/10 my-1"></div>
+                <div class="flex gap-4 items-start">
+                    <span class="text-2xl">🤖</span>
+                    <div>
+                        <h4 class="text-white font-bold text-sm">Android (Chrome)</h4>
+                        <p class="text-xs text-slate-400 mt-1">Tap the <strong>3 dots ⋮</strong> menu in Chrome, then tap <strong class="text-emerald-400">Install App</strong> or <strong>Add to Home Screen</strong>.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Note: Not supported in some in-app browsers like Facebook/WhatsApp.</p>
+        </div>
+    </div>
+
+
     <!-- WELCOME TOUR MODAL -->
     <div id="welcome-tour-modal" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-xl z-[300] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-2xl p-8 md:p-12 rounded-[3rem] relative overflow-hidden shadow-[0_0_60px_rgba(16,185,129,0.3)] transform transition-all duration-500 scale-95 opacity-0" id="welcome-modal-content">
@@ -689,7 +720,7 @@
                 <button onclick="navigate('rentals')" class="pro-only text-xs font-bold text-amber-300 border border-amber-400/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-amber-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">🚜 Rentals</button>
                 <button onclick="navigate('waste')" class="pro-only text-xs font-bold text-emerald-300 border border-emerald-400/30 bg-emerald-500/10 px-3 py-1.5 rounded-lg hidden xl:block hover:bg-emerald-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">♻️ Eco</button>
                 
-                <button id="pwa-install-btn" onclick="triggerPwaInstall()" class="hidden bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold px-3 py-1.5 rounded-lg text-xs hover:bg-emerald-500/30 transition-colors hover:shadow-[0_0_15px_rgba(16,185,129,0.3)] cursor-pointer">📲 App</button>
+                <button id="pwa-install-btn" onclick="triggerPwaInstall()" class="hidden md:block bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold px-3 py-1.5 rounded-lg text-xs hover:bg-emerald-500/30 transition-colors hover:shadow-[0_0_15px_rgba(16,185,129,0.3)] cursor-pointer">📲 App</button>
                 
                 <!-- PORTAL SWITCHER TOGGLE -->
                 <button onclick="navigate('portal-select')" class="text-xs font-black text-emerald-300 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1.5 rounded-xl hover:bg-emerald-500/20 transition-all flex items-center gap-1.5 shadow-inner cursor-pointer">
@@ -1091,49 +1122,49 @@
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
                     
         <div onclick="window.open('https://poki.com/en/g/subway-surfers', '_blank')" class="glass-card rounded-[1.5rem] overflow-hidden group cursor-pointer hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(59,130,246,0.3)] transition-all flex flex-col h-full border border-slate-700/50 hover:border-blue-400">
-            <div class="h-32 w-full bg-slate-800 bg-cover bg-center overflow-hidden relative border-b border-slate-700/50" style="background-image: url('https://img.poki.com/cdn-cgi/image/quality=78,width=204,height=204,fit=cover,f=auto/12711ab4b4bdf001dd1a6c429ba04a55.png');">
-                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
-                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-sm">
-                    <span class="bg-blue-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2">▶ Play</span>
+            <div class="h-32 w-full flex items-center justify-center overflow-hidden relative border-b border-slate-700/50 bg-gradient-to-br from-amber-400 to-orange-500">
+                <span class="text-5xl group-hover:scale-125 transition-transform duration-300 drop-shadow-xl">🛹</span>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-[2px]">
+                    <span class="bg-blue-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2 shadow-[0_0_15px_rgba(37,99,235,0.5)]">▶ Play</span>
                 </div>
             </div>
             <div class="p-4 flex-grow bg-[#0f172a]/90">
-                <span class="text-[9px] font-black uppercase tracking-widest text-blue-400 mb-1 block">Action</span>
+                <span class="text-[9px] font-black uppercase tracking-widest text-amber-400 mb-1 block">Action</span>
                 <h4 class="text-white font-bold text-sm tracking-tight line-clamp-1">Subway Surfers</h4>
             </div>
         </div>
 
         <div onclick="window.open('https://poki.com/en/g/temple-run-2', '_blank')" class="glass-card rounded-[1.5rem] overflow-hidden group cursor-pointer hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(59,130,246,0.3)] transition-all flex flex-col h-full border border-slate-700/50 hover:border-blue-400">
-            <div class="h-32 w-full bg-slate-800 bg-cover bg-center overflow-hidden relative border-b border-slate-700/50" style="background-image: url('https://img.poki.com/cdn-cgi/image/quality=78,width=204,height=204,fit=cover,f=auto/54ca730a91ca23e71d374465b0577da7.png');">
-                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
-                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-sm">
-                    <span class="bg-blue-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2">▶ Play</span>
+            <div class="h-32 w-full flex items-center justify-center overflow-hidden relative border-b border-slate-700/50 bg-gradient-to-br from-emerald-500 to-teal-700">
+                <span class="text-5xl group-hover:scale-125 transition-transform duration-300 drop-shadow-xl">🏃🏽‍♂️</span>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-[2px]">
+                    <span class="bg-blue-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2 shadow-[0_0_15px_rgba(37,99,235,0.5)]">▶ Play</span>
                 </div>
             </div>
             <div class="p-4 flex-grow bg-[#0f172a]/90">
-                <span class="text-[9px] font-black uppercase tracking-widest text-blue-400 mb-1 block">Arcade</span>
+                <span class="text-[9px] font-black uppercase tracking-widest text-emerald-400 mb-1 block">Arcade</span>
                 <h4 class="text-white font-bold text-sm tracking-tight line-clamp-1">Temple Run 2</h4>
             </div>
         </div>
 
         <div onclick="window.open('https://king.com/game/candycrush', '_blank')" class="glass-card rounded-[1.5rem] overflow-hidden group cursor-pointer hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(59,130,246,0.3)] transition-all flex flex-col h-full border border-slate-700/50 hover:border-blue-400">
-            <div class="h-32 w-full bg-slate-800 bg-cover bg-center overflow-hidden relative border-b border-slate-700/50" style="background-image: url('https://store-images.s-microsoft.com/image/apps.4382.13510798887182902.1643c7b2-32a2-4a7b-aab8-cb6ec555a6d2.1e6bb3b9-122e-4b2a-a92c-e1fcc11f5ab8');">
-                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
-                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-sm">
-                    <span class="bg-blue-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2">▶ Play</span>
+            <div class="h-32 w-full flex items-center justify-center overflow-hidden relative border-b border-slate-700/50 bg-gradient-to-br from-pink-400 to-rose-600">
+                <span class="text-5xl group-hover:scale-125 transition-transform duration-300 drop-shadow-xl">🍬</span>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-[2px]">
+                    <span class="bg-blue-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2 shadow-[0_0_15px_rgba(37,99,235,0.5)]">▶ Play</span>
                 </div>
             </div>
             <div class="p-4 flex-grow bg-[#0f172a]/90">
-                <span class="text-[9px] font-black uppercase tracking-widest text-blue-400 mb-1 block">Puzzle</span>
+                <span class="text-[9px] font-black uppercase tracking-widest text-pink-400 mb-1 block">Puzzle</span>
                 <h4 class="text-white font-bold text-sm tracking-tight line-clamp-1">Candy Crush</h4>
             </div>
         </div>
 
         <div onclick="window.open('https://miniclip.com/games/8-ball-pool', '_blank')" class="glass-card rounded-[1.5rem] overflow-hidden group cursor-pointer hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(59,130,246,0.3)] transition-all flex flex-col h-full border border-slate-700/50 hover:border-blue-400">
-            <div class="h-32 w-full bg-slate-800 bg-cover bg-center overflow-hidden relative border-b border-slate-700/50" style="background-image: url('https://img.poki.com/cdn-cgi/image/quality=78,width=204,height=204,fit=cover,f=auto/bdca4a9ec044431e6704627ea1bf7b0f.png');">
-                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
-                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-sm">
-                    <span class="bg-blue-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2">▶ Play</span>
+            <div class="h-32 w-full flex items-center justify-center overflow-hidden relative border-b border-slate-700/50 bg-gradient-to-br from-blue-500 to-indigo-700">
+                <span class="text-5xl group-hover:scale-125 transition-transform duration-300 drop-shadow-xl">🎱</span>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-[2px]">
+                    <span class="bg-blue-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2 shadow-[0_0_15px_rgba(37,99,235,0.5)]">▶ Play</span>
                 </div>
             </div>
             <div class="p-4 flex-grow bg-[#0f172a]/90">
@@ -1143,27 +1174,27 @@
         </div>
 
         <div onclick="window.open('https://poki.com/en/g/ludo-multiplayer', '_blank')" class="glass-card rounded-[1.5rem] overflow-hidden group cursor-pointer hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(59,130,246,0.3)] transition-all flex flex-col h-full border border-slate-700/50 hover:border-blue-400">
-            <div class="h-32 w-full bg-slate-800 bg-cover bg-center overflow-hidden relative border-b border-slate-700/50" style="background-image: url('https://img.poki.com/cdn-cgi/image/quality=78,width=204,height=204,fit=cover,f=auto/3ec6a117b38d38e2d4d98942b0cb2187.png');">
-                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
-                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-sm">
-                    <span class="bg-blue-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2">▶ Play</span>
+            <div class="h-32 w-full flex items-center justify-center overflow-hidden relative border-b border-slate-700/50 bg-gradient-to-br from-purple-500 to-fuchsia-600">
+                <span class="text-5xl group-hover:scale-125 transition-transform duration-300 drop-shadow-xl">🎲</span>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-[2px]">
+                    <span class="bg-blue-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2 shadow-[0_0_15px_rgba(37,99,235,0.5)]">▶ Play</span>
                 </div>
             </div>
             <div class="p-4 flex-grow bg-[#0f172a]/90">
-                <span class="text-[9px] font-black uppercase tracking-widest text-blue-400 mb-1 block">Board</span>
+                <span class="text-[9px] font-black uppercase tracking-widest text-purple-400 mb-1 block">Board</span>
                 <h4 class="text-white font-bold text-sm tracking-tight line-clamp-1">Ludo King</h4>
             </div>
         </div>
 
         <div onclick="window.open('https://crazygames.com/game/sniper-3d', '_blank')" class="glass-card rounded-[1.5rem] overflow-hidden group cursor-pointer hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(59,130,246,0.3)] transition-all flex flex-col h-full border border-slate-700/50 hover:border-blue-400">
-            <div class="h-32 w-full bg-slate-800 bg-cover bg-center overflow-hidden relative border-b border-slate-700/50" style="background-image: url('https://images.crazygames.com/sniper-3d/20240902092520/sniper-3d-cover?auto=format,compress&q=75&cs=strip');">
-                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
-                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-sm">
-                    <span class="bg-blue-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2">▶ Play</span>
+            <div class="h-32 w-full flex items-center justify-center overflow-hidden relative border-b border-slate-700/50 bg-gradient-to-br from-slate-600 to-slate-800">
+                <span class="text-5xl group-hover:scale-125 transition-transform duration-300 drop-shadow-xl">🎯</span>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-[2px]">
+                    <span class="bg-blue-600 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2 shadow-[0_0_15px_rgba(37,99,235,0.5)]">▶ Play</span>
                 </div>
             </div>
             <div class="p-4 flex-grow bg-[#0f172a]/90">
-                <span class="text-[9px] font-black uppercase tracking-widest text-blue-400 mb-1 block">Shooter</span>
+                <span class="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-1 block">Shooter</span>
                 <h4 class="text-white font-bold text-sm tracking-tight line-clamp-1">Sniper 3D</h4>
             </div>
         </div>
@@ -2130,6 +2161,10 @@
                     }
                     deferredPrompt = null;
                 });
+            } else {
+                // Show manual install instructions if prompt isn't supported (iOS) or already installed
+                document.getElementById('install-modal').classList.remove('hidden');
+                document.getElementById('install-modal').classList.add('flex');
             }
         }
 
@@ -2884,7 +2919,22 @@ Capacity: ${cap}`,
             }, 3000);
         }
 
+        // Handle Back Button / Swipe Back for SPA
+        window.addEventListener('popstate', (event) => {
+            if (event.state && event.state.view) {
+                // Navigate without pushing a new state
+                executeNavigation(event.state.view, false);
+            } else {
+                // Fallback to portal-select if no state
+                executeNavigation('portal-select', false);
+            }
+        });
+
         function navigate(view) {
+            executeNavigation(view, true);
+        }
+
+        function executeNavigation(view, pushState = true) {
             const views = [
                 'home', 'marketplace', 'auth', 'grants', 'farm-manager', 
                 'intel', 'calculator', 'trainer', 'post', 'dashboard', 
@@ -2908,6 +2958,11 @@ Capacity: ${cap}`,
                 document.body.classList.add('mode-portal-select');
                 const logoText = document.getElementById('main-logo-text');
                 if(logoText) logoText.innerText = "Agromart & Co.";
+            }
+            
+            if (pushState) {
+                // Push to browser history so back button/swipe works
+                window.history.pushState({ view: view }, '', `#${view}`);
             }
             
             if (view === 'marketplace') executeFilters(); 
@@ -3359,15 +3414,35 @@ Capacity: ${cap}`,
                     .then(res => {
                         if (res.ok) {
                             return res.json();
+                        } else if (res.status === 401) {
+                            throw new Error("Session Expired");
                         }
-                        throw new Error("Invalid token");
+                        throw new Error("Server or Network Error");
                     })
                     .then(fullData => {
                         setupUserProfile(fullData);
+                        localStorage.setItem('cached_profile', JSON.stringify(fullData));
                     })
                     .catch(e => {
-                        console.log("Token invalid or expired, logging out securely."); 
-                        logout();
+                        console.log("Auth fetch issue:", e.message); 
+                        if (e.message === "Session Expired") {
+                            logout();
+                        } else {
+                            // Render backend is likely sleeping or user is offline. Try to use cached data.
+                            const cached = localStorage.getItem('cached_profile');
+                            if (cached) {
+                                setupUserProfile(JSON.parse(cached));
+                            } else {
+                                // Just toggle UI slightly, don't delete token!
+                                const loginBtn = document.getElementById('nav-login-btn'); 
+                                if (loginBtn) loginBtn.classList.add('hidden'); 
+                                const profileMenu = document.getElementById('nav-user-profile'); 
+                                if (profileMenu) { 
+                                    profileMenu.classList.remove('hidden'); 
+                                    profileMenu.classList.add('flex'); 
+                                }
+                            }
+                        }
                     });
             } else { 
                 const btn = document.getElementById('nav-login-btn'); 
@@ -3376,10 +3451,25 @@ Capacity: ${cap}`,
                 }
             }
             
-            // Always show the Portal Selector on app load/refresh
-            document.body.classList.remove('mode-everyday', 'mode-agro');
-            document.body.classList.add('mode-portal-select');
-            navigate('portal-select');
+            // Initialize router based on hash or default to portal-select
+            const initialHash = window.location.hash.replace('#', '');
+            const validViews = ['home', 'marketplace', 'auth', 'grants', 'farm-manager', 'intel', 'calculator', 'trainer', 'post', 'dashboard', 'pricing', 'faq', 'about', 'support', 'rentals', 'waste', 'agridoctor', 'haulage', 'seller-store', 'community', 'portal-select', 'everyday-hub', 'gift', 'entertainment'];
+            
+            if (initialHash && validViews.includes(initialHash)) {
+                // Ensure correct mode is applied
+                if (initialHash === 'everyday-hub') {
+                    document.body.classList.add('mode-everyday');
+                } else if (initialHash === 'entertainment') {
+                    document.body.classList.add('mode-chill');
+                } else if (initialHash !== 'portal-select') {
+                    document.body.classList.add('mode-agro');
+                }
+                executeNavigation(initialHash, true); // Push initial state
+            } else {
+                document.body.classList.remove('mode-everyday', 'mode-agro', 'mode-chill');
+                document.body.classList.add('mode-portal-select');
+                executeNavigation('portal-select', true);
+            }
             
             // Open welcome tour on load
             setTimeout(() => { openWelcomeTour(); }, 500);
