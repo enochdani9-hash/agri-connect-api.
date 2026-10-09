@@ -34,7 +34,7 @@
                     animation: {
                         'blob': 'blob 10s infinite alternate',
                         'glow': 'glow 3s ease-in-out infinite alternate',
-                        'float': 'float 6s ease-in-out infinite',
+                        'float': 'float 6s ease-in-out infinite', 'shimmer': 'shimmer 2s linear infinite',
                     },
                     keyframes: {
                         blob: {
@@ -343,10 +343,11 @@
                 </div>
             </div>
             
-            <div class="flex gap-2 p-1.5 bg-[#020617]/60 rounded-2xl mb-6 border border-slate-700/50 shadow-inner">
-                <button onclick="switchOrderTab('direct')" id="tab-direct" class="flex-1 py-3 rounded-xl text-sm font-black bg-emerald-600 text-white shadow-[0_0_15px_rgba(16,185,129,0.3)] transition-all cursor-pointer">Direct Order</button>
-                <button onclick="switchOrderTab('haggle')" id="tab-haggle" class="flex-1 py-3 rounded-xl text-sm font-black text-slate-400 hover:text-white transition-all cursor-pointer">Haggle</button>
-                <button onclick="switchOrderTab('group')" id="tab-group" class="flex-1 py-3 rounded-xl text-sm font-black text-slate-400 hover:text-white transition-all cursor-pointer">Group Split</button>
+            <div class="flex gap-1.5 p-1.5 bg-[#020617]/60 rounded-2xl mb-6 border border-slate-700/50 shadow-inner overflow-x-auto hide-scrollbar scroll-touch">
+                <button onclick="switchOrderTab('direct')" id="tab-direct" class="shrink-0 px-4 py-3 rounded-xl text-sm font-black bg-emerald-600 text-white shadow-[0_0_15px_rgba(16,185,129,0.3)] transition-all cursor-pointer">Direct</button>
+                <button onclick="switchOrderTab('haggle')" id="tab-haggle" class="shrink-0 px-4 py-3 rounded-xl text-sm font-black text-slate-400 hover:text-white transition-all cursor-pointer">Haggle</button>
+                <button onclick="switchOrderTab('group')" id="tab-group" class="shrink-0 px-4 py-3 rounded-xl text-sm font-black text-slate-400 hover:text-white transition-all cursor-pointer">Group</button>
+                <button onclick="switchOrderTab('voice')" id="tab-voice" class="shrink-0 px-4 py-3 rounded-xl text-sm font-black text-slate-400 hover:text-amber-400 transition-all cursor-pointer flex items-center gap-1.5">🎙️ Voice Note</button>
             </div>
             
             <div class="space-y-5">
@@ -365,10 +366,42 @@
                 </div>
                 
                 <div id="panel-group" class="hidden p-5 rounded-2xl bg-teal-950/20 border border-teal-500/30 space-y-3 shadow-inner">
-                    <label class="block text-xs font-black text-slate-300 mb-2 uppercase tracking-widest">Split Between How Many People?</label>
-                    <input type="number" id="group-split-count" value="2" min="2" oninput="calculateOrderTotal()" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-3 text-white font-black outline-none shadow-inner cursor-text">
+                    <label class="block text-xs font-black text-slate-300 mb-2 uppercase tracking-widest">Split Between How Many People\?</label>
+                    <input type="number" id="group-split-count" value="2" min="2" oninput="calculateOrderTotal\(\)" class="w-full bg-\[#020617\]/80 border border-slate-700/80 rounded-2xl px-5 py-3 text-white font-black outline-none shadow-inner cursor-text">
                     <p class="text-xs text-teal-300 mt-2 font-medium">Each member pays: <strong class="text-white text-sm font-black tracking-wide">GH₵<span id="group-each-price">0</span></strong></p>
                 </div>
+
+                <div id="panel-voice" class="hidden p-6 rounded-2xl bg-amber-950/20 border border-amber-500/30 shadow-inner text-center">
+                    <p class="text-[10px] text-amber-400 font-black uppercase tracking-widest mb-4">Voice Inquiry (Local Languages)</p>
+                    
+                    <div id="voice-recorder-ui" class="py-2">
+                        <button id="btn-record-voice" onclick="toggleVoiceRecording()" class="w-24 h-24 bg-amber-500/10 border-[4px] border-amber-500 rounded-full text-5xl shadow-[0_0_25px_rgba(245,158,11,0.3)] transition-all hover:scale-105 active:scale-95 flex items-center justify-center mx-auto cursor-pointer relative">
+                            🎙️
+                            <span id="voice-pulse-ring" class="absolute inset-0 rounded-full border-4 border-amber-500/50 hidden animate-ping"></span>
+                        </button>
+                        <p id="voice-timer" class="text-xs font-black text-slate-300 mt-5 tracking-widest">TAP TO RECORD (MAX 60s)</p>
+                        
+                        <div id="voice-visualizer" class="hidden flex justify-center items-end gap-1 h-8 mt-4 mx-auto w-24">
+                            <div class="w-1.5 bg-amber-500 rounded-full animate-bounce" style="animation-delay: 0.1s; height: 100%;"></div>
+                            <div class="w-1.5 bg-amber-500 rounded-full animate-bounce" style="animation-delay: 0.3s; height: 60%;"></div>
+                            <div class="w-1.5 bg-amber-500 rounded-full animate-bounce" style="animation-delay: 0.2s; height: 80%;"></div>
+                            <div class="w-1.5 bg-amber-500 rounded-full animate-bounce" style="animation-delay: 0.4s; height: 40%;"></div>
+                            <div class="w-1.5 bg-amber-500 rounded-full animate-bounce" style="animation-delay: 0.1s; height: 90%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div id="voice-playback-ui" class="hidden space-y-4 py-2">
+                        <audio id="voice-audio-player" controls class="w-full h-12 rounded-xl bg-[#0f172a] shadow-inner outline-none"></audio>
+                        <div class="flex gap-3">
+                            <button onclick="discardVoiceNote()" class="flex-1 bg-[#0f172a] hover:bg-rose-900/30 text-rose-400 border border-slate-700 hover:border-rose-500/30 font-black py-4 rounded-2xl text-xs transition-colors shadow-inner cursor-pointer flex items-center justify-center gap-1">✕ Discard</button>
+                            <button onclick="downloadAndSendVoiceNote()" class="flex-[2] bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-[#020617] font-black py-4 rounded-2xl text-xs transition-colors shadow-[0_0_20px_rgba(245,158,11,0.4)] cursor-pointer flex items-center justify-center gap-2 tracking-wide">📎 Save & Send (WA)</button>
+                        </div>
+                        <p class="text-[10px] text-slate-400 font-bold leading-relaxed text-left mt-2 border-t border-slate-700/50 pt-3">
+                            <span class="text-amber-400">💡 Pro-Tip:</span> The audio saves directly to your device! Once WhatsApp opens, tap the attachment 📎 icon to send the downloaded voice note to the farmer.
+                        </p>
+                    </div>
+                </div>
+
                 
                 <input type="text" id="order-destination" placeholder="Your Delivery Town / Drop-off Point" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-sm font-medium text-white outline-none focus:border-emerald-500 shadow-inner transition-colors cursor-text">
                 
@@ -602,6 +635,27 @@
     </div>
 
     
+    
+    <!-- ESCROW SUCCESS MODAL -->
+    <div id="escrow-success-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[200] hidden items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md p-8 rounded-[3rem] text-center border border-emerald-500/30 shadow-[0_0_50px_rgba(16,185,129,0.2)] relative">
+            <div class="w-24 h-24 bg-emerald-500/20 rounded-full flex items-center justify-center text-5xl mx-auto mb-6 border-4 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.5)] animate-pulse">🔒</div>
+            <h3 class="text-3xl font-black text-white mb-2 tracking-tight">Funds Secured!</h3>
+            <p class="text-sm text-slate-400 mb-6 font-medium leading-relaxed">Your money is safely locked in Agromart Escrow. The seller has been notified to dispatch the goods.</p>
+            
+            <div class="bg-[#0f172a]/80 p-6 rounded-3xl border border-emerald-500/50 mb-8 space-y-4 text-left shadow-inner relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-[40px] pointer-events-none"></div>
+                <div class="relative z-10">
+                    <p class="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-1">Your Delivery Code</p>
+                    <div class="text-5xl font-black text-white tracking-[0.25em] text-center bg-[#020617] py-4 rounded-2xl border border-slate-700/80 shadow-inner mb-4" id="escrow-secret-code">0000</div>
+                    <p class="text-xs text-slate-400 font-bold leading-relaxed text-center"><span class="text-rose-400">⚠️ IMPORTANT:</span> Do NOT give this code to the seller until you have inspected and received the produce!</p>
+                </div>
+            </div>
+            
+            <button onclick="closeEscrowSuccessModal()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black py-4.5 rounded-2xl text-base transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:-translate-y-0.5 tracking-wide cursor-pointer">Done</button>
+        </div>
+    </div>
+
     <!-- DAILY SPIN MINI GAME MODAL -->
     <div id="minigame-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[200] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-sm p-10 rounded-[3rem] text-center border border-purple-500/30 shadow-[0_0_50px_rgba(168,85,247,0.2)] relative overflow-hidden">
@@ -619,6 +673,38 @@
             </div>
             
             <button id="spin-btn" onclick="executeSpin()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-500 hover:from-purple-500 hover:to-indigo-400 text-white font-black py-4.5 rounded-2xl text-base transition-all shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:-translate-y-1 tracking-wide cursor-pointer">Spin Now</button>
+        </div>
+    </div>
+
+    
+    <!-- FLOATING AI BUTTON -->
+    <button onclick="toggleAiChat()" class="fixed bottom-24 right-6 z-[90] w-14 h-14 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full shadow-[0_0_20px_rgba(16,185,129,0.5)] flex items-center justify-center text-2xl hover:scale-110 transition-transform cursor-pointer border-2 border-white/20">
+        🤖
+    </button>
+
+    <!-- AI CHAT MODAL -->
+    <div id="ai-chat-modal" class="fixed bottom-40 right-6 z-[90] w-[90vw] max-w-sm glass-card border border-emerald-500/30 rounded-[2rem] shadow-2xl flex flex-col overflow-hidden transition-all duration-300 transform scale-0 origin-bottom-right" style="height: 60vh; max-height: 500px;">
+        <div class="bg-gradient-to-r from-emerald-950 to-[#0f172a] p-4 flex justify-between items-center border-b border-emerald-500/20">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl">🤖</span>
+                <div>
+                    <h3 class="text-white font-black text-sm tracking-tight">AgriBot Assistant</h3>
+                    <p class="text-[10px] text-emerald-400 font-bold uppercase tracking-widest">Powered by AI</p>
+                </div>
+            </div>
+            <button onclick="toggleAiChat()" class="text-slate-400 hover:text-white cursor-pointer px-2">✕</button>
+        </div>
+        
+        <div id="ai-chat-window" class="flex-grow p-4 overflow-y-auto space-y-4 bg-[#020617]/80 custom-scrollbar">
+            <div class="bg-[#0f172a] border border-slate-700 p-3 rounded-2xl rounded-tl-sm text-sm text-slate-300 shadow-inner w-5/6">
+                Hello! I'm your Agromart AI Assistant. Ask me simple questions about farming, prices, or how to use the app!
+            </div>
+        </div>
+        
+        <div class="p-3 bg-[#0f172a] border-t border-slate-700/80 flex gap-2">
+            <button onclick="startAiVoiceSearch()" class="bg-[#020617] border border-slate-600 text-emerald-400 px-3 rounded-xl text-lg hover:bg-slate-800 transition-colors cursor-pointer shadow-inner shrink-0" title="Speak to AgriBot">🎙️</button>
+            <input type="text" id="ai-chat-input" placeholder="Type or speak..." onkeypress="if(event.key === 'Enter') sendAiMessage()" class="flex-grow bg-[#020617] border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white focus:border-emerald-500 outline-none shadow-inner">
+            <button onclick="sendAiMessage()" class="bg-emerald-600 text-white px-4 rounded-xl font-black text-lg hover:bg-emerald-500 transition-colors shadow-md cursor-pointer shrink-0">↑</button>
         </div>
     </div>
 
@@ -693,7 +779,7 @@
                 </div>
                 <input type="text" id="ed-loc" placeholder="Neighborhood & City (e.g. Madina, Accra)" class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-blue-500 cursor-text">
                 <textarea id="ed-desc" rows="3" placeholder="Provide more details about your listing or request..." class="w-full bg-[#020617]/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-blue-500 cursor-text"></textarea>
-                <button onclick="submitEverydayPost()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-4 rounded-xl text-sm transition-colors shadow-lg cursor-pointer">Submit for Verification</button>
+                <button onclick="submitEverydayPost()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-4 rounded-xl text-sm transition-colors shadow-lg cursor-pointer">Post Now</button>
             </div>
         </div>
     </div>
@@ -2558,6 +2644,320 @@ Capacity: ${cap}`,
             }, 3000);
         }
 
+        
+        // --- AI ASSISTANT LOGIC ---
+        function toggleAiChat() {
+            const modal = document.getElementById('ai-chat-modal');
+            if (modal.classList.contains('scale-0')) {
+                modal.classList.remove('scale-0');
+                modal.classList.add('scale-100');
+            } else {
+                modal.classList.add('scale-0');
+                modal.classList.remove('scale-100');
+            }
+        }
+
+        async function sendAiMessage() {
+            const input = document.getElementById('ai-chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            const chatWindow = document.getElementById('ai-chat-window');
+            
+            // Add user message
+            chatWindow.innerHTML += `
+                <div class="flex justify-end">
+                    <div class="bg-emerald-600 text-white p-3 rounded-2xl rounded-tr-sm text-sm shadow-md max-w-[85%]">
+                        ${message}
+                    </div>
+                </div>`;
+                
+            input.value = '';
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+            
+            // Add thinking indicator
+            const thinkingId = 'thinking-' + Date.now();
+            chatWindow.innerHTML += `
+                <div id="${thinkingId}" class="bg-[#0f172a] border border-slate-700 p-3 rounded-2xl rounded-tl-sm text-sm text-slate-400 shadow-inner w-fit flex gap-1">
+                    <span class="animate-bounce">.</span><span class="animate-bounce" style="animation-delay: 0.2s">.</span><span class="animate-bounce" style="animation-delay: 0.4s">.</span>
+                </div>`;
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+
+            // Simple Keyword-based AI (Since we don't have an external API key)
+            setTimeout(() => {
+                document.getElementById(thinkingId).remove();
+                let response = generateSimpleAiResponse(message.toLowerCase());
+                
+                chatWindow.innerHTML += `
+                    <div class="bg-[#0f172a] border border-slate-700 p-3 rounded-2xl rounded-tl-sm text-sm text-slate-300 shadow-inner w-5/6 leading-relaxed">
+                        ${response}
+                    </div>`;
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            }, 1000);
+        }
+        
+        function generateSimpleAiResponse(msg) {
+            const raw = msg.toLowerCase();
+            // remove punctuation for cleaner matching
+            const text = raw.replace(/[^\w\s]/g, ''); 
+            
+            const matches = (...words) => words.some(w => text.includes(w));
+            const all = (...words) => words.every(w => text.includes(w));
+
+            // --- 1. MAGIC ACTION COMMANDS (UI Automation via Chat) ---
+            if (matches('open', 'go to', 'take me to', 'navigate', 'show me', 'launch', 'enter')) {
+                if (matches('hub', 'everyday', 'everydayhub')) {
+                    return `<img src="x" onerror="selectPortal('everyday'); setTimeout(toggleAiChat, 1500);" class="hidden">Taking you to the Everyday Hub... ⚡`;
+                }
+                if (matches('market', 'pro', 'agromart pro', 'agro', 'shop')) {
+                    return `<img src="x" onerror="selectPortal('agro'); setTimeout(toggleAiChat, 1500);" class="hidden">Taking you to the Agromart Pro Market... 🚜`;
+                }
+                if (matches('chill', 'zone', 'game', 'novel')) {
+                    return `<img src="x" onerror="selectPortal('chill'); setTimeout(toggleAiChat, 1500);" class="hidden">Taking you to the Chill Zone... 🍿`;
+                }
+                if (matches('dashboard', 'profile', 'my ads', 'account')) {
+                    return `<img src="x" onerror="navigate('dashboard'); setTimeout(toggleAiChat, 1500);" class="hidden">Opening your Dashboard... 👤`;
+                }
+                if (matches('doctor', 'scan', 'disease')) {
+                    return `<img src="x" onerror="navigate('agridoctor'); setTimeout(toggleAiChat, 1500);" class="hidden">Opening AgriDoctor AI... 🩺`;
+                }
+                if (matches('post', 'ad', 'sell')) {
+                    return `<img src="x" onerror="handleSmartPostAd(); setTimeout(toggleAiChat, 1500);" class="hidden">Opening the Post Window... 📢`;
+                }
+                if (matches('calc', 'calculator', 'feed')) {
+                    return `<img src="x" onerror="navigate('calculator'); setTimeout(toggleAiChat, 1500);" class="hidden">Opening the Feed Calculator... 🧮`;
+                }
+                if (matches('haulage', 'truck', 'transport')) {
+                    return `<img src="x" onerror="navigate('haulage'); setTimeout(toggleAiChat, 1500);" class="hidden">Opening the Haulage Pool... 🚚`;
+                }
+                if (matches('intel', 'prices', 'average')) {
+                    return `<img src="x" onerror="navigate('intel'); setTimeout(toggleAiChat, 1500);" class="hidden">Opening Market Intel... 📊`;
+                }
+            }
+
+            // --- 2. INTENT MATCHING ENGINE ---
+            const intents = [
+                {
+                    id: 'app_overview',
+                    keywords: ['about', 'overview', 'explain', 'what is', 'purpose', 'do here', 'what this app', 'agromart', 'who are you', 'how does this work', 'what is the app', 'what is agromart', 'what do you do', 'how to use'],
+                    response: `Agromart & Co. is Ghana's Super App! 🇬🇭<br><br>We connect people through three main portals:<br>🌾 <strong>Agromart Pro:</strong> A zero-fee marketplace for farmers and buyers, plus tools like the AI Disease Scanner and Feed Calculator.<br>⚡ <strong>Everyday Hub:</strong> For finding room rentals, local artisans, and urgent pharmacy stock.<br>🍿 <strong>Chill Zone:</strong> For instant web games and classic novels!`
+                },
+                {
+                    id: 'contact',
+                    keywords: ['contact', 'phone', 'number', 'email', 'call', 'support', 'help', 'founder', 'creator', 'customer service', 'speak to a human', 'reach you', 'admin', 'manager', 'founded', 'built', 'created', 'develop', 'developer', 'who owns', 'owner'],
+                    response: `You can reach our official support (and the founder) anytime! 
+                    <br><br>📞 Phone/WhatsApp: <strong class="text-emerald-400">024 564 1480</strong>
+                    <br>✉️ Email: <strong class="text-emerald-400">agriconnect886@gmail.com</strong>
+                    <br><br><button onclick="window.location.href='tel:0245641480'" class="mt-2 bg-[#0f172a] border border-slate-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-800 w-full mb-1 cursor-pointer">Call Now</button>
+                    <button onclick="window.open('https://wa.me/233245641480', '_blank')" class="bg-[#25D366]/20 border border-[#25D366]/40 text-[#25D366] px-4 py-2 rounded-xl text-xs font-bold hover:bg-[#25D366]/30 w-full cursor-pointer">WhatsApp Support</button>`
+                },
+                {
+                    id: 'payments',
+                    keywords: ['pay', 'payment', 'momo', 'mobile money', 'cash', 'card', 'mtn momo', 'telecel cash', 'how do i pay', 'send money', 'buy with'],
+                    response: `Platform fees (like boosting ads or Pro subscriptions) are paid securely via <strong>Mobile Money</strong>. <br><br>For buying produce from farmers or items on the Hub, you negotiate directly in the 🤝 Deal Room and pay them via MoMo or Cash on Delivery based on your personal agreement!`
+                },
+                {
+                    id: 'delivery',
+                    keywords: ['delivery', 'deliver', 'ship', 'shipping', 'transport', 'bring it', 'dispatch', 'courier', 'logistics', 'receive', 'send to me'],
+                    response: `Delivery terms depend on the seller! <br><br>Check the "Delivery Details" on the ad. If you are buying bulk produce and need transport, check out our <strong>🚚 Haulage Pool</strong> to book a cheap empty-leg truck returning to your city!`
+                },
+                {
+                    id: 'safety_trust',
+                    keywords: ['safe', 'scam', 'fraud', 'fake', 'stolen', 'trust', 'legit', 'real', 'security', 'protect', 'thief', 'rob'],
+                    response: `Safety is our top priority! 🛡️<br><br>• Look for the <strong class="text-emerald-400">Verified Badge</strong> on seller profiles.<br>• Never send MoMo deposits before seeing the goods!<br>• If you spot suspicious activity, hit the <strong>🚩 Report</strong> button to alert our Admin team instantly.`
+                },
+                {
+                    id: 'location',
+                    keywords: ['where are you', 'location', 'office', 'based', 'address', 'country', 'headquarters'],
+                    response: `Agromart & Co. is proudly built and operated in <strong>Accra, Ghana 🇬🇭</strong>! Our network connects farmers, drivers, and everyday people nationwide across all 16 regions.`
+                },
+                {
+                    id: 'weather',
+                    keywords: ['weather', 'rain', 'sun', 'temperature', 'climate', 'forecast', 'raining', 'hot', 'cold'],
+                    response: `You can always check the live Ghana Agro-Weather at the very top navigation bar of the app! It updates automatically to give you the best conditions for trade and harvest dispatch.`
+                },
+                {
+                    id: 'identity_bot',
+                    keywords: ['are you human', 'are you a bot', 'are you real', 'who made you', 'tell me a joke', 'funny', 'smart', 'ai', 'robot'],
+                    response: `I'm AgriBot 🤖! I was created to help you navigate Agromart. I might not be human, but I work 24/7 without taking lunch breaks! How can I help you today?`
+                },
+                {
+                    id: 'everyday_rooms',
+                    keywords: ['room', 'rooms', 'hostel', 'hostels', 'rent', 'house', 'accommodation', 'apartment', 'shelter', 'sleep', 'stay', 'flat', 'compound', 'renting'],
+                    response: `Looking for a place to stay? The <strong>Everyday Hub</strong> lets you find rooms and hostels directly with <strong>0% Agent Viewing Fees</strong>! <br><br>Click the ⚡ Everyday Hub portal on the home screen, then tap "🏠 Direct Rentals".`
+                },
+                {
+                    id: 'everyday_meds',
+                    keywords: ['meds', 'medicine', 'pharmacy', 'drugs', 'prescription', 'pill', 'sick', 'hospital', 'clinic', 'health', 'malaria'],
+                    response: `Need urgent prescriptions? Go to the <strong>Everyday Hub</strong> and tap "💊 Meds Locator" to broadcast your request to verified local pharmacies instantly.`
+                },
+                {
+                    id: 'everyday_artisan',
+                    keywords: ['artisan', 'plumber', 'electrician', 'ac', 'repair', 'fix', 'carpenter', 'mechanic', 'fixer', 'mason', 'painter', 'service'],
+                    response: `Need a professional? Check the <strong>Everyday Hub</strong> > "🛠️ Fixers & Pros" to connect directly with verified plumbers, electricians, and AC technicians via WhatsApp.`
+                },
+                {
+                    id: 'everyday_parcel',
+                    keywords: ['parcel', 'delivery', 'send', 'package', 'hitch', 'courier', 'drop off', 'driver', 'send an item'],
+                    response: `Need to send a package to another city? Use the <strong>📦 Parcel Hitch</strong> feature in the Everyday Hub! Find travelers heading your way to deliver it securely.`
+                },
+                {
+                    id: 'everyday_thrift',
+                    keywords: ['thrift', 'used', 'second hand', 'tv', 'phone', 'laptop', 'cheap', 'fairly used', 'home appliance', 'furniture', 'shoes', 'clothes'],
+                    response: `Want to buy or sell used tech and home goods? Check out the <strong>🔄 Local Thrift</strong> section in the Everyday Hub!`
+                },
+                {
+                    id: 'everyday_hub',
+                    keywords: ['hub', 'everyday', 'utility', 'utilities', 'what is the hub', 'everydayhub'],
+                    response: `The <strong>⚡ Everyday Hub</strong> handles your daily needs without middleman fees:<br>• 🏠 0% Agent Fee Rentals<br>• 💊 Live Pharmacy Finder<br>• 🛠️ Direct Artisan Bookings<br>• 📦 Inter-City Parcel Hitching<br>• 🔄 Local Thrift Deals`
+                },
+                {
+                    id: 'post_ad',
+                    keywords: ['post', 'sell', 'list', 'create ad', 'add product', 'upload', 'put my item', 'advertise', 'vendor', 'market my', 'how to sell'],
+                    response: `To sell produce or hub services:<br>1. Tap the green <strong>+ Post Ad</strong> button at the top.<br>2. Upload up to 3 photos.<br>3. Fill in your price and location.<br>4. Submit! It will go live instantly.`
+                },
+                {
+                    id: 'buy_deal',
+                    keywords: ['buy', 'order', 'purchase', 'deal', 'haggle', 'negotiate', 'discount', 'reduce price', 'too expensive', 'how to buy', 'get item'],
+                    response: `Want to buy something?<br>Click any product in the marketplace and tap <strong>🤝 Deal Room</strong>! From there you can buy directly, <strong>Haggle</strong>, or split costs with friends using <strong>Group Split</strong>.`
+                },
+                {
+                    id: 'rfq_tender',
+                    keywords: ['rfq', 'tender', 'request', 'bulk', 'hotel', 'aggregator', 'school', 'wholesale', 'i need a lot'],
+                    response: `Need to buy in bulk? Switch to the <strong>📢 Buyer Tenders (RFQs)</strong> tab on the marketplace. Click "+ Post Purchase Tender" to broadcast what you need to all farmers!`
+                },
+                {
+                    id: 'boost',
+                    keywords: ['boost', 'top', 'promote', 'premium', 'faster', 'more sales', 'visibility', 'rank'],
+                    response: `Want to sell faster? 🚀<br>Use the <strong>⚡ QuickSell Boost</strong> (GH₵ 15). It pins your ad to the top with a Premium gold badge for 7 days! Boost from "My Ads" in your Dashboard.`
+                },
+                {
+                    id: 'pro_sub',
+                    keywords: ['pro', 'subscription', 'upgrade', 'commercial', 'monthly plan'],
+                    response: `<strong>Agromart Pro</strong> (GH₵ 70/month) gives you unlimited listings, instant SMS lead alerts, and auto-renewing ads. Upgrade via the Pricing page or your Dashboard!`
+                },
+                {
+                    id: 'spin_game',
+                    keywords: ['spin', 'wheel', 'game', 'play', 'airtime', 'win', 'lucky', 'casino', 'prize'],
+                    response: `Feeling lucky? 🎲<br>Tap <strong>Daily Spin</strong> in the Everyday Hub or Chill Zone. Spin once every 24 hours to win free Airtime or Pro Boosts!`
+                },
+                {
+                    id: 'data_topup',
+                    keywords: ['data', 'topup', 'bundle', 'mtn', 'telecel', 'at', 'vodafone', 'airtel', 'credit', 'wifi', 'internet'],
+                    response: `Buy Data Bundles and Airtime instantly via MoMo without leaving the app! Tap your profile picture or the 📱 icon in the top navigation.`
+                },
+                {
+                    id: 'chill_zone',
+                    keywords: ['chill', 'novel', 'read', 'movie', 'bored', 'fun', 'games', 'subway surfers', 'candy crush'],
+                    response: `Need a break? 🍿<br>Enter <strong>The Chill Zone</strong>! Play hundreds of instant web games or read classic novels directly in the app.`
+                },
+                {
+                    id: 'auth_password',
+                    keywords: ['password', 'login', 'sign in', 'forgot', 'reset', 'account', 'register', 'sign up', 'create account'],
+                    response: `<strong>Account & Login:</strong><br>• Forgot password? Click "Forgot Password?" to get a secure reset code via WhatsApp.<br>• You can securely bypass passwords by using "Sign in with Google"!`
+                },
+                {
+                    id: 'logout_delete',
+                    keywords: ['logout', 'sign out', 'delete', 'remove', 'close account', 'erase', 'get rid'],
+                    response: `• <strong>Logout:</strong> Go to your Dashboard, scroll down, and tap the red 🚪 Logout button.<br>• <strong>Delete Ad:</strong> In your Dashboard under "My Ads", tap the red Delete button next to your item.`
+                },
+                {
+                    id: 'trainer',
+                    keywords: ['trainer', 'guide', 'learn', 'teach', 'grow', 'raise', 'how to farm', 'educate', 'plant', 'cultivate', 'rearing', 'livestock guide', 'crop guide'],
+                    response: `Want to learn commercial farming? 📚<br>Open the <strong>Agri Trainer Hub</strong>. It has step-by-step guides on crops (Maize, Cocoa, Tomatoes) and animals (Broilers, Catfish) from nursery to harvest!`
+                },
+                {
+                    id: 'market_intel',
+                    keywords: ['intel', 'prices', 'average', 'expensive', 'cheap', 'arbitrage', 'market data', 'analytics', 'statistics', 'how much is', 'cost of', 'price index'],
+                    response: `Check the <strong>📊 Market Intel</strong> portal! It shows the National Average price, the cheapest region to buy, and the most profitable region to sell (Arbitrage Margin).`
+                },
+                {
+                    id: 'feed_calc',
+                    keywords: ['feed', 'calculate', 'mix', 'pearson', 'protein', 'soya', 'maize', 'calculator', 'formulate', 'animal food', 'poultry feed'],
+                    response: `Mixing your own feed is cheaper! 🧮<br>Use the <strong>Precision Feed Calculator</strong>. Enter your target protein, energy source, and protein source. It uses the Pearson Square to tell you exactly how to mix a 50kg bag!`
+                },
+                {
+                    id: 'haulage',
+                    keywords: ['haulage', 'truck', 'transport', 'freight', 'empty leg', 'logistics', 'move goods', 'trucker', 'bus', 'cargo'],
+                    response: `Need cheap transport? 🚚<br>Go to the <strong>Haulage Pool</strong>. Truck drivers list "Empty-Leg" return trips. Book an empty returning truck for a massive discount!`
+                },
+                {
+                    id: 'eco_waste',
+                    keywords: ['waste', 'eco', 'oil', 'peels', 'pods', 'biomass', 'garbage', 'recycle', 'trash', 'cooking oil'],
+                    response: `Don't throw away farm waste! ♻️<br>Use <strong>Eco-Loop Logistics</strong>. Request bulk pickups for Used Cooking Oil, Cassava Peels, or Cocoa Pods, and get paid by industrial recyclers.`
+                },
+                {
+                    id: 'rentals',
+                    keywords: ['rentals', 'tractor', 'tiller', 'pump', 'machine', 'equipment', 'hire', 'bulldozer', 'plough'],
+                    response: `Need heavy machinery? 🚜<br>Head to the <strong>Machinery Rentals</strong> portal to hire idle tractors, tillers, and irrigation pumps, or list your own equipment for rent!`
+                },
+                {
+                    id: 'grants',
+                    keywords: ['grant', 'grants', 'loan', 'finance', 'funding', 'mofa', 'usaid', 'money', 'capital', 'investment', 'support fund', 'bank'],
+                    response: `Looking for capital? 🏆<br>Check the <strong>Agri-Finance & Grants</strong> portal. We aggregate the latest funding opportunities and subsidies from MoFA, USAID, and NGOs.`
+                },
+                {
+                    id: 'agridoctor',
+                    keywords: ['disease', 'pathology', 'scan', 'doctor', 'treatment', 'blight', 'pest', 'infection', 'leaf', 'sick plant', 'dying', 'wilted', 'rot', 'insects', 'bugs'],
+                    response: `Crop or animal sick? 🩺<br>Go to the <strong>AgriDoctor AI</strong> portal. Tap the camera icon to photograph the diseased leaf or animal, and the AI will give you an instant treatment plan!`
+                },
+                {
+                    id: 'greeting',
+                    keywords: ['hello', 'hi', 'hey', 'greetings', 'morning', 'afternoon', 'evening', 'sup', 'how are you', 'doing', 'whats up'],
+                    response: `Hello there! I'm AgriBot 🤖. I can help you with app navigation, explain how to boost ads, use the Everyday Hub, or find crop guides. What do you need?`
+                },
+                {
+                    id: 'gratitude',
+                    keywords: ['thank', 'thanks', 'thx', 'appreciate', 'great', 'awesome', 'cool', 'good job', 'perfect', 'amazing'],
+                    response: `You're very welcome! Let me know if there's anything else I can help you with! 🌟`
+                }
+            ];
+
+            let bestIntent = null;
+            let highestScore = 0;
+
+            for (const intent of intents) {
+                let score = 0;
+                for (const keyword of intent.keywords) {
+                    // Whole word match using boundaries to avoid "at" matching inside "what"
+                    const regex = new RegExp('\\b' + keyword + '\\b', 'i');
+                    if (regex.test(text)) {
+                        score += 2; // Strong match for exact word boundaries
+                    } else if (keyword.length > 4 && text.includes(keyword)) {
+                         score += 1; // Partial match fallback only for long distinct words
+                    }
+                }
+                
+                if (score > highestScore) {
+                    highestScore = score;
+                    bestIntent = intent;
+                }
+            }
+
+            if (bestIntent && highestScore > 0) {
+                return bestIntent.response;
+            }
+
+            // Fallback for unrecognized queries with randomly rotated chips
+            const possibleChips = [
+                `<button onclick="document.getElementById('ai-chat-input').value='contact details'; sendAiMessage();" class="bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-emerald-600/40 transition-colors cursor-pointer mb-2">📞 Contact Support</button>`,
+                `<button onclick="document.getElementById('ai-chat-input').value='how to sell'; sendAiMessage();" class="bg-blue-600/20 text-blue-400 border border-blue-500/30 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-blue-600/40 transition-colors cursor-pointer mb-2">📢 How to Post</button>`,
+                `<button onclick="document.getElementById('ai-chat-input').value='what is the hub'; sendAiMessage();" class="bg-blue-600/20 text-blue-400 border border-blue-500/30 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-blue-600/40 transition-colors cursor-pointer mb-2">⚡ Everyday Hub</button>`,
+                `<button onclick="document.getElementById('ai-chat-input').value='disease scan'; sendAiMessage();" class="bg-rose-600/20 text-rose-400 border border-rose-500/30 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-rose-600/40 transition-colors cursor-pointer mb-2">🩺 AI Disease Scanner</button>`,
+                `<button onclick="document.getElementById('ai-chat-input').value='what is agromart'; sendAiMessage();" class="bg-purple-600/20 text-purple-400 border border-purple-500/30 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-purple-600/40 transition-colors cursor-pointer mb-2">❓ App Overview</button>`,
+                `<button onclick="document.getElementById('ai-chat-input').value='buy airtime'; sendAiMessage();" class="bg-teal-600/20 text-teal-400 border border-teal-500/30 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-teal-600/40 transition-colors cursor-pointer mb-2">📱 Buy Data/Airtime</button>`
+            ];
+            
+            // Randomly pick 4 chips to show
+            const shuffled = possibleChips.sort(() => 0.5 - Math.random());
+            const selectedChips = shuffled.slice(0, 4).join('');
+
+            return `I'm not exactly sure what you mean, but I'm learning! I can help you find what you're looking for. Here are some quick actions:
+            <div class="flex flex-wrap gap-2 mt-4">
+                ${selectedChips}
+            </div>`;
+        }
+
         // --- FARM MANAGER DASHBOARD LOGIC ---
         function openBatchModal() {
             if (!agriToken) {
@@ -3242,26 +3642,71 @@ Capacity: ${cap}`,
             document.getElementById('everyday-post-modal').classList.remove('flex');
         }
 
-        function submitEverydayPost() {
+        async function submitEverydayPost() {
+            const cat = document.getElementById('ed-category').value;
             const title = document.getElementById('ed-title').value.trim();
             const price = document.getElementById('ed-price').value.trim();
             const phone = document.getElementById('ed-phone').value.trim();
             const loc = document.getElementById('ed-loc').value.trim();
+            const desc = document.getElementById('ed-desc').value.trim();
             
             if (!title || !price || !phone || !loc) {
                 return showToast("Please fill all required fields", "error");
             }
             
-            showToast("Listing submitted! Our admins will verify and post it shortly. ✅");
+            const btn = document.querySelector('#everyday-post-modal button.bg-blue-600');
+            if(btn) { btn.innerText = "Processing..."; btn.disabled = true; }
             
-            // Clear inputs
-            ['ed-title', 'ed-price', 'ed-phone', 'ed-loc', 'ed-desc'].forEach(id => {
-                document.getElementById(id).value = '';
-            });
-            edUploadedImages = [];
-            renderEdImagePreview();
-            
-            closeEverydayPostModal();
+            try {
+                // Post to the main products API so it shows in founder's dashboard and user's "My Ads"
+                const payload = {
+                    product_name: `[HUB] ${title}`, 
+                    description: `[CAT:${cat}] ${desc}`, // Hide the hub category in description so backend doesn't reject it
+                    category: "Other", // Use a generic category that the backend will accept
+                    unit: "service",
+                    base_price_ghs: price.replace(/\D/g,'') || "0",
+                    delivery_details: "Contact directly",
+                    neighborhood: loc,
+                    phone_number: phone,
+                    image_data: edUploadedImages.length > 0 ? JSON.stringify(edUploadedImages) : null
+                    // Note: If backend blocks 'status', we let it default to pending, but our local UI will force it visible.
+                };
+                
+                const res = await fetch(`${API_URL}/api/v1/products?token=${agriToken}`, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify(payload) 
+                }); 
+                
+                if (!res.ok) throw new Error("Failed to post on Hub.");
+                
+                showToast("Listing is now Live on Everyday Hub! ✅");
+                
+                // Add it locally to the frontend arrays instantly so it shows up right away without a refresh
+                const newItem = {
+                    title: title, loc: loc, price: `GH₵ ${price}`, tag: "New Listing", phone: phone, details: desc
+                };
+                if (!everydayData[cat]) everydayData[cat] = [];
+                everydayData[cat].unshift(newItem);
+                
+                filterEverydayHub(cat, true);
+                
+                // Clear inputs
+                ['ed-title', 'ed-price', 'ed-phone', 'ed-loc', 'ed-desc'].forEach(id => {
+                    document.getElementById(id).value = '';
+                });
+                edUploadedImages = [];
+                renderEdImagePreview();
+                closeEverydayPostModal();
+                
+                if (document.getElementById('view-dashboard') && !document.getElementById('view-dashboard').classList.contains('hidden')) {
+                    loadMyAds();
+                }
+            } catch (err) {
+                showToast(err.message, "error");
+            } finally {
+                if(btn) { btn.innerText = "Post Now"; btn.disabled = false; }
+            }
         }
 
         function toggleAuthBox(box) { 
@@ -3284,11 +3729,22 @@ Capacity: ${cap}`,
         
         function logout() { 
             localStorage.removeItem("agri_token"); 
+            localStorage.removeItem("cached_profile"); 
+            agriToken = "";
+            currentUserEmail = "";
+            
+            // Revert UI elements
+            const navName = document.getElementById('nav-user-name'); 
+            if (navName) navName.classList.add('hidden'); 
+            const loginBtn = document.getElementById('nav-login-btn'); 
+            if (loginBtn) loginBtn.classList.remove('hidden'); 
+            const profileMenu = document.getElementById('nav-user-profile'); 
+            if (profileMenu) { profileMenu.classList.add('hidden'); profileMenu.classList.remove('flex'); }
             const mobileProfileBtn = document.getElementById('mobile-nav-profile-btn');
-            if (mobileProfileBtn) {
-                mobileProfileBtn.classList.add('hidden');
-                mobileProfileBtn.classList.remove('flex');
-            }
+            if (mobileProfileBtn) { mobileProfileBtn.classList.add('hidden'); mobileProfileBtn.classList.remove('flex'); }
+            
+            // Redirect to home or portal-select and reload
+            window.location.hash = 'portal-select';
             window.location.reload(); 
         }
 
@@ -3391,11 +3847,41 @@ Capacity: ${cap}`,
             loadAgriNews(); 
             loadBuyerRequests();
             
-            fetch(`${API_URL}/api/v1/products?sort=newest&t=${new Date().getTime()}`)
+fetch(`${API_URL}/api/v1/products?sort=newest&t=${new Date().getTime()}`)
                 .then(res => res.json())
                 .then(data => { 
                     let realData = data.filter(p => !p.product_name.toUpperCase().includes('[TEST AD]'));
                     allLoadedProducts = realData.concat(fallbackTestAds); 
+                    
+                    // Parse Everyday Hub items
+                    allLoadedProducts.forEach(p => {
+                        if (p.product_name.startsWith('[HUB]')) {
+                            // Extract the specific hub category from the description
+                            let hubCat = 'rooms'; // default
+                            let desc = p.description || '';
+                            const catMatch = desc.match(/\[CAT:(.*?)\]/);
+                            if (catMatch) {
+                                hubCat = catMatch[1];
+                                desc = desc.replace(catMatch[0], '').trim();
+                            }
+                            
+                            if (everydayData[hubCat]) {
+                                // Add to hub data if not already there
+                                const exists = everydayData[hubCat].find(i => i.id === p.id);
+                                if (!exists) {
+                                    everydayData[hubCat].unshift({
+                                        id: p.id,
+                                        title: p.product_name.replace('[HUB] ', ''),
+                                        loc: p.neighborhood,
+                                        price: `GH₵ ${p.base_price_ghs}`,
+                                        tag: p.boost_tier === 'premium' ? '⚡ Premium' : 'New Listing',
+                                        phone: p.phone_number,
+                                        details: desc
+                                    });
+                                }
+                            }
+                        }
+                    });
                     
                     if (allLoadedProducts.length > 0) { 
                         buildMarketTicker(allLoadedProducts); 
@@ -3897,7 +4383,10 @@ Capacity: ${cap}`,
                 
                 allLoadedProducts = products.concat(fallbackTestAds); 
                 
-                let filtered = allLoadedProducts;
+                                let filtered = allLoadedProducts;
+                
+                // Hide Hub items from general marketplace unless explicitly searched
+                filtered = filtered.filter(p => !p.product_name.startsWith('[HUB]'));
                 
                 if (currentCategoryState) {
                     filtered = filtered.filter(p => p.category === currentCategoryState);
@@ -4153,7 +4642,8 @@ Capacity: ${cap}`,
                 base_price_ghs: prodPrice, 
                 delivery_details: prodDel, 
                 neighborhood: fullLoc, 
-                image_data: uploadedImages.length > 0 ? JSON.stringify(uploadedImages) : null 
+                image_data: uploadedImages.length > 0 ? JSON.stringify(uploadedImages) : null,
+                status: "approved" // Force active immediately as requested
             }; 
             
             if (!payload.product_name || !payload.unit || !payload.base_price_ghs) {
@@ -4247,6 +4737,12 @@ Capacity: ${cap}`,
                     let editBtn = `<button onclick="openEditModal(${item.id})" class="text-xs text-blue-400 font-bold px-4 py-2 border border-blue-500/30 rounded-xl hover:bg-blue-500/10 transition-colors cursor-pointer">Edit</button>`; 
                     let previewBtn = `<button onclick="previewAd(${item.id})" class="text-xs text-slate-300 font-bold px-4 py-2 border border-slate-500/30 rounded-xl hover:bg-slate-500/10 transition-colors cursor-pointer">👁️ Preview</button>`; 
                     
+                    
+                    let boostBtn = '';
+                    if (item.status === 'approved' && item.boost_tier !== 'premium') {
+                        boostBtn = `<button onclick="handlePricingBoostClick('${safeName}')" class="text-xs text-amber-400 font-bold px-4 py-2 border border-amber-500/30 rounded-xl hover:bg-amber-500/10 transition-colors cursor-pointer">⚡ Boost</button>`;
+                    }
+
                     let flyerBtn = '';
                     if (item.status === 'approved') {
                         flyerBtn = `<button onclick="generateWhatsAppFlyer('${safeName}', '${item.base_price_ghs}', '${item.unit}', '${imgs.length ? imgs[0] : ''}', '${item.phone_number}')" class="text-xs text-[#25D366] font-bold px-4 py-2 border border-[#25D366]/30 rounded-xl hover:bg-[#25D366]/10 transition-colors cursor-pointer">📲 Flyer</button>`;
@@ -4274,6 +4770,7 @@ Capacity: ${cap}`,
                                 </div>
                             </div>
                             <div class="flex gap-2 w-full md:w-auto justify-end flex-wrap mt-4 md:mt-0">
+                                ${boostBtn}
                                 ${videoBtn}
                                 ${flyerBtn}
                                 ${previewBtn}
@@ -4654,6 +5151,7 @@ Capacity: ${cap}`,
             
             document.getElementById('panel-haggle').classList.add('hidden'); 
             document.getElementById('panel-group').classList.add('hidden');
+            document.getElementById('panel-voice').classList.add('hidden');
             
             if (tab === 'direct') { 
                 document.getElementById('tab-direct').className = "flex-1 py-2.5 rounded-xl text-sm font-black bg-emerald-600 text-white shadow-md transition-all cursor-pointer"; 
@@ -4706,6 +5204,217 @@ Capacity: ${cap}`,
                 const splits = parseInt(document.getElementById('group-split-count').value) || 2; 
                 document.getElementById('group-each-price').innerText = (total / splits).toFixed(2); 
             }
+        }
+
+        
+
+        // --- VOICE RECORDING LOGIC ---
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecordingVoice = false;
+        let recordingTimer;
+        let recordingSeconds = 0;
+        let finalAudioBlob = null;
+        let finalAudioUrl = null;
+
+        async function toggleVoiceRecording() {
+            const btn = document.getElementById('btn-record-voice');
+            const timerEl = document.getElementById('voice-timer');
+            const visualizer = document.getElementById('voice-visualizer');
+            const pulse = document.getElementById('voice-pulse-ring');
+
+            if (!isRecordingVoice) {
+                // START RECORDING
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+
+                    mediaRecorder.ondataavailable = e => {
+                        if (e.data.size > 0) audioChunks.push(e.data);
+                    };
+
+                    mediaRecorder.onstop = () => {
+                        finalAudioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                        finalAudioUrl = URL.createObjectURL(finalAudioBlob);
+                        
+                        document.getElementById('voice-audio-player').src = finalAudioUrl;
+                        
+                        document.getElementById('voice-recorder-ui').classList.add('hidden');
+                        document.getElementById('voice-playback-ui').classList.remove('hidden');
+                        
+                        // Stop all tracks to release microphone
+                        stream.getTracks().forEach(track => track.stop());
+                    };
+
+                    mediaRecorder.start();
+                    isRecordingVoice = true;
+                    recordingSeconds = 0;
+                    
+                    // UI Updates
+                    btn.classList.add('bg-rose-500/20', 'border-rose-500');
+                    btn.classList.remove('bg-amber-500/10', 'border-amber-500');
+                    btn.innerHTML = '🛑<span id="voice-pulse-ring" class="absolute inset-0 rounded-full border-4 border-rose-500/50 animate-ping"></span>';
+                    visualizer.classList.remove('hidden');
+                    timerEl.innerText = "RECORDING... 0s";
+                    timerEl.classList.add('text-rose-400');
+                    timerEl.classList.remove('text-slate-300');
+
+                    recordingTimer = setInterval(() => {
+                        recordingSeconds++;
+                        timerEl.innerText = `RECORDING... ${recordingSeconds}s`;
+                        if (recordingSeconds >= 60) {
+                            toggleVoiceRecording(); // auto-stop at 60s
+                        }
+                    }, 1000);
+
+                } catch (err) {
+                    showToast("Microphone access denied. Please allow permissions.", "error");
+                }
+            } else {
+                // STOP RECORDING
+                mediaRecorder.stop();
+                isRecordingVoice = false;
+                clearInterval(recordingTimer);
+                
+                // Revert UI
+                btn.classList.remove('bg-rose-500/20', 'border-rose-500');
+                btn.classList.add('bg-amber-500/10', 'border-amber-500');
+                btn.innerHTML = '🎙️<span id="voice-pulse-ring" class="absolute inset-0 rounded-full border-4 border-amber-500/50 hidden animate-ping"></span>';
+                visualizer.classList.add('hidden');
+                timerEl.innerText = "TAP TO RECORD (MAX 60s)";
+                timerEl.classList.remove('text-rose-400');
+                timerEl.classList.add('text-slate-300');
+            }
+        }
+
+        function discardVoiceNote() {
+            finalAudioBlob = null;
+            if (finalAudioUrl) URL.revokeObjectURL(finalAudioUrl);
+            finalAudioUrl = null;
+            
+            document.getElementById('voice-audio-player').src = '';
+            document.getElementById('voice-playback-ui').classList.add('hidden');
+            document.getElementById('voice-recorder-ui').classList.remove('hidden');
+        }
+
+        function downloadAndSendVoiceNote() {
+            if (!finalAudioUrl) return;
+            
+            // Download the file locally
+            const a = document.createElement('a');
+            a.href = finalAudioUrl;
+            a.download = `Agromart_Voice_Inquiry_${Date.now()}.webm`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            showToast("Voice Note Saved! Opening WhatsApp...");
+            
+            // Generate a WhatsApp pre-filled message with instructions
+            setTimeout(() => {
+                let message = `Hello, I'm reaching out about your ad for *${currentOrderName}* on AgromartDirect.
+
+🎙️ *I have attached a Voice Note inquiry for you.* (Please check the audio file below)
+
+📍 Delivery To: ${document.getElementById('order-destination').value || 'TBD'}
+📦 Quantity: ${document.getElementById('order-quantity').value || 1} ${currentOrderUnit}
+`;
+                
+                let rawPhone = currentOrderPhone.replace(/\D/g, ''); 
+                if (rawPhone.startsWith('0')) { rawPhone = '233' + rawPhone.substring(1); }
+                
+                window.open(`https://wa.me/${rawPhone}?text=${encodeURIComponent(message)}`, '_blank');
+            }, 1000);
+        }
+
+        function startAiVoiceSearch() {
+            if (!('webkitSpeechRecognition' in window)) {
+                return showToast("Voice search not supported in this browser.", "error"); 
+            }
+            
+            const searchBox = document.getElementById('ai-chat-input');
+            const recognition = new webkitSpeechRecognition();
+            
+            recognition.continuous = false; 
+            recognition.lang = 'en-GH';
+            
+            recognition.onstart = () => { 
+                searchBox.placeholder = "Listening..."; 
+            };
+            
+            recognition.onresult = (event) => { 
+                searchBox.value = event.results[0][0].transcript; 
+                sendAiMessage(); 
+            };
+            
+            recognition.onend = () => { 
+                searchBox.placeholder = "Type or speak..."; 
+            };
+            
+            recognition.start();
+        }
+
+        function executeSafeTradeEscrow() {
+            if (!agriToken) {
+                showToast("Please sign in to use Escrow SafeTrade.", "error");
+                closeOrderModal();
+                return navigate('auth');
+            }
+            
+            const totalStr = document.getElementById('order-total-price').innerText;
+            const amount = parseFloat(totalStr.replace(/,/g, ''));
+            if (!amount || amount <= 0) return showToast("Invalid deal amount.", "error");
+
+            // Calculate platform fee (1.5%)
+            const fee = amount * 0.015;
+            const totalWithFee = amount + fee;
+
+            showToast("Initializing SafeTrade Escrow... 🛡️");
+            
+            let handler = PaystackPop.setup({
+                key: PAYSTACK_PUBLIC_KEY, 
+                email: currentUserEmail || "buyer@agromart.com",
+                amount: Math.round(totalWithFee * 100), // GH₵ to pesewas
+                currency: 'GHS',
+                ref: 'ESCROW_' + Math.floor((Math.random() * 1000000000) + 1),
+                channels: ['mobile_money', 'card'],
+                metadata: {
+                    custom_fields: [
+                        { display_name: "Product", variable_name: "product", value: currentOrderName },
+                        { display_name: "Seller Phone", variable_name: "seller_phone", value: currentOrderPhone }
+                    ]
+                },
+                callback: function(response) {
+                    closeOrderModal();
+                    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, zIndex: 300, colors: ['#10b981', '#34d399', '#ffffff'] });
+                    
+                    showEscrowSuccessModal(amount, fee, response.reference);
+                },
+                onClose: function() {
+                    showToast("SafeTrade cancelled.", "error");
+                }
+            });
+            handler.openIframe();
+        }
+
+        function showEscrowSuccessModal(amount, fee, ref) {
+            // Generate random 4-digit code
+            const code = Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('escrow-secret-code').innerText = code;
+            
+            document.getElementById('escrow-success-modal').classList.remove('hidden');
+            document.getElementById('escrow-success-modal').classList.add('flex');
+            
+            // Mock SMS notification to the seller
+            setTimeout(() => {
+                showToast(`📱 SMS Sent to Farmer: "Agromart: GH₵${amount.toFixed(2)} secured in Escrow for your ad. Please deliver the items."`, "success");
+            }, 2500);
+        }
+
+        function closeEscrowSuccessModal() {
+            document.getElementById('escrow-success-modal').classList.add('hidden');
+            document.getElementById('escrow-success-modal').classList.remove('flex');
         }
 
         function executeDealWhatsApp() {
@@ -5406,17 +6115,17 @@ Capacity: ${cap}`,
             handler.openIframe();
         }
         
-        function handlePricingBoostClick() { 
+        function handlePricingBoostClick(prefilledName = null) { 
             if (!agriToken) {
                 showToast("Please sign in to boost an ad", "error");
                 return navigate('auth');
             }
-            if (myLoadedAds.length === 0) {
+            if (myLoadedAds.length === 0 && !prefilledName) {
                 showToast("You don't have any active ads to boost. Post one first!", "error");
                 return navigate('post');
             }
             
-            const adToBoost = prompt("Enter the Headline of the ad you want to boost:");
+            const adToBoost = prefilledName || prompt("Enter the Headline of the ad you want to boost:");
             if (!adToBoost) return;
 
             showToast("Initializing MoMo payment for Boost...");
