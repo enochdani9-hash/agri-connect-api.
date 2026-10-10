@@ -62,16 +62,23 @@
         * { -webkit-tap-highlight-color: transparent; outline: none; }
         
         .glass-card { 
-            background: linear-gradient(145deg, rgba(15, 23, 42, 0.65), rgba(2, 6, 23, 0.8)); 
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.85), rgba(2, 6, 23, 0.95)); 
             border: 1px solid rgba(255, 255, 255, 0.05); 
-            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px -2px rgba(0, 0, 0, 0.5); /* Optimized for Android FPS */
+            transition: transform 0.15s ease-out, border-color 0.15s ease-out;
+            contain: content; /* Skips rendering content when offscreen */
+            content-visibility: auto; /* Massive speed boost for long lists */
         }
-        .glass-card:hover {
-            border-color: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 15px 50px -10px rgba(16, 185, 129, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        @media (hover: hover) {
+            .glass-card:hover {
+                border-color: rgba(16, 185, 129, 0.3);
+                box-shadow: 0 8px 25px -5px rgba(16, 185, 129, 0.1);
+            }
+        }
+        
+        button, a, .cursor-pointer {
+            touch-action: manipulation; /* Disables 300ms tap delay on mobile */
+            -webkit-tap-highlight-color: transparent;
         }
         .glass-card:active {
             transform: scale(0.97);
@@ -100,7 +107,7 @@
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
         /* Hardware Acceleration for Animations */
-        .animate-blob, .animate-float {
+        .animate-blob, . {
             will-change: transform;
             transform-style: preserve-3d;
             backface-visibility: hidden;
@@ -139,7 +146,7 @@
     <!-- MODALS SECTION -->
 
     <!-- INSTALL APP MODAL -->
-    <div id="install-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[300] hidden items-center justify-center p-4">
+    <div id="install-modal" class="fixed inset-0 bg-[#020617]/98 z-[300] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-sm p-8 md:p-10 rounded-[3rem] text-center relative border border-emerald-500/30 shadow-[0_0_50px_rgba(16,185,129,0.15)]">
             <button onclick="document.getElementById('install-modal').classList.add('hidden'); document.getElementById('install-modal').classList.remove('flex');" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl font-bold cursor-pointer z-50">✕</button>
             <div class="w-20 h-20 bg-emerald-500/10 rounded-3xl mx-auto flex items-center justify-center text-4xl mb-6 shadow-inner border border-emerald-500/20">📲</div>
@@ -170,13 +177,13 @@
 
 
     <!-- WELCOME TOUR MODAL -->
-    <div id="welcome-tour-modal" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-xl z-[300] hidden items-center justify-center p-4">
+    <div id="welcome-tour-modal" class="fixed inset-0 bg-[#020617]/95 z-[300] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-2xl p-8 md:p-12 rounded-[3rem] relative overflow-hidden shadow-[0_0_60px_rgba(16,185,129,0.3)] transform transition-all duration-500 scale-95 opacity-0" id="welcome-modal-content">
             <div class="absolute top-[-100px] right-[-100px] w-64 h-64 bg-emerald-500/20 rounded-full blur-[60px] pointer-events-none"></div>
             <div class="absolute bottom-[-100px] left-[-100px] w-64 h-64 bg-blue-500/20 rounded-full blur-[60px] pointer-events-none"></div>
             
             <div class="text-center relative z-10 mb-8">
-                <span class="text-5xl block mb-4 animate-float">✨</span>
+                <span class="text-5xl block mb-4 ">✨</span>
                 <h2 class="text-3xl md:text-4xl font-black text-white tracking-tight">Welcome to Agromart!</h2>
                 <p class="text-sm text-slate-400 mt-2 font-medium">Ghana's ultimate Everyday Super App. Here is what you can do:</p>
             </div>
@@ -240,7 +247,7 @@
         </div>
     </div>
 
-    <div id="edit-ad-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[120] hidden items-center justify-center p-4">
+    <div id="edit-ad-modal" class="fixed inset-0 bg-[#020617]/98 z-[120] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative">
             <button onclick="closeEditModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl cursor-pointer">✕</button>
             <h3 class="text-xl font-black text-white mb-4">Edit Listing Details</h3>
@@ -263,14 +270,14 @@
         </div>
     </div>
 
-    <div id="preview-ad-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[130] hidden items-center justify-center p-4">
+    <div id="preview-ad-modal" class="fixed inset-0 bg-[#020617]/98 z-[130] hidden items-center justify-center p-4">
         <div class="w-full max-w-md relative">
             <button onclick="closePreviewModal()" class="absolute -top-12 right-0 text-white font-black text-lg bg-slate-800 hover:bg-rose-500 rounded-full w-8 h-8 flex items-center justify-center shadow-lg transition-colors cursor-pointer">✕</button>
             <div id="preview-card-container"></div>
         </div>
     </div>
 
-    <div id="batch-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[120] hidden items-center justify-center p-4">
+    <div id="batch-modal" class="fixed inset-0 bg-[#020617]/98 z-[120] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-8 rounded-[2.5rem] relative border border-blue-500/30">
             <button onclick="closeBatchModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl cursor-pointer">✕</button>
             <h3 class="text-xl font-black text-white mb-2">Initialize Production Batch</h3>
@@ -302,7 +309,7 @@
                 <button onclick="createBatch()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-3.5 rounded-xl text-sm shadow-lg transition-colors mt-2 cursor-pointer">Initialize Batch 🌱</button>
             </div>
         </div>
-    </div><div id="rfq-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[120] hidden items-center justify-center p-4">
+    </div><div id="rfq-modal" class="fixed inset-0 bg-[#020617]/98 z-[120] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-blue-500/30 text-left">
             <button onclick="closeRfqModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl cursor-pointer">✕</button>
             <h3 class="text-xl md:text-2xl font-black text-white mb-2">📢 Post Purchase Tender</h3>
@@ -328,7 +335,7 @@
         </div>
     </div>
 
-    <div id="order-modal" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
+    <div id="order-modal" class="fixed inset-0 bg-[#020617]/95 z-[100] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] relative border border-emerald-500/30 shadow-xl md:shadow-[0_0_40px_rgba(16,185,129,0.15)]">
             <button onclick="closeOrderModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl cursor-pointer">✕</button>
             <h3 class="text-3xl font-black text-white mb-6 tracking-tight">🤝 Smart Deal Room</h3>
@@ -382,11 +389,11 @@
                         <p id="voice-timer" class="text-xs font-black text-slate-300 mt-5 tracking-widest">TAP TO RECORD (MAX 60s)</p>
                         
                         <div id="voice-visualizer" class="hidden flex justify-center items-end gap-1 h-8 mt-4 mx-auto w-24">
-                            <div class="w-1.5 bg-amber-500 rounded-full animate-bounce" style="animation-delay: 0.1s; height: 100%;"></div>
-                            <div class="w-1.5 bg-amber-500 rounded-full animate-bounce" style="animation-delay: 0.3s; height: 60%;"></div>
-                            <div class="w-1.5 bg-amber-500 rounded-full animate-bounce" style="animation-delay: 0.2s; height: 80%;"></div>
-                            <div class="w-1.5 bg-amber-500 rounded-full animate-bounce" style="animation-delay: 0.4s; height: 40%;"></div>
-                            <div class="w-1.5 bg-amber-500 rounded-full animate-bounce" style="animation-delay: 0.1s; height: 90%;"></div>
+                            <div class="w-1.5 bg-amber-500 rounded-full " style="animation-delay: 0.1s; height: 100%;"></div>
+                            <div class="w-1.5 bg-amber-500 rounded-full " style="animation-delay: 0.3s; height: 60%;"></div>
+                            <div class="w-1.5 bg-amber-500 rounded-full " style="animation-delay: 0.2s; height: 80%;"></div>
+                            <div class="w-1.5 bg-amber-500 rounded-full " style="animation-delay: 0.4s; height: 40%;"></div>
+                            <div class="w-1.5 bg-amber-500 rounded-full " style="animation-delay: 0.1s; height: 90%;"></div>
                         </div>
                     </div>
                     
@@ -421,7 +428,7 @@
         </div>
     </div>
 
-    <div id="flyer-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
+    <div id="flyer-modal" class="fixed inset-0 bg-[#020617]/98 z-[150] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-8 rounded-[3rem] text-center border border-emerald-500/30 shadow-xl md:shadow-[0_0_40px_rgba(16,185,129,0.15)] relative">
             <button onclick="closeFlyerModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl font-bold cursor-pointer">✕</button>
             <h3 class="text-xl md:text-2xl font-black text-white mb-2 tracking-tight">WhatsApp Status Flyer 📲</h3>
@@ -432,7 +439,7 @@
         </div>
     </div>
 
-    <div id="video-studio-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
+    <div id="video-studio-modal" class="fixed inset-0 bg-[#020617]/98 z-[150] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-10 rounded-[3rem] relative border border-purple-500/30 shadow-[0_0_40px_rgba(168,85,247,0.15)]">
             <button onclick="closeVideoStudio()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl cursor-pointer">✕</button>
             <div class="flex items-center gap-4 mb-8">
@@ -485,7 +492,7 @@
     </div>
 
     <!-- LEAVE REVIEW MODAL -->
-    <div id="leave-review-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[150] hidden items-center justify-center p-4">
+    <div id="leave-review-modal" class="fixed inset-0 bg-[#020617]/98 z-[150] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-10 rounded-[3rem] relative border border-emerald-500/30 text-left shadow-xl md:shadow-[0_0_40px_rgba(16,185,129,0.15)]">
             <button onclick="closeLeaveReviewModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl cursor-pointer">✕</button>
             <h3 class="text-3xl font-black text-white mb-2 tracking-tight">Rate this Seller</h3>
@@ -515,7 +522,7 @@
 
     
         <!-- GIFT BASKET SUPPLIER MODAL -->
-    <div id="gift-supplier-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
+    <div id="gift-supplier-modal" class="fixed inset-0 bg-[#020617]/98 z-[160] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-rose-500/30 text-left shadow-[0_0_40px_rgba(244,63,94,0.15)]">
             <button onclick="closeGiftSupplierModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl cursor-pointer">✕</button>
             <h3 class="text-xl md:text-2xl font-black text-white mb-2">🎀 Gift Basket Seller Application</h3>
@@ -540,7 +547,7 @@
         </div>
     </div>
     <!-- HAULAGE POST MODAL -->
-    <div id="haulage-post-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
+    <div id="haulage-post-modal" class="fixed inset-0 bg-[#020617]/98 z-[160] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-amber-500/30 text-left">
             <button onclick="closeHaulagePostModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl cursor-pointer">✕</button>
             <h3 class="text-xl md:text-2xl font-black text-white mb-2">🚚 List Empty Truck</h3>
@@ -561,14 +568,14 @@
 
     
     <!-- DATA TOP-UP MODAL -->
-    <div id="topup-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
+    <div id="topup-modal" class="fixed inset-0 bg-[#020617]/98 z-[160] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-8 md:p-10 rounded-[3rem] relative border border-purple-500/30 text-left shadow-[0_0_40px_rgba(168,85,247,0.15)]">
             <button onclick="closeTopUpModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl font-bold cursor-pointer z-50">✕</button>
             <div class="absolute top-[-50px] right-[-50px] w-48 h-48 bg-purple-500/10 rounded-full blur-[40px] pointer-events-none"></div>
             
             <div class="relative z-10">
                 <div class="flex items-center gap-4 mb-2">
-                    <span class="text-4xl animate-pulse drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]">📱</span>
+                    <span class="text-4xl  drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]">📱</span>
                     <h3 class="text-2xl font-black text-white tracking-tight">Instant Top-Up</h3>
                 </div>
                 <p class="text-xs text-slate-400 mb-8 font-medium">Buy data bundles or airtime for any network instantly via MoMo.</p>
@@ -577,7 +584,7 @@
                     <div>
                         <label class="block text-xs font-black text-slate-400 mb-2 uppercase tracking-widest">Phone Number</label>
                         <input type="tel" id="topup-phone" placeholder="e.g. 024XXXXXXX" oninput="detectNetwork()" class="w-full bg-[#020617]/80 border border-slate-700/80 rounded-2xl px-5 py-4 text-white text-lg font-black outline-none focus:border-purple-500 shadow-inner transition-colors cursor-text">
-                        <p id="topup-network" class="text-xs font-bold text-purple-400 mt-2 hidden flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span> <span id="topup-network-name">Network Detected</span></p>
+                        <p id="topup-network" class="text-xs font-bold text-purple-400 mt-2 hidden flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-purple-500 "></span> <span id="topup-network-name">Network Detected</span></p>
                     </div>
 
                     <div class="flex gap-2 p-1.5 bg-[#020617]/60 rounded-2xl border border-slate-700/50 shadow-inner">
@@ -609,9 +616,9 @@
 
     
     <!-- RECEIPT MODAL -->
-    <div id="receipt-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[200] hidden items-center justify-center p-4">
+    <div id="receipt-modal" class="fixed inset-0 bg-[#020617]/98 z-[200] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-sm p-8 rounded-[3rem] text-center border border-emerald-500/30 shadow-[0_0_50px_rgba(16,185,129,0.2)] relative">
-            <div class="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 border-2 border-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.5)] animate-bounce">✓</div>
+            <div class="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 border-2 border-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.5)] ">✓</div>
             <h3 class="text-3xl font-black text-white mb-2 tracking-tight">Top-Up Successful</h3>
             <p class="text-sm text-slate-400 mb-6 font-medium">Your account has been credited.</p>
             
@@ -637,9 +644,9 @@
     
     
     <!-- ESCROW SUCCESS MODAL -->
-    <div id="escrow-success-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[200] hidden items-center justify-center p-4">
+    <div id="escrow-success-modal" class="fixed inset-0 bg-[#020617]/98 z-[200] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-8 rounded-[3rem] text-center border border-emerald-500/30 shadow-[0_0_50px_rgba(16,185,129,0.2)] relative">
-            <div class="w-24 h-24 bg-emerald-500/20 rounded-full flex items-center justify-center text-5xl mx-auto mb-6 border-4 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.5)] animate-pulse">🔒</div>
+            <div class="w-24 h-24 bg-emerald-500/20 rounded-full flex items-center justify-center text-5xl mx-auto mb-6 border-4 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.5)] ">🔒</div>
             <h3 class="text-3xl font-black text-white mb-2 tracking-tight">Funds Secured!</h3>
             <p class="text-sm text-slate-400 mb-6 font-medium leading-relaxed">Your money is safely locked in Agromart Escrow. The seller has been notified to dispatch the goods.</p>
             
@@ -657,7 +664,7 @@
     </div>
 
     <!-- DAILY SPIN MINI GAME MODAL -->
-    <div id="minigame-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[200] hidden items-center justify-center p-4">
+    <div id="minigame-modal" class="fixed inset-0 bg-[#020617]/98 z-[200] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-sm p-10 rounded-[3rem] text-center border border-purple-500/30 shadow-[0_0_50px_rgba(168,85,247,0.2)] relative overflow-hidden">
             <div class="absolute top-[-50px] right-[-50px] w-48 h-48 bg-purple-500/10 rounded-full blur-[40px] pointer-events-none"></div>
             <button onclick="closeMiniGame()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl font-bold cursor-pointer z-50">✕</button>
@@ -709,7 +716,7 @@
     </div>
 
     <!-- REPORT MODAL -->
-    <div id="report-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
+    <div id="report-modal" class="fixed inset-0 bg-[#020617]/98 z-[160] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-10 rounded-[3rem] relative border border-rose-500/30 text-left shadow-[0_0_40px_rgba(225,29,72,0.15)]">
             <button onclick="closeReportModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl cursor-pointer">✕</button>
             <h3 class="text-3xl font-black text-white mb-2 tracking-tight">Submit Incident Report</h3>
@@ -729,7 +736,7 @@
     </div>
 
     <!-- COMMUNITY POST MODAL (THE FARMER'S LOUNGE) -->
-    <div id="community-post-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
+    <div id="community-post-modal" class="fixed inset-0 bg-[#020617]/98 z-[160] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-10 rounded-[3rem] relative border border-emerald-500/30 text-left shadow-xl md:shadow-[0_0_40px_rgba(16,185,129,0.15)]">
             <button onclick="closeCommunityPostModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl cursor-pointer">✕</button>
             <h3 class="text-3xl font-black text-white mb-2 tracking-tight">🗣️ Post to Farmer's Lounge</h3>
@@ -750,7 +757,7 @@
     
     
     <!-- EVERYDAY HUB POST MODAL -->
-    <div id="everyday-post-modal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[160] hidden items-center justify-center p-4">
+    <div id="everyday-post-modal" class="fixed inset-0 bg-[#020617]/98 z-[160] hidden items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg p-8 rounded-[2.5rem] relative border border-blue-500/30 text-left">
             <button onclick="closeEverydayPostModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl cursor-pointer">✕</button>
             <h3 class="text-xl md:text-2xl font-black text-white mb-2">⚡ Post Everyday Hub Listing</h3>
@@ -785,7 +792,7 @@
     </div>
 
     <!-- HEADER & NAVIGATION -->
-    <header class="bg-[#020617]/70 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-50 transition-all">
+    <header class="bg-[#020617]/70 backdrop-blur-md border-b border-white/5 sticky top-0 z-50 transition-all">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('portal-select')">
                 <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-xl flex items-center justify-center text-lg shadow-[0_0_15px_rgba(16,185,129,0.5)] group-hover:scale-105 group-hover:shadow-[0_0_25px_rgba(16,185,129,0.8)] transition-all">🌾</div>
@@ -793,7 +800,7 @@
             </div>
             
             <div class="flex gap-2 items-center flex-wrap justify-end">
-                <button onclick="navigate('gift')" class="text-xs font-black text-[#020617] bg-gradient-to-r from-rose-400 to-pink-300 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest shadow-[0_0_20px_rgba(244,63,94,0.4)] hover:scale-105 transition-transform cursor-pointer flex items-center gap-1.5"><span class="animate-bounce">🎁</span> Gift Baskets</button>
+                <button onclick="navigate('gift')" class="text-xs font-black text-[#020617] bg-gradient-to-r from-rose-400 to-pink-300 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest shadow-[0_0_20px_rgba(244,63,94,0.4)] hover:scale-105 transition-transform cursor-pointer flex items-center gap-1.5"><span class="">🎁</span> Gift Baskets</button>
                 
                 <button onclick="navigate('community')" class="pro-only text-xs font-black text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 rounded-xl hidden lg:flex items-center gap-1 hover:-translate-y-0.5 transition-all shadow-inner tracking-widest uppercase cursor-pointer">🗣️ Lounge</button>
                 <button onclick="navigate('haulage')" class="pro-only text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 rounded-lg hidden lg:block hover:bg-amber-500/20 transition-colors flex items-center gap-1 hover:-translate-y-0.5 cursor-pointer">🚚 Haulage</button>
@@ -815,7 +822,7 @@
 
                 <button onclick="openWelcomeTour()" class="w-9 h-9 flex items-center justify-center glass-card rounded-xl text-xs text-slate-300 hover:text-blue-400 transition-colors cursor-pointer mr-1" title="App Tour">ℹ️</button>
                 <button id="sunlight-toggle-btn" onclick="toggleSunlightMode()" class="w-9 h-9 flex items-center justify-center glass-card rounded-xl text-xs text-slate-300 hover:text-amber-400 transition-colors cursor-pointer">☀️</button>
-                <button id="nav-login-btn" onclick="navigate('auth')" class="text-[11px] font-black text-[#020617] bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 px-5 py-2.5 rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.6)] ml-3 cursor-pointer tracking-widest uppercase animate-pulse border-2 border-emerald-200/50 hover:scale-105">Sign In</button>
+                <button id="nav-login-btn" onclick="navigate('auth')" class="text-[11px] font-black text-[#020617] bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 px-5 py-2.5 rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.6)] ml-3 cursor-pointer tracking-widest uppercase  border-2 border-emerald-200/50 hover:scale-105">Sign In</button>
                 
                 <div id="nav-user-profile" class="hidden items-center gap-3 bg-white/5 px-4 py-1.5 rounded-full border border-white/10 shadow-inner">
                     <span id="nav-user-name" class="text-xs font-bold text-emerald-400 hidden md:block"></span>
@@ -830,7 +837,7 @@
     </header>
 
     <div class="pro-only md:hidden glass-card border-b border-white/5 px-4 py-3 overflow-x-auto whitespace-nowrap flex gap-3 z-40">
-        <button onclick="navigate('gift')" class="text-xs font-black text-[#020617] bg-gradient-to-r from-rose-400 to-pink-300 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest shadow-[0_0_20px_rgba(244,63,94,0.4)] hover:scale-105 transition-transform cursor-pointer flex items-center gap-1.5"><span class="animate-bounce">🎁</span> Gift Baskets</button>
+        <button onclick="navigate('gift')" class="text-xs font-black text-[#020617] bg-gradient-to-r from-rose-400 to-pink-300 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest shadow-[0_0_20px_rgba(244,63,94,0.4)] hover:scale-105 transition-transform cursor-pointer flex items-center gap-1.5"><span class="">🎁</span> Gift Baskets</button>
                 
         <button onclick="navigate('community')" class="text-xs font-black text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest cursor-pointer">🗣️ Lounge</button>
         <button onclick="navigate('haulage')" class="text-xs font-bold text-amber-400 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-xl shrink-0 cursor-pointer">🚚 Haulage Pool</button>
@@ -848,7 +855,7 @@
     <div class="pro-only glass-card border-b border-white/5 relative z-40 hidden md:block overflow-hidden shadow-inner">
         <div class="max-w-7xl mx-auto flex items-center pl-6">
             <div class="bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider px-4 py-2 rounded-r-lg z-10 shrink-0 flex items-center gap-2 shadow-[0_0_15px_rgba(16,185,129,0.5)]">
-                <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> LIVE GHANA AVG
+                <span class="w-2 h-2 rounded-full bg-rose-500 "></span> LIVE GHANA AVG
             </div>
             <div class="overflow-hidden flex-grow relative ml-4 h-8 flex items-center mask-edges">
                 <div class="flex gap-8 animate-marquee whitespace-nowrap" id="market-ticker">
@@ -862,7 +869,7 @@
         <!-- FRONT DOOR / PORTAL SELECTOR VIEW -->
         <div id="view-portal-select" class="fade-in max-w-5xl mx-auto my-12 space-y-12 relative z-30">
             <div class="text-center space-y-4">
-                <span class="text-5xl block animate-float">🇬🇭</span>
+                <span class="text-5xl block ">🇬🇭</span>
                 <h1 class="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">Choose Your Portal</h1>
                 <p class="text-slate-400 text-sm md:text-base lg:text-lg max-w-xl mx-auto font-medium">Select how you want to use the platform today. You can switch between portals at any time.</p>
             </div>
@@ -943,7 +950,7 @@
             <div class="glass-card p-8 md:p-16 rounded-[2rem] md:rounded-[3rem] border border-rose-500/40 shadow-2xl relative overflow-hidden bg-gradient-to-br from-[#020617]/90 to-rose-950/40">
                 <div class="absolute top-[-50px] right-[-50px] w-48 h-48 md:w-80 md:h-80 bg-rose-500/20 rounded-full blur-[60px] md:blur-[100px] pointer-events-none"></div>
                 <div class="relative z-10 text-center max-w-3xl mx-auto">
-                    <span class="text-[10px] text-rose-400 font-black uppercase tracking-widest bg-rose-500/10 px-4 py-2 rounded-full border border-rose-500/30 shadow-inner mb-6 inline-block"><span class="animate-pulse inline-block mr-1">✨</span> Corporate & Personal Gifting</span>
+                    <span class="text-[10px] text-rose-400 font-black uppercase tracking-widest bg-rose-500/10 px-4 py-2 rounded-full border border-rose-500/30 shadow-inner mb-6 inline-block"><span class=" inline-block mr-1">✨</span> Corporate & Personal Gifting</span>
                     <h2 class="text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tight mb-6 mt-4 leading-tight">Agromart <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-pink-200">Gift Baskets</span></h2>
                     <p class="text-slate-300 text-sm md:text-lg font-medium leading-relaxed mb-10">Beautifully curated hampers featuring premium local produce, artisanal cheeses, fine wines, and organic treats. Perfect for corporate clients, holidays, or special occasions.</p>
                 </div>
@@ -952,7 +959,7 @@
             <div class="glass-card p-6 sm:p-8 md:p-14 rounded-[2rem] md:rounded-[3rem] border-2 border-rose-500/50 relative overflow-hidden text-center shadow-[0_0_50px_rgba(244,63,94,0.15)] mx-2 bg-gradient-to-b from-[#0f172a] to-[#020617]">
                 <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 pointer-events-none"></div>
                 
-                <h3 class="text-4xl md:text-6xl font-black text-rose-400 tracking-tight mb-8 drop-shadow-lg relative z-10 animate-pulse">... COMING SOON ...</h3>
+                <h3 class="text-4xl md:text-6xl font-black text-rose-400 tracking-tight mb-8 drop-shadow-lg relative z-10 ">... COMING SOON ...</h3>
                 
                 <div class="max-w-md mx-auto mb-10 relative z-10">
                     <div class="relative w-full aspect-square rounded-[2rem] overflow-hidden border-4 border-slate-700/50 shadow-2xl">
@@ -1050,7 +1057,7 @@
         <div id="view-home" class="fade-in hidden space-y-16 relative z-40">
             <div class="text-center py-24 px-4 glass-card rounded-[3rem] shadow-2xl relative overflow-hidden group border border-emerald-500/20">
                 <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none group-hover:opacity-10 transition-opacity"></div>
-                <div class="text-6xl mb-8 animate-float inline-block drop-shadow-2xl">🚜</div>
+                <div class="text-6xl mb-8  inline-block drop-shadow-2xl">🚜</div>
                 <h1 class="text-4xl md:text-5xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-slate-200 to-slate-500 mb-6 relative z-10 tracking-tight leading-tight">The Farmers Market,<br>Now Online.</h1>
                 
                 <div class="max-w-4xl mx-auto relative z-20 mt-10">
@@ -1174,7 +1181,7 @@
             <div class="mt-24 glass-card p-6 sm:p-8 md:p-16 rounded-[2rem] md:rounded-[3rem] relative overflow-hidden border border-emerald-500/20 bg-gradient-to-br from-[#020617]/80 to-emerald-950/30 relative z-40">
                 <div class="absolute top-0 right-0 w-[40vw] h-[40vw] bg-emerald-500/5 rounded-full opacity-50 pointer-events-none"></div>
                 <div class="text-center relative z-10">
-                    <span class="text-6xl mb-6 block animate-float">🤝</span>
+                    <span class="text-6xl mb-6 block ">🤝</span>
                     <h2 class="text-2xl md:text-4xl lg:text-5xl font-black text-white mb-6 tracking-tight">Partner With Us & Fuel the Future</h2>
                     <p class="text-slate-300 text-lg max-w-3xl mx-auto leading-relaxed mb-10 font-medium">
                         AgromartDirect is on a mission to completely digitize the agricultural supply chain in Ghana. By eliminating the middleman, we are increasing farmer profits and bringing cheaper, fresher food to consumers nationwide. 
@@ -1193,7 +1200,7 @@
             <div class="glass-card p-8 md:p-12 rounded-[2rem] md:rounded-[3rem] border border-orange-500/30 shadow-2xl relative overflow-hidden bg-gradient-to-br from-[#020617]/90 to-orange-950/30">
                 <div class="absolute top-[-50px] right-[-50px] w-48 h-48 md:w-80 md:h-80 bg-orange-500/20 rounded-full blur-[60px] md:blur-[100px] pointer-events-none"></div>
                 <div class="relative z-10 text-center max-w-3xl mx-auto">
-                    <span class="text-[10px] text-orange-400 font-black uppercase tracking-widest bg-orange-500/10 px-4 py-2 rounded-full border border-orange-500/30 shadow-inner mb-6 inline-block"><span class="animate-pulse inline-block mr-1">🍿</span> Entertainment Hub</span>
+                    <span class="text-[10px] text-orange-400 font-black uppercase tracking-widest bg-orange-500/10 px-4 py-2 rounded-full border border-orange-500/30 shadow-inner mb-6 inline-block"><span class=" inline-block mr-1">🍿</span> Entertainment Hub</span>
                     <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tight mb-4 mt-2 leading-tight">The Chill Zone</h2>
                     <p class="text-slate-300 text-sm md:text-base font-medium leading-relaxed mb-6">Take a break from the farm! Play instant web games or dive into free online novels.</p>
                 </div>
@@ -1842,7 +1849,7 @@
                         <h3 class="text-4xl font-black text-emerald-400 tracking-tight">🛡️ Founder Admin Hub</h3>
                         <p class="text-base text-slate-400 mt-2 font-medium">Master control overrides for marketplace moderation.</p>
                     </div>
-                    <span class="text-sm font-black bg-emerald-500/20 text-emerald-400 px-6 py-2.5 rounded-full border border-emerald-500/40 uppercase tracking-widest animate-pulse shadow-[0_0_20px_rgba(16,185,129,0.2)]">Founder Mode</span>
+                    <span class="text-sm font-black bg-emerald-500/20 text-emerald-400 px-6 py-2.5 rounded-full border border-emerald-500/40 uppercase tracking-widest  shadow-[0_0_20px_rgba(16,185,129,0.2)]">Founder Mode</span>
                 </div>
                 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10">
@@ -2172,7 +2179,7 @@
     </main>
 
     <!-- MOBILE NATIVE BOTTOM NAVIGATION -->
-    <nav class="md:hidden fixed bottom-0 left-0 w-full border-t border-white/10 z-[100] pb-safe flex justify-around items-center px-2 py-3 bg-[#020617]/90 backdrop-blur-xl shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+    <nav class="md:hidden fixed bottom-0 left-0 w-full border-t border-white/10 z-[100] pb-safe flex justify-around items-center px-2 py-3 bg-[#020617]/95 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
         <button onclick="navigate('portal-select')" class="flex flex-col items-center gap-1 w-16 group active:scale-95 transition-transform">
             <span class="text-xl grayscale group-hover:grayscale-0 transition-all drop-shadow-md">🌍</span>
             <span class="text-[9px] font-black text-slate-500 group-hover:text-emerald-400 transition-colors">Portals</span>
@@ -2195,7 +2202,7 @@
     </nav>
 
 
-    <footer class="mt-auto border-t border-white/10 bg-[#020617]/90 backdrop-blur-xl py-12 text-center text-sm text-slate-500 relative z-50">
+    <footer class="mt-auto border-t border-white/10 bg-[#020617]/95 py-12 text-center text-sm text-slate-500 relative z-50">
         <div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row items-center justify-between gap-10">
             <div class="flex items-center gap-4">
                 <span class="text-emerald-500 text-4xl filter drop-shadow-md">🌾</span>
@@ -2679,7 +2686,7 @@ Capacity: ${cap}`,
             const thinkingId = 'thinking-' + Date.now();
             chatWindow.innerHTML += `
                 <div id="${thinkingId}" class="bg-[#0f172a] border border-slate-700 p-3 rounded-2xl rounded-tl-sm text-sm text-slate-400 shadow-inner w-fit flex gap-1">
-                    <span class="animate-bounce">.</span><span class="animate-bounce" style="animation-delay: 0.2s">.</span><span class="animate-bounce" style="animation-delay: 0.4s">.</span>
+                    <span class="">.</span><span class="" style="animation-delay: 0.2s">.</span><span class="" style="animation-delay: 0.4s">.</span>
                 </div>`;
             chatWindow.scrollTop = chatWindow.scrollHeight;
 
@@ -3148,7 +3155,7 @@ Capacity: ${cap}`,
             document.getElementById('guide-intro').innerText = item.intro; 
             
             const contentContainer = document.getElementById('guide-content');
-            contentContainer.innerHTML = '<p class="text-emerald-400 font-bold animate-pulse text-lg flex items-center gap-3"><span class="w-6 h-6 border-4 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin"></span> Fetching encyclopedia data...</p>';
+            contentContainer.innerHTML = '<p class="text-emerald-400 font-bold  text-lg flex items-center gap-3"><span class="w-6 h-6 border-4 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin"></span> Fetching encyclopedia data...</p>';
             
             document.getElementById('trainer-items').classList.add('hidden'); 
             document.getElementById('trainer-guide').classList.remove('hidden'); 
@@ -4447,7 +4454,7 @@ fetch(`${API_URL}/api/v1/products?sort=newest&t=${new Date().getTime()}`)
                 
                 let imgBlock = '';
                 if (imgs.length) {
-                    imgBlock = `<div class="h-56 w-full bg-slate-800 bg-cover bg-center border-b border-white/5 relative" style="background-image: url('${imgs[0]}')">${premiumBadge}</div>`;
+                    imgBlock = `<div class="h-56 w-full bg-slate-800 bg-cover bg-center border-b border-white/5 relative" loading="lazy" style="background-image: url('${imgs[0]}')">${premiumBadge}</div>`;
                 } else {
                     imgBlock = `<div class="h-56 w-full bg-gradient-to-br from-emerald-900/40 to-slate-900 relative flex items-center justify-center text-5xl border-b border-white/5 shadow-inner">${premiumBadge}🌾</div>`;
                 }
@@ -4754,7 +4761,7 @@ fetch(`${API_URL}/api/v1/products?sort=newest&t=${new Date().getTime()}`)
                     }
                     
                     let imgBlock = imgs.length > 0 
-                        ? `<img src="${imgs[0]}" class="w-20 h-20 rounded-2xl object-cover border border-slate-700 shadow-md">` 
+                        ? `<img src="${imgs[0]}" loading="lazy" class="w-20 h-20 rounded-2xl object-cover border border-slate-700 shadow-md">` 
                         : `<div class="w-20 h-20 bg-white/5 border border-slate-700 rounded-2xl flex items-center justify-center text-3xl shadow-inner">🌾</div>`;
 
                     list.innerHTML += `
@@ -6239,7 +6246,7 @@ fetch(`${API_URL}/api/v1/products?sort=newest&t=${new Date().getTime()}`)
                             <div class="relative z-10">
                                 <div class="flex justify-between items-start mb-6">
                                     <span class="bg-[#020617]/50 text-slate-300 text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border border-slate-700/50 shadow-inner">${d.category}</span>
-                                    <span class="text-[10px] text-emerald-400 font-black tracking-widest bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-inner"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> LIVE</span>
+                                    <span class="text-[10px] text-emerald-400 font-black tracking-widest bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-inner"><span class="w-2 h-2 rounded-full bg-emerald-500 "></span> LIVE</span>
                                 </div>
                                 <h4 class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-2">National Average</h4>
                                 <div class="text-4xl font-black text-white mb-8 tracking-tight">GH₵ ${d.national_avg}</div>
@@ -6288,7 +6295,7 @@ fetch(`${API_URL}/api/v1/products?sort=newest&t=${new Date().getTime()}`)
                 if (!items || items.length === 0) { 
                     grid.innerHTML = `
                         <div class="col-span-full glass-card py-24 text-center rounded-[3rem] border border-white/5 shadow-inner">
-                            <div class="text-6xl mb-6 drop-shadow-xl animate-float">🚛</div>
+                            <div class="text-6xl mb-6 drop-shadow-xl ">🚛</div>
                             <h3 class="text-xl md:text-2xl font-black text-white mb-3 tracking-tight">No Active Haulage Listings</h3>
                             <p class="text-sm text-slate-400 mb-8 max-w-lg mx-auto font-medium">There are currently no empty-leg freight routes published. Be the first transporter to list your return trip.</p>
                             <button onclick="openHaulagePostModal()" class="bg-gradient-to-r from-amber-500 to-amber-400 text-[#020617] text-sm font-black px-8 py-4 rounded-2xl shadow-[0_0_15px_rgba(245,158,11,0.4)] transition-all inline-block hover:-translate-y-0.5 tracking-wide cursor-pointer">+ List Empty Truck</button>
@@ -6316,7 +6323,7 @@ fetch(`${API_URL}/api/v1/products?sort=newest&t=${new Date().getTime()}`)
             } catch (e) { 
                 grid.innerHTML = `
                     <div class="col-span-full glass-card py-24 text-center rounded-[3rem] border border-white/5 shadow-inner">
-                        <div class="text-6xl mb-6 drop-shadow-xl animate-float">🚛</div>
+                        <div class="text-6xl mb-6 drop-shadow-xl ">🚛</div>
                         <h3 class="text-xl md:text-2xl font-black text-white mb-3 tracking-tight">Haulage Pool Ready</h3>
                         <p class="text-sm text-slate-400 mb-8 max-w-lg mx-auto font-medium">The database is clean and ready for live driver listings.</p>
                         <button onclick="openHaulagePostModal()" class="bg-gradient-to-r from-amber-500 to-amber-400 text-[#020617] text-sm font-black px-8 py-4 rounded-2xl shadow-[0_0_15px_rgba(245,158,11,0.4)] transition-all inline-block hover:-translate-y-0.5 tracking-wide cursor-pointer">+ List Empty Truck</button>
