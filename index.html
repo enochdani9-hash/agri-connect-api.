@@ -836,6 +836,12 @@
         </div>
     </header>
 
+    <!-- OFFLINE BANNER -->
+    <div id="offline-banner" class="hidden fixed top-[72px] left-0 w-full z-40 bg-rose-600 text-white text-[10px] sm:text-xs font-black uppercase tracking-widest text-center py-2 shadow-lg flex items-center justify-center gap-2">
+        <span class="animate-pulse">⚠️</span> Offline Field Mode: Calculator & Trainer Available
+    </div>
+
+
     <div class="pro-only md:hidden glass-card border-b border-white/5 px-4 py-3 overflow-x-auto whitespace-nowrap flex gap-3 z-40">
         <button onclick="navigate('gift')" class="text-xs font-black text-[#020617] bg-gradient-to-r from-rose-400 to-pink-300 px-4 py-2 rounded-xl shrink-0 uppercase tracking-widest shadow-[0_0_20px_rgba(244,63,94,0.4)] hover:scale-105 transition-transform cursor-pointer flex items-center gap-1.5"><span class="">🎁</span> Gift Baskets</button>
                 
@@ -1513,12 +1519,48 @@
 
         <!-- MARKET INTEL VIEW -->
         <div id="view-intel" class="fade-in hidden space-y-8 relative z-30">
-            <div class="text-center space-y-4 mb-14 relative z-40">
+            <div class="text-center space-y-4 mb-10 relative z-40">
                 <div class="w-16 h-16 md:w-24 md:h-24 bg-rose-500/10 rounded-[2rem] flex items-center justify-center text-5xl mx-auto border border-rose-500/20 shadow-[0_0_40px_rgba(244,63,94,0.15)] mb-8">📊</div>
                 <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">Market Intelligence</h2>
-                <p class="text-slate-400 text-lg max-w-3xl mx-auto font-medium">Live regional price indexes and arbitrage tracking. See where it's cheapest to buy and most profitable to sell based on real-time platform data.</p>
+                <p class="text-slate-400 text-lg max-w-3xl mx-auto font-medium">Live regional price indexes, arbitrage tracking, and seasonal planting calendars.</p>
             </div>
-            <div id="intel-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-8 relative z-40"></div>
+            
+            <div class="flex gap-2 p-1.5 bg-[#020617]/60 rounded-2xl mb-8 border border-slate-700/50 shadow-inner overflow-x-auto hide-scrollbar scroll-touch max-w-xl mx-auto relative z-40">
+                <button onclick="switchIntelTab('prices')" id="tab-intel-prices" class="flex-1 px-4 py-3 rounded-xl text-sm font-black bg-rose-600 text-white shadow-[0_0_15px_rgba(244,63,94,0.3)] transition-all cursor-pointer whitespace-nowrap">Live Prices & Arbitrage</button>
+                <button onclick="switchIntelTab('calendar')" id="tab-intel-calendar" class="flex-1 px-4 py-3 rounded-xl text-sm font-black text-slate-400 hover:text-white transition-all cursor-pointer whitespace-nowrap">Seasonal Planting Radar</button>
+            </div>
+
+            <div id="intel-prices-view">
+                <div id="intel-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-8 relative z-40"></div>
+            </div>
+
+            <div id="intel-calendar-view" class="hidden relative z-40 space-y-8">
+                <div class="glass-card p-6 rounded-3xl border border-rose-500/30 shadow-lg flex flex-col md:flex-row gap-4 max-w-4xl mx-auto">
+                    <div class="flex-1">
+                        <label class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-2">Ecological Zone</label>
+                        <select id="calendar-zone" onchange="renderAgroCalendar()" class="w-full bg-[#0f172a] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-rose-500 cursor-pointer shadow-inner font-bold">
+                            <option value="south">Forest / Coastal Belt (South)</option>
+                            <option value="north">Northern Savannah (North)</option>
+                        </select>
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-2">Crop Type</label>
+                        <select id="calendar-crop" onchange="renderAgroCalendar()" class="w-full bg-[#0f172a] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-rose-500 cursor-pointer shadow-inner font-bold">
+                            <option value="maize">🌽 Maize</option>
+                            <option value="tomato">🍅 Tomato</option>
+                            <option value="cassava">🥔 Cassava</option>
+                            <option value="yam">🍠 Yam</option>
+                            <option value="pepper">🌶️ Hot Pepper</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 md:p-10 rounded-[2.5rem] border border-white/5 shadow-xl max-w-4xl mx-auto">
+                    <div id="calendar-render-area" class="space-y-6">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- FEED CALCULATOR VIEW -->
@@ -5215,6 +5257,72 @@ fetch(`${API_URL}/api/v1/products?sort=newest&t=${new Date().getTime()}`)
 
         
 
+        
+        // --- OFFLINE / ONLINE DETECTION ---
+        window.addEventListener('online', () => {
+            const banner = document.getElementById('offline-banner');
+            if (banner) banner.classList.add('hidden');
+            showToast("Connection Restored! 🌍", "success");
+        });
+        window.addEventListener('offline', () => {
+            const banner = document.getElementById('offline-banner');
+            if (banner) banner.classList.remove('hidden');
+            showToast("Offline Field Mode Active.", "error");
+        });
+
+        // Check on initial load
+        if (!navigator.onLine) {
+            window.dispatchEvent(new Event('offline'));
+        }
+
+        // --- FEED CALCULATOR LOGIC ---
+        function calculateFeedMix() {
+            const targetCP = parseFloat(document.getElementById('calc-target-cp').value);
+            const proteinCP = parseFloat(document.getElementById('calc-protein-cp').value);
+            const proteinPrice = parseFloat(document.getElementById('calc-protein-price').value);
+            const energyCP = parseFloat(document.getElementById('calc-energy-cp').value);
+            const energyPrice = parseFloat(document.getElementById('calc-energy-price').value);
+
+            if (isNaN(targetCP) || isNaN(proteinCP) || isNaN(energyCP)) {
+                return showToast("Please fill all CP fields", "error");
+            }
+
+            if (targetCP <= energyCP || targetCP >= proteinCP) {
+                return showToast(`Target CP must be between ${energyCP}% and ${proteinCP}%`, "error");
+            }
+
+            // Pearson Square Math
+            const partsProtein = targetCP - energyCP;
+            const partsEnergy = proteinCP - targetCP;
+            const totalParts = partsProtein + partsEnergy;
+
+            const pctProtein = partsProtein / totalParts;
+            const pctEnergy = partsEnergy / totalParts;
+
+            const kgProtein = pctProtein * 50;
+            const kgEnergy = pctEnergy * 50;
+
+            const costProtein = (proteinPrice / 50) * kgProtein;
+            const costEnergy = (energyPrice / 50) * kgEnergy;
+            const totalCost = costProtein + costEnergy;
+
+            document.getElementById('res-protein-kg').innerText = kgProtein.toFixed(1) + " kg";
+            document.getElementById('res-energy-kg').innerText = kgEnergy.toFixed(1) + " kg";
+            document.getElementById('res-total-cost').innerText = "GH₵ " + totalCost.toFixed(2);
+
+            document.getElementById('calc-results-empty').classList.add('hidden');
+            document.getElementById('calc-results-filled').classList.remove('hidden');
+            
+            showToast("Formulation Complete! 🧮", "success");
+            
+            // Scroll to results if mobile
+            if(window.innerWidth < 1024) {
+                setTimeout(() => {
+                    document.getElementById('calc-results-filled').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 300);
+            }
+        }
+
         // --- VOICE RECORDING LOGIC ---
         let mediaRecorder;
         let audioChunks = [];
@@ -6626,6 +6734,241 @@ fetch(`${API_URL}/api/v1/products?sort=newest&t=${new Date().getTime()}`)
             closeCommunityPostModal();
             filterCommunity('All'); // Refresh the feed to show the new post
         }
+    
+        // --- AGRO CALENDAR LOGIC ---
+        const agroCalendarData = {
+            "maize": {
+                name: "Maize (Corn)",
+                south: {
+                    major: { plant: "March - April", harvest: "July - August" },
+                    minor: { plant: "September", harvest: "December" }
+                },
+                north: {
+                    single: { plant: "May - June", harvest: "Sept - Oct" }
+                },
+                peak_price: "March - May (Lean Season)",
+                notes: "High demand staple. Plant directly after first established rains."
+            },
+            "tomato": {
+                name: "Tomato",
+                south: {
+                    major: { plant: "March - April", harvest: "June - July" },
+                    minor: { plant: "September", harvest: "Nov - Dec" }
+                },
+                north: {
+                    single: { plant: "June", harvest: "September" },
+                    dry_irrigation: { plant: "November", harvest: "February" }
+                },
+                peak_price: "June - July",
+                notes: "Highly perishable. Prices surge dramatically during wet season due to field rotting."
+            },
+            "cassava": {
+                name: "Cassava",
+                south: {
+                    major: { plant: "March - May", harvest: "10-12 months later" },
+                    minor: { plant: "Sept - Oct", harvest: "10-12 months later" }
+                },
+                north: {
+                    single: { plant: "May - July", harvest: "Next Mar - May" }
+                },
+                peak_price: "Variable (Spikes during drought)",
+                notes: "Drought resistant. Can be stored in the ground to time market demand."
+            },
+            "yam": {
+                name: "Yam",
+                south: {
+                    major: { plant: "February - April", harvest: "August - Nov" },
+                    minor: null
+                },
+                north: {
+                    single: { plant: "April - May", harvest: "October - Dec" }
+                },
+                peak_price: "June - July (Pre-harvest)",
+                notes: "Requires deep soil mounds. Stake vines early for maximum yield."
+            },
+            "pepper": {
+                name: "Hot Pepper",
+                south: {
+                    major: { plant: "March - May", harvest: "Continuous (Jun-Sep)" },
+                    minor: { plant: "September", harvest: "Continuous (Dec-Feb)" }
+                },
+                north: {
+                    single: { plant: "June", harvest: "Continuous (Sep-Dec)" }
+                },
+                peak_price: "April - June",
+                notes: "Highly profitable cash crop if irrigated during the dry season."
+            }
+        };
+
+        function switchIntelTab(tab) {
+            const btnPrices = document.getElementById('tab-intel-prices');
+            const btnCalendar = document.getElementById('tab-intel-calendar');
+            const viewPrices = document.getElementById('intel-prices-view');
+            const viewCalendar = document.getElementById('intel-calendar-view');
+
+            if (tab === 'prices') {
+                btnPrices.className = "flex-1 px-4 py-3 rounded-xl text-sm font-black bg-rose-600 text-white shadow-[0_0_15px_rgba(244,63,94,0.3)] transition-all cursor-pointer whitespace-nowrap";
+                btnCalendar.className = "flex-1 px-4 py-3 rounded-xl text-sm font-black text-slate-400 hover:text-white transition-all cursor-pointer whitespace-nowrap";
+                viewPrices.classList.remove('hidden');
+                viewCalendar.classList.add('hidden');
+            } else {
+                btnCalendar.className = "flex-1 px-4 py-3 rounded-xl text-sm font-black bg-rose-600 text-white shadow-[0_0_15px_rgba(244,63,94,0.3)] transition-all cursor-pointer whitespace-nowrap";
+                btnPrices.className = "flex-1 px-4 py-3 rounded-xl text-sm font-black text-slate-400 hover:text-white transition-all cursor-pointer whitespace-nowrap";
+                viewCalendar.classList.remove('hidden');
+                viewPrices.classList.add('hidden');
+                renderAgroCalendar();
+            }
+        }
+
+        function renderAgroCalendar() {
+            const zone = document.getElementById('calendar-zone').value;
+            const cropId = document.getElementById('calendar-crop').value;
+            const data = agroCalendarData[cropId];
+            
+            const area = document.getElementById('calendar-render-area');
+            
+            let html = `
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-3 border-b border-white/5 pb-6">
+                <h3 class="text-3xl font-black text-white tracking-tight">${data.name}</h3>
+                <span class="text-[10px] uppercase font-black tracking-widest bg-rose-500/10 text-rose-400 border border-rose-500/20 px-3 py-1.5 rounded-lg w-fit shadow-inner">Historical Data Target</span>
+            </div>
+            <p class="text-sm text-slate-300 font-medium mb-8 leading-relaxed">💡 ${data.notes}</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            `;
+
+            if (zone === 'south') {
+                html += `
+                <div class="bg-[#0f172a]/80 p-6 md:p-8 rounded-3xl border border-slate-700/80 shadow-inner">
+                    <h4 class="text-emerald-400 text-xs font-black uppercase tracking-widest mb-6">🌧️ Major Season</h4>
+                    <div class="flex justify-between items-center mb-4 border-b border-white/5 pb-4">
+                        <span class="text-slate-400 font-bold text-sm">Planting:</span>
+                        <span class="text-white font-black text-base">${data.south.major.plant}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400 font-bold text-sm">Harvest:</span>
+                        <span class="text-emerald-300 font-black text-base">${data.south.major.harvest}</span>
+                    </div>
+                </div>`;
+                
+                if (data.south.minor) {
+                    html += `
+                    <div class="bg-[#0f172a]/80 p-6 md:p-8 rounded-3xl border border-slate-700/80 shadow-inner">
+                        <h4 class="text-blue-400 text-xs font-black uppercase tracking-widest mb-6">🌦️ Minor Season</h4>
+                        <div class="flex justify-between items-center mb-4 border-b border-white/5 pb-4">
+                            <span class="text-slate-400 font-bold text-sm">Planting:</span>
+                            <span class="text-white font-black text-base">${data.south.minor.plant}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-400 font-bold text-sm">Harvest:</span>
+                            <span class="text-blue-300 font-black text-base">${data.south.minor.harvest}</span>
+                        </div>
+                    </div>`;
+                } else {
+                    html += `
+                    <div class="bg-[#0f172a]/50 p-6 md:p-8 rounded-3xl border border-slate-700/50 shadow-inner flex flex-col items-center justify-center text-slate-500 font-bold text-sm text-center">
+                        <span class="text-3xl mb-2 opacity-50">☀️</span>
+                        No distinct minor season <br>for this crop.
+                    </div>`;
+                }
+            } else {
+                html += `
+                <div class="bg-[#0f172a]/80 p-6 md:p-8 rounded-3xl border border-slate-700/80 shadow-inner">
+                    <h4 class="text-emerald-400 text-xs font-black uppercase tracking-widest mb-6">🌧️ Single Wet Season</h4>
+                    <div class="flex justify-between items-center mb-4 border-b border-white/5 pb-4">
+                        <span class="text-slate-400 font-bold text-sm">Planting:</span>
+                        <span class="text-white font-black text-base">${data.north.single.plant}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400 font-bold text-sm">Harvest:</span>
+                        <span class="text-emerald-300 font-black text-base">${data.north.single.harvest}</span>
+                    </div>
+                </div>`;
+                
+                if (data.north.dry_irrigation) {
+                    html += `
+                    <div class="bg-[#0f172a]/80 p-6 md:p-8 rounded-3xl border border-slate-700/80 shadow-inner">
+                        <h4 class="text-amber-400 text-xs font-black uppercase tracking-widest mb-6">☀️ Dry Season (Irrigated)</h4>
+                        <div class="flex justify-between items-center mb-4 border-b border-white/5 pb-4">
+                            <span class="text-slate-400 font-bold text-sm">Planting:</span>
+                            <span class="text-white font-black text-base">${data.north.dry_irrigation.plant}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-400 font-bold text-sm">Harvest:</span>
+                            <span class="text-amber-300 font-black text-base">${data.north.dry_irrigation.harvest}</span>
+                        </div>
+                    </div>`;
+                } else {
+                    html += `
+                    <div class="bg-[#0f172a]/50 p-6 md:p-8 rounded-3xl border border-slate-700/50 shadow-inner flex flex-col items-center justify-center text-slate-500 font-bold text-sm text-center">
+                        <span class="text-3xl mb-2 opacity-50">☀️</span>
+                        Relies heavily on rain-fed <br>single season.
+                    </div>`;
+                }
+            }
+
+            html += `</div>
+            <div class="bg-gradient-to-r from-rose-950/40 to-slate-900/80 p-8 rounded-[2rem] border border-rose-500/30 shadow-[0_0_20px_rgba(225,29,72,0.1)]">
+                <h4 class="text-[11px] font-black uppercase tracking-widest text-rose-400 mb-3 flex items-center gap-2">📈 Market Insight: Highest Price Peak</h4>
+                <p class="text-2xl md:text-3xl font-black text-white tracking-tight">${data.peak_price}</p>
+            </div>
+            `;
+
+            area.innerHTML = html;
+        }
+
+        async function loadMarketIntel() {
+            // Check if backend API works
+            const grid = document.getElementById('intel-grid');
+            if (!grid) return;
+            
+            grid.innerHTML = '<div class="col-span-full text-center text-slate-400 py-10">Gathering market intelligence... ⏳</div>';
+            
+            try {
+                const res = await fetch(`${API_URL}/api/v1/market-intel`);
+                if (!res.ok) throw new Error("Fallback");
+                const data = await res.json();
+                renderMarketIntelGrid(data, grid);
+            } catch (e) {
+                // If Render is down, show mock intel based on the existing products
+                const mockIntel = [
+                    { category: 'Poultry', average_price: 85, lowest_price_region: 'Bono', highest_price_region: 'Greater Accra', arbitrage_margin_percent: 30 },
+                    { category: 'Eggs', average_price: 45, lowest_price_region: 'Ashanti', highest_price_region: 'Greater Accra', arbitrage_margin_percent: 22 },
+                    { category: 'Vegetables/Fruits', average_price: 350, lowest_price_region: 'Eastern', highest_price_region: 'Greater Accra', arbitrage_margin_percent: 45 }
+                ];
+                renderMarketIntelGrid(mockIntel, grid);
+            }
+        }
+
+        function renderMarketIntelGrid(data, grid) {
+            grid.innerHTML = data.map(i => `
+                <div class="glass-card p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] border border-white/5 hover:border-rose-500/30 transition-all flex flex-col justify-between group shadow-lg">
+                    <div>
+                        <div class="flex justify-between items-center mb-6">
+                            <span class="text-xs font-black text-slate-300 uppercase tracking-widest bg-slate-800 px-3 py-1.5 rounded-lg shadow-inner">${i.category}</span>
+                            <span class="text-xs text-rose-400 font-black">Live Average</span>
+                        </div>
+                        <h3 class="text-4xl font-black text-white mb-2 tracking-tight">GH₵${i.average_price}</h3>
+                        <p class="text-sm text-slate-400 mb-8 font-medium">National Benchmark</p>
+                        
+                        <div class="space-y-4 pt-6 border-t border-white/10">
+                            <div class="flex justify-between text-xs items-center">
+                                <span class="text-emerald-400 font-bold">🟢 Cheapest:</span>
+                                <span class="text-white font-black">${i.lowest_price_region}</span>
+                            </div>
+                            <div class="flex justify-between text-xs items-center">
+                                <span class="text-rose-400 font-bold">🔴 Expensive:</span>
+                                <span class="text-white font-black">${i.highest_price_region}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 bg-rose-500/10 border border-rose-500/20 p-5 rounded-2xl flex justify-between items-center shadow-inner">
+                        <span class="text-[10px] font-black uppercase tracking-widest text-rose-400">Arbitrage Margin</span>
+                        <span class="text-lg font-black text-rose-300">${i.arbitrage_margin_percent}%</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
     </script>
 </body>
 </html>
