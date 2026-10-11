@@ -3283,7 +3283,7 @@ Capacity: ${cap}`,
             event.target.value = '';
         }
 
-        async // GEMINI API CONFIGURATION (FOR DEMO/PROTOTYPE)
+        // GEMINI API CONFIGURATION (FOR DEMO/PROTOTYPE)
         // Note: For production, this must be handled by a backend server!
         const GEMINI_API_KEY = "AQ.Ab8RN6KShJYsA13H86JptT6tevWTyt2xRfJx4UY_SvF1p_Q5XQ"; // PASTE YOUR GEMINI API KEY HERE
 
@@ -3301,7 +3301,7 @@ Capacity: ${cap}`,
                     document.querySelector('#agridoctor-processing-state h3').innerText = "Gemini is analyzing...";
                     
                     const base64Data = currentAgriDoctorImageBase64.split(',')[1];
-                    const mimeType = currentAgriDoctorImageBase64.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/)[1];
+                    const mimeType = currentAgriDoctorImageBase64.split(';')[0].split(':')[1];
 
                     const prompt = "You are an expert Ghanaian agricultural pathologist. Analyze this image of a crop leaf or livestock. Identify the most likely disease or pest. Provide the output strictly in this JSON format without any markdown wrappers or extra text: {\"icon\": \"<emoji>\", \"title\": \"<Disease Name>\", \"desc\": \"<1 sentence description>\", \"org\": \"<1 sentence organic/home remedy>\", \"chem\": \"<1 sentence chemical intervention>\"}";
 
@@ -3319,17 +3319,28 @@ Capacity: ${cap}`,
                     });
 
                     const data = await response.json();
-                    if (!response.ok) throw new Error("Gemini API Error");
+                    if (!response.ok) {
+                        console.error("Gemini API Error:", data);
+                        throw new Error(data.error?.message || "Gemini API Connection Error");
+                    }
 
-                    const textRes = data.candidates[0].content.parts[0].text;
-                    const cleanJson = textRes.replace(/```json/g, '').replace(/```/g, '').trim();
-                    const diag = JSON.parse(cleanJson);
+                    let textRes = data.candidates[0].content.parts[0].text;
+                    // Force clean up of markdown formatting if Gemini ignores instructions
+                    let cleanJson = textRes.replace(/```json/gi, '').replace(/```/g, '').trim();
+                    
+                    let diag;
+                    try {
+                        diag = JSON.parse(cleanJson);
+                    } catch (parseError) {
+                        console.error("JSON Parse Error:", textRes);
+                        throw new Error("AI returned an unreadable format.");
+                    }
 
                     document.getElementById('diag-icon').innerText = diag.icon || "🦠";
                     document.getElementById('diag-title').innerText = diag.title || "Unrecognized Issue";
-                    document.getElementById('diag-desc').innerText = diag.desc || "Analysis failed.";
-                    document.getElementById('diag-organic').innerText = diag.org || "No organic data.";
-                    document.getElementById('diag-chemical').innerText = diag.chem || "No chemical data.";
+                    document.getElementById('diag-desc').innerText = diag.desc || "Analysis complete but description missing.";
+                    document.getElementById('diag-organic').innerText = diag.org || "No organic data provided.";
+                    document.getElementById('diag-chemical').innerText = diag.chem || "No chemical data provided.";
 
                 } else {
                     // FALLBACK DEMO MODE (Dynamic Hash)
@@ -6993,9 +7004,9 @@ fetch(`${API_URL}/api/v1/products?sort=newest&t=${new Date().getTime()}`)
             } catch (e) {
                 // If Render is down, show mock intel based on the existing products
                 const mockIntel = [
-                    { category: 'Poultry', average_price: 85, lowest_price_region: 'Bono', highest_price_region: 'Greater Accra', arbitrage_margin_percent: 30 },
-                    { category: 'Eggs', average_price: 45, lowest_price_region: 'Ashanti', highest_price_region: 'Greater Accra', arbitrage_margin_percent: 22 },
-                    { category: 'Vegetables/Fruits', average_price: 350, lowest_price_region: 'Eastern', highest_price_region: 'Greater Accra', arbitrage_margin_percent: 45 }
+                    { category: 'Poultry', national_avg: 85, cheapest_region: 'Bono', cheapest_price: 70, highest_region: 'Greater Accra', highest_price: 110, arbitrage_margin_percent: 30 },
+                    { category: 'Eggs', national_avg: 45, cheapest_region: 'Ashanti', cheapest_price: 35, highest_region: 'Greater Accra', highest_price: 55, arbitrage_margin_percent: 22 },
+                    { category: 'Vegetables/Fruits', national_avg: 350, cheapest_region: 'Eastern', cheapest_price: 280, highest_region: 'Greater Accra', highest_price: 450, arbitrage_margin_percent: 45 }
                 ];
                 renderMarketIntelGrid(mockIntel, grid);
             }
